@@ -4,6 +4,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import javax.swing.text.GlyphView;
 
+import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
 import DGE.gameObjects.GameMapObject;
@@ -15,8 +16,11 @@ import org.lwjgl.opengl.GL;
 public class Game {
 	public long pWindow;
 	private GraphicModule graphics;
-	private float x;
-	private float y;
+	private boolean camMove;
+	private float camX;
+	private float camY;
+	private float lastx;
+	private float lasty;
 	private int windowWidth;
 	private int windowHeight;
 	
@@ -27,7 +31,7 @@ public class Game {
 	}
 	
 	public long init(){
-		x = y = 0f;
+		camMove = false;
 		GLFWErrorCallback.createPrint(System.err).set();
 		
 		if (!glfwInit()) 
@@ -54,16 +58,29 @@ public class Game {
 		glfwSetKeyCallback(pWindow, (window, key, scancode, action, mods) -> {
 			if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
 				glfwSetWindowShouldClose(window, true); // We will detect this in our rendering loop
-			float diff = 10;
-			if ( key == GLFW_KEY_UP && action == GLFW_PRESS) y+=diff;
-			if ( key == GLFW_KEY_DOWN && action == GLFW_PRESS) y-=diff;
-			if ( key == GLFW_KEY_LEFT && action == GLFW_PRESS) x-=diff;
-			if ( key == GLFW_KEY_RIGHT && action == GLFW_PRESS) x+=diff;
 		});
 		
 		glfwSetCursorPosCallback(pWindow, (window, posx, posy)->{
-			x=(float)posx;
-			y=windowHeight-(float)posy;
+			float dx = lastx-(float)posx;
+			float dy = lasty-(float)posy;
+			
+			if (camMove){
+//				System.out.println("MoveCameraBy dx:"+dx+"  dy:"+dy);
+				GraphicModule.instance().getCamera().moveCamera(new Vector3f(-dx, -dy, 0));
+			}
+			
+			if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT)==GLFW_PRESS){
+				camMove = true;
+			}else{
+				camMove = false;
+			}
+			
+			lastx = (float)posx;
+			lasty  =(float)posy;
+		});
+		
+		glfwSetScrollCallback(pWindow, (window, xoffset, yoffset)->{
+			GraphicModule.instance().getCamera().scale((float)yoffset/30);
 		});
 		//But many times better
 		
@@ -108,6 +125,10 @@ public class Game {
 		graphics.clear();
 		gmo.draw();
 		glfwSwapBuffers(pWindow);
+	}
+	
+	public void updateCamera(){
+		
 	}
 }
 

@@ -1,0 +1,94 @@
+Старый пример карты:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<map name="Vesteros">
+	<regions>
+		<region name="Castle Black" type="ground" influence="1">
+			<texture filename="CastleBlack.png"/>
+		</region>
+		<region name="Karhold" type="ground" influence="1">
+			<texture filename="Karhold.png"/>
+		</region>
+		<region name="Winterfell" type="ground" influence="1" resources="1" building="1">
+			<texture filename="Winterfell.png"/>
+		</region>
+		<region name="White Harbor" type="ground" building="1">
+			<texture filename="WhiteHarbor.png"/>
+		</region>
+		<region name="Widow's Watch" type="ground" resources="1">
+			<texture filename="WidowsWatch.png"/>
+		</region>
+		<region name="The Stony Shore" type="ground" resources="1">
+			<texture filename="TheStonyShore.png"/>
+		</region>
+		<region name="Bay Of Ice" type="sea">
+			<texture filename="BayOfIce.png"/>
+		</region>
+		<region name="The Shivering Sea" type="sea">
+			<texture filename="TheShiveringSea.png"/>
+		</region>
+	</regions>
+	<neighbors>
+		<region name="Bay Of Ice">
+			<neighbor name="Castle Black"/>
+			<neighbor name="Winterfell"/>
+			<neighbor name="The Stony Shore"/>
+		</region>
+		<region name="The Shivering Sea">
+			<neighbor name="Castle Black"/>
+			<neighbor name="Karhold"/>
+			<neighbor name="Winterfell"/>
+			<neighbor name="White Harbor"/>
+			<neighbor name="Widow's Watch"/>
+		</region>
+		<region name="Winterfell">
+			<neighbor name="The Stony Shore"/>
+			<neighbor name="White Harbor"/>
+			<neighbor name="Karhold"/>
+			<neighbor name="Castle Black"/>
+		</region>
+		<region name="Castle Black">
+			<neighbor name="Karhold"/>
+		</region>
+		<region name="Widow's Watch">
+			<neighbor name="White Harbor"/>
+		</region>
+	</neighbors>
+</map>
+
+
+основной элемент <map> 
+В него вложены 2 больших элемента: <regions> и <neighbors>
+
+В элемент <regions> вложены элементы <region>
+Регион выглядит примерно так:
+<region name="Winterfell" type="ground" influence="1" building="2" resources="1" x="0" y="0" w="1024" h="1024">
+	<texture filename="winterfell.png"/>
+</region>
+
+И так все регионы.
+
+У каждого региона обязатеьно есть:
+	name:String
+	type:{ground|sea|port}
+	x:int
+	y:int
+	w:int
+	h:int
+и опциональные параметры:
+	influence (короны):int
+	buildung (замок или крепость):int
+	resources (бочки):int
+
+В регион может быть вложен элемент texture
+<texture filename="Winterfell.png"/>
+у текстуры 1 атрибут: 
+	filename:string
+
+Потом идет блок <neighbors>
+в нем описываются соседи
+описание соседей состоит из тегов <region> и вложенных в них тегов <neighbor>
+оба тега имеют 1 атрибут^
+	name:string
+
+В будующем возмоны дополнения, но это маловероятно.

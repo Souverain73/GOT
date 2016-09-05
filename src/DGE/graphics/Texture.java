@@ -129,7 +129,7 @@ public class Texture {
 		FloatBuffer pm = BufferUtils.createFloatBuffer(16);
 		mv.identity().translate(x, y, 0).scale(w,h,1).get(mvFB);
 		if (useProjection)
-			GraphicModule.instance().getProjection().get(pm);
+			GraphicModule.instance().getCamera().getProjection().get(pm);
 		else
 			new Matrix4f().identity().get(pm);
 	    glEnable(GL_BLEND);

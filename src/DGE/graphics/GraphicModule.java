@@ -44,10 +44,11 @@ public class GraphicModule {
 	private static GraphicModule _instance = null;
 
 	private int vao;
-	private static Matrix4f projectionMatrix;
+	private static ICamera camera;
 
 	private GraphicModule() {
-		projectionMatrix = new Matrix4f();
+		camera = new Ortho2DCamera();
+		camera.windowResizeCallback(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 	}
 
 	public void clear(){
@@ -63,7 +64,7 @@ public class GraphicModule {
 	
 	public static void resizeCallback(long window, int w, int h){
 		glViewport(0, 0, w, h);
-		projectionMatrix.setOrtho(0, w, h, 0, 0, 100);
+		camera.windowResizeCallback(w, h);
 	}
 	
 	public void initOpenGl(){
@@ -71,12 +72,8 @@ public class GraphicModule {
 	    vao = glGenVertexArrays();
 	    glBindVertexArray(vao);
 	    glClearColor(0.5f, 0.5f, 0f, 1.0f);
-	    projectionMatrix.setOrtho(0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, 0, 0, 100);
 	}
 	
-	public Matrix4f getProjection(){
-		return projectionMatrix;
-	}
 	
 	public static int createBuffer(float[] data){
 		FloatBuffer dataBuffer = BufferUtils.createFloatBuffer(data.length);
@@ -153,4 +150,8 @@ public class GraphicModule {
 
 	      return program;
 	   }
+	
+	public ICamera getCamera(){
+		return camera;
+	}
 }
