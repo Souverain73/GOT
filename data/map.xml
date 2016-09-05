@@ -1,10 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map name="Vesteros">
 	<regions>
-		<region name="Winterfell" type="ground" influence="1" building="2" resources="1" x="0" y="0" w="1024" h="1024">
-			<texture filename="winterfell.png"/>
+		<region name="Castle Black" type="ground" influence="1" x="609" y="0" w="475" h="286">
+			<texture filename="CastleBlack.png"/>
+		</region>
+		<region name="Karhold" type="ground" influence="1" x="951" y="149" w="355" h="318">
+			<texture filename="Karhold.png"/>
+		</region>
+		<region name="Winterfell" type="ground" influence="1" resources="1" building="1" x="261" y="170" w="837" h="678">
+			<texture filename="Winterfell.png"/>
+		</region>
+		<region name="White Harbor" type="ground" building="1" x="746" y="423" w="379" h="511">
+			<texture filename="WhiteHarbor.png"/>
+		</region>
+		<region name="Widow's Watch" type="ground" resources="1" x="939" y="561" w="278" h="219">
+			<texture filename="WidowsWatch.png"/>
+		</region>
+		<region name="The Stony Shore" type="ground" resources="1" x="153" y="423" w="408" h="426">
+			<texture filename="TheStonyShore.png"/>
+		</region>
+		<region name="Bay Of Ice" type="sea" x="0" y="0" w="763" h="960">
+			<texture filename="BayOfIce.png"/>
+		</region>
+		<region name="The Shivering Sea" type="sea" x="1024" y="0" w="476" h="762">
+			<texture filename="TheShiveringSea.png"/>
 		</region>
 	</regions>
 	<neighbors>
+		<region name="Bay Of Ice">
+			<neighbor name="Castle Black"/>
+			<neighbor name="Winterfell"/>
+			<neighbor name="The Stony Shore"/>
+		</region>
+		<region name="The Shivering Sea">
+			<neighbor name="Castle Black"/>
+			<neighbor name="Karhold"/>
+			<neighbor name="Winterfell"/>
+			<neighbor name="White Harbor"/>
+			<neighbor name="Widow's Watch"/>
+		</region>
+		<region name="Winterfell">
+			<neighbor name="The Stony Shore"/>
+			<neighbor name="White Harbor"/>
+			<neighbor name="Karhold"/>
+			<neighbor name="Castle Black"/>
+		</region>
+		<region name="Castle Black">
+			<neighbor name="Karhold"/>
+		</region>
+		<region name="Widow's Watch">
+			<neighbor name="White Harbor"/>
+		</region>
 	</neighbors>
 </map>

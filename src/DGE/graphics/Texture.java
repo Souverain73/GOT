@@ -71,11 +71,13 @@ public class Texture {
 	private static int vertexCoordsBuffer;
 	private static int vertexUVBuffer;
 	private static int drawProgram;
-	private static int textureID;
 	private static int textureSampler;
 	private static int mvLocation;
 	private static Matrix4f mv;
 	private static int projectionLocation;
+	
+	private int textureID;
+	
 	public int getID(){
 		return textureID;
 	}

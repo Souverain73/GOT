@@ -66,9 +66,9 @@ public class GameMapObject implements GameObject {
 				LoaderParams params = new LoaderParams();
 				//атрибуты
 				params.put("name", attribValue(region, "name"));
-				params.put("influence", Integer.valueOf(attribValue(region, "influence")));
-				params.put("resources", Integer.valueOf(attribValue(region, "resources")));
-				params.put("building", Integer.valueOf(attribValue(region, "building")));
+				params.put("influence", valueOrDefault(Integer.valueOf(attribValue(region, "influence")),0));
+				params.put("resources", valueOrDefault(Integer.valueOf(attribValue(region, "resources")),0));
+				params.put("building", valueOrDefault(Integer.valueOf(attribValue(region, "building")),0));
 				params.put("x", Integer.valueOf(attribValue(region, "x")));
 				params.put("y", Integer.valueOf(attribValue(region, "y")));
 				params.put("w", Integer.valueOf(attribValue(region, "w")));
@@ -76,7 +76,7 @@ public class GameMapObject implements GameObject {
 				//inner nodes
 				NodeList regionParams = region.getChildNodes();
 				for(int j=0; j<regionParams.getLength(); j++){
-					if (regionParams.item(i).getNodeType() == Node.TEXT_NODE) continue;
+					if (regionParams.item(j).getNodeType() == Node.TEXT_NODE) continue;
 					Node paramNode = regionParams.item(j);
 					if (paramNode.getNodeName().equals("texture")){
 						String texName = attribValue(paramNode, "filename");
@@ -111,6 +111,13 @@ public class GameMapObject implements GameObject {
 	}
 	
 	private String attribValue(Node node, String attributeName){
-		return node.getAttributes().getNamedItem(attributeName).getNodeValue();
+		Node attrib = node.getAttributes().getNamedItem(attributeName);
+		if (attrib == null) return "0"; 
+		else return attrib.getNodeValue();
+	}
+	
+	private Integer valueOrDefault(Integer value, Integer def){
+		if (value == null) return def;
+		else return value;
 	}
 }
