@@ -148,7 +148,7 @@ public class Texture {
 		glUniformMatrix4fv(mvLocation, false, mvFB);
 		glUniformMatrix4fv(projectionLocation, false, pm);
 		
-		glEnableVertewxAttribArray(0);
+		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexCoordsBuffer);
 		glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
 		

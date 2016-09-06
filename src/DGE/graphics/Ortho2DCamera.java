@@ -109,8 +109,7 @@ public class Ortho2DCamera implements ICamera{
 	@Override
 	public void updateCamera(){
 		if (debug) System.out.println(this.toString());
-//		projection.setOrtho(position.x-w/2, position.x+w/2, position.y+h/2, position.y-h/2, 1, -1);
-		projection.setOrtho(0, w, h, 0, -1, 1);
+		projection.setOrtho(-w/2, w/2, h/2, -h/2, 1, -1);
 		projection.scale(scale);
 		projection.translate(position);
 	}
