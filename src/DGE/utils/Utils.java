@@ -9,6 +9,7 @@ import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
 
 import org.joml.Vector2f;
 
@@ -42,8 +43,11 @@ public class Utils {
 	    return new String(encoded);
 	}
 	
-	static public void pointInRect(Vector2f point, Vector2f rectPos, Vector2f rectDim){
-		//TODO: implement
-		
+	static public boolean pointInRect(Vector2f point, Vector2f rectPos, Vector2f rectDim){
+		if (point.x < rectPos.x) return false;
+		if (point.x > rectPos.x+rectDim.x) return false;
+		if (point.y < rectPos.y) return false;
+		if (point.y > rectPos.y+rectDim.y) return false;
+		return true;
 	}
 }

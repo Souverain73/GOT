@@ -4,10 +4,12 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.HashMap;
 
 import javax.swing.text.GlyphView;
 
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -19,6 +21,14 @@ import DGE.utils.LoaderParams;
 import org.lwjgl.opengl.GL;
 
 public class Game {
+	private static Game _instance = null;
+
+	public static Game instance(){
+		if (_instance == null){
+			_instance = new Game();
+		}
+		return _instance;
+	}
 	public long pWindow;
 	private GraphicModule graphics;
 	private boolean camMove;
@@ -26,13 +36,17 @@ public class Game {
 	private float camY;
 	private float lastx;
 	private float lasty;
+	
 	private int windowWidth;
 	private int windowHeight;
 	
+	private static Vector2f worldCursorPos;
+	
 	private GameMapObject gmo;
 	
-	Game(){
+	private Game(){
 		graphics = GraphicModule.instance();
+		worldCursorPos = new Vector2f(0,0);
 	}
 	
 	public long init(){
@@ -83,9 +97,10 @@ public class Game {
 			if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS){
 				System.out.println("Window:"+posx+"  "+posy);
 				System.out.println("World");
-				getWorldCoord((float)posx, (float)posy);
+				System.out.println(worldCursorPos);
+				
 			}
-			
+			getWorldCoord((float)posx, (float)posy);
 			lastx = (float)posx;
 			lasty  =(float)posy;
 		});
@@ -125,7 +140,7 @@ public class Game {
 	}
 	
 	public void updateLogic(){
-		
+		gmo.update();
 	}
 	
 	public void updateInput(){
@@ -136,10 +151,6 @@ public class Game {
 		graphics.clear();
 		gmo.draw();
 		glfwSwapBuffers(pWindow);
-	}
-	
-	public void updateCamera(){
-		
 	}
 	
 	public void getWorldCoord(float winx, float winy){
@@ -154,7 +165,13 @@ public class Game {
 		
 		invproj.transform(point);
 		
-		System.out.println(point.toString(new DecimalFormat("0.000")));
+		worldCursorPos.x = point.x;
+		worldCursorPos.y = point.y;
+		
+	}
+	
+	public Vector2f getWorldCursorPos(){
+		return worldCursorPos;
 	}
 }
 

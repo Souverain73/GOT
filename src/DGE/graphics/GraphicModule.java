@@ -45,6 +45,7 @@ public class GraphicModule {
 
 	private int vao;
 	private static ICamera camera;
+	private static Effect effect;
 
 	private GraphicModule() {
 		camera = new Ortho2DCamera();
@@ -153,5 +154,17 @@ public class GraphicModule {
 	
 	public ICamera getCamera(){
 		return camera;
+	}
+	
+	public void setEffect(Effect eff){
+		effect = eff;
+	}
+	
+	public void resetEffect(){
+		effect = null;
+	}
+	
+	public Effect getEffect(){
+		return effect;
 	}
 }

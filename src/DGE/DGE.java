@@ -4,20 +4,18 @@ import org.lwjgl.glfw.GLFW;
 
 public class DGE {
 
-	private static Game game;
 	private static long pWindow;
 	
 	public static void main(String[] args) {
-		game = new Game();
-		pWindow = game.init();
+		pWindow = Game.instance().init();
 		
 		while(!GLFW.glfwWindowShouldClose(pWindow)){
-			game.updateInput();
-			game.updateLogic();
-			game.updateGraphics();
+			Game.instance().updateInput();
+			Game.instance().updateLogic();
+			Game.instance().updateGraphics();
 		}
 
-		game.finish();
+		Game.instance().finish();
 	}
 
 }

@@ -32,6 +32,7 @@ import static org.lwjgl.opengl.GL20.glUniform1i;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
+import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.stb.STBImage.STBI_rgb_alpha;
 import static org.lwjgl.stb.STBImage.stbi_image_free;
 import static org.lwjgl.stb.STBImage.stbi_load;
@@ -76,6 +77,7 @@ public class Texture {
 	private static int mvLocation;
 	private static Matrix4f mv;
 	private static int projectionLocation;
+	private static int overlayLocation;
 	private int width;
 	private int height;
 	private ByteBuffer data;
@@ -99,6 +101,7 @@ public class Texture {
 		  textureSampler = glGetUniformLocation(drawProgram, "myTextureSampler");
 		  mvLocation = glGetUniformLocation(drawProgram, "MV");
 		  projectionLocation = glGetUniformLocation(drawProgram, "Proj");
+		  overlayLocation = glGetUniformLocation(drawProgram, "overlay");
 		  mv = new Matrix4f().identity();
 	}
 	
@@ -136,6 +139,14 @@ public class Texture {
 			GraphicModule.instance().getCamera().getProjection().get(pm);
 		else
 			new Matrix4f().identity().get(pm);
+		
+		//apply effects;
+		if (GraphicModule.instance().getEffect()!=null){
+			Effect ce = GraphicModule.instance().getEffect();
+			glUniform4f(overlayLocation, ce.overlay.x, ce.overlay.y,  ce.overlay.z, 0);
+		}else{
+			glUniform4f(overlayLocation, 0, 0, 0, 0);
+		}
 	    glEnable(GL_BLEND);
 	    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	    
@@ -165,9 +176,14 @@ public class Texture {
 	}
 	
 	public Vector4f getPixel(int x, int y){
-		int pos = y*height+width;
-		Vector4f res = new Vector4f((data.get(pos)/255.0f), (data.get(pos+1)/255.0f), (data.get(pos+2)/255.0f), (data.get(pos+3)/255.0f));
-		System.out.println(res.toString());
+		int pos = (y*width+x)*4;
+		Vector4f res = new Vector4f((data.get(pos)/255.0f), (data.get(pos+1)/255.0f), (data.get(pos+2)/255.0f), (data.get(pos+3)*-1));
 		return res;
+	}
+	
+	public int getAlfa(int x, int y){
+		int pos = (y*width+x)*4;
+		byte value = data.get(pos+3);
+		return value*-1;
 	}
 }

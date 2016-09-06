@@ -2,8 +2,16 @@ package DGE.gameObjects;
 
 import java.util.Vector;
 
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
+
+import DGE.Game;
+import DGE.graphics.Effect;
+import DGE.graphics.GraphicModule;
 import DGE.graphics.Texture;
 import DGE.utils.LoaderParams;
+import DGE.utils.Utils;
 
 public class MapPartObject implements GameObject {
 	private String name;
@@ -14,6 +22,8 @@ public class MapPartObject implements GameObject {
 	private Vector<MapPartObject>  neighbors;
 	private int x, y, w, h;
 	private ActionObject action;
+	private Vector4f overlayVec;
+	boolean overlay;
 	
 	@Override
 	public boolean init(LoaderParams params) {
@@ -34,12 +44,25 @@ public class MapPartObject implements GameObject {
 
 	@Override
 	public void draw() {
+		if (overlay){
+			Effect eff = new Effect();
+			eff.overlay = new Vector3f(0, 0.5f, 0);
+			GraphicModule.instance().setEffect(eff);
+		}
 		texture.draw(x, y, w, h);
+		GraphicModule.instance().resetEffect();
 	}
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
+		overlay = false;
+		if (Utils.pointInRect(Game.instance().getWorldCursorPos(), new Vector2f(x,y), new Vector2f(w,h))){
+			Vector2f worldPos = Game.instance().getWorldCursorPos();
+			Vector2f modPos = new Vector2f(worldPos.x-x, worldPos.y-y);
+			if (texture.getAlfa((int)modPos.x, (int)modPos.y) != 0){
+				overlay=true;
+			}
+		}
 	}
 	
 	
