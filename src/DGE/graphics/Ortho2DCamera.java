@@ -22,7 +22,11 @@ public class Ortho2DCamera implements ICamera{
 	}
 	
 	public Ortho2DCamera(boolean forceUpdate){
-		this(0, 0, forceUpdate, false);
+		this(forceUpdate, false);
+	}
+	
+	public Ortho2DCamera(boolean forceUpdate, boolean debug){
+		this(0, 0, forceUpdate, debug);
 	}
 	
 	public Ortho2DCamera(float x, float y, boolean forceUpdate, boolean debug) {
@@ -46,8 +50,8 @@ public class Ortho2DCamera implements ICamera{
 
 	@Override
 	public void moveCamera(Vector3f diff) {
-		position.x += diff.x;
-		position.y += diff.y;
+		position.x += (diff.x/scale);
+		position.y += (diff.y/scale);
 		if (forceUpdate) updateCamera();
 	}
 
@@ -77,8 +81,8 @@ public class Ortho2DCamera implements ICamera{
 
 	@Override
 	public void lookAt(Vector3f target) {
-		position.x = target.x;
-		position.y = target.y;
+		position.x = target.x*scale;
+		position.y = target.y*scale;
 		if (forceUpdate) updateCamera();
 	}
 
@@ -110,8 +114,8 @@ public class Ortho2DCamera implements ICamera{
 	public void updateCamera(){
 		if (debug) System.out.println(this.toString());
 		projection.setOrtho(x-w/2, x+w/2, y+h/2, y-h/2, 1, -1);
-		projection.translate(position);
 		projection.scale(scale);
+		projection.translate(position);
 	}
 
 	public String toString(){
