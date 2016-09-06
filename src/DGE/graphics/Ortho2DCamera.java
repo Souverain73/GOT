@@ -10,8 +10,6 @@ public class Ortho2DCamera implements ICamera{
 	private Vector3f position;
 	private AxisAngle4f rotation;
 	private float scale;
-	private float x;
-	private float y;
 	private float w;
 	private float h;
 	private boolean forceUpdate;
@@ -31,10 +29,8 @@ public class Ortho2DCamera implements ICamera{
 	
 	public Ortho2DCamera(float x, float y, boolean forceUpdate, boolean debug) {
 		projection = new Matrix4f();
-		position = new Vector3f(0, 0, 0);
+		position = new Vector3f(x, y, 0);
 		rotation = new AxisAngle4f(0, 0, 0, 1);
-		this.x = x;
-		this.y = y;
 		w = 0;
 		h = 0;
 		scale = 0.5f;
@@ -81,8 +77,8 @@ public class Ortho2DCamera implements ICamera{
 
 	@Override
 	public void lookAt(Vector3f target) {
-		position.x = target.x*scale;
-		position.y = target.y*scale;
+		position.x = target.x;
+		position.y = target.y;
 		if (forceUpdate) updateCamera();
 	}
 
@@ -113,7 +109,8 @@ public class Ortho2DCamera implements ICamera{
 	@Override
 	public void updateCamera(){
 		if (debug) System.out.println(this.toString());
-		projection.setOrtho(x-w/2, x+w/2, y+h/2, y-h/2, 1, -1);
+//		projection.setOrtho(position.x-w/2, position.x+w/2, position.y+h/2, position.y-h/2, 1, -1);
+		projection.setOrtho(0, w, h, 0, -1, 1);
 		projection.scale(scale);
 		projection.translate(position);
 	}

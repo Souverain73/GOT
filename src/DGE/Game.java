@@ -2,9 +2,14 @@ package DGE;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 import javax.swing.text.GlyphView;
 
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
 import DGE.gameObjects.GameMapObject;
@@ -75,6 +80,12 @@ public class Game {
 				camMove = false;
 			}
 			
+			if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS){
+				System.out.println("Window:"+posx+"  "+posy);
+				System.out.println("World");
+				getWorldCoord((float)posx, (float)posy);
+			}
+			
 			lastx = (float)posx;
 			lasty  =(float)posy;
 		});
@@ -129,6 +140,21 @@ public class Game {
 	
 	public void updateCamera(){
 		
+	}
+	
+	public void getWorldCoord(float winx, float winy){
+		float x = winx*2.0f/windowWidth-1;
+		float y = -(winy*2.0f/windowHeight-1);
+		
+		Vector4f point = new Vector4f(x,y,0,1);
+		
+		Matrix4f invproj = new Matrix4f();
+		
+		GraphicModule.instance().getCamera().getProjection().invert(invproj);
+		
+		invproj.transform(point);
+		
+		System.out.println(point.toString(new DecimalFormat("0.000")));
 	}
 }
 

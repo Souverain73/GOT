@@ -43,6 +43,7 @@ import java.util.ArrayList;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 
 
@@ -75,6 +76,9 @@ public class Texture {
 	private static int mvLocation;
 	private static Matrix4f mv;
 	private static int projectionLocation;
+	private int width;
+	private int height;
+	private ByteBuffer data;
 	
 	private int textureID;
 	
@@ -99,7 +103,7 @@ public class Texture {
 	}
 	
 	public void delete(){
-		
+		stbi_image_free(data);
 	}
 	
 	public Texture(String fileName){
@@ -107,11 +111,10 @@ public class Texture {
 		IntBuffer y = BufferUtils.createIntBuffer(1);
 		IntBuffer comp = BufferUtils.createIntBuffer(1);
 
-		ByteBuffer data = stbi_load(fileName, x, y, comp, STBI_rgb_alpha);
+		data = stbi_load(fileName, x, y, comp, STBI_rgb_alpha);
 		if (data!=null){
-			int width = x.get();
-			int height = y.get();
-			
+			width = x.get();
+			height = y.get();
 			textureID = glGenTextures();
 			glBindTexture(GL_TEXTURE_2D, textureID);
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
@@ -119,7 +122,6 @@ public class Texture {
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glBindTexture(GL_TEXTURE_2D,0);
 		}
-		stbi_image_free(data);
 	}
 
 	public void draw(float x, float y, float w, float h){
@@ -160,5 +162,12 @@ public class Texture {
 		glDisableVertexAttribArray(1);
 		
 		glDisable(GL_BLEND);
+	}
+	
+	public Vector4f getPixel(int x, int y){
+		int pos = y*height+width;
+		Vector4f res = new Vector4f((data.get(pos)/255.0f), (data.get(pos+1)/255.0f), (data.get(pos+2)/255.0f), (data.get(pos+3)/255.0f));
+		System.out.println(res.toString());
+		return res;
 	}
 }

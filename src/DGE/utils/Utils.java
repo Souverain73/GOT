@@ -10,6 +10,8 @@ import java.nio.charset.CharsetEncoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import org.joml.Vector2f;
+
 
 public class Utils {
 	public static Charset charset = Charset.forName("windows-1251");
@@ -38,5 +40,10 @@ public class Utils {
 	{
 		byte[] encoded = Files.readAllBytes(Paths.get(path));
 	    return new String(encoded);
+	}
+	
+	static public void pointInRect(Vector2f point, Vector2f rectPos, Vector2f rectDim){
+		//TODO: implement
+		
 	}
 }
