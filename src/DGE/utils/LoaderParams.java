@@ -17,5 +17,26 @@ public class LoaderParams extends HashMap<String, Object> {
 		}
 	}
 	
+	
+	@Override
+	public Object put(String arg0, Object arg1){
+		if (arg1 == null){
+			System.out.println("Can't put null into parameter \""+arg0+"\"");
+			System.out.println("CurrentParams:");
+			System.out.println(this);
+			return null;
+		}
+		return super.put(arg0, arg1);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		this.keySet().forEach((key)->{
+			sb.append(key+":"+this.get(key));
+		});
+		return sb.toString();
+	}
+	
 	private static final long serialVersionUID = 1L;
 }

@@ -2,13 +2,13 @@ package DGE.gameStates;
 
 import java.util.Vector;
 
-import DGE.gameObjects.GameMapObject;
+import DGE.Game;
 import DGE.gameObjects.GameObject;
-import DGE.utils.LoaderParams;
+import DGE.gameObjects.ImageButton;
 
-public class MainState implements GameState {
+public class MenuState implements GameState {
+	private final String name = "MenuState";
 	private Vector<GameObject> gameObjects;
-	private static final String name = "MainState";
 	
 	@Override
 	public String getName() {
@@ -20,9 +20,14 @@ public class MainState implements GameState {
 		gameObjects = new Vector<GameObject>();
 		
 		System.out.println("Entering "+name);
-		GameObject map = new GameMapObject();
-		map.init(new LoaderParams(new String[]{"filename", "data/map.xml"}));
-		gameObjects.addElement(map);
+		//button play
+		gameObjects.add(new ImageButton("paly.jpg", 100,100,200,100).setCallback((sender, params)->{
+			StateMachine.instance().setState(new MainState());
+		}));
+		gameObjects.add(new ImageButton("exit.jpg", 100,220,200,100).setCallback((sender, params)->{
+			Game.instance().exit();
+		}));
+		
 	}
 
 	@Override
@@ -32,7 +37,7 @@ public class MainState implements GameState {
 
 	@Override
 	public void draw() {
-		// TODO draw the map
+		// TODO Auto-generated method stub
 		gameObjects.forEach(obj->obj.draw());
 	}
 

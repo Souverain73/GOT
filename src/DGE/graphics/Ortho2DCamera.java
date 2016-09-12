@@ -3,9 +3,11 @@ package DGE.graphics;
 import org.joml.AxisAngle4f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.joml.Vector4f;
 
 public class Ortho2DCamera implements ICamera{
+	//constants
+	private static final float MAX_SCALE = 0.7f;
+	private static final float MIN_SCALE = 0.1f;
 	private Matrix4f projection;
 	private Vector3f position;
 	private AxisAngle4f rotation;
@@ -14,7 +16,7 @@ public class Ortho2DCamera implements ICamera{
 	private float h;
 	private boolean forceUpdate;
 	private boolean debug;
-	
+
 	public Ortho2DCamera(){
 		this(true);
 	}
@@ -97,12 +99,16 @@ public class Ortho2DCamera implements ICamera{
 	@Override
 	public void scale(float diff) {
 		scale+=diff;
+		if (scale > MAX_SCALE) scale = MAX_SCALE;
+		if (scale < MIN_SCALE) scale = MIN_SCALE;
 		if (forceUpdate) updateCamera();
 	}
 
 	@Override
 	public void setScale(float scale) {
 		this.scale = scale;
+		if (scale > MAX_SCALE) scale = MAX_SCALE;
+		if (scale < MIN_SCALE) scale = MIN_SCALE;
 		if (forceUpdate) updateCamera();
 	}
 	

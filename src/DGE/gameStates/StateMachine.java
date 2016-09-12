@@ -24,4 +24,23 @@ public class StateMachine {
 		state.enter();
 		_states.push(state);
 	}
+	
+	public void pushState(GameState state){
+		state.enter();
+		_states.push(state);
+	}
+	
+	public void removeState(){
+		if (!_states.isEmpty()){
+			_states.poll().exit();
+		}
+	}
+	
+	public void update(){
+		_states.peek().update();
+	}
+	
+	public void draw(){
+		_states.peek().draw();
+	}
 }

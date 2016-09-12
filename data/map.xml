@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map name="Vesteros">
+<map>
 	<regions>
 		<region name="Castle Black" type="ground" influence="1" x="609" y="0" w="475" h="286">
 			<texture filename="CastleBlack.png"/>

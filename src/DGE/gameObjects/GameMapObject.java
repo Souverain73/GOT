@@ -59,16 +59,16 @@ public class GameMapObject implements GameObject {
 	private void parseRegions(Node root){
 		try{
 			NodeList regions = root.getChildNodes();
-			System.out.println(regions.toString());
 			for(int i=0; i<regions.getLength(); i++){
 				if (regions.item(i).getNodeType() == Node.TEXT_NODE) continue;
 				Node region = regions.item(i);
 				LoaderParams params = new LoaderParams();
 				//атрибуты
 				params.put("name", attribValue(region, "name"));
-				params.put("influence", valueOrDefault(Integer.valueOf(attribValue(region, "influence")),0));
-				params.put("resources", valueOrDefault(Integer.valueOf(attribValue(region, "resources")),0));
-				params.put("building", valueOrDefault(Integer.valueOf(attribValue(region, "building")),0));
+				params.put("influence", Integer.valueOf(valueOrDefault(attribValue(region, "influence"),"0")));
+				params.put("resources", Integer.valueOf(valueOrDefault(attribValue(region, "resources"),"0")));
+				params.put("building", Integer.valueOf(valueOrDefault(attribValue(region, "building"),"0")));
+						
 				params.put("x", Integer.valueOf(attribValue(region, "x")));
 				params.put("y", Integer.valueOf(attribValue(region, "y")));
 				params.put("w", Integer.valueOf(attribValue(region, "w")));
@@ -112,11 +112,11 @@ public class GameMapObject implements GameObject {
 	
 	private String attribValue(Node node, String attributeName){
 		Node attrib = node.getAttributes().getNamedItem(attributeName);
-		if (attrib == null) return "0"; 
+		if (attrib == null) return null; 
 		else return attrib.getNodeValue();
 	}
 	
-	private Integer valueOrDefault(Integer value, Integer def){
+	private String valueOrDefault(String value, String def){
 		if (value == null) return def;
 		else return value;
 	}

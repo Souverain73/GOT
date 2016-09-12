@@ -7,13 +7,15 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import DGE.Game;
+import DGE.InputManager;
+import DGE.gameObjects.AbstractButtonObject.State;
 import DGE.graphics.Effect;
 import DGE.graphics.GraphicModule;
 import DGE.graphics.Texture;
 import DGE.utils.LoaderParams;
 import DGE.utils.Utils;
 
-public class MapPartObject implements GameObject {
+public class MapPartObject extends AbstractButtonObject {
 	private String name;
 	private int resourcesCount;
 	private int influencePoints;
@@ -22,7 +24,6 @@ public class MapPartObject implements GameObject {
 	private Vector<MapPartObject>  neighbors;
 	private int x, y, w, h;
 	private ActionObject action;
-	private Vector4f overlayVec;
 	boolean overlay;
 	
 	@Override
@@ -44,28 +45,18 @@ public class MapPartObject implements GameObject {
 
 	@Override
 	public void draw() {
-		if (overlay){
-			Effect eff = new Effect();
-			eff.overlay = new Vector3f(0, 0.5f, 0);
-			GraphicModule.instance().setEffect(eff);
+		if (state == State.FREE){
+			
+		}else if (state == State.HOVER){
+			setOverlay(new Vector3f(0.0f, 0.5f, 0.0f));
+		}else if (state == State.DOWN){
+			setOverlay(new Vector3f(0.5f, 0.0f, 0.0f));
 		}
+		
 		texture.draw(x, y, w, h);
 		GraphicModule.instance().resetEffect();
 	}
 
-	@Override
-	public void update() {
-		overlay = false;
-		if (Utils.pointInRect(Game.instance().getWorldCursorPos(), new Vector2f(x,y), new Vector2f(w,h))){
-			Vector2f worldPos = Game.instance().getWorldCursorPos();
-			Vector2f modPos = new Vector2f(worldPos.x-x, worldPos.y-y);
-			if (texture.getAlfa((int)modPos.x, (int)modPos.y) != 0){
-				overlay=true;
-			}
-		}
-	}
-	
-	
 	public Vector<MapPartObject> getNeighbors(){
 		return neighbors;
 	}
@@ -86,4 +77,30 @@ public class MapPartObject implements GameObject {
 			neighbor.addNeighbor(this);
 		}
 	}
+
+	
+	@Override
+	protected boolean ifMouseIn(Vector2f mousePos) {
+		if (Utils.pointInRect(InputManager.instance().getMousePosWorld(), new Vector2f(x,y), new Vector2f(w,h))){
+			Vector2f worldPos = InputManager.instance().getMousePosWorld();
+			Vector2f modPos = new Vector2f(worldPos.x-x, worldPos.y-y);
+			if (texture.getAlfa((int)modPos.x, (int)modPos.y) != 0){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private void setOverlay(Vector3f overlay){
+		Effect eff = new Effect();
+		eff.overlay = overlay;
+		GraphicModule.instance().setEffect(eff);
+	}
+
+	@Override
+	protected void click() {
+		System.out.println("Click region:"+name);
+		super.click();
+	}
+	
 }

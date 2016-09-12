@@ -15,6 +15,9 @@ import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
 import DGE.gameObjects.GameMapObject;
+import DGE.gameStates.MainState;
+import DGE.gameStates.MenuState;
+import DGE.gameStates.StateMachine;
 import DGE.graphics.*;
 import DGE.utils.LoaderParams;
 
@@ -31,26 +34,24 @@ public class Game {
 	}
 	public long pWindow;
 	private GraphicModule graphics;
-	private boolean camMove;
-	private float camX;
-	private float camY;
-	private float lastx;
-	private float lasty;
+	private StateMachine stm;
 	
 	private int windowWidth;
-	private int windowHeight;
-	
-	private static Vector2f worldCursorPos;
-	
-	private GameMapObject gmo;
+	private int windowHeight;	
 	
 	private Game(){
 		graphics = GraphicModule.instance();
-		worldCursorPos = new Vector2f(0,0);
+		stm = StateMachine.instance();
 	}
 	
-	public long init(){
-		camMove = false;
+	public long init(){	
+		initWindow();
+		initResources();
+		
+		return pWindow;
+	}
+	
+	public void initWindow(){
 		GLFWErrorCallback.createPrint(System.err).set();
 		
 		if (!glfwInit()) 
@@ -72,50 +73,18 @@ public class Game {
 			throw new RuntimeException("Failed to create GLFW Window");
 		}
 		
-		//TODO: Create keyboard callback
-		//Something like:
-		glfwSetKeyCallback(pWindow, (window, key, scancode, action, mods) -> {
-			if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
-				glfwSetWindowShouldClose(window, true); // We will detect this in our rendering loop
-		});
+		glfwSetKeyCallback(pWindow, InputManager.instance()::keyboardCallback);
 		
-		glfwSetCursorPosCallback(pWindow, (window, posx, posy)->{
-			float dx = lastx-(float)posx;
-			float dy = lasty-(float)posy;
-			
-			if (camMove){
-//				System.out.println("MoveCameraBy dx:"+dx+"  dy:"+dy);
-				GraphicModule.instance().getCamera().moveCamera(new Vector3f(-dx, -dy, 0));
-			}
-			
-			if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT)==GLFW_PRESS){
-				camMove = true;
-			}else{
-				camMove = false;
-			}
-			
-			if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS){
-				System.out.println("Window:"+posx+"  "+posy);
-				System.out.println("World");
-				System.out.println(worldCursorPos);
+		glfwSetCursorPosCallback(pWindow, InputManager.instance()::mouseMoveCallback);
 				
-			}
-			getWorldCoord((float)posx, (float)posy);
-			lastx = (float)posx;
-			lasty  =(float)posy;
-		});
+		glfwSetScrollCallback(pWindow, InputManager.instance()::mouseScrollCallback);
 		
-		glfwSetScrollCallback(pWindow, (window, xoffset, yoffset)->{
-			GraphicModule.instance().getCamera().scale((float)yoffset/30);
-		});
-		//But many times better
+		glfwSetMouseButtonCallback(pWindow, InputManager.instance()::mouseButtonCallback);
+		
+		glfwSetInputMode(pWindow, GLFW_STICKY_MOUSE_BUTTONS, 1);
 		
 		//windwo resize callback
-		glfwSetWindowSizeCallback(pWindow, (window, w, h)->{
-			windowWidth = w;
-			windowHeight = h;
-			GraphicModule.resizeCallback(window, w, h);
-		});
+		glfwSetWindowSizeCallback(pWindow, this::windowSizeCallback);
 		
 		// Make the OpenGL context current
 		glfwMakeContextCurrent(pWindow);
@@ -126,11 +95,17 @@ public class Game {
 		
 		//show window
 		glfwShowWindow(pWindow);
-		
-		gmo = new GameMapObject();
-		gmo.init(new LoaderParams(new String [] {"filename", "data/map.xml"}));
-		
-		return pWindow;
+	}
+	
+	public void initResources(){
+		stm.setState(new MenuState());
+	}
+	
+	
+	public void windowSizeCallback(long window , int w, int h){
+		windowWidth = w;
+		windowHeight = h;
+		GraphicModule.resizeCallback(window, w, h);
 	}
 	
 	public void finish(){
@@ -140,7 +115,7 @@ public class Game {
 	}
 	
 	public void updateLogic(){
-		gmo.update();
+		stm.update();
 	}
 	
 	public void updateInput(){
@@ -149,11 +124,17 @@ public class Game {
 	
 	public void updateGraphics(){
 		graphics.clear();
-		gmo.draw();
+
+		stm.draw();
+
 		glfwSwapBuffers(pWindow);
 	}
 	
-	public void getWorldCoord(float winx, float winy){
+	public void exit(){
+		glfwSetWindowShouldClose(pWindow, true);
+	}
+	
+	public Vector2f calcWorldCoord(float winx, float winy){
 		float x = winx*2.0f/windowWidth-1;
 		float y = -(winy*2.0f/windowHeight-1);
 		
@@ -165,13 +146,8 @@ public class Game {
 		
 		invproj.transform(point);
 		
-		worldCursorPos.x = point.x;
-		worldCursorPos.y = point.y;
+		return new Vector2f(point.x, point.y);
 		
-	}
-	
-	public Vector2f getWorldCursorPos(){
-		return worldCursorPos;
 	}
 }
 
