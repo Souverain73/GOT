@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="GOT" default="make" basedir=".">
+	
+	<description>
+        This script will build the GOT.
+        This program is opensource   
+    </description>
+
+    <property name="src" location="src" />
+    <property name="lib" location="lib" />
+    <property name="build" location="build" />
+    <property name="utils" location="utils" />
+    <property name="build.classes" location="${build}/classes" />
+	<property name="build.data" location="${build}/data" />
+	<property name="build.lib" location="${build}/lib" />
+	<property name="data" location="data" />
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+
+    <path id="GOT.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="lib/lwjgl.jar"/>
+        <pathelement location="lib/native.jar"/>
+    </path>
+    
+
+
+
+	<target name="init" description="Create the output directories.">
+		<mkdir dir="${build}" />
+		<mkdir dir="${build.data}\textures" />
+		<mkdir dir="${build.data}\shaders" />
+		<mkdir dir="${build.classes}" />
+		<!-- <mkdir dir="${build.lib}"/> -->
+	</target>
+
+	<target name="compile" depends="init" description="Compile the source.">
+		<javac destdir="${build.classes}" includeantruntime="false" optimize="on" debug="on" source="${source}" target="${target}" nowarn="off">
+			<compilerarg value="-Xlint:deprecation"/>
+			<compilerarg value="-Xlint:unchecked"/>
+	        <classpath refid="GOT.classpath"/>
+    		<src path="${src}" />
+    		<!-- -Xlint:unchecked -->
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile" description="Create the jar file">
+		<jar destfile="${build}/GOT.jar">
+			<fileset dir="${build.classes}" />
+			<manifest>
+				<attribute name="Main-Class" value="DGE.DGE"/>
+				<attribute name="Class-Path" value=". lwjgl.jar native.jar"/>
+			</manifest>
+		</jar>
+
+	</target>
+
+	<target name="clean">
+		<echo>Clean class files</echo>
+		<delete dir="${build.classes}" />
+	</target>
+
+	<target name="data" depends="init">
+		<echo>Copy data files into build dir</echo>
+		<copy todir="${build.data}">
+			<fileset dir="${data}">
+				<include name="map.xml" />
+			</fileset>
+		</copy>
+		<echo>Copy textures</echo>
+		<copy todir="${build.data}/textures">
+			<fileset dir="${data}/textures"/>
+		</copy>
+		<echo>Copy shaders</echo>
+		<copy todir="${build.data}/shaders">
+			<fileset dir="${data}/shaders"/>
+		</copy>
+	</target>
+
+	<target name="lib">
+		<echo>Copy libraries</echo>
+		<copy todir="${build}">
+			<fileset dir="${lib}"/>
+		</copy>
+	</target>
+
+	<target name="utils" depends="init">
+		<echo>Copy utils</echo>
+		<copy todir="${build}">
+			<fileset dir="${utils}">
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="make" depends="init,compile,jar,clean,data,utils,lib">
+		<echo>Make all project</echo>
+	</target>
+</project>
