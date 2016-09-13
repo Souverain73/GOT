@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class StateMachine {
 	private LinkedList<GameState> _states;
-	
+
 	private static StateMachine _instance = null;
 	private StateMachine(){
 		_states = new LinkedList<GameState>();
@@ -42,5 +42,9 @@ public class StateMachine {
 	
 	public void draw(){
 		_states.peek().draw();
+	}
+	
+	protected GameState getCurrentState(){
+		return _states.peek();
 	}
 }

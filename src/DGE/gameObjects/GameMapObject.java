@@ -5,6 +5,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.*;
 
+import DGE.gameStates.GameState;
 import DGE.graphics.Texture;
 import DGE.graphics.TextureManager;
 import DGE.utils.LoaderParams;
@@ -29,13 +30,13 @@ public class GameMapObject implements GameObject {
 	}
 
 	@Override
-	public void draw() {
-		map.values().forEach(part->part.draw());
+	public void draw(GameState st) {
+		map.values().forEach(part->part.draw(st));
 	}
 
 	@Override
-	public void update() {
-		map.values().forEach(part->part.update());
+	public void update(GameState st) {
+		map.values().forEach(part->part.update(st));
 	}
 	
 	private void readMapFromFile(String fileName){

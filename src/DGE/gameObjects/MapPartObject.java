@@ -9,6 +9,7 @@ import org.joml.Vector4f;
 import DGE.Game;
 import DGE.InputManager;
 import DGE.gameObjects.AbstractButtonObject.State;
+import DGE.gameStates.GameState;
 import DGE.graphics.Effect;
 import DGE.graphics.GraphicModule;
 import DGE.graphics.Texture;
@@ -44,7 +45,7 @@ public class MapPartObject extends AbstractButtonObject {
 	}
 
 	@Override
-	public void draw() {
+	public void draw(GameState st) {
 		if (state == State.FREE){
 			
 		}else if (state == State.HOVER){
@@ -98,9 +99,9 @@ public class MapPartObject extends AbstractButtonObject {
 	}
 
 	@Override
-	protected void click() {
-		System.out.println("Click region:"+name);
-		super.click();
+	protected void click(GameState st) {
+		System.out.println("Click region:"+name+" GameState:"+st.getName());
+		super.click(st);
 	}
 	
 }

@@ -38,13 +38,13 @@ public class MenuState implements GameState {
 	@Override
 	public void draw() {
 		// TODO Auto-generated method stub
-		gameObjects.forEach(obj->obj.draw());
+		gameObjects.forEach(obj->obj.draw(this));
 	}
 
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-		gameObjects.forEach(obj->obj.update());
+		gameObjects.forEach(obj->obj.update(this));
 	}
 
 }

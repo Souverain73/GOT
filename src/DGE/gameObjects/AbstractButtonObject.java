@@ -5,6 +5,7 @@ import java.util.function.BiConsumer;
 import org.joml.Vector2f;
 
 import DGE.InputManager;
+import DGE.gameStates.GameState;
 import DGE.utils.LoaderParams;
 
 public abstract class AbstractButtonObject implements GameObject{
@@ -32,12 +33,12 @@ public abstract class AbstractButtonObject implements GameObject{
 	}
 	
 	@Override
-	public void draw() {
+	public void draw(GameState st) {
 		
 	}
 
 	@Override
-	public void update() {
+	public void update(GameState st) {
 		if (state == State.FREE){
 			if (ifMouseIn(InputManager.instance().getMousePosWorld())){
 				mouseEnter();
@@ -66,7 +67,7 @@ public abstract class AbstractButtonObject implements GameObject{
 				state = State.DOWN;
 				if (!wasClick){
 					wasClick = true;
-					click();
+					click(st);
 				}
 			}else{
 				wasClick = false;
@@ -82,7 +83,7 @@ public abstract class AbstractButtonObject implements GameObject{
 		state = State.FREE;
 	}
 	
-	protected void click(){
+	protected void click(GameState st){
 		if (callback != null){
 			callback.accept(this, null);
 		}

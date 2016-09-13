@@ -6,6 +6,7 @@ import org.joml.Vector3f;
 import DGE.graphics.Texture;
 import DGE.graphics.TextureManager;
 import DGE.utils.Utils;
+import DGE.gameStates.GameState;
 import DGE.graphics.Effect;
 import DGE.graphics.GraphicModule;
 
@@ -28,7 +29,7 @@ public class ImageButton extends AbstractButtonObject {
 	
 	
 	@Override
-	public void draw() {
+	public void draw(GameState st) {
 		if (state == State.FREE){
 			
 		}else if (state == State.HOVER){
@@ -38,7 +39,7 @@ public class ImageButton extends AbstractButtonObject {
 		}
 		
 		texture.draw(x, y, w, h);
-		super.draw();
+		super.draw(st);
 		
 		GraphicModule.instance().resetEffect();
 	}
@@ -70,9 +71,9 @@ public class ImageButton extends AbstractButtonObject {
 
 
 	@Override
-	protected void click() {
-		System.out.println("Click button");
-		super.click();
+	protected void click(GameState st) {
+		System.out.println("Click button; CurrentState:"+st.getName());
+		super.click(st);
 	}
 	
 	
