@@ -10,6 +10,7 @@ import DGE.Game;
 import DGE.InputManager;
 import DGE.gameObjects.AbstractButtonObject.State;
 import DGE.gameStates.GameState;
+import DGE.gameStates.PlanningPhase;
 import DGE.graphics.Effect;
 import DGE.graphics.GraphicModule;
 import DGE.graphics.Texture;
@@ -56,6 +57,9 @@ public class MapPartObject extends AbstractButtonObject {
 		
 		texture.draw(x, y, w, h);
 		GraphicModule.instance().resetEffect();
+		if (action != null){
+			action.draw(x, y, 1);
+		}
 	}
 
 	public Vector<MapPartObject> getNeighbors(){
@@ -79,6 +83,9 @@ public class MapPartObject extends AbstractButtonObject {
 		}
 	}
 
+	public void setAction(ActionObject act){
+		action = act;
+	}
 	
 	@Override
 	protected boolean ifMouseIn(Vector2f mousePos) {
@@ -101,6 +108,13 @@ public class MapPartObject extends AbstractButtonObject {
 	@Override
 	protected void click(GameState st) {
 		System.out.println("Click region:"+name+" GameState:"+st.getName());
+		if (st instanceof PlanningPhase){
+			if (action == null){
+				((PlanningPhase)st).placeAction(this);
+			}else{
+				((PlanningPhase)st).removeAction(this);
+			}
+		}
 		super.click(st);
 	}
 	

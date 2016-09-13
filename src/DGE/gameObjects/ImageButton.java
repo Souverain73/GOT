@@ -16,13 +16,25 @@ public class ImageButton extends AbstractButtonObject {
 	private int y;
 	private int w;
 	private int h;
+	private float scale;
+	private Object param;
 	
-	public ImageButton(String textName, int x, int y, int w, int h) {
+	public ImageButton(Texture tex, int x, int y, float scale, Object param){
+		texture = tex;
+		this.x = x;
+		this.y = y;
+		w = (int)(texture.getWidth()*scale);
+		h = (int)(texture.getHeight()*scale);
+		this.param=param;
+	}
+	
+	public ImageButton(String textName, int x, int y, int w, int h, Object param) {
 		super();
 		this.x = x;
 		this.y = y;
 		this.w = w;
 		this.h = h;
+		this.param = param;
 		
 		texture = TextureManager.instance().loadTexture(textName);
 	}
@@ -73,7 +85,9 @@ public class ImageButton extends AbstractButtonObject {
 	@Override
 	protected void click(GameState st) {
 		System.out.println("Click button; CurrentState:"+st.getName());
-		super.click(st);
+		if (callback != null){
+			callback.accept(this, param);
+		}
 	}
 	
 	

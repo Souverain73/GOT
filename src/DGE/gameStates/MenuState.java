@@ -21,11 +21,11 @@ public class MenuState implements GameState {
 		
 		System.out.println("Entering "+name);
 		//button play
-		gameObjects.add(new ImageButton("paly.jpg", 100,100,200,100).setCallback((sender, params)->{
+		gameObjects.add(new ImageButton("play.jpg", 100,100,200,100, null).setCallback((sender, params)->{
 			Game.instance().getStateMachine().setState(new MainState());
 		}));
 		//button exit
-		gameObjects.add(new ImageButton("exit.jpg", 100,220,200,100).setCallback((sender, params)->{
+		gameObjects.add(new ImageButton("exit.jpg", 100,220,200,100, null).setCallback((sender, params)->{
 			Game.instance().exit();
 		}));
 		

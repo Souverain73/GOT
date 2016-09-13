@@ -127,6 +127,10 @@ public class Texture {
 		}
 	}
 
+	public void draw(float x, float y, float scale){
+		draw(x, y, width*scale, height*scale);
+	}
+	
 	public void draw(float x, float y, float w, float h){
 		draw(x, y, w, h, true);
 	}
@@ -186,4 +190,14 @@ public class Texture {
 		byte value = data.get(pos+3);
 		return value*-1;
 	}
+	
+	public int getWidth(){
+		return width;
+	}
+
+	
+	public int getHeight() {
+		return height;
+	}
+	
 }

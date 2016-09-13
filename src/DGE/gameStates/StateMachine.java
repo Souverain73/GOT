@@ -37,7 +37,7 @@ public class StateMachine {
 		_states.peek().draw();
 	}
 	
-	protected GameState getCurrentState(){
+	public GameState getCurrentState(){
 		return _states.peek();
 	}
 }
