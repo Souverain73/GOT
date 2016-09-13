@@ -9,6 +9,7 @@ import DGE.utils.LoaderParams;
 public class MainState implements GameState {
 	private Vector<GameObject> gameObjects;
 	private static final String name = "MainState";
+	private StateMachine stm;
 	
 	@Override
 	public String getName() {
@@ -18,7 +19,7 @@ public class MainState implements GameState {
 	@Override
 	public void enter() {
 		gameObjects = new Vector<GameObject>();
-		
+		stm = new StateMachine();
 		System.out.println("Entering "+name);
 		GameObject map = new GameMapObject();
 		map.init(new LoaderParams(new String[]{"filename", "data/map.xml"}));
@@ -32,14 +33,12 @@ public class MainState implements GameState {
 
 	@Override
 	public void draw() {
-		// TODO draw the map
-		gameObjects.forEach(obj->obj.draw(this));
+		gameObjects.forEach(obj->obj.draw(stm.getCurrentState()));
 	}
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
-		gameObjects.forEach(obj->obj.update(this));
+		gameObjects.forEach(obj->obj.update(stm.getCurrentState()));
 	}
 
 }

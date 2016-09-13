@@ -41,7 +41,7 @@ public class Game {
 	
 	private Game(){
 		graphics = GraphicModule.instance();
-		stm = StateMachine.instance();
+		stm = new StateMachine();
 	}
 	
 	public long init(){	
@@ -134,6 +134,10 @@ public class Game {
 		glfwSetWindowShouldClose(pWindow, true);
 	}
 	
+	public StateMachine getStateMachine(){
+		return stm;
+	}
+	
 	public Vector2f calcWorldCoord(float winx, float winy){
 		float x = winx*2.0f/windowWidth-1;
 		float y = -(winy*2.0f/windowHeight-1);
@@ -146,8 +150,7 @@ public class Game {
 		
 		invproj.transform(point);
 		
-		return new Vector2f(point.x, point.y);
-		
+		return new Vector2f(point.x, point.y);	
 	}
 }
 
