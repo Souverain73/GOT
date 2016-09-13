@@ -15,5 +15,5 @@ hs_err_pid*
 .settings
 
 #build
-/build	
-/bin
+build/*	
+bin/*

@@ -16,6 +16,11 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>bin</name>
+			<type>2</type>
+			<location>D:/Soft/eclipse/workspace/GOT/bin</location>
+		</link>
+		<link>
 			<name>classes</name>
 			<type>2</type>
 			<location>C:/soft/eclipse/workspace_Java/GOT/build/classes</location>

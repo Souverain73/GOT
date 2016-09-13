@@ -6,6 +6,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
+import DGE.Constants;
 import DGE.Game;
 import DGE.InputManager;
 import DGE.gameObjects.AbstractButtonObject.State;
@@ -58,7 +59,7 @@ public class MapPartObject extends AbstractButtonObject {
 		texture.draw(x, y, w, h);
 		GraphicModule.instance().resetEffect();
 		if (action != null){
-			action.draw(x, y, 1);
+			action.draw(x, y, Constants.ACTION_IMAGE_SCALE);
 		}
 	}
 

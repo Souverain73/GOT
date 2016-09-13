@@ -11,6 +11,8 @@ public class ActionObject implements GameObject{
 	public enum Action{
 		FIRE, FIREPLUS, MONEY, MONEYPLUS, MOVE, MOVEMINUS, MOVEPLUS, DEFEND, DEFENDPLUS, HELP, HELPPLUS 
 	}
+
+	private static final String TEXTURE_BASE = "actions/";
 	
 	private int modifier;
 	public Texture texture;
@@ -83,7 +85,11 @@ public class ActionObject implements GameObject{
 	private class FireAction extends ActionObject{
 		public FireAction(int modif) {
 			super(modif);
-			texture = TextureManager.instance().loadTexture("fire.png");
+			if (modif == 1){
+				texture = TextureManager.instance().loadTexture(TEXTURE_BASE+"fire_1.png");
+			}else{
+				texture = TextureManager.instance().loadTexture(TEXTURE_BASE+"fire_0.png");
+			}
 		}
 		
 		@Override
@@ -96,7 +102,11 @@ public class ActionObject implements GameObject{
 	private class MoneyAction extends ActionObject{
 		public MoneyAction(int modif) {
 			super(modif);
-			texture = TextureManager.instance().loadTexture("money.png");
+			if (modif == 1){
+				texture = TextureManager.instance().loadTexture(TEXTURE_BASE+"money_1.png");
+			}else{
+				texture = TextureManager.instance().loadTexture(TEXTURE_BASE+"money_0.png");
+			}
 		}
 		
 		@Override
@@ -109,7 +119,13 @@ public class ActionObject implements GameObject{
 	private class MoveAction extends ActionObject{
 		protected MoveAction(int modif) {
 			super(modif);
-			texture = TextureManager.instance().loadTexture("move.png");
+			if (modif == 1){
+				texture = TextureManager.instance().loadTexture(TEXTURE_BASE+"move_2.png");
+			}else if(modif == 0){
+				texture = TextureManager.instance().loadTexture(TEXTURE_BASE+"move_1.png");
+			}else{
+				texture = TextureManager.instance().loadTexture(TEXTURE_BASE+"move_0.png");
+			}
 		}
 		
 		@Override
@@ -122,12 +138,16 @@ public class ActionObject implements GameObject{
 	private class DefendAction extends ActionObject{
 		public DefendAction(int modif) {
 			super(modif);
-			texture = TextureManager.instance().loadTexture("defend.png");
+			if (modif == 2){
+				texture = TextureManager.instance().loadTexture(TEXTURE_BASE+"defence_1.png");
+			}else{
+				texture = TextureManager.instance().loadTexture(TEXTURE_BASE+"defence_0.png");
+			}
 		}
 		
 		@Override
 		public boolean isSpecial() {
-			if (modifier == 1) return true;
+			if (modifier == 2) return true;
 			else return false;
 		}
 	}
@@ -135,7 +155,11 @@ public class ActionObject implements GameObject{
 	private class HelpAction extends ActionObject{
 		public HelpAction(int modif) {
 			super(modif);
-			texture = TextureManager.instance().loadTexture("help.png");
+			if (modif == 1){
+				texture = TextureManager.instance().loadTexture(TEXTURE_BASE+"help_1.png");
+			}else{
+				texture = TextureManager.instance().loadTexture(TEXTURE_BASE+"help_0.png");
+			}
 		}
 		
 		@Override

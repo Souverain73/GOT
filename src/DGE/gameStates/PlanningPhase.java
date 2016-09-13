@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import org.joml.Vector2f;
 
+import DGE.Constants;
 import DGE.Game;
 import DGE.ModalState;
 import DGE.gameObjects.ActionObject;
@@ -71,13 +72,13 @@ public class PlanningPhase implements GameState {
 			float y = pos.y;
 			float angle = 0;
 			float step = (float)(32.7f*Math.PI/180.0f);
-			float radius = 100;
+			float radius = Constants.ACTION_SELECTOR_RADIUS;
 			
 			for (GameObject gameObject : actions) {
 				float cx = (float)(x+Math.cos(angle)*radius);
 				float cy = (float)(y+Math.sin(angle)*radius);
 				angle += step;
-				ImageButton button = new ImageButton(((ActionObject)gameObject).texture, (int)cx, (int)cy, 1, gameObject);
+				ImageButton button = new ImageButton(((ActionObject)gameObject).texture, (int)cx, (int)cy, Constants.ACTION_IMAGE_SCALE, gameObject);
 				button.setCallback((sender, param)->{
 					result = (ActionObject)param;
 					close();
