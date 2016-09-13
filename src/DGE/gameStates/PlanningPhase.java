@@ -2,11 +2,10 @@ package DGE.gameStates;
 
 import java.util.Vector;
 
-import javax.management.relation.RelationNotification;
-
 import org.joml.Vector2f;
 
-import DGE.InputManager;
+import DGE.Game;
+import DGE.ModalState;
 import DGE.gameObjects.ActionObject;
 import DGE.gameObjects.GameObject;
 import DGE.gameObjects.ImageButton;
@@ -15,8 +14,7 @@ import DGE.gameObjects.MapPartObject;
 public class PlanningPhase implements GameState {
 	private static final String name = "PlanningPhase";
 	private Vector<ActionObject> actions;
-	private MapPartObject regionToPlace;
-	private boolean removeActionSelector = false;
+	private ActionObject result;
 	
 	private Vector<GameObject> objects;
 	
@@ -44,35 +42,79 @@ public class PlanningPhase implements GameState {
 	@Override
 	public void update() {
 		objects.forEach((obj)->{obj.update(this);});
-		if (removeActionSelector){
-			objects.clear();
-			removeActionSelector = false;
-		}
-	}
-
-	public void createActionSelector(Vector2f pos){
-		float x = pos.x;
-		float y = pos.y-200;
-		for (ActionObject action : actions) {
-			ImageButton button = new ImageButton(action.texture, (int)x, (int)y, 1.0f, action);
-			button.setCallback(this::selectAction);
-			objects.add(button);
-			x+=60;	
-		}
-	}
-		
-	public void selectAction(GameObject sender, Object params){
-		removeActionSelector = true;
-		regionToPlace.setAction((ActionObject)params);
-		regionToPlace = null;
 	}
 	
-	public void placeAction(MapPartObject region){
-		regionToPlace = region;
-		createActionSelector(InputManager.instance().getMousePosWorld());
+	public ActionObject createActionSelector(Vector2f pos){
+		ActionSelector selector = new ActionSelector(actions, pos);
+		
+		(new ModalState(selector)).run();
+		
+		return selector.result;
+	}
+	
+	public void placeAction(MapPartObject region, ActionObject act){
+		region.setAction(act);
 	}
 	
 	public void removeAction(MapPartObject region){
 		region.setAction(null);
+	}
+	
+	private class ActionSelector implements GameState{
+		private static final String name = "ActionSelector";
+		private Vector<GameObject> objects;
+		public ActionObject result;
+		
+		public ActionSelector(Vector<? extends GameObject> actions, Vector2f pos) {
+			objects = new Vector<GameObject>();
+			float x = pos.x;
+			float y = pos.y;
+			float angle = 0;
+			float step = (float)(32.7f*Math.PI/180.0f);
+			float radius = 100;
+			
+			for (GameObject gameObject : actions) {
+				float cx = (float)(x+Math.cos(angle)*radius);
+				float cy = (float)(y+Math.sin(angle)*radius);
+				angle += step;
+				ImageButton button = new ImageButton(((ActionObject)gameObject).texture, (int)cx, (int)cy, 1, gameObject);
+				button.setCallback((sender, param)->{
+					result = (ActionObject)param;
+					close();
+				});
+				objects.add(button);
+			}
+			
+		}
+		
+		private void close(){
+			Game.instance().closeModal();
+		}
+		
+		@Override
+		public String getName() {
+			return name;
+		}
+
+		@Override
+		public void enter() {
+			
+		}
+
+		@Override
+		public void exit() {
+			objects.clear();
+		}
+
+		@Override
+		public void draw() {
+			objects.forEach((obj)->{obj.draw(this);});
+			
+		}
+
+		@Override
+		public void update() {
+			objects.forEach((obj)->{obj.update(this);});
+		}
 	}
 }

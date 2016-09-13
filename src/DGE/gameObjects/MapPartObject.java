@@ -110,7 +110,8 @@ public class MapPartObject extends AbstractButtonObject {
 		System.out.println("Click region:"+name+" GameState:"+st.getName());
 		if (st instanceof PlanningPhase){
 			if (action == null){
-				((PlanningPhase)st).placeAction(this);
+				((PlanningPhase)st).placeAction(this, ((PlanningPhase)st).createActionSelector(
+						InputManager.instance().getMousePosWorld()));
 			}else{
 				((PlanningPhase)st).removeAction(this);
 			}

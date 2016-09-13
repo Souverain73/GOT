@@ -26,6 +26,7 @@ import org.lwjgl.opengl.GL;
 
 public class Game {
 	private static Game _instance = null;
+	private static ModalState modalState;
 
 	public static Game instance(){
 		if (_instance == null){
@@ -33,7 +34,7 @@ public class Game {
 		}
 		return _instance;
 	}
-	public long pWindow;
+	protected long pWindow;
 	private GraphicModule graphics;
 	private StateMachine stm;
 	
@@ -152,6 +153,17 @@ public class Game {
 		invproj.transform(point);
 		
 		return new Vector2f(point.x, point.y);	
+	}
+	
+	public void registerModalState(ModalState mst){
+		this.modalState = mst;
+	}
+	
+	public void closeModal(){
+		if (modalState!=null){
+			modalState.close();
+			modalState = null;
+		}
 	}
 }
 
