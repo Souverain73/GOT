@@ -59,7 +59,7 @@ public class MapPartObject extends AbstractButtonObject {
 		texture.draw(x, y, w, h);
 		GraphicModule.instance().resetEffect();
 		if (action != null){
-			action.draw(x, y, Constants.ACTION_IMAGE_SCALE);
+			action.draw(x+w/2, y+h/2, Constants.ACTION_IMAGE_SCALE);
 		}
 	}
 
@@ -119,5 +119,11 @@ public class MapPartObject extends AbstractButtonObject {
 		}
 		super.click(st);
 	}
+
+	public ActionObject getAction() {
+		return action;
+	}
+	
+	
 	
 }

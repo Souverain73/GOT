@@ -9,7 +9,7 @@ import DGE.gameStates.GameState;
 import DGE.utils.LoaderParams;
 
 public abstract class AbstractButtonObject implements GameObject{
-	protected enum State {DOWN, FREE, HOVER};
+	protected enum State {DOWN, FREE, HOVER, DISABLED};
 	protected BiConsumer<GameObject, Object> callback;
 	protected State state;
 	protected boolean wasClick;
@@ -39,6 +39,8 @@ public abstract class AbstractButtonObject implements GameObject{
 
 	@Override
 	public void update(GameState st) {
+		if (state == State.DISABLED) return;
+		
 		if (state == State.FREE){
 			if (ifMouseIn(InputManager.instance().getMousePosWorld())){
 				mouseEnter();
@@ -86,6 +88,14 @@ public abstract class AbstractButtonObject implements GameObject{
 	protected void click(GameState st){
 		if (callback != null){
 			callback.accept(this, null);
+		}
+	}
+	
+	public void setEnabled(boolean enabled){
+		if (enabled){
+			state = State.FREE;
+		}else{
+			state = State.DISABLED;
 		}
 	}
 	

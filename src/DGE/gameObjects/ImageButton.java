@@ -48,6 +48,8 @@ public class ImageButton extends AbstractButtonObject {
 			setOverlay(new Vector3f(0.0f, 0.5f, 0.0f));
 		}else if (state == State.DOWN){
 			setOverlay(new Vector3f(0.5f, 0.0f, 0.0f));
+		}else if (state == State.DISABLED){
+			setOverlay(new Vector3f(-0.5f, -0.5f, -0.5f));
 		}
 		
 		texture.draw(x, y, w, h);

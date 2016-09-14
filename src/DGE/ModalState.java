@@ -30,7 +30,7 @@ public class ModalState implements Runnable{
 		state.enter();
 		running = true;
 		
-		while(running){
+		while(running && Game.instance().isRunning()){
 			Game.instance().updateInput();
 			if (updateMain){
 				stm.update();

@@ -47,6 +47,8 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 
+import DGE.InputManager;
+
 
 public class Texture {
 	private static final float[] vertexCoords={
@@ -78,6 +80,7 @@ public class Texture {
 	private static Matrix4f mv;
 	private static int projectionLocation;
 	private static int overlayLocation;
+	private String filename;
 	private int width;
 	private int height;
 	private ByteBuffer data;
@@ -116,6 +119,7 @@ public class Texture {
 
 		data = stbi_load(fileName, x, y, comp, STBI_rgb_alpha);
 		if (data!=null){
+			filename = fileName;
 			width = x.get();
 			height = y.get();
 			textureID = glGenTextures();
@@ -186,9 +190,18 @@ public class Texture {
 	}
 	
 	public int getAlfa(int x, int y){
-		int pos = (y*width+x)*4;
-		byte value = data.get(pos+3);
-		return value*-1;
+		try{
+			int pos = (y*width+x)*4;
+			byte value = data.get(pos+3);
+			return value*-1;
+		}catch(Exception e){
+			System.out.println("Can't get Alfa for texture");
+			System.out.println("Texture filename:"+filename);
+			System.out.println("Function pos x:"+x+" y:"+y);
+			System.out.println("Mouse World pos:"+InputManager.instance().getMousePosWorld());
+			System.out.println("Mouse Win pos"+InputManager.instance().getMousePosWin());
+		}
+		return 0;
 	}
 	
 	public int getWidth(){

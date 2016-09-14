@@ -1,5 +1,6 @@
 package DGE.gameStates;
 
+import java.util.EnumMap;
 import java.util.Vector;
 
 import org.joml.Vector2f;
@@ -8,6 +9,7 @@ import DGE.Constants;
 import DGE.Game;
 import DGE.ModalState;
 import DGE.gameObjects.ActionObject;
+import DGE.gameObjects.ActionObject.Action;
 import DGE.gameObjects.GameObject;
 import DGE.gameObjects.ImageButton;
 import DGE.gameObjects.MapPartObject;
@@ -15,7 +17,8 @@ import DGE.gameObjects.MapPartObject;
 public class PlanningPhase implements GameState {
 	private static final String name = "PlanningPhase";
 	private Vector<ActionObject> actions;
-	private ActionObject result;
+	private int specials;
+	private EnumMap<Action, MapPartObject> placed;
 	
 	private Vector<GameObject> objects;
 	
@@ -27,8 +30,10 @@ public class PlanningPhase implements GameState {
 	
 	@Override
 	public void enter() {
+		placed = new EnumMap<Action, MapPartObject>(Action.class);
 		actions = ActionObject.getAllActionObjects();
 		objects = new Vector<GameObject>();
+		specials = 0;
 	}
 
 	@Override
@@ -55,9 +60,16 @@ public class PlanningPhase implements GameState {
 	
 	public void placeAction(MapPartObject region, ActionObject act){
 		region.setAction(act);
+		placed.put(act.getType(), region);
+		if (act!=null && act.isSpecial()) 
+			specials++;
 	}
 	
 	public void removeAction(MapPartObject region){
+		ActionObject oldAction = region.getAction();
+		placed.remove(oldAction.getType());
+		if(oldAction.isSpecial()) 
+			specials--;
 		region.setAction(null);
 	}
 	
@@ -66,7 +78,7 @@ public class PlanningPhase implements GameState {
 		private Vector<GameObject> objects;
 		public ActionObject result;
 		
-		public ActionSelector(Vector<? extends GameObject> actions, Vector2f pos) {
+		public ActionSelector(Vector<ActionObject> actions, Vector2f pos) {
 			objects = new Vector<GameObject>();
 			float x = pos.x;
 			float y = pos.y;
@@ -74,16 +86,20 @@ public class PlanningPhase implements GameState {
 			float step = (float)(32.7f*Math.PI/180.0f);
 			float radius = Constants.ACTION_SELECTOR_RADIUS;
 			
-			for (GameObject gameObject : actions) {
+			for (ActionObject actionObject : actions) {
 				float cx = (float)(x+Math.cos(angle)*radius);
 				float cy = (float)(y+Math.sin(angle)*radius);
-				angle += step;
-				ImageButton button = new ImageButton(((ActionObject)gameObject).texture, (int)cx, (int)cy, Constants.ACTION_IMAGE_SCALE, gameObject);
+				ImageButton button = new ImageButton(((ActionObject)actionObject).texture, (int)cx, (int)cy, Constants.ACTION_IMAGE_SCALE, actionObject);
 				button.setCallback((sender, param)->{
 					result = (ActionObject)param;
 					close();
 				});
+				if ((actionObject.isSpecial() && specials>=Game.instance().getPlayer().getSpecials())
+						||	placed.containsKey(actionObject.getType())){
+					button.setEnabled(false);
+				}
 				objects.add(button);
+				angle += step;
 			}
 			
 		}

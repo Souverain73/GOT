@@ -4,6 +4,8 @@ import org.joml.AxisAngle4f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
+import DGE.Constants;
+
 public class Ortho2DCamera implements ICamera{
 	//constants
 	private static final float MAX_SCALE = 0.7f;
@@ -99,16 +101,16 @@ public class Ortho2DCamera implements ICamera{
 	@Override
 	public void scale(float diff) {
 		scale+=diff;
-		if (scale > MAX_SCALE) scale = MAX_SCALE;
-		if (scale < MIN_SCALE) scale = MIN_SCALE;
+		if (scale > Constants.MAX_SCALE) scale = Constants.MAX_SCALE;
+		if (scale < Constants.MIN_SCALE) scale = Constants.MIN_SCALE;
 		if (forceUpdate) updateCamera();
 	}
 
 	@Override
 	public void setScale(float scale) {
 		this.scale = scale;
-		if (scale > MAX_SCALE) scale = MAX_SCALE;
-		if (scale < MIN_SCALE) scale = MIN_SCALE;
+		if (scale > Constants.MAX_SCALE) scale = Constants.MAX_SCALE;
+		if (scale < Constants.MIN_SCALE) scale = Constants.MIN_SCALE;
 		if (forceUpdate) updateCamera();
 	}
 	

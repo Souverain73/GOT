@@ -45,9 +45,9 @@ public class Utils {
 	
 	static public boolean pointInRect(Vector2f point, Vector2f rectPos, Vector2f rectDim){
 		if (point.x < rectPos.x) return false;
-		if (point.x > rectPos.x+rectDim.x) return false;
+		if (point.x >= rectPos.x+rectDim.x) return false;
 		if (point.y < rectPos.y) return false;
-		if (point.y > rectPos.y+rectDim.y) return false;
+		if (point.y >= rectPos.y+rectDim.y) return false;
 		return true;
 	}
 }

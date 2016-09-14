@@ -26,7 +26,8 @@ import org.lwjgl.opengl.GL;
 
 public class Game {
 	private static Game _instance = null;
-	private static ModalState modalState;
+	private ModalState modalState;
+	private Player player;
 
 	public static Game instance(){
 		if (_instance == null){
@@ -44,6 +45,8 @@ public class Game {
 	private Game(){
 		graphics = GraphicModule.instance();
 		stm = new StateMachine();
+		player = new Player();
+		player.setSpecials(2);
 	}
 	
 	public long init(){	
@@ -164,6 +167,14 @@ public class Game {
 			modalState.close();
 			modalState = null;
 		}
+	}
+	
+	public boolean isRunning(){
+		return !glfwWindowShouldClose(pWindow);
+	}
+
+	public Player getPlayer() {
+		return player;
 	}
 }
 
