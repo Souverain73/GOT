@@ -1,6 +1,9 @@
 package DGE.gameStates;
 
+import DGE.gameObjects.GameObject;
+
 public class ActionPhase implements GameState{
+	private StateMachine stm;
 	private static final String name = "ActionPhase";
 	
 	@Override
@@ -9,13 +12,13 @@ public class ActionPhase implements GameState{
 	}
 
 	@Override
-	public void enter() {
-		//TODO: init resources
+	public void enter(StateMachine stm) {
+		this.stm = stm;
 	}
 
 	@Override
 	public void exit() {
-		//TODO: free resources
+		
 	}
 
 	@Override
@@ -27,5 +30,9 @@ public class ActionPhase implements GameState{
 	public void update() {
 		
 	}
-
+	
+	
+	public void click(GameObject object){
+		
+	}
 }

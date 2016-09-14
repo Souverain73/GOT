@@ -4,22 +4,23 @@ import java.util.LinkedList;
 
 public class StateMachine {
 	private LinkedList<GameState> _states;
-
+	
 	public StateMachine(){
 		_states = new LinkedList<GameState>();
 	}
 	
+
 	
 	public void setState(GameState state){
 		if (!_states.isEmpty()){
 			_states.poll().exit();
 		}
-		state.enter();
+		state.enter(this);
 		_states.push(state);
 	}
 	
 	public void pushState(GameState state){
-		state.enter();
+		state.enter(this);
 		_states.push(state);
 	}
 	

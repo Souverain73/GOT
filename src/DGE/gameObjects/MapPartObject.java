@@ -10,6 +10,7 @@ import DGE.Constants;
 import DGE.Game;
 import DGE.InputManager;
 import DGE.gameObjects.AbstractButtonObject.State;
+import DGE.gameStates.ActionPhase;
 import DGE.gameStates.GameState;
 import DGE.gameStates.PlanningPhase;
 import DGE.graphics.Effect;
@@ -115,6 +116,9 @@ public class MapPartObject extends AbstractButtonObject {
 						InputManager.instance().getMousePosWorld()));
 			}else{
 				((PlanningPhase)st).removeAction(this);
+			}
+			if (st instanceof ActionPhase){
+				((ActionPhase)st).click(this);
 			}
 		}
 		super.click(st);

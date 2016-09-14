@@ -16,7 +16,7 @@ public class MenuState implements GameState {
 	}
 
 	@Override
-	public void enter() {
+	public void enter(StateMachine stm) {
 		gameObjects = new Vector<GameObject>();
 		
 		System.out.println("Entering "+name);

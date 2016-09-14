@@ -29,7 +29,7 @@ public class PlanningPhase implements GameState {
 	}
 	
 	@Override
-	public void enter() {
+	public void enter(StateMachine stm) {
 		placed = new EnumMap<Action, MapPartObject>(Action.class);
 		actions = ActionObject.getAllActionObjects();
 		objects = new Vector<GameObject>();
@@ -114,7 +114,7 @@ public class PlanningPhase implements GameState {
 		}
 
 		@Override
-		public void enter() {
+		public void enter(StateMachine stm) {
 			
 		}
 

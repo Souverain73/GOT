@@ -17,7 +17,7 @@ public class MainState implements GameState {
 	}
 
 	@Override
-	public void enter() {
+	public void enter(StateMachine extstm) {
 		gameObjects = new Vector<GameObject>();
 		stm = new StateMachine();
 		System.out.println("Entering "+name);

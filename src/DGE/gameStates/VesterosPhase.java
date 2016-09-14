@@ -9,7 +9,7 @@ public class VesterosPhase implements GameState {
 	}
 
 	@Override
-	public void enter() {
+	public void enter(StateMachine stm) {
 
 	}
 

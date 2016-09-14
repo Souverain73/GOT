@@ -27,7 +27,7 @@ public class ModalState implements Runnable{
 		Game.instance().registerModalState(this);
 		StateMachine stm = Game.instance().getStateMachine();
 		
-		state.enter();
+		state.enter(null);
 		running = true;
 		
 		while(running && Game.instance().isRunning()){
