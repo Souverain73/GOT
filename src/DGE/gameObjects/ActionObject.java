@@ -2,21 +2,33 @@ package DGE.gameObjects;
 
 import java.util.Vector;
 
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+
+import DGE.Constants;
 import DGE.gameStates.GameState;
+import DGE.gameStates.PlanningPhase;
+import DGE.graphics.Effect;
+import DGE.graphics.GraphicModule;
 import DGE.graphics.Texture;
 import DGE.graphics.TextureManager;
 import DGE.utils.LoaderParams;
+import DGE.utils.Utils;
 
-public class ActionObject implements GameObject{
+public class ActionObject extends AbstractButtonObject{
 	public enum Action{
 		FIRE, FIREPLUS, MONEY, MONEYPLUS, MOVE, MOVEMINUS, MOVEPLUS, DEFEND, DEFENDPLUS, HELP, HELPPLUS 
 	}
 
+	private Vector2f pos;
+	private float radius;
+	private float scale;	
 	private static final String TEXTURE_BASE = "actions/";
 	
 	protected int modifier;
 	public Texture texture;
 	protected Action type;
+	private Object owner;
 
 	public static ActionObject getActionObject(Action type){
 		ActionObject result = new ActionObject();
@@ -50,9 +62,13 @@ public class ActionObject implements GameObject{
 
 	
 	private ActionObject() {
+		scale = 1;
+		radius = Constants.ACTION_IMAGE_SIZE/2;
+		pos = new Vector2f(0,0);
 	}
 	
 	protected ActionObject(int modif) {
+		this();
 		modifier = modif;
 	}
 	
@@ -63,15 +79,21 @@ public class ActionObject implements GameObject{
 
 	@Override
 	public void draw(GameState st) {
-		
+		if (state == State.HOVER){
+			GraphicModule.instance().setEffect(
+					new Effect(new Vector3f(0, 0.5f, 0), null, null));
+		}
+		texture.draw(pos.x-radius*scale, pos.y-radius*scale, 
+				radius*2*scale, 
+				radius*2*scale, 0.5f);		
+		GraphicModule.instance().resetEffect();
 	}
 
+	
+	
 	@Override
 	public void update(GameState st) {
-	}
-	
-	public void draw(float x, float y, float scale){
-		texture.draw(x, y, scale);
+		super.update(st);
 	}
 
 	public void doAction(){
@@ -86,6 +108,35 @@ public class ActionObject implements GameObject{
 		return type;
 	}
 	
+	public void setPosition(Vector2f pos){
+		this.pos = pos;
+	}
+	
+	public Vector2f getPosition() {
+		return pos;
+	}
+	
+	public float getScale() {
+		return scale;
+	}
+
+	public void setScale(float scale) {
+		this.scale = scale;
+	}
+
+	//IClickable
+	@Override
+	public boolean ifMouseIn(Vector2f mousePos) {
+		if (Utils.distance(mousePos, new Vector2f(pos.x,
+				pos.y))<radius*scale) return true;
+		return false;
+	}
+			
+	@Override
+	public int getPriority() {
+		return 1;
+	}
+
 	private class FireAction extends ActionObject{
 		public FireAction(int modif) {
 			super(modif);
@@ -186,4 +237,14 @@ public class ActionObject implements GameObject{
 			else return false;
 		}
 	}
+
+	public Object getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Object owner) {
+		this.owner = owner;
+	}
+	
+	
 }

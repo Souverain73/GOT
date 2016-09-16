@@ -6,19 +6,33 @@ import org.joml.Vector2f;
 
 import DGE.InputManager;
 import DGE.gameStates.GameState;
+import DGE.interfaces.IClickListener;
+import DGE.interfaces.IClickable;
 import DGE.utils.LoaderParams;
 
-public abstract class AbstractButtonObject implements GameObject{
+public abstract class AbstractButtonObject implements GameObject, IClickable{
 	protected enum State {DOWN, FREE, HOVER, DISABLED};
 	protected BiConsumer<GameObject, Object> callback;
 	protected State state;
 	protected boolean wasClick;
+	protected boolean mouseIn;
 	
 	public AbstractButtonObject() {
 		wasClick = false;
 		state = State.FREE;
+		InputManager.instance().registerClickable(this);
+		callback = (sender, param)->{
+			if (param instanceof IClickListener){
+				((IClickListener)param).click(sender);
+			}
+		};
 	}
 	
+	@Override
+	public void finish() {
+		InputManager.instance().removeClickable(this);
+	}
+
 	@Override
 	public boolean init(LoaderParams params) {
 		if (params.containsKey("callback")){
@@ -42,7 +56,7 @@ public abstract class AbstractButtonObject implements GameObject{
 		if (state == State.DISABLED) return;
 		
 		if (state == State.FREE){
-			if (ifMouseIn(InputManager.instance().getMousePosWorld())){
+			if (mouseIn){
 				mouseEnter();
 				if (InputManager.instance().getMouseButtonState(InputManager.MOUSE_LEFT)==1){
 					wasClick = true;
@@ -51,26 +65,25 @@ public abstract class AbstractButtonObject implements GameObject{
 		}
 		
 		if (state == State.DOWN){
-			if (!ifMouseIn(InputManager.instance().getMousePosWorld())){
+			if (!mouseIn){
 				mouseOut();
 				wasClick = false;
 			}
 			if (InputManager.instance().getMouseButtonState(InputManager.MOUSE_LEFT)==0){
-				wasClick = false;
+				if (!wasClick){
+					wasClick = true;
+					click(st);
+				}
 				state = State.HOVER;
 			}
 		}
 		
 		if (state == State.HOVER){
-			if (!ifMouseIn(InputManager.instance().getMousePosWorld())){
+			if (!mouseIn){
 				mouseOut();
 			}
 			if (InputManager.instance().getMouseButtonState(InputManager.MOUSE_LEFT)==1){
 				state = State.DOWN;
-				if (!wasClick){
-					wasClick = true;
-					click(st);
-				}
 			}else{
 				wasClick = false;
 			}
@@ -87,7 +100,7 @@ public abstract class AbstractButtonObject implements GameObject{
 	
 	protected void click(GameState st){
 		if (callback != null){
-			callback.accept(this, null);
+			callback.accept(this, st);
 		}
 	}
 	
@@ -99,5 +112,23 @@ public abstract class AbstractButtonObject implements GameObject{
 		}
 	}
 	
-	protected abstract boolean ifMouseIn(Vector2f mousePos);
+	//IClickable implementation
+	public abstract boolean ifMouseIn(Vector2f mousePos);
+
+	@Override
+	public int getPriority() {
+		return 0;
+	}
+
+	@Override
+	public void setMouseIn(boolean mouseIn) {
+		this.mouseIn = mouseIn;
+	}
+
+	@Override
+	public boolean isActive() {
+		return (state!=State.DISABLED);
+	}
+	
+	
 }

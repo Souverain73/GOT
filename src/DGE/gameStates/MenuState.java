@@ -33,6 +33,7 @@ public class MenuState implements GameState {
 
 	@Override
 	public void exit() {
+		gameObjects.forEach(o->o.finish());
 		System.out.println("Exit "+name);
 	}
 

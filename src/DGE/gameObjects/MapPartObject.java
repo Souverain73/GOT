@@ -27,6 +27,7 @@ public class MapPartObject extends AbstractButtonObject {
 	private Texture texture;
 	private Vector<MapPartObject>  neighbors;
 	private int x, y, w, h;
+	private int act_x, act_y;
 	private ActionObject action;
 	boolean overlay;
 	
@@ -41,7 +42,8 @@ public class MapPartObject extends AbstractButtonObject {
 		y = (Integer)params.get("y");
 		w = (Integer)params.get("w");
 		h = (Integer)params.get("h");
-		
+		act_x = (Integer)params.get("action_x");
+		act_y = (Integer)params.get("action_y");
 		neighbors = new Vector<MapPartObject>();
 		// TODO Auto-generated method stub
 		return false;
@@ -57,10 +59,10 @@ public class MapPartObject extends AbstractButtonObject {
 			setOverlay(new Vector3f(0.5f, 0.0f, 0.0f));
 		}
 		
-		texture.draw(x, y, w, h);
+		texture.draw(x, y, w, h, 0);
 		GraphicModule.instance().resetEffect();
 		if (action != null){
-			action.draw(x+w/2, y+h/2, Constants.ACTION_IMAGE_SCALE);
+			action.draw(st);
 		}
 	}
 
@@ -72,6 +74,16 @@ public class MapPartObject extends AbstractButtonObject {
 		return name;
 	}
 	
+	
+	
+	@Override
+	public void update(GameState st) {
+		if (action != null){
+			action.update(st);
+		}
+		super.update(st);
+	}
+
 	//ћетод добавл€ющий соседа.
 	public void addNeighbor(MapPartObject neighbor){
 		if (neighbors.indexOf(neighbor)!=-1){
@@ -86,21 +98,29 @@ public class MapPartObject extends AbstractButtonObject {
 	}
 
 	public void setAction(ActionObject act){
+		if (act!=null){
+			act.setPosition(new Vector2f(x+act_x, y+act_y));
+		}
 		action = act;
 	}
 	
 	@Override
-	protected boolean ifMouseIn(Vector2f mousePos) {
+	public boolean ifMouseIn(Vector2f mousePos) {
 		if (Utils.pointInRect(InputManager.instance().getMousePosWorld(), new Vector2f(x,y), new Vector2f(w,h))){
 			Vector2f worldPos = InputManager.instance().getMousePosWorld();
 			Vector2f modPos = new Vector2f(worldPos.x-x, worldPos.y-y);
-			if (texture.getAlfa((int)modPos.x, (int)modPos.y) != 0){
+			if (texture.getAlfa(modPos.x/w, modPos.y/h) != 0){
 				return true;
 			}
 		}
 		return false;
 	}
 	
+	@Override
+	public int getPriority() {
+		return 0;
+	}
+
 	private void setOverlay(Vector3f overlay){
 		Effect eff = new Effect();
 		eff.overlay = overlay;
@@ -110,17 +130,6 @@ public class MapPartObject extends AbstractButtonObject {
 	@Override
 	protected void click(GameState st) {
 		System.out.println("Click region:"+name+" GameState:"+st.getName());
-		if (st instanceof PlanningPhase){
-			if (action == null){
-				((PlanningPhase)st).placeAction(this, ((PlanningPhase)st).createActionSelector(
-						InputManager.instance().getMousePosWorld()));
-			}else{
-				((PlanningPhase)st).removeAction(this);
-			}
-			if (st instanceof ActionPhase){
-				((ActionPhase)st).click(this);
-			}
-		}
 		super.click(st);
 	}
 

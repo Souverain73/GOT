@@ -1,6 +1,8 @@
 package DGE.gameObjects;
 
 import java.util.HashMap;
+import java.util.function.Predicate;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.*;
@@ -13,10 +15,21 @@ import DGE.utils.LoaderParams;
 public class GameMapObject implements GameObject {
 	private HashMap<String, MapPartObject> map;
 	
-	public GameMapObject(){
-		map = new HashMap<String, MapPartObject>();
+	private static GameMapObject _instance;
+	public static GameMapObject instance(){
+		return _instance;
 	}
 	
+	public GameMapObject(){
+		map = new HashMap<String, MapPartObject>();
+		_instance = this;
+	}
+	
+	@Override
+	public void finish() {
+		
+	}
+
 	private void addRegion(MapPartObject mapPart){
 		if (!map.containsKey(mapPart.getName()))
 			map.put(mapPart.getName(), mapPart);
@@ -84,6 +97,10 @@ public class GameMapObject implements GameObject {
 						Texture tex = TextureManager.instance().loadTexture(texName);
 						params.put("texture", tex);
 					}
+					if (paramNode.getNodeName().equals("action")){
+						params.put("action_x", Integer.valueOf(attribValue(paramNode,"x")));
+						params.put("action_y", Integer.valueOf(attribValue(paramNode,"y")));
+					}
 				}
 				MapPartObject mapPart = new MapPartObject();
 				mapPart.init(params);
@@ -120,5 +137,35 @@ public class GameMapObject implements GameObject {
 	private String valueOrDefault(String value, String def){
 		if (value == null) return def;
 		else return value;
+	}
+	
+	public void EnableAllRegions(){
+		map.values().forEach(obj->obj.setEnabled(true));
+	}
+	
+	public void disableAllRegions(){
+		map.values().forEach(obj->obj.setEnabled(false));
+	}
+	
+	public void enableByCondition(Predicate<MapPartObject> condition){
+		map.values().forEach((region)->{
+			if (condition.test(region)){
+				region.setEnabled(true);
+			}
+		});
+	}
+	
+	public void disableByCondition(Predicate<MapPartObject> condition){
+		map.values().forEach((region)->{
+			if (condition.test(region)){
+				region.setEnabled(false);
+			}
+		});
+	}
+	
+	public void setEnabledByCondition(Predicate<MapPartObject> condition){
+		map.values().forEach((region)->{
+			region.setEnabled(condition.test(region));
+		});
 	}
 }

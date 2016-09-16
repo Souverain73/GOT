@@ -50,4 +50,8 @@ public class Utils {
 		if (point.y >= rectPos.y+rectDim.y) return false;
 		return true;
 	}
+	
+	static public float distance(Vector2f p1, Vector2f p2){
+		return (float)Math.sqrt((p1.x-p2.x)*(p1.x-p2.x)+(p1.y-p2.y)*(p1.y-p2.y));
+	}
 }

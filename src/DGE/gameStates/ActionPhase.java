@@ -1,8 +1,9 @@
 package DGE.gameStates;
 
 import DGE.gameObjects.GameObject;
+import DGE.interfaces.IClickListener;
 
-public class ActionPhase implements GameState{
+public class ActionPhase implements GameState, IClickListener{
 	private StateMachine stm;
 	private static final String name = "ActionPhase";
 	
@@ -32,7 +33,7 @@ public class ActionPhase implements GameState{
 	}
 	
 	
-	public void click(GameObject object){
+	public void click(GameObject sender){
 		
 	}
 }

@@ -15,6 +15,11 @@ public class UnitObject implements GameObject{
 	}
 	
 	@Override
+	public void finish() {
+	
+	}
+
+	@Override
 	public boolean init(LoaderParams params) {
 		return false;
 	}

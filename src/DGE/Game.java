@@ -125,6 +125,7 @@ public class Game {
 	
 	public void updateInput(){
 		glfwPollEvents();
+		InputManager.instance().update();
 	}
 	
 	public void updateGraphics(){

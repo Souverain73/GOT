@@ -52,19 +52,28 @@ public class ImageButton extends AbstractButtonObject {
 			setOverlay(new Vector3f(-0.5f, -0.5f, -0.5f));
 		}
 		
-		texture.draw(x, y, w, h);
+		texture.draw(x, y, w, h, 1);
 		super.draw(st);
 		
 		GraphicModule.instance().resetEffect();
 	}
-	
+	//IClickable
 	@Override
-	protected boolean ifMouseIn(Vector2f mousePos) {
-		return Utils.pointInRect(mousePos,
+	public boolean ifMouseIn(Vector2f mousePos) {
+		if (Utils.pointInRect(mousePos,
 				new Vector2f(x, y),
-				new Vector2f(w, h));
+				new Vector2f(w, h))
+		){
+			if (texture.getAlfa((mousePos.x - x)/w, (mousePos.y - y)/h)!=0) return true; 
+		}
+		return false;
 	}
 	
+	@Override
+	public int getPriority() {
+		return 2;
+	}
+
 	private void setOverlay(Vector3f overlay){
 		Effect eff = new Effect();
 		eff.overlay = overlay;

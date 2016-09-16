@@ -83,6 +83,7 @@ public class Texture {
 	private String filename;
 	private int width;
 	private int height;
+	private int comp;
 	private ByteBuffer data;
 	
 	private int textureID;
@@ -122,6 +123,7 @@ public class Texture {
 			filename = fileName;
 			width = x.get();
 			height = y.get();
+			this.comp = comp.get(); 
 			textureID = glGenTextures();
 			glBindTexture(GL_TEXTURE_2D, textureID);
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
@@ -132,17 +134,17 @@ public class Texture {
 	}
 
 	public void draw(float x, float y, float scale){
-		draw(x, y, width*scale, height*scale);
+		draw(x, y, width*scale, 0, height*scale);
 	}
 	
-	public void draw(float x, float y, float w, float h){
-		draw(x, y, w, h, true);
+	public void draw(float x, float y, float w, float h, float z){
+		draw(x, y, w, h, z, true);
 	}
 	
-	public void draw(float x, float y, float w, float h, boolean useProjection){
+	public void draw(float x, float y, float w, float h, float z, boolean useProjection){
 		FloatBuffer mvFB = BufferUtils.createFloatBuffer(16);
 		FloatBuffer pm = BufferUtils.createFloatBuffer(16);
-		mv.identity().translate(x, y, 0).scale(w,h,1).get(mvFB);
+		mv.identity().translate(x, y, -z).scale(w,h,1).get(mvFB);
 		if (useProjection)
 			GraphicModule.instance().getCamera().getProjection().get(pm);
 		else
@@ -183,15 +185,18 @@ public class Texture {
 		glDisable(GL_BLEND);
 	}
 	
-	public Vector4f getPixel(int x, int y){
-		int pos = (y*width+x)*4;
-		Vector4f res = new Vector4f((data.get(pos)/255.0f), (data.get(pos+1)/255.0f), (data.get(pos+2)/255.0f), (data.get(pos+3)*-1));
+	public Vector3f getPixel(int x, int y){
+		int pos = (y*width+x)*comp;
+		Vector3f res = new Vector3f((data.get(pos)/255.0f), (data.get(pos+1)/255.0f), (data.get(pos+2)/255.0f));
 		return res;
 	}
 	
-	public int getAlfa(int x, int y){
+	public int getAlfa(float tx, float ty){
+		if (comp < 4) return 1;
+		int x = (int)(tx*width);
+		int y = (int)(ty*height);
+		int pos = (y*width+x)*4;
 		try{
-			int pos = (y*width+x)*4;
 			byte value = data.get(pos+3);
 			return value*-1;
 		}catch(Exception e){

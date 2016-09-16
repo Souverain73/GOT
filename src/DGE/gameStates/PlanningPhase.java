@@ -7,14 +7,18 @@ import org.joml.Vector2f;
 
 import DGE.Constants;
 import DGE.Game;
+import DGE.InputManager;
 import DGE.ModalState;
 import DGE.gameObjects.ActionObject;
+import DGE.gameObjects.GameMapObject;
 import DGE.gameObjects.ActionObject.Action;
 import DGE.gameObjects.GameObject;
 import DGE.gameObjects.ImageButton;
 import DGE.gameObjects.MapPartObject;
+import DGE.interfaces.IClickListener;
 
-public class PlanningPhase implements GameState {
+public class PlanningPhase implements GameState, IClickListener {
+	private StateMachine stm;
 	private static final String name = "PlanningPhase";
 	private Vector<ActionObject> actions;
 	private int specials;
@@ -30,6 +34,7 @@ public class PlanningPhase implements GameState {
 	
 	@Override
 	public void enter(StateMachine stm) {
+		this.stm = stm;
 		placed = new EnumMap<Action, MapPartObject>(Action.class);
 		actions = ActionObject.getAllActionObjects();
 		objects = new Vector<GameObject>();
@@ -48,6 +53,11 @@ public class PlanningPhase implements GameState {
 	@Override
 	public void update() {
 		objects.forEach((obj)->{obj.update(this);});
+		if (InputManager.instance().keyPressed(32)){
+			System.out.println("Space pressed");
+			GameMapObject.instance().setEnabledByCondition(region -> region.getAction()!=null);
+			stm.setState(new ActionPhase());
+		}
 	}
 	
 	public ActionObject createActionSelector(Vector2f pos){
@@ -60,9 +70,24 @@ public class PlanningPhase implements GameState {
 	
 	public void placeAction(MapPartObject region, ActionObject act){
 		region.setAction(act);
-		placed.put(act.getType(), region);
-		if (act!=null && act.isSpecial()) 
-			specials++;
+		if (act!= null){
+			act.setOwner(region);
+			placed.put(act.getType(), region);
+			if (act.isSpecial()) 
+				specials++;
+		}
+	}
+	
+	public void click(GameObject sender){
+		if (sender instanceof MapPartObject) {
+			if (((MapPartObject) sender).getAction() == null) {
+				placeAction((MapPartObject) sender, createActionSelector(InputManager.instance().getMousePosWorld()));
+			} else {
+				removeAction((MapPartObject) sender);
+			}
+		}else if (sender instanceof ActionObject){
+			System.out.println("ClickClick");
+		}
 	}
 	
 	public void removeAction(MapPartObject region){
@@ -70,6 +95,8 @@ public class PlanningPhase implements GameState {
 		placed.remove(oldAction.getType());
 		if(oldAction.isSpecial()) 
 			specials--;
+		oldAction.setOwner(0);
+		oldAction.finish();
 		region.setAction(null);
 	}
 	
@@ -89,7 +116,7 @@ public class PlanningPhase implements GameState {
 			for (ActionObject actionObject : actions) {
 				float cx = (float)(x+Math.cos(angle)*radius);
 				float cy = (float)(y+Math.sin(angle)*radius);
-				ImageButton button = new ImageButton(((ActionObject)actionObject).texture, (int)cx, (int)cy, Constants.ACTION_IMAGE_SCALE, actionObject);
+				ImageButton button = new ImageButton(((ActionObject)actionObject).texture, (int)cx, (int)cy, Constants.ACTIONSELECTOR_IMAGE_SCALE, actionObject);
 				button.setCallback((sender, param)->{
 					result = (ActionObject)param;
 					close();
@@ -120,6 +147,7 @@ public class PlanningPhase implements GameState {
 
 		@Override
 		public void exit() {
+			objects.forEach(obj->obj.finish());
 			objects.clear();
 		}
 
@@ -131,6 +159,10 @@ public class PlanningPhase implements GameState {
 
 		@Override
 		public void update() {
+			if (InputManager.instance().getMouseButtonState(InputManager.MOUSE_LEFT)==1 
+					&& !(InputManager.instance().getMouseTarget() instanceof ImageButton)){
+				close();
+			}
 			objects.forEach((obj)->{obj.update(this);});
 		}
 	}

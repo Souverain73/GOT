@@ -4,10 +4,15 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFW.glfwGetMouseButton;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
+import DGE.gameObjects.GameObject;
 import DGE.graphics.GraphicModule;
+import DGE.interfaces.IClickable;
 
 public class InputManager {
 //	CONSTANTS
@@ -21,12 +26,15 @@ public class InputManager {
 	private Vector2f lastMousePosWin;
 	private Vector2f lastMousePosWorld;
 	private int states[];
+	private ArrayList<IClickable> clickables;
+	private GameObject mouseTarget;
 
 	private InputManager() {
 		states = new int[3];
 		camMove = false;
 		lastMousePosWin = new Vector2f(0,0);
 		lastMousePosWorld = new Vector2f(0,0);
+		clickables = new ArrayList<IClickable>();
 	}
 
 	public static InputManager instance() {
@@ -50,7 +58,7 @@ public class InputManager {
 	
 	public void keyboardCallback(long window, int key, int scancode, int action, int mods){
 		if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
-			glfwSetWindowShouldClose(window, true); // We will detect this in our rendering loop
+			glfwSetWindowShouldClose(window, true);
 	}
 	
 	public void mouseMoveCallback(long window, double posx, double posy){
@@ -92,4 +100,41 @@ public class InputManager {
 		GraphicModule.instance().getCamera().scale((float)yoffset/30);
 	}
 
+	public boolean keyPressed(int key){
+		return glfwGetKey(Game.instance().pWindow, key) == GLFW_PRESS;
+	}
+	
+	public void update(){
+		boolean f = false;
+		for (IClickable cl : clickables) {
+			if (f){
+				cl.setMouseIn(false);
+			}else {
+				if (cl.ifMouseIn(lastMousePosWorld)){
+					mouseTarget = (GameObject) cl;
+					cl.setMouseIn(f = true);
+				}else{
+					cl.setMouseIn(false);
+				}
+			}
+		}
+		if (!f){
+			mouseTarget = null;
+		}
+		
+	}
+	
+	public GameObject getMouseTarget() {
+		return mouseTarget;
+	}
+
+	//IClickable support
+	public void registerClickable(IClickable clickable){
+		clickables.add(clickable);
+		Collections.sort(clickables, (c1, c2)-> c2.getPriority() - c1.getPriority());
+	}
+	
+	public void removeClickable(IClickable clickable){
+		clickables.remove(clickable);
+	}
 }
