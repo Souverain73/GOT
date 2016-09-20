@@ -77,6 +77,7 @@ public class GameMapObject implements GameObject {
 				if (regions.item(i).getNodeType() == Node.TEXT_NODE) continue;
 				Node region = regions.item(i);
 				LoaderParams params = new LoaderParams();
+				MapPartObject mapPart = new MapPartObject();
 				//атрибуты
 				params.put("name", attribValue(region, "name"));
 				params.put("influence", Integer.valueOf(valueOrDefault(attribValue(region, "influence"),"0")));
@@ -87,7 +88,7 @@ public class GameMapObject implements GameObject {
 				params.put("y", Integer.valueOf(attribValue(region, "y")));
 				params.put("w", Integer.valueOf(attribValue(region, "w")));
 				params.put("h", Integer.valueOf(attribValue(region, "h")));				
-				//inner nodes
+				//параметры
 				NodeList regionParams = region.getChildNodes();
 				for(int j=0; j<regionParams.getLength(); j++){
 					if (regionParams.item(j).getNodeType() == Node.TEXT_NODE) continue;
@@ -97,12 +98,20 @@ public class GameMapObject implements GameObject {
 						Texture tex = TextureManager.instance().loadTexture(texName);
 						params.put("texture", tex);
 					}
+					if (paramNode.getNodeName().equals("unitpos")){
+						params.put("unit_x", Integer.valueOf(attribValue(paramNode,"x")));
+						params.put("unit_y", Integer.valueOf(attribValue(paramNode,"y")));
+					}
+					if (paramNode.getNodeName().equals("unit")){
+						String sType = attribValue(paramNode, "type");
+						UnitObject.UnitType eType = UnitObject.UnitType.valueOf(sType);
+						mapPart.addUnit(UnitObject.getUnitByType(eType));
+					}
 					if (paramNode.getNodeName().equals("action")){
 						params.put("action_x", Integer.valueOf(attribValue(paramNode,"x")));
 						params.put("action_y", Integer.valueOf(attribValue(paramNode,"y")));
 					}
 				}
-				MapPartObject mapPart = new MapPartObject();
 				mapPart.init(params);
 				addRegion(mapPart);
 			}

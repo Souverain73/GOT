@@ -18,6 +18,7 @@ import DGE.graphics.GraphicModule;
 import DGE.graphics.Texture;
 import DGE.utils.LoaderParams;
 import DGE.utils.Utils;
+import sun.management.counter.Units;
 
 public class MapPartObject extends AbstractButtonObject {
 	private String name;
@@ -28,8 +29,15 @@ public class MapPartObject extends AbstractButtonObject {
 	private Vector<MapPartObject>  neighbors;
 	private int x, y, w, h;
 	private int act_x, act_y;
+	private int unit_x, unit_y;
 	private ActionObject action;
+	private Vector<UnitObject> units;
 	boolean overlay;
+	
+	public MapPartObject() {
+		neighbors = new Vector<MapPartObject>();
+		units = new Vector<UnitObject>();
+	}
 	
 	@Override
 	public boolean init(LoaderParams params) {
@@ -44,8 +52,9 @@ public class MapPartObject extends AbstractButtonObject {
 		h = (Integer)params.get("h");
 		act_x = (Integer)params.get("action_x");
 		act_y = (Integer)params.get("action_y");
-		neighbors = new Vector<MapPartObject>();
-		// TODO Auto-generated method stub
+		unit_x = (Integer)params.get("unit_x");
+		unit_y = (Integer)params.get("unit_y");
+		placeUnits();
 		return false;
 	}
 
@@ -63,6 +72,10 @@ public class MapPartObject extends AbstractButtonObject {
 		GraphicModule.instance().resetEffect();
 		if (action != null){
 			action.draw(st);
+		}
+		
+		if (units != null){
+			units.forEach(unit->unit.draw(st));
 		}
 	}
 
@@ -97,6 +110,41 @@ public class MapPartObject extends AbstractButtonObject {
 		}
 	}
 
+	public void addUnit(UnitObject unit){
+		if (units.size()>=4){
+			System.out.println("Can't add more than 4 units for one region");
+			return;
+		}
+		units.add(unit);
+		placeUnits();
+	}
+	
+	private void placeUnits(){
+		int x = this.x+unit_x;
+		int y = this.y+unit_y;
+		float angle = 0;
+		float radius = Constants.UNIT_SIZE*Constants.UNIT_SCALE*0.7f;
+		float step = 0;
+		
+		if (units.size() == 0) return;
+		
+		if (units.size() == 1){
+			units.get(0).setPos(new Vector2f(x,y));
+		}else{
+			switch(units.size()){
+			case 2: angle = 0; break;
+			case 3: angle = -90; break;
+			case 4: angle = 45; break;
+			}
+			angle = (float)Math.toRadians(angle);
+			step = (float)(360.0f/units.size() * Math.PI/180.0f);
+			for(int i=0; i<units.size(); i++){
+				units.get(i).setPos(new Vector2f((float)(x+Math.cos(angle)*radius), (float)(y+Math.sin(angle)*radius)));
+				angle+=step;
+			}
+		}
+	}
+	
 	public void setAction(ActionObject act){
 		if (act!=null){
 			act.setPosition(new Vector2f(x+act_x, y+act_y));
@@ -120,6 +168,14 @@ public class MapPartObject extends AbstractButtonObject {
 	public int getPriority() {
 		return 0;
 	}
+	
+	public int getHirePoints(){
+		return buildingLevel;
+	}
+	
+	public Vector<UnitObject> getUnits() {
+		return units;
+	}
 
 	private void setOverlay(Vector3f overlay){
 		Effect eff = new Effect();
@@ -130,6 +186,7 @@ public class MapPartObject extends AbstractButtonObject {
 	@Override
 	protected void click(GameState st) {
 		System.out.println("Click region:"+name+" GameState:"+st.getName());
+		System.out.println("UnitsSize="+units.size());
 		super.click(st);
 	}
 

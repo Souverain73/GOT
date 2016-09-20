@@ -15,13 +15,13 @@ public class StateMachine {
 		if (!_states.isEmpty()){
 			_states.poll().exit();
 		}
-		state.enter(this);
 		_states.push(state);
+		state.enter(this);
 	}
 	
 	public void pushState(GameState state){
-		state.enter(this);
 		_states.push(state);
+		state.enter(this);
 	}
 	
 	public void removeState(){

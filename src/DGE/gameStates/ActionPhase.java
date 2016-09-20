@@ -4,7 +4,7 @@ import DGE.gameObjects.GameObject;
 import DGE.interfaces.IClickListener;
 
 public class ActionPhase implements GameState, IClickListener{
-	private StateMachine stm;
+	protected StateMachine stm;
 	private static final String name = "ActionPhase";
 	
 	@Override
@@ -15,6 +15,7 @@ public class ActionPhase implements GameState, IClickListener{
 	@Override
 	public void enter(StateMachine stm) {
 		this.stm = stm;
+//		stm.pushState(new MovePhase());
 	}
 
 	@Override

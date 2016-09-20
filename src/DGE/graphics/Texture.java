@@ -130,11 +130,13 @@ public class Texture {
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glBindTexture(GL_TEXTURE_2D,0);
+		}else{
+			System.out.println("Can't laod texture "+fileName);
 		}
 	}
 
 	public void draw(float x, float y, float scale){
-		draw(x, y, width*scale, 0, height*scale);
+		draw(x, y, width*scale, height*scale, 0);
 	}
 	
 	public void draw(float x, float y, float w, float h, float z){
@@ -142,6 +144,8 @@ public class Texture {
 	}
 	
 	public void draw(float x, float y, float w, float h, float z, boolean useProjection){
+//		System.out.println("Draw "+ this.toString() + " at x:"+x+" y:"+y+" w:"+w+" h:"+h); 
+		
 		FloatBuffer mvFB = BufferUtils.createFloatBuffer(16);
 		FloatBuffer pm = BufferUtils.createFloatBuffer(16);
 		mv.identity().translate(x, y, -z).scale(w,h,1).get(mvFB);
@@ -185,6 +189,12 @@ public class Texture {
 		glDisable(GL_BLEND);
 	}
 	
+	@Override
+	public String toString() {
+		return "Texture [filename=" + filename + ", width=" + width + ", height=" + height + ", textureID=" + textureID
+				+ "]";
+	}
+
 	public Vector3f getPixel(int x, int y){
 		int pos = (y*width+x)*comp;
 		Vector3f res = new Vector3f((data.get(pos)/255.0f), (data.get(pos+1)/255.0f), (data.get(pos+2)/255.0f));

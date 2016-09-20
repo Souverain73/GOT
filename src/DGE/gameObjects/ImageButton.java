@@ -19,24 +19,29 @@ public class ImageButton extends AbstractButtonObject {
 	private float scale;
 	private Object param;
 	
-	public ImageButton(Texture tex, int x, int y, float scale, Object param){
-		texture = tex;
-		this.x = x;
-		this.y = y;
-		w = (int)(texture.getWidth()*scale);
-		h = (int)(texture.getHeight()*scale);
-		this.param=param;
-	}
-	
-	public ImageButton(String textName, int x, int y, int w, int h, Object param) {
+	private ImageButton(int x, int y, int w, int h, Object param){
 		super();
 		this.x = x;
 		this.y = y;
 		this.w = w;
 		this.h = h;
 		this.param = param;
-		
+	}
+	
+	public ImageButton(Texture tex, int x, int y, float scale, Object param){
+		this(x,y, (int)(tex.getWidth()*scale), (int)(tex.getHeight()*scale), param);
+		texture = tex;
+	}
+	
+	
+	public ImageButton(String textName, int x, int y, int w, int h, Object param) {
+		this(x,y,w,h,param);
 		texture = TextureManager.instance().loadTexture(textName);
+	}
+
+	public ImageButton(Texture tex, int x, int y, int w, int h, Object param) {
+		this(x,y,w,h,param);
+		texture = tex;
 	}
 	
 	
