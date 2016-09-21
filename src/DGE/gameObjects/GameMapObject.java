@@ -12,7 +12,7 @@ import DGE.graphics.Texture;
 import DGE.graphics.TextureManager;
 import DGE.utils.LoaderParams;
 
-public class GameMapObject implements GameObject {
+public class GameMapObject extends AbstractGameObject{
 	private HashMap<String, MapPartObject> map;
 	
 	private static GameMapObject _instance;

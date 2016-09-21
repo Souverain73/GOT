@@ -12,17 +12,13 @@ import DGE.graphics.GraphicModule;
 
 public class ImageButton extends AbstractButtonObject {
 	private Texture texture;
-	private int x;
-	private int y;
-	private int w;
-	private int h;
 	private float scale;
 	private Object param;
 	
 	private ImageButton(int x, int y, int w, int h, Object param){
 		super();
-		this.x = x;
-		this.y = y;
+		pos.x = x;
+		pos.y = y;
 		this.w = w;
 		this.h = h;
 		this.param = param;
@@ -47,6 +43,7 @@ public class ImageButton extends AbstractButtonObject {
 	
 	@Override
 	public void draw(GameState st) {
+		if (!isVisible()) return;
 		if (state == State.FREE){
 			
 		}else if (state == State.HOVER){
@@ -57,7 +54,7 @@ public class ImageButton extends AbstractButtonObject {
 			setOverlay(new Vector3f(-0.5f, -0.5f, -0.5f));
 		}
 		
-		texture.draw(x, y, w, h, 1);
+		texture.draw(getPos().x, getPos().y, w, h, 1);
 		super.draw(st);
 		
 		GraphicModule.instance().resetEffect();
@@ -66,10 +63,10 @@ public class ImageButton extends AbstractButtonObject {
 	@Override
 	public boolean ifMouseIn(Vector2f mousePos) {
 		if (Utils.pointInRect(mousePos,
-				new Vector2f(x, y),
+				getPos(),
 				new Vector2f(w, h))
 		){
-			if (texture.getAlfa((mousePos.x - x)/w, (mousePos.y - y)/h)!=0) return true; 
+			if (texture.getAlfa((mousePos.x - getPos().x)/w, (mousePos.y - getPos().y)/h)!=0) return true; 
 		}
 		return false;
 	}
@@ -105,6 +102,15 @@ public class ImageButton extends AbstractButtonObject {
 			callback.accept(this, param);
 		}
 	}
+
+	public Texture getTexture() {
+		return texture;
+	}
+
+	public void setTexture(Texture texture) {
+		this.texture = texture;
+	}
+	
 	
 	
 	

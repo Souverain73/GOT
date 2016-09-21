@@ -1,5 +1,7 @@
 package DGE.gameObjects;
 
+import java.util.Vector;
+
 import org.joml.Vector2f;
 
 import DGE.Constants;
@@ -8,7 +10,7 @@ import DGE.graphics.Texture;
 import DGE.graphics.TextureManager;
 import DGE.utils.LoaderParams;
 
-public class UnitObject implements GameObject{
+public class UnitObject extends AbstractGameObject{
 	public enum UnitType{
 		SOLDIER, KNIGHT, SIEGE, SHIP
 	}
@@ -28,6 +30,19 @@ public class UnitObject implements GameObject{
 		case KNIGHT:	result = result.new Knight(); break;
 		case SHIP:		result = result.new Ship(); break;
 		case SIEGE:		result = result.new Siege(); break;
+		}
+		result.setVisible(false);
+		return result;
+	}
+	
+	public static Vector<UnitObject> getUnitsByCost(int maxCost){
+		Vector<UnitObject> result = new Vector<UnitObject>();
+		UnitType[] types = UnitType.values();
+		for (UnitType type : types) {
+			UnitObject unit = UnitObject.getUnitByType(type);
+			if (unit.getCost()<=maxCost){
+				result.add(unit);
+			}
 		}
 		return result;
 	}
@@ -51,7 +66,9 @@ public class UnitObject implements GameObject{
 
 	@Override
 	public void draw(GameState st) {
-		tex.draw(pos.x, pos.y, size, size, Constants.UNIT_Z);
+		if (isVisible()){
+			tex.draw(pos.x, pos.y, size, size, Constants.UNIT_Z);
+		}
 	}
 
 	@Override
@@ -99,6 +116,9 @@ public class UnitObject implements GameObject{
 		return false;
 	}
 	
+	public Vector<UnitObject> getPossibleUpgrades(){
+		return null;
+	}
 	
 	
 	public Texture getTexture() {
@@ -130,6 +150,14 @@ public class UnitObject implements GameObject{
 		@Override
 		public boolean isUpgradeable() {
 			return true;
+		}
+		
+		@Override
+		public Vector<UnitObject> getPossibleUpgrades() {
+			Vector<UnitObject> result = new Vector<UnitObject>();
+			result.add(UnitObject.getUnitByType(UnitType.KNIGHT));
+			result.add(UnitObject.getUnitByType(UnitType.SIEGE));
+			return result;
 		}
 	}
 	

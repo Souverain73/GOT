@@ -5,6 +5,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import javax.swing.text.GlyphView;
 
@@ -26,7 +27,7 @@ import org.lwjgl.opengl.GL;
 
 public class Game {
 	private static Game _instance = null;
-	private ModalState modalState;
+	private LinkedList<ModalState> modalStates;
 	private Player player;
 
 	public static Game instance(){
@@ -47,6 +48,7 @@ public class Game {
 		stm = new StateMachine();
 		player = new Player();
 		player.setSpecials(2);
+		modalStates = new LinkedList<ModalState>();
 	}
 	
 	public long init(){	
@@ -160,13 +162,12 @@ public class Game {
 	}
 	
 	public void registerModalState(ModalState mst){
-		this.modalState = mst;
+		this.modalStates.push(mst);
 	}
 	
 	public void closeModal(){
-		if (modalState!=null){
-			modalState.close();
-			modalState = null;
+		if (!modalStates.isEmpty()){
+			modalStates.poll().close();
 		}
 	}
 	

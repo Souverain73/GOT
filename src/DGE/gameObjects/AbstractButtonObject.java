@@ -10,7 +10,7 @@ import DGE.interfaces.IClickListener;
 import DGE.interfaces.IClickable;
 import DGE.utils.LoaderParams;
 
-public abstract class AbstractButtonObject implements GameObject, IClickable{
+public abstract class AbstractButtonObject extends AbstractGameObject implements IClickable{
 	protected enum State {DOWN, FREE, HOVER, DISABLED};
 	protected BiConsumer<GameObject, Object> callback;
 	protected State state;
@@ -18,6 +18,7 @@ public abstract class AbstractButtonObject implements GameObject, IClickable{
 	protected boolean mouseIn;
 	
 	public AbstractButtonObject() {
+		super();
 		wasClick = false;
 		state = State.FREE;
 		InputManager.instance().registerClickable(this);
@@ -33,6 +34,7 @@ public abstract class AbstractButtonObject implements GameObject, IClickable{
 		InputManager.instance().removeClickable(this);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(LoaderParams params) {
 		if (params.containsKey("callback")){
@@ -46,11 +48,6 @@ public abstract class AbstractButtonObject implements GameObject, IClickable{
 		return this;
 	}
 	
-	@Override
-	public void draw(GameState st) {
-		
-	}
-
 	@Override
 	public void update(GameState st) {
 		if (state == State.DISABLED) return;
@@ -87,7 +84,8 @@ public abstract class AbstractButtonObject implements GameObject, IClickable{
 			}else{
 				wasClick = false;
 			}
-		}		
+		}
+		super.update(st);
 	}
 	
 	protected void mouseEnter(){
@@ -130,5 +128,14 @@ public abstract class AbstractButtonObject implements GameObject, IClickable{
 		return (state!=State.DISABLED);
 	}
 	
-	
+	@Override
+	public void setVisible(boolean visible) {
+		if (this.visible == visible) return;
+		this.visible = visible;
+		if (visible == true){
+			InputManager.instance().registerClickable(this);
+		}else{
+			InputManager.instance().removeClickable(this);
+		}
+	}
 }

@@ -77,6 +77,7 @@ public class MapPartObject extends AbstractButtonObject {
 		if (units != null){
 			units.forEach(unit->unit.draw(st));
 		}
+		super.draw(st);
 	}
 
 	public Vector<MapPartObject> getNeighbors(){
@@ -116,6 +117,11 @@ public class MapPartObject extends AbstractButtonObject {
 			return;
 		}
 		units.add(unit);
+		unit.setVisible(true);
+		placeUnits();
+	}
+	
+	public void updateUnits(){
 		placeUnits();
 	}
 	
@@ -194,6 +200,11 @@ public class MapPartObject extends AbstractButtonObject {
 		return action;
 	}
 	
+	public void hideUnits(){
+		units.forEach(unit->unit.setVisible(false));
+	}
 	
-	
+	public void showUnits(){
+		units.forEach(unit->unit.setVisible(true));
+	}
 }
