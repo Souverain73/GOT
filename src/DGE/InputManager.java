@@ -107,6 +107,7 @@ public class InputManager {
 	public void update(){
 		boolean f = false;
 		for (IClickable cl : clickables) {
+			if (!cl.isActive()) continue;
 			if (f){
 				cl.setMouseIn(false);
 			}else {

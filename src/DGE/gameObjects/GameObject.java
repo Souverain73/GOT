@@ -12,4 +12,6 @@ public interface GameObject extends IComposer<GameObject>{
 	public void update(GameState state);
 	public void finish();
 	public Vector2f getPos();
+	public boolean isVisible();
+	public void setVisible(boolean visible);
 }

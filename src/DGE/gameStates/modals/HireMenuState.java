@@ -22,8 +22,10 @@ public class HireMenuState implements GameState{
 	private Vector<UnitObject> units = null;
 	private GameObject plusButton = null;
 	private ImageButton [] buttons;
+	private Vector2f pos;
 	
 	public HireMenuState(Vector<UnitObject> units, Vector2f pos, int hirePoints) {
+		this.pos = pos;
 		this.hirePoints = hirePoints;
 		this.units = units;
 		this.buttons = new ImageButton[4];
@@ -76,8 +78,9 @@ public class HireMenuState implements GameState{
 		int i = (Integer)param;
 		UnitObject unit = units.get(i);
 		if (unit.isUpgradeable() && hirePoints>0){
+			hideObjects();
 			Vector<UnitObject> upUnits = unit.getPossibleUpgrades();
-			UnitSelectState ust = new UnitSelectState(upUnits, InputManager.instance().getMousePosWorld()); 
+			UnitSelectState ust = new UnitSelectState(upUnits, pos); 
 			(new ModalState(ust)).run();
 			if (ust.result!=null){
 				UnitObject newUnit = (UnitObject)ust.result;
@@ -85,11 +88,13 @@ public class HireMenuState implements GameState{
 				hirePoints--;
 				updateButtons();
 			}
+			showObjects();
 		}
 	}
 	
 	private void plusButtonCallback(GameObject sender, Object param){
-		UnitSelectState ust = new UnitSelectState(UnitObject.getUnitsByCost(hirePoints), InputManager.instance().getMousePosWorld());
+		hideObjects();
+		UnitSelectState ust = new UnitSelectState(UnitObject.getUnitsByCost(hirePoints), pos);
 		(new ModalState(ust)).run();
 		if (ust.result!=null){
 			UnitObject unit = (UnitObject)ust.result;
@@ -97,6 +102,7 @@ public class HireMenuState implements GameState{
 			units.add(unit);
 			updateButtons();
 		}
+		showObjects();
 	}
 	
 	public void close(){
@@ -122,6 +128,14 @@ public class HireMenuState implements GameState{
 	public void draw() {
 //		System.out.println("Draw HireMenu");
 		objects.forEach(obj->obj.draw(this));
+	}
+	
+	private void hideObjects(){
+		objects.forEach(obj->obj.setVisible(false));
+	}
+	
+	private void showObjects(){
+		objects.forEach(obj->obj.setVisible(true));
 	}
 
 	@Override

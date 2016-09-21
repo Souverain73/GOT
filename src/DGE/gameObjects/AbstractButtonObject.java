@@ -125,7 +125,7 @@ public abstract class AbstractButtonObject extends AbstractGameObject implements
 
 	@Override
 	public boolean isActive() {
-		return (state!=State.DISABLED);
+		return (state!=State.DISABLED || isVisible());
 	}
 	
 	@Override

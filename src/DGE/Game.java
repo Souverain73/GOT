@@ -2,26 +2,16 @@ package DGE;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.HashMap;
 import java.util.LinkedList;
 
-import javax.swing.text.GlyphView;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
-import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFWErrorCallback;
-
-import DGE.gameObjects.GameMapObject;
-import DGE.gameStates.MainState;
 import DGE.gameStates.MenuState;
-import DGE.gameStates.PlanningPhase;
 import DGE.gameStates.StateMachine;
 import DGE.graphics.*;
-import DGE.utils.LoaderParams;
 
 import org.lwjgl.opengl.GL;
 
