@@ -88,6 +88,7 @@ public class GameMapObject extends AbstractGameObject{
 				params.put("y", Integer.valueOf(attribValue(region, "y")));
 				params.put("w", Integer.valueOf(attribValue(region, "w")));
 				params.put("h", Integer.valueOf(attribValue(region, "h")));				
+				
 				//параметры
 				NodeList regionParams = region.getChildNodes();
 				for(int j=0; j<regionParams.getLength(); j++){

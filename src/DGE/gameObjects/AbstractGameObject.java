@@ -16,7 +16,7 @@ public class AbstractGameObject implements GameObject{
 	
 	@Override
 	public Vector2f getPos() {
-		return (parent == null) ? pos : parent.getPos().add(pos);
+		return (parent == null) ? pos : new Vector2f(parent.getPos()).add(pos);
 	}
 	
 	protected AbstractGameObject() {

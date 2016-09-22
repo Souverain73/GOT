@@ -8,9 +8,11 @@ import DGE.Constants;
 import DGE.Game;
 import DGE.gameObjects.GameObject;
 import DGE.gameObjects.ImageButton;
+import DGE.gameObjects.ImageObject;
 import DGE.gameObjects.UnitObject;
 import DGE.gameStates.GameState;
 import DGE.gameStates.StateMachine;
+import DGE.graphics.TextureManager;
 
 public class UnitSelectState implements GameState{
 	private final String name = "UnitSelect";
@@ -19,9 +21,14 @@ public class UnitSelectState implements GameState{
 	
 	public UnitSelectState(Vector<UnitObject> units, Vector2f pos){
 		objects = new Vector<GameObject>();
-		//TODO create BG
 		float x = pos.x;
 		float y = pos.y;
+			ImageObject bg = new ImageObject(TextureManager.instance().loadTexture("unitsMenuBg.png"),
+				new Vector2f(x,y), 220, 60);
+			objects.add(bg);
+		x = pos.x + 6;
+		y = pos.y + 5;
+		
 		int unitsCount = units.size();
 		for (int i=0; i<unitsCount; i++){
 			ImageButton btn = new ImageButton(units.get(i).getTexture(), 

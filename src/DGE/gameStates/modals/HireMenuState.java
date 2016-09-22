@@ -10,6 +10,7 @@ import DGE.InputManager;
 import DGE.ModalState;
 import DGE.gameObjects.GameObject;
 import DGE.gameObjects.ImageButton;
+import DGE.gameObjects.ImageObject;
 import DGE.gameObjects.UnitObject;
 import DGE.gameStates.GameState;
 import DGE.gameStates.StateMachine;
@@ -33,6 +34,14 @@ public class HireMenuState implements GameState{
 		//TODO create BG
 		float x = pos.x;
 		float y = pos.y;
+		
+			ImageObject bg = new ImageObject(TextureManager.instance().loadTexture("unitsMenuBg.png"),
+					new Vector2f(x,y), 220, 60);
+			objects.add(bg);
+			
+		x = pos.x + 6;
+		y = pos.y + 5;
+		
 		int step = (int)(Constants.UNIT_SIZE + Constants.UNIT_STEP);
 		int unitsCount = units.size();
 		for (int i=0; i<4; i++){
@@ -86,9 +95,9 @@ public class HireMenuState implements GameState{
 				UnitObject newUnit = (UnitObject)ust.result;
 				units.set(i, newUnit);
 				hirePoints--;
-				updateButtons();
 			}
 			showObjects();
+			updateButtons();
 		}
 	}
 	
@@ -100,9 +109,9 @@ public class HireMenuState implements GameState{
 			UnitObject unit = (UnitObject)ust.result;
 			hirePoints-=unit.getCost();
 			units.add(unit);
-			updateButtons();
 		}
 		showObjects();
+		updateButtons();
 	}
 	
 	public void close(){

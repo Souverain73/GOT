@@ -20,7 +20,6 @@ public class ActionObject extends AbstractButtonObject{
 		FIRE, FIREPLUS, MONEY, MONEYPLUS, MOVE, MOVEMINUS, MOVEPLUS, DEFEND, DEFENDPLUS, HELP, HELPPLUS 
 	}
 
-	private Vector2f pos;
 	private float radius;
 	private float scale;	
 	private static final String TEXTURE_BASE = "actions/";
@@ -83,7 +82,8 @@ public class ActionObject extends AbstractButtonObject{
 			GraphicModule.instance().setEffect(
 					new Effect(new Vector3f(0, 0.5f, 0), null, null));
 		}
-		texture.draw(pos.x-radius*scale, pos.y-radius*scale, 
+		Vector2f cx = getPos();
+		texture.draw(cx.x-radius*scale, cx.y-radius*scale, 
 				radius*2*scale, 
 				radius*2*scale, 0.5f);		
 		GraphicModule.instance().resetEffect();

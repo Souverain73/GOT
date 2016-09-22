@@ -18,8 +18,8 @@ public class Constants {
 
 //UNITS
 	public static final float UNIT_SIZE = 50;
-	public static final float UNIT_SCALE = 1;
-	public static final float UNIT_STEP = 10;
+	public static final float UNIT_SCALE = 1; 
+	public static final float UNIT_STEP = 3;
 	
 //CLICK PRIORITY (more first)
 	public static final float INTERFACE_Z = 1;
