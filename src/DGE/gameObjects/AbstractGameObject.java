@@ -57,6 +57,26 @@ public class AbstractGameObject implements GameObject{
 		}
 	}
 
+	public float getW() {
+		return w;
+	}
+
+	public void setW(float w) {
+		this.w = w;
+	}
+
+	public float getH() {
+		return h;
+	}
+
+	public void setH(float h) {
+		this.h = h;
+	}
+
+	public void setPos(Vector2f pos) {
+		this.pos = pos;
+	}
+
 	@Override
 	public void update(GameState state) {
 		childs.forEach(obj->obj.update(state));

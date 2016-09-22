@@ -11,6 +11,7 @@ import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import DGE.gameStates.MenuState;
 import DGE.gameStates.StateMachine;
+import DGE.gameStates.TestState;
 import DGE.graphics.*;
 
 import org.lwjgl.opengl.GL;
@@ -95,7 +96,7 @@ public class Game {
 	}
 	
 	public void initResources(){
-		stm.setState(new MenuState());
+		stm.setState(new TestState());
 	}
 	
 	

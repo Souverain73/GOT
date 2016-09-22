@@ -138,6 +138,10 @@ public class Texture {
 	public void draw(float x, float y, float scale){
 		draw(x, y, width*scale, height*scale, 0);
 	}
+
+	public void draw(float x, float y, float w, float h){
+		draw(x, y, w, h, 0, true);
+	}
 	
 	public void draw(float x, float y, float w, float h, float z){
 		draw(x, y, w, h, z, true);
