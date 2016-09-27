@@ -7,6 +7,7 @@ import DGE.InputManager;
 import DGE.ModalState;
 import DGE.gameObjects.GameObject;
 import DGE.gameObjects.MapPartObject;
+import DGE.gameObjects.MapPartObject.RegionType;
 import DGE.gameStates.modals.HireMenuState;
 
 public class CollectUnitsPhase extends ActionPhase{

@@ -12,6 +12,13 @@ import DGE.graphics.Texture;
 import DGE.graphics.TextureManager;
 import DGE.utils.LoaderParams;
 
+
+/**
+ * Game object represents game map.
+ * Used for load and store map regions.
+ * @author Souverain73
+ *
+ */
 public class GameMapObject extends AbstractGameObject{
 	private HashMap<String, MapPartObject> map;
 	
@@ -27,7 +34,7 @@ public class GameMapObject extends AbstractGameObject{
 	
 	@Override
 	public void finish() {
-		
+		map.values().forEach(obj->obj.finish());
 	}
 
 	private void addRegion(MapPartObject mapPart){
@@ -87,7 +94,8 @@ public class GameMapObject extends AbstractGameObject{
 				params.put("x", Integer.valueOf(attribValue(region, "x")));
 				params.put("y", Integer.valueOf(attribValue(region, "y")));
 				params.put("w", Integer.valueOf(attribValue(region, "w")));
-				params.put("h", Integer.valueOf(attribValue(region, "h")));				
+				params.put("h", Integer.valueOf(attribValue(region, "h")));			
+				params.put("type", attribValue(region, "type"));
 				
 				//параметры
 				NodeList regionParams = region.getChildNodes();

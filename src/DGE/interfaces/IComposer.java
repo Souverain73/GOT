@@ -1,5 +1,12 @@
 package DGE.interfaces;
 
+
+/**
+ * Interface for composer template. Used for store elements in to other elements.
+ * @param <T> Type of elements to store.
+ * 
+ * @author Souverain73
+ */
 public interface IComposer<T> {
 	public void addChild(T object);
 	public T getChild(int i);

@@ -2,6 +2,11 @@ package DGE;
 
 import org.lwjgl.glfw.GLFW;
 
+/**
+ * This class creates Game object and handles main loop
+ * 
+ * @author Souverain73
+ */
 public class DGE {
 
 	private static long pWindow;

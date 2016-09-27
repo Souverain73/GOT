@@ -1,8 +1,12 @@
 package DGE;
 
 
-//class contains player data
 
+/**
+ * Class contains all player data
+ * @author Souverain73
+ *
+ */
 public class Player {
 	private int specials;
 	private int money;

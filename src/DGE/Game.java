@@ -9,13 +9,17 @@ import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFWErrorCallback;
-import DGE.gameStates.MenuState;
 import DGE.gameStates.StateMachine;
 import DGE.gameStates.TestState;
 import DGE.graphics.*;
 
 import org.lwjgl.opengl.GL;
 
+/**
+ * Main Game class, handles all initiaization, and implements global Game fnctions
+ * 
+ * @author Souverain73
+ */
 public class Game {
 	private static Game _instance = null;
 	private LinkedList<ModalState> modalStates;

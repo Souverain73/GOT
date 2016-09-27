@@ -10,6 +10,11 @@ import DGE.graphics.Texture;
 import DGE.graphics.TextureManager;
 import DGE.utils.LoaderParams;
 
+/**
+ * Implements battle Unit.
+ * @author  изиловћё
+ *
+ */
 public class UnitObject extends AbstractGameObject{
 	public enum UnitType{
 		SOLDIER, KNIGHT, SIEGE, SHIP

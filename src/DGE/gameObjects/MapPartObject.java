@@ -4,23 +4,26 @@ import java.util.Vector;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import org.joml.Vector4f;
 
 import DGE.Constants;
-import DGE.Game;
 import DGE.InputManager;
-import DGE.gameObjects.AbstractButtonObject.State;
-import DGE.gameStates.ActionPhase;
 import DGE.gameStates.GameState;
-import DGE.gameStates.PlanningPhase;
 import DGE.graphics.Effect;
 import DGE.graphics.GraphicModule;
 import DGE.graphics.Texture;
 import DGE.utils.LoaderParams;
 import DGE.utils.Utils;
-import sun.management.counter.Units;
 
+/**
+ * Handling all map region data, and region interactions.<br>
+ * Also extends {@link AbstractButtonObject}.
+ * @author ÊèçèëîâÌÞ
+ *
+ */
 public class MapPartObject extends AbstractButtonObject {
+	public enum RegionType{	GROUND, SEA, PORT}
+	
+	private RegionType type;
 	private String name;
 	private int resourcesCount;
 	private int influencePoints;
@@ -55,6 +58,7 @@ public class MapPartObject extends AbstractButtonObject {
 		act_y = (Integer)params.get("action_y");
 		unit_x = (Integer)params.get("unit_x");
 		unit_y = (Integer)params.get("unit_y");
+		type = RegionType.valueOf((String)params.get("type"));
 		placeUnits();
 		return false;
 	}
@@ -210,5 +214,9 @@ public class MapPartObject extends AbstractButtonObject {
 	
 	public void showUnits(){
 		units.forEach(unit->unit.setVisible(true));
+	}
+
+	public RegionType getType() {
+		return type;
 	}
 }

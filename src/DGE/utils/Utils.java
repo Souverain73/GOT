@@ -19,30 +19,25 @@ public class Utils {
 	public static CharsetEncoder encoder = charset.newEncoder();
 	public static CharsetDecoder decoder = charset.newDecoder();
 	
-	public static ByteBuffer strToBb(String str){
-		try{
-			return encoder.encode(CharBuffer.wrap(str)).put((byte)0).order(ByteOrder.nativeOrder());
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return null;
-	}
 	
-	public static String bbToStr(ByteBuffer bb){
-		try{
-			return (decoder.decode(bb)).toString();
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
+	/**
+	 * Reads file into String;
+	 * @param path - path to file
+	 * @return all file data as encoded string.
+	 * @throws IOException
+	 */
 	static public String readFile(String path) throws IOException 
 	{
 		byte[] encoded = Files.readAllBytes(Paths.get(path));
 	    return new String(encoded);
 	}
 	
+	/**
+	 * Check if point in rectangle
+	 * @param point
+	 * @param rectPos - top left corner of rectangle
+	 * @param rectDim - width and height of rectangle
+	 */
 	static public boolean pointInRect(Vector2f point, Vector2f rectPos, Vector2f rectDim){
 		if (point.x < rectPos.x) return false;
 		if (point.x >= rectPos.x+rectDim.x) return false;
@@ -51,6 +46,13 @@ public class Utils {
 		return true;
 	}
 	
+	
+	/**
+	 * Calculate distance between two points
+	 * @param p1
+	 * @param p2
+	 * @return distance between p1 and p2
+	 */
 	static public float distance(Vector2f p1, Vector2f p2){
 		return (float)Math.sqrt((p1.x-p2.x)*(p1.x-p2.x)+(p1.y-p2.y)*(p1.y-p2.y));
 	}

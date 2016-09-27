@@ -10,7 +10,6 @@ import DGE.Game;
 import DGE.InputManager;
 import DGE.ModalState;
 import DGE.gameObjects.ActionObject;
-import DGE.gameObjects.GameMapObject;
 import DGE.gameObjects.ActionObject.Action;
 import DGE.gameObjects.GameObject;
 import DGE.gameObjects.ImageButton;

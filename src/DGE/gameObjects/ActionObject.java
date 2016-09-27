@@ -7,7 +7,6 @@ import org.joml.Vector3f;
 
 import DGE.Constants;
 import DGE.gameStates.GameState;
-import DGE.gameStates.PlanningPhase;
 import DGE.graphics.Effect;
 import DGE.graphics.GraphicModule;
 import DGE.graphics.Texture;
@@ -15,6 +14,11 @@ import DGE.graphics.TextureManager;
 import DGE.utils.LoaderParams;
 import DGE.utils.Utils;
 
+/**
+ * Game object represents game action.
+ * @author Souverain73
+ *
+ */
 public class ActionObject extends AbstractButtonObject{
 	public enum Action{
 		FIRE, FIREPLUS, MONEY, MONEYPLUS, MOVE, MOVEMINUS, MOVEPLUS, DEFEND, DEFENDPLUS, HELP, HELPPLUS 

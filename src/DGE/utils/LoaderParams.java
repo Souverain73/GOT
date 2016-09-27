@@ -3,9 +3,7 @@ package DGE.utils;
 import java.util.HashMap;
 
 public class LoaderParams extends HashMap<String, Object> {
-	/**
-	 * 
-	 */
+
 	public LoaderParams(){
 		super();
 	}

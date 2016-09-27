@@ -6,10 +6,14 @@ import org.joml.Vector3f;
 
 import DGE.Constants;
 
+/**
+ * Basic 2D camera with orthographic projection.
+ * 
+ * @author Souverain73
+ *
+ */
 public class Ortho2DCamera implements ICamera{
 	//constants
-	private static final float MAX_SCALE = 0.7f;
-	private static final float MIN_SCALE = 0.1f;
 	private Matrix4f projection;
 	private Vector3f position;
 	private AxisAngle4f rotation;
@@ -122,6 +126,7 @@ public class Ortho2DCamera implements ICamera{
 		projection.translate(position);
 	}
 
+	@Override
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append("Ortho2DCamera\n");

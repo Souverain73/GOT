@@ -5,16 +5,23 @@ import java.util.Vector;
 import org.joml.Vector2f;
 
 import DGE.gameStates.GameState;
+import DGE.interfaces.IComposer;
 import DGE.utils.LoaderParams;
 
-public class AbstractGameObject implements GameObject{
-	protected Vector<GameObject> childs;
-	protected GameObject parent;
+/**
+ * Base class for all GameObject.
+ * Implements basic GameObject functions and extends it with Position, Dimensions, and Container functions.
+ * @author Souverain73
+ *
+ */
+public class AbstractGameObject implements GameObject, IComposer<AbstractGameObject>{
+	protected Vector<AbstractGameObject> childs;
+	protected AbstractGameObject parent;
 	protected Vector2f pos;
 	protected float w, h;
 	protected boolean visible;
 	
-	@Override
+	
 	public Vector2f getPos() {
 		return (parent == null) ? pos : new Vector2f(parent.getPos()).add(pos);
 	}
@@ -22,11 +29,11 @@ public class AbstractGameObject implements GameObject{
 	protected AbstractGameObject() {
 		visible = true;
 		pos = new Vector2f();
-		childs = new Vector<GameObject>();
+		childs = new Vector<AbstractGameObject>();
 	}
 	
 	@Override
-	public void addChild(GameObject object) {
+	public void addChild(AbstractGameObject object) {
 		if (object!=null){
 			object.setParent(this);
 			childs.add(object);
@@ -34,16 +41,21 @@ public class AbstractGameObject implements GameObject{
 	}
 
 	@Override
-	public GameObject getChild(int i) {
+	public AbstractGameObject getChild(int i) {
 		if (i<childs.size()) return childs.get(i);
 		return null;
 	}
 
 	@Override
-	public GameObject getParent() {
+	public void setParent(AbstractGameObject object) {
+		parent = object;
+	}
+	
+	@Override
+	public AbstractGameObject getParent() {
 		return parent;
 	}
-
+	
 	@Override
 	public boolean init(LoaderParams params) {
 		// TODO Auto-generated method stub
@@ -87,11 +99,6 @@ public class AbstractGameObject implements GameObject{
 		childs.forEach(obj->obj.finish());
 	}
 
-	@Override
-	public void setParent(GameObject object) {
-		parent = object;
-	}
-	
 	@Override
 	public boolean isVisible(){
 		return visible;

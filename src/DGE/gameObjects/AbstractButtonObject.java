@@ -10,6 +10,20 @@ import DGE.interfaces.IClickListener;
 import DGE.interfaces.IClickable;
 import DGE.utils.LoaderParams;
 
+/**
+ * 
+ * Base class for all buttons
+ * <h1>Usage:</h1>
+ * <p>
+ * 	All buttons have callback function.<br>
+ * 	Callback function called when button is pressed.
+ * <h2>Default callback:</h2>
+ * 	Default callback tries to use iClickListener interface of current state.
+ * 	If current state is click listener then click() method will be called.
+ * </p>
+ * @author Souverain73
+ *
+ */
 public abstract class AbstractButtonObject extends AbstractGameObject implements IClickable{
 	protected enum State {DOWN, FREE, HOVER, DISABLED};
 	protected BiConsumer<GameObject, Object> callback;

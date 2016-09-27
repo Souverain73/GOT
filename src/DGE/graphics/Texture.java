@@ -44,7 +44,6 @@ import java.util.ArrayList;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 
 import DGE.InputManager;
@@ -147,8 +146,7 @@ public class Texture {
 		draw(x, y, w, h, z, true);
 	}
 	
-	public void draw(float x, float y, float w, float h, float z, boolean useProjection){
-//		System.out.println("Draw "+ this.toString() + " at x:"+x+" y:"+y+" w:"+w+" h:"+h); 
+	public void draw(float x, float y, float w, float h, float z, boolean useProjection){ 
 		
 		FloatBuffer mvFB = BufferUtils.createFloatBuffer(16);
 		FloatBuffer pm = BufferUtils.createFloatBuffer(16);

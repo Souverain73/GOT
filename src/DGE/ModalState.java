@@ -6,6 +6,12 @@ import DGE.gameStates.GameState;
 import DGE.gameStates.StateMachine;
 import DGE.graphics.GraphicModule;
 
+/**
+ * This class handles modal states like unit select, action select, etc
+ * It stops main loop and handle the same loop with itself
+ * @author Souverain73
+ *
+ */
 public class ModalState implements Runnable{
 	private boolean running;
 	private GameState state;

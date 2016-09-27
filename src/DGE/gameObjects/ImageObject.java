@@ -5,6 +5,11 @@ import org.joml.Vector2f;
 import DGE.gameStates.GameState;
 import DGE.graphics.Texture;
 
+/**
+ * Implements simple image.
+ * @author  изиловћё
+ *
+ */
 public class ImageObject extends AbstractGameObject{
 	private Texture tex;
 	

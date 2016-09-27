@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map>
 	<regions>
-		<region name="Castle Black" type="ground" influence="1" x="609" y="0" w="475" h="286">
+		<region name="Castle Black" type="GROUND" influence="1" x="609" y="0" w="475" h="286">
 			<action x="95" y="191"/>
 			<unitpos x="335" y="50"/>
 			<unit type="KNIGHT" />
@@ -10,7 +10,7 @@
 			<unit type="SIEGE" />
 			<texture filename="CastleBlack.png"/>
 		</region>
-		<region name="Karhold" type="ground" influence="1" x="951" y="149" w="355" h="318">
+		<region name="Karhold" type="GROUND" influence="1" x="951" y="149" w="355" h="318">
 			<action x="282" y="116"/>
 			<unitpos x="165" y="215"/>			
 			<unit type="KNIGHT" />
@@ -19,7 +19,7 @@
 			<unit type="SOLDIER"/>
 			<texture filename="Karhold.png"/>
 		</region>
-		<region name="Winterfell" type="ground" influence="1" resources="1" building="2" x="261" y="170" w="837" h="678">
+		<region name="Winterfell" type="GROUND" influence="1" resources="1" building="2" x="261" y="170" w="837" h="678">
 			<action x="611" y="152"/>
 			<unitpos x="355" y="520"/>
 			<unit type="SOLDIER"/>
@@ -27,7 +27,7 @@
 			<unit type="KNIGHT"/>
 			<texture filename="Winterfell.png"/>
 		</region>
-		<region name="White Harbor" type="ground" building="1" x="746" y="423" w="379" h="511">
+		<region name="White Harbor" type="GROUND" building="1" x="746" y="423" w="379" h="511">
 			<action x="132" y="219"/>
 			<unitpos x="190" y="80"/>
 			<unit type="SOLDIER"/>
@@ -36,7 +36,7 @@
 			<unit type="SOLDIER"/>
 			<texture filename="WhiteHarbor.png"/>
 		</region>
-		<region name="Widow's Watch" type="ground" resources="1" x="939" y="561" w="278" h="219">
+		<region name="Widow's Watch" type="GROUND" resources="1" x="939" y="561" w="278" h="219">
 			<action x="48" y="135"/>
 			<unitpos x="90" y="75"/>
 			<unit type="SOLDIER"/>
@@ -45,7 +45,7 @@
 			<unit type="SOLDIER"/>
 			<texture filename="WidowsWatch.png"/>
 		</region>
-		<region name="The Stony Shore" type="ground" resources="1" x="153" y="423" w="408" h="426">
+		<region name="The Stony Shore" type="GROUND" resources="1" x="153" y="423" w="408" h="426">
 			<action x="76" y="164"/>
 			<unitpos x="260" y="220"/>
 			<unit type="SOLDIER"/>
@@ -54,22 +54,17 @@
 			<unit type="SOLDIER"/>
 			<texture filename="TheStonyShore.png"/>
 		</region>
-		<region name="Bay Of Ice" type="sea" x="0" y="0" w="763" h="960">
+		<region name="Bay Of Ice" type="SEA" x="0" y="0" w="763" h="960">
 			<action x="292" y="115"/>
 			<unitpos x="90" y="380"/>
-			<unit type="SIEGE" />
 			<unit type="SHIP" />
 			<unit type="SHIP" />
-			<unit type="SIEGE" />
 			<texture filename="BayOfIce.png"/>
 		</region>
-		<region name="The Shivering Sea" type="sea" x="1024" y="0" w="476" h="762">
+		<region name="The Shivering Sea" type="SEA" x="1024" y="0" w="476" h="762">
 			<action x="365" y="170"/>
 			<unitpos x="180" y="520"/>
-			<unit type="SOLDIER"/>
-			<unit type="SOLDIER"/>
-			<unit type="SOLDIER"/>
-			<unit type="SOLDIER"/>
+			<unit type="SHIP"/>
 			<texture filename="TheShiveringSea.png"/>
 		</region>
 	</regions>

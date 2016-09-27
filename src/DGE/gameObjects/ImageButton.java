@@ -10,9 +10,14 @@ import DGE.gameStates.GameState;
 import DGE.graphics.Effect;
 import DGE.graphics.GraphicModule;
 
+/**
+ * Extends {@link AbstractButtonObject} with image.<br>
+ * For usage look {@link AbstractButtonObject}.
+ * @author  изиловћё
+ *
+ */
 public class ImageButton extends AbstractButtonObject {
 	private Texture texture;
-	private float scale;
 	private Object param;
 	
 	private ImageButton(int x, int y, int w, int h, Object param){

@@ -14,6 +14,11 @@ import DGE.gameObjects.GameObject;
 import DGE.graphics.GraphicModule;
 import DGE.interfaces.IClickable;
 
+/**
+ * This class handle all input
+ * @author Souverain73
+ *
+ */
 public class InputManager {
 //	CONSTANTS
 	public static final int MOUSE_LEFT = 0;
