@@ -1,5 +1,7 @@
 package DGE.graphics;
 
+import java.nio.FloatBuffer;
+
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
@@ -9,6 +11,8 @@ public interface ICamera {
 	 * @return Matrix4f projection matrix
 	 */
 	public Matrix4f getProjection();
+	
+	public FloatBuffer getProjectionAsFloatBuffer();
 	/**
 	 * Move camera relative to current position.
 	 * @param diff - move value.

@@ -135,26 +135,27 @@ public class Texture {
 	}
 
 	public void draw(float x, float y, float scale){
-		draw(x, y, width*scale, height*scale, 0);
+		draw(x, y, width*scale, height*scale);
 	}
 
 	public void draw(float x, float y, float w, float h){
-		draw(x, y, w, h, 0, true);
+		draw(x, y, w, h, 0);
 	}
 	
 	public void draw(float x, float y, float w, float h, float z){
-		draw(x, y, w, h, z, true);
+		draw(x, y, w, h, z, DrawSpace.WORLD);
 	}
 	
-	public void draw(float x, float y, float w, float h, float z, boolean useProjection){ 
+	public void draw(float x, float y, float w, float h, float z, DrawSpace space){ 
 		
 		FloatBuffer mvFB = BufferUtils.createFloatBuffer(16);
-		FloatBuffer pm = BufferUtils.createFloatBuffer(16);
+		FloatBuffer pm;
 		mv.identity().translate(x, y, -z).scale(w,h,1).get(mvFB);
-		if (useProjection)
-			GraphicModule.instance().getCamera().getProjection().get(pm);
+		if (space == DrawSpace.WORLD)
+			pm = GraphicModule.instance().getCamera().getProjectionAsFloatBuffer();
 		else
-			new Matrix4f().identity().get(pm);
+			//TODO: create screen space projection in graphicsModule
+			pm = GraphicModule.instance().getScreenProjectionAsFloatBuffer();
 		
 		//apply effects;
 		if (GraphicModule.instance().getEffect()!=null){

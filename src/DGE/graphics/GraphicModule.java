@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
+import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
 
 import DGE.Constants;
@@ -85,6 +86,10 @@ public class GraphicModule {
 			glBufferData(GL_ARRAY_BUFFER, dataBuffer, GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, resultBuffer);
 		return resultBuffer;
+	}
+	
+	public static void deleteBuffer(int buffer){
+		
 	}
 	
 	public static int createShader(int eShaderType, String fnameShaderFile) {
@@ -165,5 +170,13 @@ public class GraphicModule {
 	
 	public Effect getEffect(){
 		return effect;
+	}
+	
+	public Matrix4f getScreenProjection(){
+		throw new IllegalStateException("TODO: implement screen projection");
+	}
+	
+	public FloatBuffer getScreenProjectionAsFloatBuffer(){
+		throw new IllegalStateException("TODO: implement screen projection");
 	}
 }

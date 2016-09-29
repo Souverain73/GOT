@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 public class TextureManager {
 	private static TextureManager _instance = null;
 	private static final String textureBase = "data/textures/";
+	private HashMap<String, Texture> textures;
 	
 	private TextureManager(){
 		textures = new HashMap<String, Texture>();
@@ -18,8 +19,6 @@ public class TextureManager {
 		}
 		return _instance;
 	}
-	
-	private HashMap<String, Texture> textures;
 	
 	public Texture loadTexture(String fileName){
 		Texture res = textures.get(fileName);

@@ -1,8 +1,11 @@
 package DGE.graphics;
 
+import java.nio.FloatBuffer;
+
 import org.joml.AxisAngle4f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.lwjgl.BufferUtils;
 
 import DGE.Constants;
 
@@ -22,9 +25,11 @@ public class Ortho2DCamera implements ICamera{
 	private float h;
 	private boolean forceUpdate;
 	private boolean debug;
+	private FloatBuffer fbProjection;
 
 	public Ortho2DCamera(){
 		this(true);
+		fbProjection = BufferUtils.createFloatBuffer(16);
 	}
 	
 	public Ortho2DCamera(boolean forceUpdate){
@@ -50,6 +55,11 @@ public class Ortho2DCamera implements ICamera{
 	@Override
 	public Matrix4f getProjection() {
 		return projection;
+	}
+	
+	@Override
+	public FloatBuffer getProjectionAsFloatBuffer() {
+		return fbProjection;
 	}
 
 	@Override
@@ -124,6 +134,7 @@ public class Ortho2DCamera implements ICamera{
 		projection.setOrtho(-w/2, w/2, h/2, -h/2, 1, -1);
 		projection.scale(scale);
 		projection.translate(position);
+		projection.get(fbProjection);
 	}
 
 	@Override
