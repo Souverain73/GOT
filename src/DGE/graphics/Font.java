@@ -12,7 +12,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class Font{
 	
 	private static final String fontsBase = "data/fonts/";
-	
+	private String name;
 	private int mapWidth, mapHeight;
 	private int cellWidth, cellHeight;
 	private int startChar;
@@ -21,6 +21,8 @@ public class Font{
 	private float rowFactor;
 	private float colFactor;
 	private Texture map;
+	private int size = 32;
+	private final int spacing = 0;
 	
 	/**
 	 * Load font data, like size, characters width, etc<br>
@@ -39,8 +41,9 @@ public class Font{
 	 * @param fontName - name of font to load
 	 */
 	public Font(String fontName){
+		this.name = fontName;
 		Path dataPath = Paths.get(fontsBase+fontName+".dat");
-		Path texturePath = Paths.get(fontsBase+fontName+".bmp");
+		Path texturePath = Paths.get(fontsBase+fontName+".png");
 
 		if (Files.notExists(dataPath)){
 			System.out.println("Can't find data for font "+fontName);
@@ -63,8 +66,10 @@ public class Font{
 			}
 			//calculate parameters for drawing
 			rowPitch = mapWidth / cellWidth;
-			rowFactor = cellWidth / mapWidth;
-			colFactor = cellHeight / mapHeight;
+			rowFactor = cellWidth*1.0f / mapWidth;
+			colFactor = cellHeight*1.0f / mapHeight;
+			size = cellWidth;
+			//read charset map
 			map = new Texture(texturePath.toString());
 			if (map.getWidth() != mapWidth || map.getHeight()!=mapHeight){
 				System.out.println("WARNING: Image size not equals data size for font:"+fontName);
@@ -75,12 +80,84 @@ public class Font{
 		}
 	}
 	
+	protected static void init(){
+		
+	}
+	
 	protected Text newTextObject(String text){
-		throw new NotImplementedException();
+		float x = 0;
+		float y = 0;
+		int length = text.length();
+
+		
+		float [] UV = new float[length*12];
+		float [] pos = new float[length*18];
+		
+		for (int i=0; i<length; i++){
+			addGplyphUV(text.charAt(i), i, UV);
+			addGlyphPos(x, y, i, pos);
+			x+=charWidths[text.charAt(i)] + spacing;
+		}
+
+		
+		return new Text(pos, UV, length, this);
+	}
+	
+	private void addGplyphUV(char c, int index, float[] UV){
+		int pos = c - startChar;
+		int row = pos / rowPitch;
+		int col = pos - (row*rowPitch);
+		float top = row * rowFactor;
+		float left = col * colFactor;
+		float right = left + colFactor;
+		float bottom = top + rowFactor;
+		
+		int i = index * 12;  //One glyph needs two triangles. One triangle needs 3 points. One point need 2 floats. 2*3*2 = 12
+		
+		UV[i++] = right;	UV[i++] = bottom;
+		UV[i++] = right; 	UV[i++] = top;
+		UV[i++] = left;		UV[i++] = top;
+		UV[i++] = left; 	UV[i++] = top;
+		UV[i++] = left; 	UV[i++] = bottom;
+		UV[i++] = right;	UV[i++] = bottom;
+	}
+	
+	private void addGlyphPos(float x, float y, int index, float[] pos){
+		float top = y;
+		float left = x;
+		float bottom = top + size;
+		float right = left + size;
+		
+		int i = index * 18;	//One glyph needs two triangles. One triangle needs 3 points. One point need 3 floats. 2*3*3 = 18
+		
+		
+		pos[i++] = right;	pos[i++] = bottom; 	pos[i++] = 0;
+		pos[i++] = right; 	pos[i++] = top;		pos[i++] = 0;
+		pos[i++] = left;	pos[i++] = top;		pos[i++] = 0;
+		pos[i++] = left; 	pos[i++] = top;		pos[i++] = 0;
+		pos[i++] = left; 	pos[i++] = bottom;	pos[i++] = 0;
+		pos[i++] = right;	pos[i++] = bottom;	pos[i++] = 0;
 	}
 	
 	protected void changeText(Text text, String newText){
-		throw new NotImplementedException();
+		float x = 0;
+		float y = 0;
+		int length = newText.length();
+
+		
+		float [] UV = new float[length*12];
+		float [] pos = new float[length*18];
+		
+		for (int i=0; i<length; i++){
+			addGplyphUV(newText.charAt(i), i, UV);
+			addGlyphPos(x, y, i, pos);
+			x+=charWidths[newText.charAt(i)] + spacing;
+		}
+		
+		text.setFont(this);
+		text.setGlyphs(length);
+		text.setUVCoords(UV);
+		text.setVertexCoords(pos);
 	}
 	
 	public void freeResources(){

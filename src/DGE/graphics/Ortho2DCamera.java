@@ -29,7 +29,6 @@ public class Ortho2DCamera implements ICamera{
 
 	public Ortho2DCamera(){
 		this(true);
-		fbProjection = BufferUtils.createFloatBuffer(16);
 	}
 	
 	public Ortho2DCamera(boolean forceUpdate){
@@ -42,6 +41,7 @@ public class Ortho2DCamera implements ICamera{
 	
 	public Ortho2DCamera(float x, float y, boolean forceUpdate, boolean debug) {
 		projection = new Matrix4f();
+		fbProjection = BufferUtils.createFloatBuffer(16);
 		position = new Vector3f(x, y, 0);
 		rotation = new AxisAngle4f(0, 0, 0, 1);
 		w = 0;
@@ -49,7 +49,7 @@ public class Ortho2DCamera implements ICamera{
 		scale = 0.5f;
 		this.forceUpdate = forceUpdate;
 		this.debug = debug;
-		if (forceUpdate) updateCamera();
+		updateCamera();
 	}
 	
 	@Override
@@ -134,6 +134,7 @@ public class Ortho2DCamera implements ICamera{
 		projection.setOrtho(-w/2, w/2, h/2, -h/2, 1, -1);
 		projection.scale(scale);
 		projection.translate(position);
+		fbProjection.rewind();
 		projection.get(fbProjection);
 	}
 

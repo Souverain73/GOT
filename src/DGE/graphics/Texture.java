@@ -91,7 +91,7 @@ public class Texture {
 		return textureID;
 	}
 	
-	public static void init(){
+	protected static void init(){
 		//init buffers
 		  glEnable(GL_TEXTURE_2D);
 		  vertexCoordsBuffer = GraphicModule.createBuffer(vertexCoords);
@@ -147,14 +147,12 @@ public class Texture {
 	}
 	
 	public void draw(float x, float y, float w, float h, float z, DrawSpace space){ 
-		
 		FloatBuffer mvFB = BufferUtils.createFloatBuffer(16);
 		FloatBuffer pm;
 		mv.identity().translate(x, y, -z).scale(w,h,1).get(mvFB);
 		if (space == DrawSpace.WORLD)
 			pm = GraphicModule.instance().getCamera().getProjectionAsFloatBuffer();
 		else
-			//TODO: create screen space projection in graphicsModule
 			pm = GraphicModule.instance().getScreenProjectionAsFloatBuffer();
 		
 		//apply effects;

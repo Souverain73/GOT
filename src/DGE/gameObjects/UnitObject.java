@@ -1,6 +1,7 @@
 package DGE.gameObjects;
 
 import java.util.Vector;
+import java.util.function.Predicate;
 
 import org.joml.Vector2f;
 
@@ -40,12 +41,12 @@ public class UnitObject extends AbstractGameObject{
 		return result;
 	}
 	
-	public static Vector<UnitObject> getUnitsByCost(int maxCost){
+	public static Vector<UnitObject> getUnitsByCondition(Predicate<UnitObject> cond){
 		Vector<UnitObject> result = new Vector<UnitObject>();
 		UnitType[] types = UnitType.values();
 		for (UnitType type : types) {
 			UnitObject unit = UnitObject.getUnitByType(type);
-			if (unit.getCost()<=maxCost){
+			if (cond.test(unit)){
 				result.add(unit);
 			}
 		}

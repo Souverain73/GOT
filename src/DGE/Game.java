@@ -5,6 +5,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import java.util.LinkedList;
 
 
+import DGE.gameStates.MenuState;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
@@ -61,12 +62,12 @@ public class Game {
 		
 		//set window options
 		glfwDefaultWindowHints();
-//		glfwWindowHint(GLFW_FSAA_SAMPLES, 4); // 4x Сглаживание
-//		glfwWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3); // Мы хотим использовать OpenGL 3.3
+//		glfwWindowHint(GLFW_FSAA_SAMPLES, 4); // 4x пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+//		glfwWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3); // пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ OpenGL 3.3
 //		glfwWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
 //		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 //		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-//		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // Мы не хотим старый OpenGL
+//		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ OpenGL
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 		
@@ -85,7 +86,7 @@ public class Game {
 		
 		glfwSetInputMode(pWindow, GLFW_STICKY_MOUSE_BUTTONS, 1);
 		
-		//windwo resize callback
+		//window resize callback
 		glfwSetWindowSizeCallback(pWindow, this::windowSizeCallback);
 		
 		// Make the OpenGL context current
@@ -100,7 +101,7 @@ public class Game {
 	}
 	
 	public void initResources(){
-		stm.setState(new TestState());
+		stm.setState(new MenuState());
 	}
 	
 	

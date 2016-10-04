@@ -4,13 +4,19 @@ import java.util.Vector;
 
 import org.joml.Vector2f;
 
+import DGE.gameObjects.FPSCounterObject;
 import DGE.gameObjects.GameObject;
 import DGE.gameObjects.ImageObject;
+import DGE.graphics.DrawSpace;
+import DGE.graphics.Font;
+import DGE.graphics.Text;
 import DGE.graphics.TextureManager;
 
 public class TestState implements GameState{
 	private static final String name = "TestState";
 	private Vector<GameObject> objects;
+	private Font test;
+	private Text hello;
 	
 	public TestState() {
 		objects = new Vector<GameObject>();
@@ -25,8 +31,9 @@ public class TestState implements GameState{
 	@Override
 	public void enter(StateMachine stm) {
 		System.out.println("Enter "+name);
-		objects.add(new ImageObject(TextureManager.instance().loadTexture("plus.png"),
-				new Vector2f(-50,-50), 100, 100));
+		test = new Font("test");
+		hello = Text.newInstance("Hello World!!!!", test);
+		objects.add(new FPSCounterObject());
 	}
 
 	@Override
@@ -37,6 +44,7 @@ public class TestState implements GameState{
 
 	@Override
 	public void draw() {
+		hello.draw(0, 0, 1, 1, DrawSpace.WORLD);
 		objects.forEach(obj->obj.draw(this));
 	}
 

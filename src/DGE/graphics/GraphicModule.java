@@ -46,10 +46,15 @@ public class GraphicModule {
 	private int vao;
 	private static ICamera camera;
 	private static Effect effect;
+	private static Matrix4f screenProjection;
+	private static FloatBuffer fbScreenProjection;
+	private static int winW, winH;
 
 	private GraphicModule() {
 		camera = new Ortho2DCamera();
-		camera.windowResizeCallback(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+		screenProjection = new Matrix4f();
+		fbScreenProjection = BufferUtils.createFloatBuffer(16);
+		GraphicModule.resizeCallback(0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 	}
 
 	public void clear(){
@@ -64,12 +69,19 @@ public class GraphicModule {
 	}
 	
 	public static void resizeCallback(long window, int w, int h){
-		glViewport(0, 0, w, h);
+		if (window != 0)
+			glViewport(0, 0, w, h);
+		winW = w;
+		winH = h;
 		camera.windowResizeCallback(w, h);
+		screenProjection.setOrtho(0, w, h, 0, -1, 1);
+		screenProjection.get(fbScreenProjection);
 	}
 	
 	public void initOpenGl(){
 		Texture.init();
+		Text.init();
+		Font.init();
 	    vao = glGenVertexArrays();
 	    glBindVertexArray(vao);
 	    glClearColor(0.5f, 0.5f, 0f, 1.0f);
@@ -84,8 +96,23 @@ public class GraphicModule {
 		int resultBuffer = glGenBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER, resultBuffer);
 			glBufferData(GL_ARRAY_BUFFER, dataBuffer, GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, resultBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		return resultBuffer;
+	}
+	
+	public static int createEmptyBuffer(){
+		return glGenBuffers();
+	}
+	
+	public static int setBufferData(int buffer, float[] data){
+		FloatBuffer dataBuffer = BufferUtils.createFloatBuffer(data.length);
+		dataBuffer.put(data);
+		dataBuffer.flip();
+		
+		glBindBuffer(GL_ARRAY_BUFFER, buffer);
+			glBufferData(GL_ARRAY_BUFFER, dataBuffer, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		return buffer;
 	}
 	
 	public static void deleteBuffer(int buffer){
@@ -173,10 +200,10 @@ public class GraphicModule {
 	}
 	
 	public Matrix4f getScreenProjection(){
-		throw new IllegalStateException("TODO: implement screen projection");
+		return screenProjection;
 	}
 	
 	public FloatBuffer getScreenProjectionAsFloatBuffer(){
-		throw new IllegalStateException("TODO: implement screen projection");
+		return fbScreenProjection;
 	}
 }

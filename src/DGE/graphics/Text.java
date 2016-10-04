@@ -15,19 +15,25 @@ import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.glBindBuffer;
+import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
+import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20.glUniform1i;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
 
 import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
 
 public class Text {
+	
+	//TODO implement word wrap and bounding box.
 	private float[] vertexCoords;
 	private float[] UVCoords;
 	private int glyphs;
@@ -38,6 +44,10 @@ public class Text {
 	private static int mvLocation;
 	private static Matrix4f mv;
 	private static int projectionLocation;
+	
+	private static final String vertexShaderFileName = "data/shaders/text.vertexshader";
+	private static final String fragmentShaderFileName = "data/shaders/text.fragmentshader"; 
+			
 	
 	private FloatBuffer mvFB;
 	private FloatBuffer pm;
@@ -51,10 +61,13 @@ public class Text {
 	
 	public void changeText(String newText){
 		font.changeText(this, newText);
+		text = newText;
 	}
 	
 	protected Text(){
 		mvFB = BufferUtils.createFloatBuffer(16);
+		vertexCoordsBuffer = GraphicModule.createEmptyBuffer();
+		vertexUVBuffer = GraphicModule.createEmptyBuffer();
 		glyphs = 0;
 	}
 	
@@ -64,6 +77,22 @@ public class Text {
 		this.UVCoords = UVCoords;
 		this.glyphs = glyphs;
 		this.font = font;
+		vertexCoordsBuffer = GraphicModule.setBufferData(vertexCoordsBuffer, vertexCoords);
+		vertexUVBuffer = GraphicModule.setBufferData(vertexUVBuffer, UVCoords);
+	}
+	
+	protected static void init(){
+		//init buffers
+		  glEnable(GL_TEXTURE_2D);
+		//init program
+		  ArrayList<Integer> shaders = new ArrayList<Integer>();
+		  shaders.add(GraphicModule.createShader(GL_VERTEX_SHADER, vertexShaderFileName));
+		  shaders.add(GraphicModule.createShader(GL_FRAGMENT_SHADER, fragmentShaderFileName));
+		  drawProgram = GraphicModule.createProgram(shaders);
+		  textureSampler = glGetUniformLocation(drawProgram, "myTextureSampler");
+		  mvLocation = glGetUniformLocation(drawProgram, "MV");
+		  projectionLocation = glGetUniformLocation(drawProgram, "Proj");
+		  mv = new Matrix4f().identity();
 	}
 	
 	public Font getFont() {
@@ -88,10 +117,12 @@ public class Text {
 
 	protected void setVertexCoords(float[] vertexCoords) {
 		this.vertexCoords = vertexCoords;
+		vertexCoordsBuffer = GraphicModule.setBufferData(vertexCoordsBuffer, vertexCoords);
 	}
 
 	protected void setUVCoords(float[] uVCoords) {
 		UVCoords = uVCoords;
+		vertexUVBuffer = GraphicModule.setBufferData(vertexUVBuffer, UVCoords);
 	}
 
 	public void draw(float x, float y, float w, float h, DrawSpace space){

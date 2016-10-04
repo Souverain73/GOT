@@ -23,6 +23,7 @@ public class GameMapObject extends AbstractGameObject{
 	private HashMap<String, MapPartObject> map;
 	
 	private static GameMapObject _instance;
+	
 	public static GameMapObject instance(){
 		return _instance;
 	}
@@ -186,4 +187,6 @@ public class GameMapObject extends AbstractGameObject{
 			region.setEnabled(condition.test(region));
 		});
 	}
+	
+	
 }

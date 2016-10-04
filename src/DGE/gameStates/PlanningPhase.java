@@ -79,10 +79,11 @@ public class PlanningPhase implements GameState, IClickListener {
 	
 	public void click(GameObject sender){
 		if (sender instanceof MapPartObject) {
-			if (((MapPartObject) sender).getAction() == null) {
-				placeAction((MapPartObject) sender, createActionSelector(InputManager.instance().getMousePosWorld()));
-			} else {
-				removeAction((MapPartObject) sender);
+			MapPartObject region = (MapPartObject) sender; 
+			if (region.getAction() == null && region.getUnits().size()>0 ) {
+				placeAction(region, createActionSelector(InputManager.instance().getMousePosWorld()));
+			} else if (region.getAction()!=null){
+				removeAction(region);
 			}
 		}else if (sender instanceof ActionObject){
 			System.out.println("ClickClick");

@@ -13,7 +13,6 @@ public class test {
 
 	public static void main(String[] args) {
 		Game.instance().init();
-		Font tr = new Font("test");
 	}	
 
 }

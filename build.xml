@@ -7,8 +7,7 @@
     </description>
 
     <property name="src" location="src" />
-    <property name="lib" location="lib" />
-    <property name="build" location="build" />
+    <property name="lib" location="lib" />    <property name="build" location="build" />
     <property name="utils" location="utils" />
     <property name="build.classes" location="${build}/classes" />
 	<property name="build.data" location="${build}/data" />
@@ -74,6 +73,10 @@
 		<echo>Copy shaders</echo>
 		<copy todir="${build.data}/shaders">
 			<fileset dir="${data}/shaders"/>
+		</copy>
+		<echo>Copy fonts</echo>
+		<copy todir="${build.data}/fonts">
+			<fileset dir="${data}/fonts"/>
 		</copy>
 	</target>
 

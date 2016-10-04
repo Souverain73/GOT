@@ -35,7 +35,6 @@ public class MapPartObject extends AbstractButtonObject {
 	private int unit_x, unit_y;
 	private ActionObject action;
 	private Vector<UnitObject> units;
-	boolean overlay;
 	
 	public MapPartObject() {
 		super();
@@ -65,12 +64,17 @@ public class MapPartObject extends AbstractButtonObject {
 
 	@Override
 	public void draw(GameState st) {
+		if (!isVisible()) return;
 		if (state == State.FREE){
 			
 		}else if (state == State.HOVER){
-			setOverlay(new Vector3f(0.0f, 0.5f, 0.0f));
+			setOverlay(new Vector3f(0.0f, 0.2f, 0.0f));
 		}else if (state == State.DOWN){
-			setOverlay(new Vector3f(0.5f, 0.0f, 0.0f));
+			setOverlay(new Vector3f(0.2f, 0.0f, 0.0f));
+		}
+		
+		if (state == State.DISABLED){
+			setOverlay(new Vector3f(-0.2f, -0.2f, -0.2f));
 		}
 		
 		Vector2f cp = getPos();
@@ -219,4 +223,13 @@ public class MapPartObject extends AbstractButtonObject {
 	public RegionType getType() {
 		return type;
 	}
+
+	@Override
+	public String toString() {
+		return "MapPartObject [type=" + type + ", name=" + name + ", resourcesCount=" + resourcesCount
+				+ ", influencePoints=" + influencePoints + ", buildingLevel=" + buildingLevel + ", w=" + w + ", h=" + h
+				+ "]";
+	}
+	
+	
 }

@@ -12,6 +12,7 @@ import DGE.gameObjects.GameObject;
 import DGE.gameObjects.ImageButton;
 import DGE.gameObjects.ImageObject;
 import DGE.gameObjects.UnitObject;
+import DGE.gameObjects.UnitObject.UnitType;
 import DGE.gameStates.GameState;
 import DGE.gameStates.StateMachine;
 import DGE.graphics.TextureManager;
@@ -24,9 +25,11 @@ public class HireMenuState implements GameState{
 	private GameObject plusButton = null;
 	private ImageButton [] buttons;
 	private Vector2f pos;
+	private boolean sea;
 	
-	public HireMenuState(Vector<UnitObject> units, Vector2f pos, int hirePoints) {
+	public HireMenuState(Vector<UnitObject> units, Vector2f pos, int hirePoints, boolean sea) {
 		this.pos = pos;
+		this.sea = sea;
 		this.hirePoints = hirePoints;
 		this.units = units;
 		this.buttons = new ImageButton[4];
@@ -103,7 +106,17 @@ public class HireMenuState implements GameState{
 	
 	private void plusButtonCallback(GameObject sender, Object param){
 		hideObjects();
-		UnitSelectState ust = new UnitSelectState(UnitObject.getUnitsByCost(hirePoints), pos);
+		UnitSelectState ust = new UnitSelectState(UnitObject.getUnitsByCondition(unit->{
+			if (unit.getCost()<=hirePoints){
+				if (sea && unit.getType()==UnitType.SHIP){
+					return true;
+				}else if(!sea && unit.getType()!=UnitType.SHIP){
+					return true;
+				}
+			}
+			return false;
+		}),
+				pos);
 		(new ModalState(ust)).run();
 		if (ust.result!=null){
 			UnitObject unit = (UnitObject)ust.result;
