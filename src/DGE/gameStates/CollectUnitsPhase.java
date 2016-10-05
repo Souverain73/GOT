@@ -3,12 +3,10 @@ package DGE.gameStates;
 import java.util.HashMap;
 import java.util.Vector;
 
-import DGE.Game;
 import DGE.InputManager;
 import DGE.ModalState;
 import DGE.gameObjects.GameMapObject;
 import DGE.gameObjects.GameObject;
-import DGE.gameObjects.ImageButton;
 import DGE.gameObjects.MapPartObject;
 import DGE.gameObjects.MapPartObject.RegionType;
 import DGE.gameStates.modals.HireMenuState;
@@ -20,7 +18,6 @@ public class CollectUnitsPhase extends ActionPhase {
 	}
 
 	private SubState state;
-	private Vector<GameObject> objects;
 	private HashMap<String, Integer> hirePointsCache;
 
 	private MapPartObject source; // Hire point source

@@ -16,6 +16,7 @@ hs_err_pid*
 
 #IntelliJ IDEA project files #
 .idea
+*.iml
 
 #build
 build/*	

@@ -155,6 +155,8 @@ public class Texture {
 		else
 			pm = GraphicModule.instance().getScreenProjectionAsFloatBuffer();
 		
+		glUseProgram(drawProgram);
+		
 		//apply effects;
 		if (GraphicModule.instance().getEffect()!=null){
 			Effect ce = GraphicModule.instance().getEffect();
@@ -164,8 +166,6 @@ public class Texture {
 		}
 	    glEnable(GL_BLEND);
 	    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	    
-		glUseProgram(drawProgram);
 		
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureID);

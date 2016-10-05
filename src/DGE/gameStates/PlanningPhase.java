@@ -55,7 +55,7 @@ public class PlanningPhase implements GameState, IClickListener {
 		if (InputManager.instance().keyPressed(32)){
 			System.out.println("Space pressed");
 //			GameMapObject.instance().setEnabledByCondition(region -> region.getAction()!=null);
-			stm.setState(new CollectUnitsPhase());
+			stm.setState(new FirePhase());
 		}
 	}
 	

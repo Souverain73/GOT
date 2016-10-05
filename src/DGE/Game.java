@@ -11,13 +11,12 @@ import org.joml.Vector2f;
 import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import DGE.gameStates.StateMachine;
-import DGE.gameStates.TestState;
 import DGE.graphics.*;
 
 import org.lwjgl.opengl.GL;
 
 /**
- * Main Game class, handles all initiaization, and implements global Game fnctions
+ * Main Game class, handles all initiaization, and implements global Game functions
  * 
  * @author Souverain73
  */

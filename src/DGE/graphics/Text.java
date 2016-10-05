@@ -117,12 +117,12 @@ public class Text {
 
 	protected void setVertexCoords(float[] vertexCoords) {
 		this.vertexCoords = vertexCoords;
-		vertexCoordsBuffer = GraphicModule.setBufferData(vertexCoordsBuffer, vertexCoords);
+		vertexCoordsBuffer = GraphicModule.setBufferData(vertexCoordsBuffer, this.vertexCoords);
 	}
 
-	protected void setUVCoords(float[] uVCoords) {
-		UVCoords = uVCoords;
-		vertexUVBuffer = GraphicModule.setBufferData(vertexUVBuffer, UVCoords);
+	protected void setUVCoords(float[] UVCoords) {
+		this.UVCoords = UVCoords;
+		vertexUVBuffer = GraphicModule.setBufferData(vertexUVBuffer, this.UVCoords);
 	}
 
 	public void draw(float x, float y, float w, float h, DrawSpace space){

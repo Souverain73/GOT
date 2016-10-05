@@ -1,6 +1,7 @@
 package DGE.gameObjects;
 
 import java.util.HashMap;
+import java.util.Vector;
 import java.util.function.Predicate;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -188,5 +189,16 @@ public class GameMapObject extends AbstractGameObject{
 		});
 	}
 	
+	public Vector<MapPartObject> getEnabledRegions(){
+		Vector<MapPartObject> result = new Vector<MapPartObject>();
+		
+		map.values().forEach(obj->{
+			if (obj.isActive()){
+				result.add(obj);
+			}
+		});
+		
+		return result;
+	}
 	
 }

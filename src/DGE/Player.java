@@ -8,6 +8,7 @@ package DGE;
  *
  */
 public class Player {
+	private Fraction fraction;
 	private int specials;
 	private int money;
 	private int resouces;
@@ -34,6 +35,14 @@ public class Player {
 
 	public void setResouces(int resouces) {
 		this.resouces = resouces;
+	}
+
+	public Fraction getFraction() {
+		return fraction;
+	}
+
+	public void setFraction(Fraction fraction) {
+		this.fraction = fraction;
 	}
 	
 	

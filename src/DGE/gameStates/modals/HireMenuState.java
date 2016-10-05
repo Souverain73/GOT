@@ -6,7 +6,6 @@ import org.joml.Vector2f;
 
 import DGE.Constants;
 import DGE.Game;
-import DGE.InputManager;
 import DGE.ModalState;
 import DGE.gameObjects.GameObject;
 import DGE.gameObjects.ImageButton;

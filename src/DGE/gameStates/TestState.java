@@ -2,15 +2,11 @@ package DGE.gameStates;
 
 import java.util.Vector;
 
-import org.joml.Vector2f;
-
 import DGE.gameObjects.FPSCounterObject;
 import DGE.gameObjects.GameObject;
-import DGE.gameObjects.ImageObject;
 import DGE.graphics.DrawSpace;
 import DGE.graphics.Font;
 import DGE.graphics.Text;
-import DGE.graphics.TextureManager;
 
 public class TestState implements GameState{
 	private static final String name = "TestState";

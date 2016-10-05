@@ -85,7 +85,8 @@ public abstract class AbstractButtonObject extends AbstractGameObject implements
 					wasClick = true;
 					click(st);
 				}
-				state = State.HOVER;
+				if (state!=State.DISABLED)
+					state = State.HOVER;
 			}
 		}
 		

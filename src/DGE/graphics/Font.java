@@ -171,8 +171,8 @@ public class Font{
 	
 	@Override
 	public String toString() {
-		return "TextRenderer [mapWidth=" + mapWidth + ", mapHeight=" + mapHeight + ", cellWidth=" + cellWidth
-				+ ", cellHeight=" + cellHeight + ", startChar=" + startChar + ", rowPitch=" + rowPitch + ", rowFactor="
-				+ rowFactor + ", colFactor=" + colFactor + "]";
+		return "Font [name=" + name + ", mapWidth=" + mapWidth + ", mapHeight=" + mapHeight + ", cellWidth=" + cellWidth
+				+ ", cellHeight=" + cellHeight + ", startChar=" + startChar + ", size=" + size + ", spacing=" + spacing
+				+ "]";
 	}
 }
