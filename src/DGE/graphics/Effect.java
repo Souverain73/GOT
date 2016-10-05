@@ -26,4 +26,21 @@ public class Effect {
 		this.multiply = colorMultiply;
 		this.transform = transform;
 	}
+
+	public Effect Overlay(Vector3f overlay) {
+		this.overlay = overlay;
+		return this;
+	}
+
+	public Effect Multiply(Vector3f multiply) {
+		this.multiply = multiply;
+		return this;
+	}
+
+	public Effect Transform(Matrix4f transform) {
+		this.transform = transform;
+		return this;
+	}
+	
+	
 }

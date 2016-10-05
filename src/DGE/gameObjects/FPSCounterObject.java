@@ -30,6 +30,6 @@ public class FPSCounterObject extends AbstractGameObject{
 	@Override
 	public void draw(GameState state) {
 		super.draw(state);
-		tFPS.draw(32, 32, 1, 1, DrawSpace.SCREEN);
+		tFPS.draw(10, 0, 1, 1, DrawSpace.SCREEN);
 	}
 }

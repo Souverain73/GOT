@@ -11,9 +11,17 @@ public class FirePhase extends ActionPhase {
 		SELECT_SOURCE, SELECT_TARGET
 	}
 
+	private final String name = "FirePhase";
+
+	
 	private SubState state;
 	
 	private MapPartObject source; //Region with source Fire Action point source
+	
+	@Override
+	public String getName() {
+		return name;
+	}
 	
 	@Override
 	public void enter(StateMachine stm) {

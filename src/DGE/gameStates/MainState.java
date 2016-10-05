@@ -25,8 +25,7 @@ public class MainState implements GameState {
 		GameObject map = new GameMapObject();
 		map.init(new LoaderParams(new String[]{"filename", "data/map.xml"}));
 		gameObjects.addElement(map);
-		gameObjects.add(new FPSCounterObject());
-		
+
 		stm.setState(new PlanningPhase());
 	}
 

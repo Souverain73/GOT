@@ -4,7 +4,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import java.util.LinkedList;
 
-
+import DGE.gameObjects.DebugPanel;
 import DGE.gameStates.MenuState;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -21,6 +21,7 @@ import org.lwjgl.opengl.GL;
  * @author Souverain73
  */
 public class Game {
+	private boolean debug = true;
 	private static Game _instance = null;
 	private LinkedList<ModalState> modalStates;
 	private Player player;
@@ -41,8 +42,7 @@ public class Game {
 	private Game(){
 		graphics = GraphicModule.instance();
 		stm = new StateMachine();
-		player = new Player();
-		player.setSpecials(2);
+		player = Player.instance();
 		modalStates = new LinkedList<ModalState>();
 	}
 	
@@ -123,6 +123,26 @@ public class Game {
 	public void updateInput(){
 		glfwPollEvents();
 		InputManager.instance().update();
+		if (debug){
+			if(InputManager.instance().keyPressed(GLFW_KEY_1)){
+				Player.instance().setFraction(Fraction.BARATEON);
+			}
+			if(InputManager.instance().keyPressed(GLFW_KEY_2)){
+				Player.instance().setFraction(Fraction.LANISTER);
+			}
+			if(InputManager.instance().keyPressed(GLFW_KEY_3)){
+				Player.instance().setFraction(Fraction.STARK);
+			}
+			if(InputManager.instance().keyPressed(GLFW_KEY_4)){
+				Player.instance().setFraction(Fraction.TIREL);
+			}
+			if(InputManager.instance().keyPressed(GLFW_KEY_5)){
+				Player.instance().setFraction(Fraction.GREYJOY);
+			}
+			if(InputManager.instance().keyPressed(GLFW_KEY_6)){
+				Player.instance().setFraction(Fraction.MARTEL);
+			}
+		}
 	}
 	
 	public void updateGraphics(){
@@ -172,6 +192,10 @@ public class Game {
 
 	public Player getPlayer() {
 		return player;
+	}
+
+	public boolean isDebug() {
+		return debug;
 	}
 }
 

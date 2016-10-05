@@ -2,6 +2,8 @@ package DGE;
 
 import org.lwjgl.glfw.GLFW;
 
+import DGE.gameObjects.DebugPanel;
+
 /**
  * This class creates Game object and handles main loop
  * 
@@ -15,6 +17,7 @@ public class DGE {
 		pWindow = Game.instance().init();
 		
 		while(!GLFW.glfwWindowShouldClose(pWindow)){
+			DebugPanel.instance().resetFlags();
 			Game.instance().updateInput();
 			Game.instance().updateLogic();
 			Game.instance().updateGraphics();

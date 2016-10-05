@@ -2,6 +2,9 @@ package DGE.gameStates;
 
 import java.util.LinkedList;
 
+import DGE.Game;
+import DGE.gameObjects.DebugPanel;
+
 public class StateMachine {
 	private LinkedList<GameState> _states;
 	
@@ -32,10 +35,14 @@ public class StateMachine {
 	
 	public void update(){
 		_states.peek().update();
+		if (Game.instance().isDebug())
+			DebugPanel.instance().update(getCurrentState());
 	}
 	
 	public void draw(){
 		_states.peek().draw();
+		if (Game.instance().isDebug())
+			DebugPanel.instance().draw(getCurrentState());
 	}
 	
 	public GameState getCurrentState(){

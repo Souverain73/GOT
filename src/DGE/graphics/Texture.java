@@ -79,6 +79,7 @@ public class Texture {
 	private static Matrix4f mv;
 	private static int projectionLocation;
 	private static int overlayLocation;
+	private static int multiplyLocation;
 	private String filename;
 	private int width;
 	private int height;
@@ -105,6 +106,7 @@ public class Texture {
 		  mvLocation = glGetUniformLocation(drawProgram, "MV");
 		  projectionLocation = glGetUniformLocation(drawProgram, "Proj");
 		  overlayLocation = glGetUniformLocation(drawProgram, "overlay");
+		  multiplyLocation = glGetUniformLocation(drawProgram, "multiply");
 		  mv = new Matrix4f().identity();
 	}
 	
@@ -160,10 +162,19 @@ public class Texture {
 		//apply effects;
 		if (GraphicModule.instance().getEffect()!=null){
 			Effect ce = GraphicModule.instance().getEffect();
-			glUniform4f(overlayLocation, ce.overlay.x, ce.overlay.y,  ce.overlay.z, 0);
+			if (ce.overlay!=null)
+				glUniform4f(overlayLocation, ce.overlay.x, ce.overlay.y,  ce.overlay.z, 0);
+			else
+				glUniform4f(overlayLocation, 0, 0,  0, 0);
+			if (ce.multiply!=null)
+				glUniform4f(multiplyLocation, ce.multiply.x, ce.multiply.y, ce.multiply.z, 1);
+			else
+				glUniform4f(multiplyLocation, 1, 1, 1, 1);
 		}else{
-			glUniform4f(overlayLocation, 0, 0, 0, 0);
+			glUniform4f(overlayLocation, 0, 0,  0, 0);
+			glUniform4f(multiplyLocation, 1, 1, 1, 1);
 		}
+		
 	    glEnable(GL_BLEND);
 	    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		

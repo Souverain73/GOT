@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map>
 	<regions>
-		<region name="Castle Black" type="GROUND" influence="1" x="609" y="0" w="475" h="286">
+		<region name="Castle Black" type="GROUND" influence="1" x="609" y="0" w="475" h="286" fraction="GREYJOY">
 			<action x="95" y="191"/>
 			<unitpos x="335" y="50"/>
 			<unit type="KNIGHT" />
@@ -10,7 +10,7 @@
 			<unit type="SIEGE" />
 			<texture filename="CastleBlack.png"/>
 		</region>
-		<region name="Karhold" type="GROUND" influence="1" x="951" y="149" w="355" h="318">
+		<region name="Karhold" type="GROUND" influence="1" x="951" y="149" w="355" h="318" fraction="LANISTER">
 			<action x="282" y="116"/>
 			<unitpos x="165" y="215"/>			
 			<unit type="KNIGHT" />
@@ -19,13 +19,13 @@
 			<unit type="SOLDIER"/>
 			<texture filename="Karhold.png"/>
 		</region>
-		<region name="Winterfell" type="GROUND" influence="1" resources="1" building="2" x="261" y="170" w="837" h="678">
+		<region name="Winterfell" type="GROUND" influence="1" resources="1" building="2" x="261" y="170" w="837" h="678" fraction="STARK">
 			<action x="611" y="152"/>
 			<unitpos x="355" y="520"/>
 			<unit type="KNIGHT"/>
 			<texture filename="Winterfell.png"/>
 		</region>
-		<region name="Widow's Watch" type="GROUND" resources="1" x="939" y="561" w="278" h="219">
+		<region name="Widow's Watch" type="GROUND" resources="1" x="939" y="561" w="278" h="219" fraction="BARATEON">
 			<action x="48" y="135"/>
 			<unitpos x="90" y="75"/>
 			<unit type="SOLDIER"/>
@@ -34,7 +34,7 @@
 			<unit type="SOLDIER"/>
 			<texture filename="WidowsWatch.png"/>
 		</region>
-		<region name="The Stony Shore" type="GROUND" resources="1" x="153" y="423" w="408" h="426">
+		<region name="The Stony Shore" type="GROUND" resources="1" x="153" y="423" w="408" h="426" fraction="TIREL">
 			<action x="76" y="164"/>
 			<unitpos x="260" y="220"/>
 			<unit type="SOLDIER"/>
@@ -43,7 +43,7 @@
 			<unit type="SOLDIER"/>
 			<texture filename="TheStonyShore.png"/>
 		</region>
-		<region name="White Harbor" type="GROUND" building="1" x="746" y="423" w="379" h="511">
+		<region name="White Harbor" type="GROUND" building="1" x="746" y="423" w="379" h="511" fraction="MARTEL">
 			<action x="132" y="219"/>
 			<unitpos x="190" y="80"/>
 			<unit type="SOLDIER"/>

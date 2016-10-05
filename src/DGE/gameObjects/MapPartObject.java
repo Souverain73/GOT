@@ -6,6 +6,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import DGE.Constants;
+import DGE.Fraction;
 import DGE.InputManager;
 import DGE.gameStates.GameState;
 import DGE.graphics.Effect;
@@ -22,6 +23,8 @@ import DGE.utils.Utils;
  */
 public class MapPartObject extends AbstractButtonObject {
 	public enum RegionType{	GROUND, SEA, PORT}
+	
+	private Fraction fraction = Fraction.STARK;
 	
 	private RegionType type;
 	private String name;
@@ -58,6 +61,14 @@ public class MapPartObject extends AbstractButtonObject {
 		unit_x = (Integer)params.get("unit_x");
 		unit_y = (Integer)params.get("unit_y");
 		type = RegionType.valueOf((String)params.get("type"));
+		try{
+			fraction = Fraction.valueOf((String)params.get("fraction"));
+		}catch(Exception e){
+			
+		}
+		if (fraction == null){
+			fraction = Fraction.STARK;
+		}
 		placeUnits();
 		return false;
 	}
@@ -68,13 +79,19 @@ public class MapPartObject extends AbstractButtonObject {
 		if (state == State.FREE){
 			
 		}else if (state == State.HOVER){
-			setOverlay(new Vector3f(0.0f, 0.2f, 0.0f));
+			GraphicModule.instance().setEffect(
+					new Effect().Overlay(new Vector3f(0.0f, 0.2f, 0.0f))
+			);
 		}else if (state == State.DOWN){
-			setOverlay(new Vector3f(0.2f, 0.0f, 0.0f));
+			GraphicModule.instance().setEffect(
+					 new Effect().Overlay(new Vector3f(0.2f, 0.0f, 0.0f))
+			);
 		}
-		
+
 		if (state == State.DISABLED){
-			setOverlay(new Vector3f(-0.2f, -0.2f, -0.2f));
+			GraphicModule.instance().setEffect(
+					new Effect().Overlay(new Vector3f(-0.2f, -0.2f, -0.2f))
+			);
 		}
 		
 		Vector2f cp = getPos();
@@ -84,9 +101,13 @@ public class MapPartObject extends AbstractButtonObject {
 			action.draw(st);
 		}
 		
+		GraphicModule.instance().setEffect(
+				new Effect().Multiply(fraction.getMultiplyColor())
+		);
 		if (units != null){
 			units.forEach(unit->unit.draw(st));
 		}
+		GraphicModule.instance().resetEffect();
 		super.draw(st);
 	}
 
@@ -195,12 +216,6 @@ public class MapPartObject extends AbstractButtonObject {
 		return units;
 	}
 
-	private void setOverlay(Vector3f overlay){
-		Effect eff = new Effect();
-		eff.overlay = overlay;
-		GraphicModule.instance().setEffect(eff);
-	}
-
 	@Override
 	protected void click(GameState st) {
 		System.out.println("Click region:"+name+" GameState:"+st.getName());
@@ -222,6 +237,14 @@ public class MapPartObject extends AbstractButtonObject {
 
 	public RegionType getType() {
 		return type;
+	}
+
+	public Fraction getFraction() {
+		return fraction;
+	}
+
+	public void setFraction(Fraction fraction) {
+		this.fraction = fraction;
 	}
 
 	@Override

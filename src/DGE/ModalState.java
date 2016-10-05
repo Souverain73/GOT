@@ -2,6 +2,7 @@ package DGE;
 
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 
+import DGE.gameObjects.DebugPanel;
 import DGE.gameStates.GameState;
 import DGE.gameStates.StateMachine;
 import DGE.graphics.GraphicModule;
@@ -37,11 +38,14 @@ public class ModalState implements Runnable{
 		running = true;
 		
 		while(running && Game.instance().isRunning()){
+			DebugPanel.instance().resetFlags();
 			Game.instance().updateInput();
 			if (updateMain){
 				stm.update();
 			}
 			state.update();
+			if (Game.instance().isDebug())
+				DebugPanel.instance().update(state);
 			
 			GraphicModule.instance().clear();
 
@@ -49,6 +53,9 @@ public class ModalState implements Runnable{
 				stm.draw();
 			}
 			state.draw();
+			if (Game.instance().isDebug())
+				DebugPanel.instance().draw(state);
+			
 			glfwSwapBuffers(Game.instance().pWindow);
 		}
 		

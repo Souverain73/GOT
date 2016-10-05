@@ -9,6 +9,7 @@ import DGE.Constants;
 import DGE.Game;
 import DGE.InputManager;
 import DGE.ModalState;
+import DGE.Player;
 import DGE.gameObjects.ActionObject;
 import DGE.gameObjects.ActionObject.Action;
 import DGE.gameObjects.GameObject;
@@ -80,7 +81,8 @@ public class PlanningPhase implements GameState, IClickListener {
 	public void click(GameObject sender){
 		if (sender instanceof MapPartObject) {
 			MapPartObject region = (MapPartObject) sender; 
-			if (region.getAction() == null && region.getUnits().size()>0 ) {
+			if (region.getAction() == null && region.getUnits().size()>0
+					&& region.getFraction() == Player.instance().getFraction()) {
 				placeAction(region, createActionSelector(InputManager.instance().getMousePosWorld()));
 			} else if (region.getAction()!=null){
 				removeAction(region);
