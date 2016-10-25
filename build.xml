@@ -20,6 +20,8 @@
         <pathelement location="bin"/>
         <pathelement location="lib/lwjgl.jar"/>
         <pathelement location="lib/native.jar"/>
+        <pathelement location="lib/kryo-2.23.1.jar"/>
+        <pathelement location="lib/jsonbeans-0.5.jar"/>
     </path>
     
 
