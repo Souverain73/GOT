@@ -32,6 +32,7 @@ import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 
+import java.io.IOException;
 import java.util.LinkedList;
 
 import org.joml.Matrix4f;
@@ -47,7 +48,10 @@ import com.esotericsoftware.kryonet.Listener;
 import got.gameStates.MenuState;
 import got.gameStates.StateMachine;
 import got.graphics.GraphicModule;
+import got.network.Network;
 import got.network.Packages;
+import got.network.Packages.ServerMessage;
+import got.utils.UI;
 
 /**
  * Main Game class, handles all initiaization, and implements global Game functions
@@ -134,7 +138,7 @@ public class GameClient {
 	
 	public void initNetwork(){
 		client = new Client();
-		Packages.register(client);
+		Network.register(client);
 		client.addListener(new Listener(){
 			@Override
 			public void connected(Connection connection) {
@@ -150,7 +154,16 @@ public class GameClient {
 
 			@Override
 			public void received(Connection connection, Object object) {
-
+				//handle common packages
+				if (object instanceof Packages.InitPlayer){
+					Packages.InitPlayer msg = (Packages.InitPlayer)object;
+					UI.serverMessage("InitPlayer:\n"+msg.player.toString());
+				}else if (object instanceof ServerMessage){
+					UI.serverMessage(((ServerMessage)object).message);
+				}
+				//handle state specific packages
+				stm.recieve(connection, object);
+				
 				super.received(connection, object);
 			}
 
@@ -238,6 +251,14 @@ public class GameClient {
 		return new Vector2f(point.x, point.y);	
 	}
 	
+	public void connect(String host) throws IOException{
+		client.connect(5000, host, Network.portTCP, Network.portUDP);
+	}
+	
+	public void send(Packages.ClientServerPackage pkg){
+		client.sendTCP(pkg);
+	}
+	
 	public void registerModalState(ModalState mst){
 		this.modalStates.push(mst);
 	}
@@ -258,6 +279,10 @@ public class GameClient {
 
 	public boolean isDebug() {
 		return debug;
+	}
+	
+	public Client getClient(){
+		return client;
 	}
 }
 

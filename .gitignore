@@ -19,5 +19,6 @@ hs_err_pid*
 *.iml
 
 #build
-build/*	
-bin/*
+build	
+bin
+net

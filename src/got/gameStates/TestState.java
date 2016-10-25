@@ -2,6 +2,8 @@ package got.gameStates;
 
 import java.util.Vector;
 
+import com.esotericsoftware.kryonet.Connection;
+
 import got.gameObjects.FPSCounterObject;
 import got.gameObjects.GameObject;
 import got.graphics.DrawSpace;
@@ -47,6 +49,12 @@ public class TestState implements GameState{
 	@Override
 	public void update() {
 		objects.forEach(obj->obj.update(this));
+	}
+
+
+	@Override
+	public void recieve(Connection connection, Object pkg) {
+
 	}
 
 }

@@ -1,19 +1,20 @@
 package got.server;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 import got.Player;
 
 public class PlayerManager {
 	private static PlayerManager _instance = null;
-	private HashMap<Integer, Player> players;
-	private int playersCount;
+	public Set<Player> connected = Collections.synchronizedSet(new HashSet<Player>());
+	private int connectedPlayers;
 	private int maxPlayers = 6;
 	
 	private PlayerManager() {
-		players = new HashMap<>();
-		playersCount = 0;
+		connectedPlayers = 0;
 	}
 
 	public static PlayerManager instance() {
@@ -23,26 +24,29 @@ public class PlayerManager {
 		return _instance;
 	}
 	
-	public boolean isLoggedIn(int id){
-		return players.containsKey(id);
+	public boolean isLoggedIn(Player player){
+		return connected.contains(player);
 	}
 	
-	public int LogIn(Player player){
-		if (isLoggedIn(player.getId()) || maxPlayers == playersCount) return -1;
+	public boolean LogIn(Player player){
+		if (connectedPlayers == maxPlayers) return false;
 		
-		Set<Integer> keys = players.keySet();
-		int id=-1;
-		for (id=0; id<maxPlayers; id++){
-			if (!keys.contains(id)){
-				break;
-			}
-		}
+		connectedPlayers++;
+		connected.add(player);
 		
-		players.put(id, player);
-		return id;
+		return true;
+	}
+	
+	public boolean disconnect(Player player){
+		if (!connected.contains(player)) return false;
+		
+		connected.remove(player);
+		connectedPlayers--;
+		
+		return true;
 	}
 	
 	public int getPlayersCount(){
-		return playersCount;
+		return connectedPlayers;
 	}
 }

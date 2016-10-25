@@ -45,16 +45,28 @@
 		</javac>
 	</target>
 
-	<target name="jar" depends="compile" description="Create the jar file">
+	<target name="jarclient" depends="compile" description="Create the jar file">
 		<jar destfile="${build}/GOT.jar">
 			<fileset dir="${build.classes}" />
 			<manifest>
-				<attribute name="Main-Class" value="DGE.DGE"/>
-				<attribute name="Class-Path" value=". lwjgl.jar native.jar"/>
+				<attribute name="Main-Class" value="got.GOT"/>
+				<attribute name="Class-Path" value=". lwjgl.jar native.jar kryo-2.23.1.jar jsonbeans-0.5.jar"/>
 			</manifest>
 		</jar>
 
 	</target>
+
+	<target name="jarserver" depends="compile" description="Create the jar file">
+		<jar destfile="${build}/GOTSERVER.jar">
+			<fileset dir="${build.classes}" />
+			<manifest>
+				<attribute name="Main-Class" value="got.server.GameServer"/>
+				<attribute name="Class-Path" value=". lwjgl.jar native.jar kryo-2.23.1.jar jsonbeans-0.5.jar"/>
+			</manifest>
+		</jar>
+
+	</target>
+
 
 	<target name="clean">
 		<echo>Clean class files</echo>
@@ -97,7 +109,7 @@
 		</copy>
 	</target>
 
-	<target name="make" depends="init,compile,jar,clean,data,utils,lib">
+	<target name="make" depends="init,compile,jarclient,jarserver,clean,data,utils,lib">
 		<echo>Make all project</echo>
 	</target>
 </project>

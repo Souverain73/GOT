@@ -2,14 +2,14 @@ package got;
 
 import org.lwjgl.glfw.GLFW;
 
-import got.gameObjects.DebugPanel;
+import got.gameObjects.DebugPanel;;
 
 /**
  * This class creates Game object and handles main loop
  * 
  * @author Souverain73
  */
-public class DGE {
+public class GOT {
 
 	private static long pWindow;
 	

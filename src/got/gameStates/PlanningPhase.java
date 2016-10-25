@@ -5,6 +5,8 @@ import java.util.Vector;
 
 import org.joml.Vector2f;
 
+import com.esotericsoftware.kryonet.Connection;
+
 import got.Constants;
 import got.GameClient;
 import got.InputManager;
@@ -167,5 +169,17 @@ public class PlanningPhase implements GameState, IClickListener {
 			}
 			objects.forEach((obj)->{obj.update(this);});
 		}
+
+		@Override
+		public void recieve(Connection connection, Object pkg) {
+			// TODO Auto-generated method stub
+			
+		}
+	}
+
+	@Override
+	public void recieve(Connection connection, Object pkg) {
+		// TODO Auto-generated method stub
+		
 	}
 }

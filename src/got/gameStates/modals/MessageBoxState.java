@@ -1,5 +1,7 @@
 package got.gameStates.modals;
 
+import com.esotericsoftware.kryonet.Connection;
+
 import got.GameClient;
 import got.InputManager;
 import got.gameObjects.ImageButton;
@@ -52,6 +54,12 @@ public class MessageBoxState implements GameState{
 	
 	private void close(){
 		GameClient.instance().closeModal();
+	}
+
+	@Override
+	public void recieve(Connection connection, Object pkg) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

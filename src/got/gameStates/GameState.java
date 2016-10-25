@@ -2,7 +2,9 @@ package got.gameStates;
 
 import com.esotericsoftware.kryonet.Listener;
 
-public interface GameState {
+import got.interfaces.INetworkListener;
+
+public interface GameState extends INetworkListener{
 	public String getName();
 	public void enter(StateMachine stm);
 	public void exit();

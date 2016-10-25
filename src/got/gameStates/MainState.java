@@ -2,6 +2,9 @@ package got.gameStates;
 
 import java.util.Vector;
 
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
+
 import got.gameObjects.FPSCounterObject;
 import got.gameObjects.GameMapObject;
 import got.gameObjects.GameObject;
@@ -47,4 +50,9 @@ public class MainState implements GameState {
 		stm.update();
 	}
 
+	@Override
+	public void recieve(Connection connection, Object pkg) {
+		
+	}
+	
 }

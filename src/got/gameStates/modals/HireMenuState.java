@@ -4,6 +4,8 @@ import java.util.Vector;
 
 import org.joml.Vector2f;
 
+import com.esotericsoftware.kryonet.Connection;
+
 import got.Constants;
 import got.GameClient;
 import got.ModalState;
@@ -172,6 +174,12 @@ public class HireMenuState implements GameState{
 
 	public int getHirePoints() {
 		return hirePoints;
+	}
+
+	@Override
+	public void recieve(Connection connection, Object pkg) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

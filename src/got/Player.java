@@ -12,13 +12,11 @@ public class Player {
 	private int specials;
 	private int money;
 	private int resouces;
-	private int id;
 	
-	public Player(int id) {
-		fraction = Fraction.STARK;
+	public Player() {
+		fraction = null;
 		specials = 3;
 		money = 100;
-		this.id = id;
 	}
 
 	public int getSpecials() {
@@ -53,18 +51,10 @@ public class Player {
 		this.fraction = fraction;
 	}
 
-	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(int id) {
-		this.id = id;
+	@Override
+	public String toString() {
+		return String.format("Player [fraction=%s, specials=%s, money=%s, resouces=%s]", fraction, specials,
+				money, resouces);
 	}
 	
 	

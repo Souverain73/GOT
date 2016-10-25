@@ -17,7 +17,10 @@ public class Packages {
 	 */
 	public static void register(EndPoint endpoint) {
 		Kryo kryo = endpoint.getKryo();
+		kryo.register(ServerMessage.class);
+		kryo.register(LogIn.class);
 		kryo.register(InitPlayer.class);
+		kryo.register(PlayerConnected.class);
 		kryo.register(SetUnits.class);
 		kryo.register(SetTrack.class);
 		kryo.register(PlayerSetAction.class);
@@ -57,8 +60,6 @@ public class Packages {
 		}
 	}
 	
-
-
 	public static class ClientServerPackage extends NetPackage{
 		private ClientServerPackage() {
 
@@ -71,14 +72,25 @@ public class Packages {
 		}
 	}
 	
+	public static class LogIn extends ClientServerPackage{
+		
+	}
+	
+	
+	
+	public static class ServerMessage extends ServerClientPackage{
+		public String message;
+	}
+	
 	/**
 	 * Инициализирует модель игрока на клиенте
 	 */
 	public static class InitPlayer extends ServerClientPackage{
 		public Player player;
-		
-		public InitPlayer(){
-		}
+	}
+	
+	public static class PlayerConnected extends BroadcastPackage{
+		public String nickname;
 	}
 	
 	

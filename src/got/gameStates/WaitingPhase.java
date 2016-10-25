@@ -2,6 +2,8 @@ package got.gameStates;
 
 import java.util.function.Predicate;
 
+import com.esotericsoftware.kryonet.Connection;
+
 public class WaitingPhase implements GameState {
 	private final String name = "WaitingPhase";
 	private StateMachine stm;
@@ -37,6 +39,11 @@ public class WaitingPhase implements GameState {
 		if (cond.test(null)){
 			stm.setState(next);
 		}
+	}
+
+	@Override
+	public void recieve(Connection connection, Object pkg) {
+
 	}
 
 }

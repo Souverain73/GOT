@@ -1,10 +1,18 @@
 package got.gameStates;
 
+import java.io.IOException;
 import java.util.Vector;
+
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
 
 import got.GameClient;
 import got.gameObjects.GameObject;
 import got.gameObjects.ImageButton;
+import got.network.Network;
+import got.network.Packages;
+import got.network.Packages.InitPlayer;
+import got.utils.UI;
 
 public class MenuState implements GameState {
 	private final String name = "MenuState";
@@ -22,7 +30,16 @@ public class MenuState implements GameState {
 		System.out.println("Entering "+name);
 		//button play
 		gameObjects.add(new ImageButton("play.jpg", 100,100,200,100, null).setCallback((sender, params)->{
-			GameClient.instance().getStateMachine().setState(new MainState());
+			String host = UI.getString("Enter host", "host", "localhost");
+			try{
+				GameClient.instance().connect(host);
+			}catch(IOException e){
+				System.out.println("Can't connect to host:"+host);
+				return;
+			}
+			GameClient.instance().send(new Packages.LogIn());
+			GameClient.instance().getStateMachine().setState(new NetworkRoomState());
+			System.out.println("Connection sccessfull");
 		}));
 		//button exit
 		gameObjects.add(new ImageButton("exit.jpg", 100,220,200,100, null).setCallback((sender, params)->{
@@ -49,4 +66,12 @@ public class MenuState implements GameState {
 		gameObjects.forEach(obj->obj.update(this));
 	}
 
+	@Override
+	public void recieve(Connection connection, Object pkg) {
+		if (pkg instanceof InitPlayer){
+			GameClient.instance().getStateMachine().setState(new NetworkRoomState());
+		}
+	}
+
+	
 }

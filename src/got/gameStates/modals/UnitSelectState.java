@@ -4,6 +4,8 @@ import java.util.Vector;
 
 import org.joml.Vector2f;
 
+import com.esotericsoftware.kryonet.Connection;
+
 import got.Constants;
 import got.GameClient;
 import got.gameObjects.GameObject;
@@ -79,5 +81,11 @@ public class UnitSelectState implements GameState{
 
 	public Object getResult(){
 		return result;
+	}
+
+	@Override
+	public void recieve(Connection connection, Object pkg) {
+		// TODO Auto-generated method stub
+		
 	}
 }
