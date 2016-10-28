@@ -2,6 +2,8 @@ package got.interfaces;
 
 import org.joml.Vector2f;
 
+import got.graphics.DrawSpace;
+
 
 
 /**
@@ -15,4 +17,5 @@ public interface IClickable {
 	public boolean ifMouseIn(Vector2f mousePos);
 	public void setMouseIn(boolean mouseIn);
 	public boolean isActive();
+	public DrawSpace getSpace();
 }

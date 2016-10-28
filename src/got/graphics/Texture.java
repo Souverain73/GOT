@@ -152,10 +152,7 @@ public class Texture {
 		FloatBuffer mvFB = BufferUtils.createFloatBuffer(16);
 		FloatBuffer pm;
 		mv.identity().translate(x, y, -z).scale(w,h,1).get(mvFB);
-		if (space == DrawSpace.WORLD)
-			pm = GraphicModule.instance().getCamera().getProjectionAsFloatBuffer();
-		else
-			pm = GraphicModule.instance().getScreenProjectionAsFloatBuffer();
+		pm = GraphicModule.instance().getProjectionAsFloatBuffer();
 		
 		glUseProgram(drawProgram);
 		

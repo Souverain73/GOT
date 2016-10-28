@@ -8,12 +8,15 @@ package got;
 
 public class Player {
 		
+	public int id;
 	private Fraction fraction;
 	private int specials;
 	private int money;
 	private int resouces;
+	private String nickname;
 	
 	public Player() {
+		nickname = "dumb";
 		fraction = null;
 		specials = 3;
 		money = 100;
@@ -49,6 +52,14 @@ public class Player {
 
 	public void setFraction(Fraction fraction) {
 		this.fraction = fraction;
+	}
+	
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 	@Override

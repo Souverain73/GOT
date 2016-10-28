@@ -3,6 +3,7 @@ package got.gameObjects;
 import got.gameStates.GameState;
 import got.graphics.DrawSpace;
 import got.graphics.Font;
+import got.graphics.GraphicModule;
 import got.graphics.Text;
 
 public class FPSCounterObject extends AbstractGameObject{
@@ -30,6 +31,7 @@ public class FPSCounterObject extends AbstractGameObject{
 	@Override
 	public void draw(GameState state) {
 		super.draw(state);
-		tFPS.draw(10, 0, 1, 1, DrawSpace.SCREEN);
+		GraphicModule.instance().setDrawSpace(DrawSpace.SCREEN);
+		tFPS.draw(10, 0, 1, 1);
 	}
 }

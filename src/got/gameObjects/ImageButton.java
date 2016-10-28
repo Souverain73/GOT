@@ -4,6 +4,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import got.gameStates.GameState;
+import got.graphics.DrawSpace;
 import got.graphics.Effect;
 import got.graphics.GraphicModule;
 import got.graphics.Texture;
@@ -45,9 +46,9 @@ public class ImageButton extends AbstractButtonObject {
 		texture = tex;
 	}
 	
-	
 	@Override
 	public void draw(GameState st) {
+		GraphicModule.instance().setDrawSpace(space);
 		if (!isVisible()) return;
 		if (state == State.FREE){
 			

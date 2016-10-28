@@ -34,6 +34,7 @@ import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -51,6 +52,7 @@ import got.graphics.GraphicModule;
 import got.network.Network;
 import got.network.Packages;
 import got.network.Packages.ServerMessage;
+import got.server.GameServer.PlayerConnection;
 import got.utils.UI;
 
 /**
@@ -64,6 +66,7 @@ public class GameClient {
 	private LinkedList<ModalState> modalStates;
 	private Player player;
 	private Client client;
+	private ConcurrentLinkedQueue<Runnable> taskPool = new ConcurrentLinkedQueue<>();
 
 	public static GameClient instance(){
 		if (_instance == null){
@@ -153,7 +156,7 @@ public class GameClient {
 			}
 
 			@Override
-			public void received(Connection connection, Object object) {
+			public void received(Connection c, Object object) {
 				//handle common packages
 				if (object instanceof Packages.InitPlayer){
 					Packages.InitPlayer msg = (Packages.InitPlayer)object;
@@ -162,9 +165,9 @@ public class GameClient {
 					UI.serverMessage(((ServerMessage)object).message);
 				}
 				//handle state specific packages
-				stm.recieve(connection, object);
+				stm.recieve(c, object);
 				
-				super.received(connection, object);
+				super.received(c, object);
 			}
 
 			@Override
@@ -192,6 +195,14 @@ public class GameClient {
 	}
 	
 	public void updateLogic(){
+		
+		while(!taskPool.isEmpty()){
+			Runnable task = taskPool.poll();
+			if (task!=null){
+				task.run();
+			}
+		}
+		
 		stm.update();
 	}
 	
@@ -236,6 +247,10 @@ public class GameClient {
 		return stm;
 	}
 	
+	public void registerTask(Runnable task){
+		taskPool.add(task);
+	}
+	
 	public Vector2f calcWorldCoord(float winx, float winy){
 		float x = winx*2.0f/windowWidth-1;
 		float y = -(winy*2.0f/windowHeight-1);
@@ -251,8 +266,19 @@ public class GameClient {
 		return new Vector2f(point.x, point.y);	
 	}
 	
+	public Vector2f calcNativeCoord(float winx, float winy){
+		float resx, resy;
+		resx = (winx*2/windowWidth)-1;
+		resy = (winx*2/windowHeight)-1;
+		return new Vector2f(resx, resy);
+	}
+	
 	public void connect(String host) throws IOException{
 		client.connect(5000, host, Network.portTCP, Network.portUDP);
+	}
+	
+	public void disconnect(){
+		client.close();
 	}
 	
 	public void send(Packages.ClientServerPackage pkg){
@@ -275,6 +301,10 @@ public class GameClient {
 
 	public Player getPlayer() {
 		return player;
+	}
+	
+	public void setPlayer(Player player){
+		this.player = player;
 	}
 
 	public boolean isDebug() {

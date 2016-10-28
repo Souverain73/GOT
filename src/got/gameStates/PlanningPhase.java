@@ -18,6 +18,7 @@ import got.gameObjects.ImageButton;
 import got.gameObjects.MapPartObject;
 import got.gameObjects.ActionObject.Action;
 import got.interfaces.IClickListener;
+import got.server.GameServer.PlayerConnection;
 
 public class PlanningPhase implements GameState, IClickListener {
 	private StateMachine stm;

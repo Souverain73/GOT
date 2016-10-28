@@ -9,18 +9,19 @@ public class Packages {
 	private Packages() {
 	}
 
-	
 	/**
-	 * Method register all network packages.
-	 * Must be used for server and client/
+	 * Method register all network packages. Must be used for server and client/
+	 * 
 	 * @param endpoint
 	 */
 	public static void register(EndPoint endpoint) {
 		Kryo kryo = endpoint.getKryo();
 		kryo.register(ServerMessage.class);
 		kryo.register(LogIn.class);
+		kryo.register(PlayersList.class);
 		kryo.register(InitPlayer.class);
 		kryo.register(PlayerConnected.class);
+		kryo.register(PlayerDisconnected.class);
 		kryo.register(SetUnits.class);
 		kryo.register(SetTrack.class);
 		kryo.register(PlayerSetAction.class);
@@ -47,53 +48,83 @@ public class Packages {
 		kryo.register(AddInfluence.class);
 		kryo.register(SetGlobalState.class);
 	}
-	
-	public static class NetPackage{
-		private NetPackage(){
-			
+
+	public static class NetPackage {
+		private NetPackage() {
+
 		}
 	}
-	
-	public static class BroadcastPackage extends NetPackage{
+
+	public static class BroadcastPackage extends NetPackage {
 		private BroadcastPackage() {
 
 		}
 	}
-	
-	public static class ClientServerPackage extends NetPackage{
+
+	public static class ClientServerPackage extends NetPackage {
 		private ClientServerPackage() {
 
 		}
 	}
 
-	public static class ServerClientPackage extends NetPackage{
+	public static class ServerClientPackage extends NetPackage {
 		private ServerClientPackage() {
 
 		}
 	}
-	
-	public static class LogIn extends ClientServerPackage{
-		
+
+	public static class LogIn extends ClientServerPackage {
+		public String nickname;
+
+		public LogIn Nickname(String nickname) {
+			this.nickname = nickname;
+			return this;
+		}
 	}
 	
-	
-	
-	public static class ServerMessage extends ServerClientPackage{
+	public static class PlayersList extends ServerClientPackage {
+		public Player [] players;
+		public PlayersList() {
+			players = new Player[6];
+		}
+		public PlayersList(Player[] list){
+			players = list;
+		}
+	}
+
+	public static class ServerMessage extends ServerClientPackage {
 		public String message;
 	}
-	
+
 	/**
 	 * Инициализирует модель игрока на клиенте
 	 */
-	public static class InitPlayer extends ServerClientPackage{
+	public static class InitPlayer extends ServerClientPackage {
 		public Player player;
 	}
-	
-	public static class PlayerConnected extends BroadcastPackage{
-		public String nickname;
+
+	/**
+	 * Сообщает всем игрокам о подключении игрока
+	 */
+	public static class PlayerConnected extends BroadcastPackage {
+		public Player player;
 	}
-	
-	
+
+	/**
+	 * Сообзает всем игрокам о отключении игрока
+	 */
+	public static class PlayerDisconnected extends BroadcastPackage {
+		public Player player;
+		
+		public PlayerDisconnected(){
+			
+		}
+		
+		public PlayerDisconnected(Player player) {
+			this.player = player;
+		}
+	}
+
 	/**
 	 * устанавливает набор юнитов на определенной територии.
 	 */
@@ -133,11 +164,15 @@ public class Packages {
 	 * сообщает всем игрокам о готовности игрока player
 	 */
 	public static class PlayerReady extends BroadcastPackage {
-		int player;
-		int ready;
-
+		public int playerID;
+		public boolean ready;
 		public PlayerReady() {
 		}
+		public PlayerReady(int playerID, boolean ready) {
+			this.playerID = playerID;
+			this.ready = ready;
+		}
+		
 	}
 
 	/**
@@ -243,9 +278,12 @@ public class Packages {
 	 * устанавливает готовность клиента к завершению фазы.
 	 */
 	public static class Ready extends ClientServerPackage {
-		int ready;
-
+		public boolean ready;
+		
 		public Ready() {
+		}
+		public Ready(boolean ready){
+			this.ready = ready;
 		}
 	}
 

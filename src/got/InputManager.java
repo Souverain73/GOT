@@ -10,10 +10,13 @@ import java.util.Collections;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
+import got.gameObjects.AbstractGameObject;
 import got.gameObjects.GameObject;
 import got.graphics.GraphicModule;
 import got.interfaces.IClickable;
 
+
+import got.graphics.DrawSpace;
 /**
  * This class handle all input
  * @author Souverain73
@@ -30,6 +33,7 @@ public class InputManager {
 	private boolean camMove;
 	private Vector2f lastMousePosWin;
 	private Vector2f lastMousePosWorld;
+	private Vector2f lastMousePosNative;
 	private int states[];
 	private ArrayList<IClickable> clickables;
 	private GameObject mouseTarget;
@@ -37,8 +41,9 @@ public class InputManager {
 	private InputManager() {
 		states = new int[3];
 		camMove = false;
-		lastMousePosWin = new Vector2f(0,0);
-		lastMousePosWorld = new Vector2f(0,0);
+		lastMousePosWin = new Vector2f(0, 0);
+		lastMousePosWorld = new Vector2f(0, 0);
+		lastMousePosNative = new Vector2f(0, 0);
 		clickables = new ArrayList<IClickable>();
 	}
 
@@ -82,7 +87,8 @@ public class InputManager {
 		
 		lastMousePosWorld = GameClient.instance().calcWorldCoord((float)posx, (float)posy);
 		lastMousePosWin.x = (float)posx;
-		lastMousePosWin.y  =(float)posy;
+		lastMousePosWin.y  = (float)posy;
+		lastMousePosNative = GameClient.instance().calcNativeCoord((float)posx, (float)posy); 
 	}
 	
 	public void mouseButtonCallback(long window, int button, int action, int mods){
@@ -118,7 +124,15 @@ public class InputManager {
 			if (f){
 				cl.setMouseIn(false);
 			}else {
-				if (cl.ifMouseIn(lastMousePosWorld)){
+				Vector2f mouseCoord;
+				if (cl.getSpace() == DrawSpace.WORLD){
+					mouseCoord = lastMousePosWorld;
+				}else if (cl.getSpace() == DrawSpace.SCREEN){
+					mouseCoord = lastMousePosWin;
+				}else{
+					mouseCoord = lastMousePosNative;
+				}
+				if (cl.ifMouseIn(mouseCoord)){
 					mouseTarget = (GameObject) cl;
 					cl.setMouseIn(f = true);
 				}else{

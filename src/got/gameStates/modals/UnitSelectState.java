@@ -15,6 +15,7 @@ import got.gameObjects.UnitObject;
 import got.gameStates.GameState;
 import got.gameStates.StateMachine;
 import got.graphics.TextureManager;
+import got.server.GameServer.PlayerConnection;
 
 public class UnitSelectState implements GameState{
 	private final String name = "UnitSelect";

@@ -5,8 +5,9 @@ import com.esotericsoftware.kryonet.Listener;
 
 import got.gameObjects.GameObject;
 import got.interfaces.IClickListener;
+import got.server.GameServer.PlayerConnection;
 
-public class ActionPhase implements GameState, IClickListener{
+public class ActionPhase extends AbstractGameState implements IClickListener{
 	protected StateMachine stm;
 	private static final String name = "ActionPhase";
 	

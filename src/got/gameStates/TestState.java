@@ -8,7 +8,9 @@ import got.gameObjects.FPSCounterObject;
 import got.gameObjects.GameObject;
 import got.graphics.DrawSpace;
 import got.graphics.Font;
+import got.graphics.GraphicModule;
 import got.graphics.Text;
+import got.server.GameServer.PlayerConnection;
 
 public class TestState implements GameState{
 	private static final String name = "TestState";
@@ -42,7 +44,8 @@ public class TestState implements GameState{
 
 	@Override
 	public void draw() {
-		hello.draw(0, 0, 1, 1, DrawSpace.WORLD);
+		GraphicModule.instance().setDrawSpace(DrawSpace.WORLD);
+		hello.draw(0, 0, 1, 1);
 		objects.forEach(obj->obj.draw(this));
 	}
 

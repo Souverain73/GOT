@@ -5,6 +5,7 @@ import java.util.Vector;
 import org.joml.Vector2f;
 
 import got.gameStates.GameState;
+import got.graphics.DrawSpace;
 import got.interfaces.IComposer;
 import got.utils.LoaderParams;
 
@@ -20,6 +21,7 @@ public class AbstractGameObject implements GameObject, IComposer<AbstractGameObj
 	protected Vector2f pos;
 	protected float w, h;
 	protected boolean visible;
+	protected DrawSpace space = DrawSpace.WORLD;
 	
 	
 	public Vector2f getPos() {
@@ -30,6 +32,14 @@ public class AbstractGameObject implements GameObject, IComposer<AbstractGameObj
 		visible = true;
 		pos = new Vector2f();
 		childs = new Vector<AbstractGameObject>();
+	}
+	
+	public void setSpace(DrawSpace space){
+		this.space = space;
+	}
+	
+	public DrawSpace getSpace(){
+		return space;
 	}
 	
 	@Override
@@ -46,6 +56,13 @@ public class AbstractGameObject implements GameObject, IComposer<AbstractGameObj
 		return null;
 	}
 
+	public void removeChild(AbstractGameObject object){
+		if (object!=null){
+			object.setParent(null);
+			childs.remove(object);
+		}
+	}
+		
 	@Override
 	public void setParent(AbstractGameObject object) {
 		parent = object;

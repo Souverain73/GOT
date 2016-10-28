@@ -12,6 +12,7 @@ public class Network {
 		Kryo kryo = endpoint.getKryo();
 		Packages.register(endpoint);
 		kryo.register(got.Player.class);
+		kryo.register(got.Player[].class);
 		kryo.register(got.Fraction.class);
 	}
 	

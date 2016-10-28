@@ -125,17 +125,21 @@ public class Text {
 		vertexUVBuffer = GraphicModule.setBufferData(vertexUVBuffer, this.UVCoords);
 	}
 
-	public void draw(float x, float y, float w, float h, DrawSpace space){
-		this.draw(x, y, w, h, 0, space);
+	/**
+	 * @param x horizontal position
+	 * @param y vertical position
+	 * @param w width scale
+	 * @param h height scale
+	 * @param space drawing space
+	 */
+	public void draw(float x, float y, float w, float h){
+		this.draw(x, y, w, h, 0);
 	}
 	
-	public void draw(float x, float y, float w, float h, float z, DrawSpace space){
+	public void draw(float x, float y, float w, float h, float z){
 		//TODO: draw text here;
 		mv.identity().translate(x,y,-z).scale(w, h, 1).get(mvFB);
-		if (space == DrawSpace.WORLD)
-			pm = GraphicModule.instance().getCamera().getProjectionAsFloatBuffer();
-		else
-			pm = GraphicModule.instance().getScreenProjectionAsFloatBuffer();
+		pm = GraphicModule.instance().getProjectionAsFloatBuffer();
 		
 	    glEnable(GL_BLEND);
 	    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

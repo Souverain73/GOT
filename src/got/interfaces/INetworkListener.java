@@ -2,6 +2,8 @@ package got.interfaces;
 
 import com.esotericsoftware.kryonet.Connection;
 
+import got.server.GameServer.PlayerConnection;
+
 /**
  * @author Souverain73
  *	Network listener must handle network packages

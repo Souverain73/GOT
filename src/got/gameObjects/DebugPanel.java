@@ -5,6 +5,7 @@ import got.Player;
 import got.gameStates.GameState;
 import got.graphics.DrawSpace;
 import got.graphics.Font;
+import got.graphics.GraphicModule;
 import got.graphics.Text;
 
 public class DebugPanel extends AbstractGameObject{
@@ -46,8 +47,9 @@ public class DebugPanel extends AbstractGameObject{
 	public void draw(GameState state) {
 		if (drawn) return;
 		super.draw(state);
-		tCurState.draw(10, 32, 1, 1, DrawSpace.SCREEN);
-		tCurFraction.draw(10, 64, 1, 1, DrawSpace.SCREEN);
+		GraphicModule.instance().setDrawSpace(DrawSpace.SCREEN);
+		tCurState.draw(10, 32, 1, 1);
+		tCurFraction.draw(10, 64, 1, 1);
 		drawn = true;
 	}
 	

@@ -9,7 +9,9 @@ import got.gameStates.GameState;
 import got.gameStates.StateMachine;
 import got.graphics.DrawSpace;
 import got.graphics.Font;
+import got.graphics.GraphicModule;
 import got.graphics.Text;
+import got.server.GameServer.PlayerConnection;
 
 public class MessageBoxState implements GameState{
 	//TODO create BG and Buttons.
@@ -41,7 +43,8 @@ public class MessageBoxState implements GameState{
 
 	@Override
 	public void draw() {
-		text.draw(x, y, 1, 1, DrawSpace.SCREEN);
+		GraphicModule.instance().setDrawSpace(DrawSpace.SCREEN);
+		text.draw(x, y, 1, 1);
 	}
 
 	@Override

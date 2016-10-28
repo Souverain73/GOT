@@ -47,13 +47,14 @@ public class GraphicModule {
 	private static ICamera camera;
 	private static Effect effect;
 	private static Matrix4f screenProjection;
-	private static FloatBuffer fbScreenProjection;
+	private static Matrix4f projection;
+	private static FloatBuffer fbProjection;
 	private static int winW, winH;
 
 	private GraphicModule() {
 		camera = new Ortho2DCamera();
 		screenProjection = new Matrix4f();
-		fbScreenProjection = BufferUtils.createFloatBuffer(16);
+		fbProjection = BufferUtils.createFloatBuffer(16);
 		GraphicModule.resizeCallback(0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 	}
 
@@ -75,7 +76,6 @@ public class GraphicModule {
 		winH = h;
 		camera.windowResizeCallback(w, h);
 		screenProjection.setOrtho(0, w, h, 0, -1, 1);
-		screenProjection.get(fbScreenProjection);
 	}
 	
 	public void initOpenGl(){
@@ -199,11 +199,24 @@ public class GraphicModule {
 		return effect;
 	}
 	
-	public Matrix4f getScreenProjection(){
-		return screenProjection;
+	public Matrix4f getProjection(){
+		return projection;
 	}
 	
-	public FloatBuffer getScreenProjectionAsFloatBuffer(){
-		return fbScreenProjection;
+	public FloatBuffer getProjectionAsFloatBuffer(){
+		return fbProjection;
+	}
+	
+	public void setDrawSpace(DrawSpace space){
+		if (space == DrawSpace.WORLD){
+			projection = camera.getProjection();
+			projection.get(fbProjection);
+		}else if(space == DrawSpace.SCREEN){
+			projection = screenProjection;
+			projection.get(fbProjection);
+		}else{
+			projection.identity();
+			projection.get(fbProjection);
+		}
 	}
 }

@@ -1,6 +1,7 @@
 package got.gameStates;
 
 import java.io.IOException;
+import java.util.Random;
 import java.util.Vector;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -12,6 +13,7 @@ import got.gameObjects.ImageButton;
 import got.network.Network;
 import got.network.Packages;
 import got.network.Packages.InitPlayer;
+import got.server.GameServer.PlayerConnection;
 import got.utils.UI;
 
 public class MenuState implements GameState {
@@ -29,20 +31,11 @@ public class MenuState implements GameState {
 		
 		System.out.println("Entering "+name);
 		//button play
-		gameObjects.add(new ImageButton("play.jpg", 100,100,200,100, null).setCallback((sender, params)->{
-			String host = UI.getString("Enter host", "host", "localhost");
-			try{
-				GameClient.instance().connect(host);
-			}catch(IOException e){
-				System.out.println("Can't connect to host:"+host);
-				return;
-			}
-			GameClient.instance().send(new Packages.LogIn());
-			GameClient.instance().getStateMachine().setState(new NetworkRoomState());
-			System.out.println("Connection sccessfull");
+		gameObjects.add(new ImageButton("buttons/play.png", 100,100,200,100, null).setCallback((sender, params)->{
+			GameClient.instance().getStateMachine().pushState(new NetworkRoomState());
 		}));
 		//button exit
-		gameObjects.add(new ImageButton("exit.jpg", 100,220,200,100, null).setCallback((sender, params)->{
+		gameObjects.add(new ImageButton("buttons/exit.png", 100,220,200,100, null).setCallback((sender, params)->{
 			GameClient.instance().exit();
 		}));
 		
@@ -69,7 +62,14 @@ public class MenuState implements GameState {
 	@Override
 	public void recieve(Connection connection, Object pkg) {
 		if (pkg instanceof InitPlayer){
-			GameClient.instance().getStateMachine().setState(new NetworkRoomState());
+			GameClient.instance().registerTask(new Runnable() {
+				@Override
+				public void run() {
+					InitPlayer msg = ((InitPlayer)pkg);
+					GameClient.instance().setPlayer(msg.player);
+					GameClient.instance().getStateMachine().setState(new NetworkRoomState());	
+				}
+			});
 		}
 	}
 

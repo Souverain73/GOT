@@ -6,15 +6,14 @@ import com.esotericsoftware.kryonet.Connection;
 
 import got.GameClient;
 import got.gameObjects.DebugPanel;
+import got.interfaces.INetworkListener;
 
-public class StateMachine {
+public class StateMachine implements INetworkListener {
 	private LinkedList<GameState> _states;
 	
 	public StateMachine(){
 		_states = new LinkedList<GameState>();
 	}
-	
-
 	
 	public void setState(GameState state){
 		if (!_states.isEmpty()){
@@ -24,11 +23,18 @@ public class StateMachine {
 		state.enter(this);
 	}
 	
+	/**
+	 * Push state in the states stack
+	 * @param state
+	 */
 	public void pushState(GameState state){
 		_states.push(state);
 		state.enter(this);
 	}
 	
+	/**
+	 * Remove last state from states stack
+	 */
 	public void removeState(){
 		if (!_states.isEmpty()){
 			_states.poll().exit();

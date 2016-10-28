@@ -4,17 +4,18 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import got.Player;
 
 public class PlayerManager {
 	private static PlayerManager _instance = null;
-	public Set<Player> connected = Collections.synchronizedSet(new HashSet<Player>());
-	private int connectedPlayers;
+	public ConcurrentHashMap<Integer, Player> players = new ConcurrentHashMap<>();
+	private int playersCount;
 	private int maxPlayers = 6;
 	
 	private PlayerManager() {
-		connectedPlayers = 0;
+		playersCount = 0;
 	}
 
 	public static PlayerManager instance() {
@@ -24,29 +25,62 @@ public class PlayerManager {
 		return _instance;
 	}
 	
-	public boolean isLoggedIn(Player player){
-		return connected.contains(player);
+	public boolean isLoggedIn(int id){
+		return players.contains(id);
 	}
 	
-	public boolean LogIn(Player player){
-		if (connectedPlayers == maxPlayers) return false;
+	
+	/**
+	 * LogIn player on the server
+	 * @param player
+	 * @return
+	 */
+	public int LogIn(Player player){
+		//if max players already logged in return -1
+		if (playersCount == maxPlayers) return -1;
 		
-		connectedPlayers++;
-		connected.add(player);
+		//get free id
+		int id = 0;
+		for (id = 0; id<maxPlayers; id++){
+			if (!players.containsKey(id))
+				break;
+		}
+		//if all id already exists return -1
+		if (id == maxPlayers) return -1;
 		
-		return true;
+		playersCount++;
+		players.put(id, player);
+		
+		return id;
 	}
 	
-	public boolean disconnect(Player player){
-		if (!connected.contains(player)) return false;
+	/**
+	 * register player on client
+	 * @param player
+	 */
+	public void register(Player player){
+		playersCount++;
+		players.put(player.id, player);
+	}
+	
+	public Player getPlayer(int id){
+		return players.get(id);
+	}
+	
+	public boolean disconnect(int id){
+		if (!players.containsKey(id)) return false;
 		
-		connected.remove(player);
-		connectedPlayers--;
+		players.remove(id);
+		playersCount--;
 		
 		return true;
 	}
 	
 	public int getPlayersCount(){
-		return connectedPlayers;
+		return playersCount;
+	}
+	
+	public Player[] getPlayersList(){
+		return (Player[]) players.values().toArray(new Player[0]);
 	}
 }

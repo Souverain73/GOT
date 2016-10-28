@@ -1,6 +1,10 @@
 package got;
 
 public class Constants {
+//GAME MECHANICS
+	public static final int MAX_PLAYERS = 6;
+	
+	
 //WINDOW
 	public static final int SCREEN_WIDTH = 640;
 	public static final int SCREEN_HEIGHT = 480;

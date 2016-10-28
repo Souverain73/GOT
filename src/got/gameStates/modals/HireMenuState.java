@@ -17,6 +17,7 @@ import got.gameObjects.UnitObject.UnitType;
 import got.gameStates.GameState;
 import got.gameStates.StateMachine;
 import got.graphics.TextureManager;
+import got.server.GameServer.PlayerConnection;
 
 public class HireMenuState implements GameState{
 	private static final String name = "HireMenu";

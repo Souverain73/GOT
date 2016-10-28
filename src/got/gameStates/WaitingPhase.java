@@ -4,6 +4,8 @@ import java.util.function.Predicate;
 
 import com.esotericsoftware.kryonet.Connection;
 
+import got.server.GameServer.PlayerConnection;
+
 public class WaitingPhase implements GameState {
 	private final String name = "WaitingPhase";
 	private StateMachine stm;

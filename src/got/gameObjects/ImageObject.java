@@ -28,4 +28,8 @@ public class ImageObject extends AbstractGameObject{
 		tex.draw(cp.x, cp.y, w, h, 0);
 		super.draw(state);
 	}
+	
+	public void setTexture(Texture texture){
+		this.tex = texture;
+	}
 }

@@ -8,6 +8,7 @@ import com.esotericsoftware.kryonet.Listener;
 import got.gameObjects.FPSCounterObject;
 import got.gameObjects.GameMapObject;
 import got.gameObjects.GameObject;
+import got.server.GameServer.PlayerConnection;
 import got.utils.LoaderParams;
 
 public class MainState implements GameState {
