@@ -43,7 +43,7 @@ public class NetPlayersPanel extends AbstractGameObject {
 		if (player == null || players[player.id]!=null) return;
 		
 		//create panel for player
-		NetPlayerPanel npp = new NetPlayerPanel(player.getNickname());
+		NetPlayerPanel npp = new NetPlayerPanel(player.getNickname(), player.isReady());
 		npp.setPos(new Vector2f(0, 10+player.id*50)); 
 		panels[player.id] = npp;
 		
@@ -79,7 +79,7 @@ public class NetPlayersPanel extends AbstractGameObject {
 		ImageObject readyImg;
 		ImageObject bgImg;
 		
-		public NetPlayerPanel(String nickname) {
+		public NetPlayerPanel(String nickname, boolean ready) {
 			//init textures
 			readyGemTex = TextureManager.instance().loadTexture("nrs/ready_gem.png");
 			notReadyGemTex = TextureManager.instance().loadTexture("nrs/notready_gem.png");
@@ -92,6 +92,7 @@ public class NetPlayersPanel extends AbstractGameObject {
 			addChild(readyImg);
 			
 			nick = Text.newInstance(nickname, font);
+			setReady(ready);
 		}
 		
 		@Override

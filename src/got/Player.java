@@ -14,12 +14,14 @@ public class Player {
 	private int money;
 	private int resouces;
 	private String nickname;
+	private boolean ready;
 	
 	public Player() {
 		nickname = "dumb";
 		fraction = null;
 		specials = 3;
 		money = 100;
+		ready = false;
 	}
 
 	public int getSpecials() {
@@ -61,11 +63,19 @@ public class Player {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
+	
+	public boolean isReady() {
+		return ready;
+	}
+
+	public void setReady(boolean ready) {
+		this.ready = ready;
+	}
 
 	@Override
 	public String toString() {
-		return String.format("Player [fraction=%s, specials=%s, money=%s, resouces=%s]", fraction, specials,
-				money, resouces);
+		return String.format("Player [fraction=%s, specials=%s, money=%s, resouces=%s, ready=%s]", fraction, specials,
+				money, resouces, ready);
 	}
 	
 	

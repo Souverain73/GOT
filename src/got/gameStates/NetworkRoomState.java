@@ -16,6 +16,7 @@ import got.gameObjects.NetPlayersPanel;
 import got.graphics.DrawSpace;
 import got.interfaces.IClickListener;
 import got.network.Packages;
+import got.network.Packages.ConnectionError;
 import got.network.Packages.PlayerConnected;
 import got.network.Packages.PlayerDisconnected;
 import got.network.Packages.PlayerReady;
@@ -42,7 +43,7 @@ public class NetworkRoomState extends AbstractGameState implements IClickListene
 		AbstractButtonObject btn = new ImageButton("buttons/ready.png", 460, 400, 80, 40, null);
 		btn.setSpace(DrawSpace.SCREEN);
 		btn.setCallback((sender, param)->{
-			GameClient.instance().send(new Ready(true));
+			GameClient.instance().send(new Ready(!PlayerManager.getSelf().isReady()));
 		});
 		addObject(btn);
 		btn = new ImageButton("buttons/exit.png", 550, 400, 80, 40, null);
@@ -59,6 +60,7 @@ public class NetworkRoomState extends AbstractGameState implements IClickListene
 		}catch(IOException e){
 			System.out.println("Can't connect to host:"+host);
 			GameClient.instance().getStateMachine().removeState();
+			return;
 		}
 		GameClient.instance().send(new Packages.LogIn().Nickname(String.format("%010d", (new Random()).nextLong()%10000)));
 		System.out.println("Connection sccessfull");
@@ -88,15 +90,22 @@ public class NetworkRoomState extends AbstractGameState implements IClickListene
 
 	@Override
 	public void recieve(Connection connection, Object pkg) {
+		if (pkg instanceof ConnectionError){
+			String message = "Unknown connection error";
+			switch (((ConnectionError) pkg).errorCode){
+				case ConnectionError.LobbyIsFull: message = "Lobby is full"; break;
+			}
+			UI.systemMessage(message);
+			GameClient.instance().getStateMachine().removeState();
+		}
 		if (pkg instanceof PlayerConnected){
 			PlayerConnected msg = (PlayerConnected)pkg;
 			Player player = msg.player;
-			System.out.println("PlayerConnected:"+player.getNickname()+" ID:"+player.id);
 			UI.systemMessage(("Player "+player.getNickname()+" connected"));
-			PlayerManager.instance().LogIn(player);
 			GameClient.instance().registerTask(new Runnable() {
 				@Override
 				public void run() {
+					PlayerManager.instance().register(player);
 					npp.addPlayer(player);
 				}
 			});
@@ -107,7 +116,10 @@ public class NetworkRoomState extends AbstractGameState implements IClickListene
 			GameClient.instance().registerTask(new Runnable() {
 				@Override
 				public void run() {
-					npp.addPlayers(list.players);	
+					PlayerManager.instance().registerAll(list.players);
+					npp.addPlayers(
+							PlayerManager.instance().getPlayersList()
+					);	
 				}
 			});
 		}
@@ -129,6 +141,7 @@ public class NetworkRoomState extends AbstractGameState implements IClickListene
 			GameClient.instance().registerTask(new Runnable() {
 				@Override
 				public void run() {
+					PlayerManager.instance().getPlayer(msg.playerID).setReady(msg.ready);
 					npp.setPlayerReady(msg.playerID, msg.ready);
 				}
 			});

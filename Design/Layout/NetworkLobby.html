@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Net lobby design</title>
+	<style type="text/css">
+		div {
+			position: absolute;
+		}
+		.viewport {
+			width: 1280px;
+			height: 720px;
+			border: 3px solid #000;
+		}
+		.container {
+			border: 2px solid #080;
+		}
+		.panel {
+			border: 1px solid #800;
+		}
+		.comment {
+			left:1310px;
+		}
+	</style>
+</head>
+<body>
+	<div class="viewport">
+	<div class="container" style="top: 0%; left: 0%; width: 70%; height: 70%">
+		В этой зоне предполагается упрощенная версия карты, на которой особо выделены главные замки домов.
+		Игрок кликнув на столицу может выбрать, за кого он будет играть, соответственно если игрок выбрал дом,
+		его карточка перемещается из списка игроков на територию соответствующего замка.<br><br>
+		Ну или что то другое на твое усмотрение.
+	</div>
+	<div class="container" style="top: 0%; left: 70%; width: 30%; height: 70%">
+		Тут распологается список игроков. Максимум 6 игроков.
+		<div class="panel" style="position:relative; left: 0%; width: 100%; height: 16%">
+			<div style="height: 100%; width:100%; display: flex;">
+				<div style="position: relative; font-size: 40px;  margin:auto; margin-left:15px;">
+					Souverain73
+				</div> 
+				<div style="margin:auto; right:0; height: 100%; width:100px; background-color:#0b0">
+				</div>
+			</div>
+		</div>
+		<div class="panel" style="position:relative;  left: 0%; width: 100%; height: 16%">
+			<div style="height: 100%; width:100%; display: flex;">
+				<div style="position: relative; font-size: 40px;  margin:auto; margin-left:15px;">
+					Quatro
+				</div> 
+				<div style="margin:auto; right:0; height: 100%; width:100px; background-color:#b00">
+				</div>
+			</div>
+		</div>
+		<div class="panel" style="position:relative;  left: 0%; width: 100%; height: 16%">
+			<div style="height: 100%; width:100%; display: flex;">
+				<div style="position: relative; font-size: 40px;  margin:auto; margin-left:15px;">
+					Sehin
+				</div> 
+				<div style="margin:auto; right:0; height: 100%; width:100px; background-color:#0b0">
+				</div>
+			</div>
+		</div>
+		Вместо цветного квадрата справа надо сделать что то более красивое
+	</div>
+	<div class="container" style="top: 70%; left: 0%; width: 70%; height: 30%">
+		Тут некий лог последних событий (Кто подключился, кто отключился, кто готов, кто не готов и т.д.)<br>
+		Souverain73 подключился<br>
+		Quatro подключился<br>
+		Souverain73 готов<br>
+		Sehin подключился<br>
+		Sehin готов<br>
+		и т.д.
+	</div>
+	<div class="container" style="top: 70%; left: 70%; width: 30%; height: 30%">
+		Ну а тут кнопки. Пока что кнопок планируется 2: "Готов/Не готов"(Меняется в зависимости от готовности) и "Выход";
+	</div>
+	</div>
+	<div class="comment">
+		Все это дело надо оформить, нарисовать кнопки, рамки и т.д.<br>
+		На фон можно запилить какую нибудь картинку.<br>
+
+		Рассчитыватй на соотношение сторон 16:9 (1280х720, 1920х1080 и т.д.)<br>
+		Разрешение всех текстур желательно должно быть степенями двойки.<br>
+		Текстуры можно рисовать в большем разрешении, чем они будут нарисованы на экране.<br>
+		Для элементов желательно указать размеры для разрешения 1280х720, в таком разрешении все будет внутри движка.<br><br>
+	</div>
+</body>
+</html>

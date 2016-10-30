@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 
 import got.Player;
+import got.network.Packages.ConnectionError;
 import got.network.Packages.InitPlayer;
 import got.network.Packages.LogIn;
 import got.network.Packages.PlayerConnected;
@@ -21,12 +22,16 @@ public class NetworkRoomState implements ServerState {
 	@Override
 	public void recieve(Connection c, Object pkg) {
 		PlayerConnection connection = ((PlayerConnection)c);
-		
+		Player player = connection.player;
 		//if player logged in.
 		if (pkg instanceof LogIn){
 			Player pl = new Player();
 			pl.setNickname(((LogIn)pkg).nickname);
 			pl.id = PlayerManager.instance().LogIn(pl);
+			if (pl.id == -1){
+				connection.sendTCP(new ConnectionError(ConnectionError.LobbyIsFull));
+				return;
+			}
 			
 			((GameServer.PlayerConnection)connection).player = pl;
 			
@@ -47,6 +52,7 @@ public class NetworkRoomState implements ServerState {
 		
 		if (pkg instanceof Ready){
 			Ready msg = ((Ready)pkg);
+			player.setReady(msg.ready);
 			server.sendToAllTCP(new PlayerReady(connection.player.id, msg.ready));
 		}
 	}

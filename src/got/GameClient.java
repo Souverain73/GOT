@@ -52,6 +52,7 @@ import got.graphics.GraphicModule;
 import got.network.Network;
 import got.network.Packages;
 import got.network.Packages.ServerMessage;
+import got.server.PlayerManager;
 import got.server.GameServer.PlayerConnection;
 import got.utils.UI;
 
@@ -64,7 +65,13 @@ public class GameClient {
 	private boolean debug = false;
 	private static GameClient _instance = null;
 	private LinkedList<ModalState> modalStates;
+	
+	/*
+	 * All information about players must be handled by PlayerManager;
+	 */
+	@Deprecated
 	private Player player;
+	
 	private Client client;
 	private ConcurrentLinkedQueue<Runnable> taskPool = new ConcurrentLinkedQueue<>();
 
@@ -161,6 +168,7 @@ public class GameClient {
 				if (object instanceof Packages.InitPlayer){
 					Packages.InitPlayer msg = (Packages.InitPlayer)object;
 					UI.serverMessage("InitPlayer:\n"+msg.player.toString());
+					PlayerManager.instance().initPlayer(msg.player);
 				}else if (object instanceof ServerMessage){
 					UI.serverMessage(((ServerMessage)object).message);
 				}
@@ -299,10 +307,12 @@ public class GameClient {
 		return !glfwWindowShouldClose(pWindow);
 	}
 
-	public Player getPlayer() {
-		return player;
+	@Deprecated
+	public static Player getPlayer() {
+		return instance().player;
 	}
 	
+	@Deprecated
 	public void setPlayer(Player player){
 		this.player = player;
 	}

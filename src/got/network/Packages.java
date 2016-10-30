@@ -20,6 +20,7 @@ public class Packages {
 		kryo.register(LogIn.class);
 		kryo.register(PlayersList.class);
 		kryo.register(InitPlayer.class);
+		kryo.register(ConnectionError.class);
 		kryo.register(PlayerConnected.class);
 		kryo.register(PlayerDisconnected.class);
 		kryo.register(SetUnits.class);
@@ -79,6 +80,16 @@ public class Packages {
 		public LogIn Nickname(String nickname) {
 			this.nickname = nickname;
 			return this;
+		}
+	}
+	
+	public static class ConnectionError extends ServerClientPackage {
+		public final static int LobbyIsFull = 1; 
+		public int errorCode;
+		public ConnectionError() {
+		}
+		public ConnectionError(int code){
+			this.errorCode = code;
 		}
 	}
 	

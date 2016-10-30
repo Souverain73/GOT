@@ -13,6 +13,7 @@ public class PlayerManager {
 	public ConcurrentHashMap<Integer, Player> players = new ConcurrentHashMap<>();
 	private int playersCount;
 	private int maxPlayers = 6;
+	private Player self;
 	
 	private PlayerManager() {
 		playersCount = 0;
@@ -45,6 +46,7 @@ public class PlayerManager {
 			if (!players.containsKey(id))
 				break;
 		}
+		
 		//if all id already exists return -1
 		if (id == maxPlayers) return -1;
 		
@@ -54,13 +56,35 @@ public class PlayerManager {
 		return id;
 	}
 	
+	
+	
+	public static Player getSelf(){
+		return instance().self;
+	}
+	
+	/**
+	 * Initialize client side player
+	 * @param player - main player on client
+	 */
+	public void initPlayer(Player player){
+		register(player);
+		self = player;
+	}
+	
 	/**
 	 * register player on client
 	 * @param player
 	 */
 	public void register(Player player){
+		if (self!=null && player.id == self.id) return;
 		playersCount++;
 		players.put(player.id, player);
+	}
+	
+	public void registerAll(Player[] list){
+		for (Player pl:list){
+			register(pl);
+		}
 	}
 	
 	public Player getPlayer(int id){
