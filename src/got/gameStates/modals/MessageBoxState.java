@@ -65,4 +65,9 @@ public class MessageBoxState implements GameState{
 		
 	}
 
+	@Override
+	public int getID() {
+		return -1;
+	}
+
 }

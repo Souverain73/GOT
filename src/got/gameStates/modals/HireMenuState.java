@@ -182,5 +182,10 @@ public class HireMenuState implements GameState{
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public int getID() {
+		return -1;
+	}
 	
 }

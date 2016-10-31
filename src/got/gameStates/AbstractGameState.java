@@ -4,9 +4,10 @@ import java.util.Vector;
 
 import com.esotericsoftware.kryonet.Connection;
 
+import got.GameClient;
 import got.gameObjects.GameObject;
-import got.server.GameServer.PlayerConnection;
 import got.utils.UI;
+import static got.network.Packages.Ready;
 
 /**
  * @author Souverain73
@@ -29,6 +30,7 @@ public class AbstractGameState implements GameState {
 
 	@Override
 	public void enter(StateMachine stm) {
+		GameClient.instance().sendReady(true);
 	}
 
 	@Override
@@ -53,5 +55,10 @@ public class AbstractGameState implements GameState {
 	protected void removeObject(GameObject obj){
 		gameObjects.remove(obj);
 		obj.finish();
+	}
+
+	@Override
+	public int getID() {
+		return 0;
 	}
 }

@@ -6,7 +6,7 @@ import com.esotericsoftware.kryonet.Connection;
 
 import got.server.GameServer.PlayerConnection;
 
-public class WaitingPhase implements GameState {
+public class WaitingPhase extends AbstractGameState {
 	private final String name = "WaitingPhase";
 	private StateMachine stm;
 	private Predicate<Object> cond;

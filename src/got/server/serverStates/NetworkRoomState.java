@@ -1,9 +1,12 @@
 package got.server.serverStates;
 
+import javax.swing.plaf.SliderUI;
+
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 
 import got.Player;
+import got.network.Packages;
 import got.network.Packages.ConnectionError;
 import got.network.Packages.InitPlayer;
 import got.network.Packages.LogIn;
@@ -18,6 +21,8 @@ import got.server.PlayerManager;
 public class NetworkRoomState implements ServerState {
 	private String name = "NetworkRoomState";
 	private Server server;
+	private Thread timerThread;
+	private StateMachine stm;
 	
 	@Override
 	public void recieve(Connection c, Object pkg) {
@@ -54,6 +59,31 @@ public class NetworkRoomState implements ServerState {
 			Ready msg = ((Ready)pkg);
 			player.setReady(msg.ready);
 			server.sendToAllTCP(new PlayerReady(connection.player.id, msg.ready));
+			
+			if (PlayerManager.instance().isAllPlayersReady()){
+				//Start game start countdown
+				GameServer.getServer().sendToAllTCP(new Packages.SetFractions(PlayerManager.instance().getFractions()));
+				
+				timerThread = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						int time = 1000;
+						int step = 1000;
+						while (time>0){
+							server.sendToAllTCP(new Packages.ServerMessage(String.format("Game start in %d seconds", time/1000)));
+							time-=step;
+							try{
+								Thread.sleep(step);
+							}catch (InterruptedException e){
+								
+							}
+						}
+						connection.sendTCP(new Packages.ServerMessage("Start!!"));
+						stm.setState(new ChangeState(new MainState(), true));
+					}
+				}, "TimerThread");
+				timerThread.start();
+			}
 		}
 	}
 
@@ -64,12 +94,18 @@ public class NetworkRoomState implements ServerState {
 
 	@Override
 	public void enter(StateMachine stm) {
+		this.stm = stm;
 		server = GameServer.getServer();
 	}
 
 	@Override
 	public void exit() {
 
+	}
+
+	@Override
+	public int getID() {
+		return 0;
 	}
 
 }

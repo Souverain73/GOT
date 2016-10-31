@@ -16,7 +16,7 @@ import got.network.Packages.InitPlayer;
 import got.server.GameServer.PlayerConnection;
 import got.utils.UI;
 
-public class MenuState implements GameState {
+public class MenuState extends AbstractGameState {
 	private final String name = "MenuState";
 	private Vector<GameObject> gameObjects;
 	
@@ -32,7 +32,7 @@ public class MenuState implements GameState {
 		System.out.println("Entering "+name);
 		//button play
 		gameObjects.add(new ImageButton("buttons/play.png", 100,100,200,100, null).setCallback((sender, params)->{
-			GameClient.instance().getStateMachine().pushState(new NetworkRoomState());
+			GameClient.instance().getStateMachine().setState(new NetworkRoomState());
 		}));
 		//button exit
 		gameObjects.add(new ImageButton("buttons/exit.png", 100,220,200,100, null).setCallback((sender, params)->{
@@ -61,16 +61,6 @@ public class MenuState implements GameState {
 
 	@Override
 	public void recieve(Connection connection, Object pkg) {
-		if (pkg instanceof InitPlayer){
-			GameClient.instance().registerTask(new Runnable() {
-				@Override
-				public void run() {
-					InitPlayer msg = ((InitPlayer)pkg);
-					GameClient.instance().setPlayer(msg.player);
-					GameClient.instance().getStateMachine().setState(new NetworkRoomState());	
-				}
-			});
-		}
 	}
 
 	

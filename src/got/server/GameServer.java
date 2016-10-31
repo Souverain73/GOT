@@ -3,6 +3,7 @@ package got.server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -16,13 +17,16 @@ import got.network.Packages.LogIn;
 import got.network.Packages.PlayerConnected;
 import got.network.Packages.PlayerDisconnected;
 import got.network.Packages.ServerMessage;
+import got.server.serverStates.ChangeState;
 import got.server.serverStates.NetworkRoomState;
+import got.server.serverStates.ServerState;
 import got.server.serverStates.StateMachine;
 
 public class GameServer {	
 	
 	private static StateMachine stm = new StateMachine();
 	private static Server server = null;
+	private ConcurrentLinkedQueue<Runnable> taskPool = new ConcurrentLinkedQueue<>();
 	
 	public static Server getServer(){
 		return server;
@@ -111,7 +115,11 @@ public class GameServer {
 		
 		System.out.println("Server running on port:"+Network.portTCP+"/"+Network.portUDP);
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		//main server loop
+		//handles console commands and execute tasks
 		while (true){
+			executeTasks();
+			
 			String line = br.readLine().trim();
 			String [] command = line.split("\\s");
 			if (command.length == 0){
@@ -124,6 +132,19 @@ public class GameServer {
 				ServerMessage msg = new ServerMessage();
 				msg.message = command[1];
 				server.sendToAllTCP(msg);
+			}
+		}
+	}
+	
+	public void registerTask(Runnable task){
+		taskPool.add(task);
+	}
+	
+	public void executeTasks(){
+		while(!taskPool.isEmpty()){
+			Runnable task = taskPool.poll();
+			if (task!=null){
+				task.run();
 			}
 		}
 	}

@@ -22,6 +22,7 @@ import got.network.Packages.PlayerDisconnected;
 import got.network.Packages.PlayerReady;
 import got.network.Packages.PlayersList;
 import got.network.Packages.Ready;
+import got.network.Packages.SetFractions;
 import got.server.PlayerManager;
 import got.utils.UI;
 
@@ -50,7 +51,7 @@ public class NetworkRoomState extends AbstractGameState implements IClickListene
 		btn.setSpace(DrawSpace.SCREEN);
 		btn.setCallback((sender, param)->{
 			GameClient.instance().disconnect();
-			GameClient.instance().getStateMachine().removeState();
+			GameClient.instance().getStateMachine().setState(new MenuState());
 		});
 		addObject(btn);
 		
@@ -59,7 +60,7 @@ public class NetworkRoomState extends AbstractGameState implements IClickListene
 			GameClient.instance().connect(host);
 		}catch(IOException e){
 			System.out.println("Can't connect to host:"+host);
-			GameClient.instance().getStateMachine().removeState();
+			GameClient.instance().getStateMachine().setState(new MenuState());
 			return;
 		}
 		GameClient.instance().send(new Packages.LogIn().Nickname(String.format("%010d", (new Random()).nextLong()%10000)));
@@ -70,7 +71,7 @@ public class NetworkRoomState extends AbstractGameState implements IClickListene
 
 	@Override
 	public void exit() {
-		
+		super.exit();
 	}
 
 	@Override
@@ -145,6 +146,14 @@ public class NetworkRoomState extends AbstractGameState implements IClickListene
 					npp.setPlayerReady(msg.playerID, msg.ready);
 				}
 			});
+		}
+		
+		if (pkg instanceof SetFractions){
+			SetFractions msg = ((SetFractions)pkg);
+			Player[] players = PlayerManager.instance().getPlayersList();
+			for (int i=0; i<players.length; i++){
+				players[i].setFraction(msg.fractions[i]);
+			}
 		}
 	}	
 }

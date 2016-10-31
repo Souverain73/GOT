@@ -3,7 +3,9 @@ package got.network;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 
+import got.Fraction;
 import got.Player;
+import got.gameObjects.ActionObject.Action;
 
 public class Packages {
 	private Packages() {
@@ -23,6 +25,7 @@ public class Packages {
 		kryo.register(ConnectionError.class);
 		kryo.register(PlayerConnected.class);
 		kryo.register(PlayerDisconnected.class);
+		kryo.register(SetFractions.class);
 		kryo.register(SetUnits.class);
 		kryo.register(SetTrack.class);
 		kryo.register(PlayerSetAction.class);
@@ -34,7 +37,7 @@ public class Packages {
 		kryo.register(OpenCard.class);
 		kryo.register(PlayerSelectItem.class);
 		kryo.register(PlayerBets.class);
-		kryo.register(ChangePhase.class);
+		kryo.register(ChangeState.class);
 		kryo.register(SetAction.class);
 		kryo.register(Ready.class);
 		kryo.register(Act.class);
@@ -105,6 +108,10 @@ public class Packages {
 
 	public static class ServerMessage extends ServerClientPackage {
 		public String message;
+		public ServerMessage(){};
+		public ServerMessage(String message){
+			this.message = message;
+		}
 	}
 
 	/**
@@ -136,6 +143,14 @@ public class Packages {
 		}
 	}
 
+	public static class SetFractions extends BroadcastPackage {
+		public Fraction[] fractions;
+		public SetFractions() {}
+		public SetFractions(Fraction[] fractions) {
+			this.fractions = fractions;
+		}
+	}
+	
 	/**
 	 * устанавливает набор юнитов на определенной територии.
 	 */
@@ -164,11 +179,14 @@ public class Packages {
 	 * устанавливает действие для региона.
 	 */
 	public static class PlayerSetAction extends BroadcastPackage {
-		int region;
-		int action;
-
-		public PlayerSetAction() {
+		public int region;
+		public Action action;
+		public PlayerSetAction() {}
+		public PlayerSetAction(int region, Action action) {
+			this.region = region;
+			this.action = action;
 		}
+		
 	}
 
 	/**
@@ -267,10 +285,11 @@ public class Packages {
 	/**
 	 * Передает информацию о смене фазы игры.
 	 */
-	public static class ChangePhase extends BroadcastPackage {
-		int phase;
-
-		public ChangePhase() {
+	public static class ChangeState extends BroadcastPackage {
+		public int state;
+		public ChangeState() {}
+		public ChangeState(int state) {
+			this.state = state;
 		}
 	}
 
@@ -278,11 +297,14 @@ public class Packages {
 	 * устанавливает действие для региона.
 	 */
 	public static class SetAction extends ClientServerPackage {
-		int region;
-		int action;
-
-		public SetAction() {
+		public int region;
+		public Action action;
+		public SetAction() {}
+		public SetAction(int region, Action action) {
+			this.region = region;
+			this.action = action;
 		}
+		
 	}
 
 	/**

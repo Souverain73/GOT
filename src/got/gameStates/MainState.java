@@ -5,13 +5,17 @@ import java.util.Vector;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
+import got.GameClient;
 import got.gameObjects.FPSCounterObject;
 import got.gameObjects.GameMapObject;
 import got.gameObjects.GameObject;
+import got.network.Packages.ChangeState;
 import got.server.GameServer.PlayerConnection;
 import got.utils.LoaderParams;
 
-public class MainState implements GameState {
+import static got.network.Packages.Ready;
+
+public class MainState extends AbstractGameState {
 	private Vector<GameObject> gameObjects;
 	private static final String name = "MainState";
 	private StateMachine stm;
@@ -29,8 +33,7 @@ public class MainState implements GameState {
 		GameObject map = new GameMapObject();
 		map.init(new LoaderParams(new String[]{"filename", "data/map.xml"}));
 		gameObjects.addElement(map);
-
-		stm.setState(new PlanningPhase());
+		super.enter(extstm);
 	}
 
 	@Override
@@ -53,7 +56,21 @@ public class MainState implements GameState {
 
 	@Override
 	public void recieve(Connection connection, Object pkg) {
-		
+		if (pkg instanceof ChangeState){
+			int stateID = ((ChangeState) pkg).state;
+			GameClient.instance().registerTask(new Runnable() {
+				@Override
+				public void run() {
+					stm.setState(StateID.getGameStateByID(stateID));
+				}
+			});
+			return;
+		}
+		stm.recieve(connection, pkg);
 	}
-	
+
+	@Override
+	public int getID() {
+		return StateID.MAIN_STATE;
+	}
 }

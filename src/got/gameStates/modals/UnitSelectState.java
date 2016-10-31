@@ -89,4 +89,9 @@ public class UnitSelectState implements GameState{
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public int getID() {
+		return -1;
+	}
 }

@@ -4,7 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 
 import got.server.GameServer.PlayerConnection;
 
-public class VesterosPhase implements GameState {
+public class VesterosPhase extends AbstractGameState {
 	private static final String name = "VesterosPhase";
 	
 	@Override

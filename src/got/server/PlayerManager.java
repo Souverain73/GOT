@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import got.Fraction;
 import got.Player;
 
 public class PlayerManager {
@@ -106,5 +107,22 @@ public class PlayerManager {
 	
 	public Player[] getPlayersList(){
 		return (Player[]) players.values().toArray(new Player[0]);
+	}
+	
+	public boolean isAllPlayersReady(){
+		boolean ready = true;
+		for (Player pl : players.values()){
+			ready = ready && pl.isReady();
+		}
+		return ready;
+	}
+	
+	public Fraction[] getFractions(){
+		return new Fraction[]{Fraction.STARK, 
+		                      Fraction.LANISTER,
+		                      Fraction.BARATEON,
+		                      Fraction.GREYJOY, 
+		                      Fraction.TIREL, 
+		                      Fraction.MARTEL};
 	}
 }

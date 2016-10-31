@@ -26,6 +26,7 @@ public class MapPartObject extends AbstractButtonObject {
 	
 	private Fraction fraction = Fraction.STARK;
 	
+	private int ID = 0;
 	private RegionType type;
 	private String name;
 	private int resourcesCount;
@@ -48,6 +49,7 @@ public class MapPartObject extends AbstractButtonObject {
 	@Override
 	public boolean init(LoaderParams params) {
 		name = (String)params.get("name");
+		ID = (Integer)params.get("id");
 		resourcesCount = (Integer)params.get("resources");
 		influencePoints = (Integer)params.get("influence");
 		buildingLevel = (Integer)params.get("building");
@@ -73,9 +75,14 @@ public class MapPartObject extends AbstractButtonObject {
 		return false;
 	}
 
+	public int getID(){
+		return ID;
+	}
+	
 	@Override
 	public void draw(GameState st) {
 		if (!isVisible()) return;
+		GraphicModule.instance().setDrawSpace(this.space);
 		if (state == State.FREE){
 			
 		}else if (state == State.HOVER){

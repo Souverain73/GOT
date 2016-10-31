@@ -12,7 +12,7 @@ import got.graphics.GraphicModule;
 import got.graphics.Text;
 import got.server.GameServer.PlayerConnection;
 
-public class TestState implements GameState{
+public class TestState extends AbstractGameState{
 	private static final String name = "TestState";
 	private Vector<GameObject> objects;
 	private Font test;

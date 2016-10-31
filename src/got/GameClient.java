@@ -33,6 +33,7 @@ import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -47,14 +48,17 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
 import got.gameStates.MenuState;
+import got.gameStates.StateID;
 import got.gameStates.StateMachine;
 import got.graphics.GraphicModule;
 import got.network.Network;
 import got.network.Packages;
+import got.network.Packages.ChangeState;
 import got.network.Packages.ServerMessage;
 import got.server.PlayerManager;
 import got.server.GameServer.PlayerConnection;
 import got.utils.UI;
+import static got.network.Packages.Ready;
 
 /**
  * Main Game class, handles all initiaization, and implements global Game functions
@@ -164,7 +168,18 @@ public class GameClient {
 
 			@Override
 			public void received(Connection c, Object object) {
-				//handle common packages
+				//Небольшой костыль.
+				if (object instanceof ChangeState){
+					int stateID = ((ChangeState) object).state;
+					if (stateID == StateID.MAIN_STATE)
+						GameClient.instance().registerTask(new Runnable() {
+							@Override
+							public void run() {
+								stm.setState(StateID.getGameStateByID(stateID));
+							}
+						});	
+				}
+				//handle common packages	
 				if (object instanceof Packages.InitPlayer){
 					Packages.InitPlayer msg = (Packages.InitPlayer)object;
 					UI.serverMessage("InitPlayer:\n"+msg.player.toString());
@@ -204,13 +219,7 @@ public class GameClient {
 	
 	public void updateLogic(){
 		
-		while(!taskPool.isEmpty()){
-			Runnable task = taskPool.poll();
-			if (task!=null){
-				task.run();
-			}
-		}
-		
+		executeTasks();		
 		stm.update();
 	}
 	
@@ -259,6 +268,15 @@ public class GameClient {
 		taskPool.add(task);
 	}
 	
+	public void executeTasks(){
+		while(!taskPool.isEmpty()){
+			Runnable task = taskPool.poll();
+			if (task!=null){
+				task.run();
+			}
+		}
+	}
+	
 	public Vector2f calcWorldCoord(float winx, float winy){
 		float x = winx*2.0f/windowWidth-1;
 		float y = -(winy*2.0f/windowHeight-1);
@@ -293,6 +311,10 @@ public class GameClient {
 		client.sendTCP(pkg);
 	}
 	
+	public void sendReady(boolean ready){
+		send(new Ready(ready));
+	}
+	
 	public void registerModalState(ModalState mst){
 		this.modalStates.push(mst);
 	}
@@ -309,7 +331,7 @@ public class GameClient {
 
 	@Deprecated
 	public static Player getPlayer() {
-		return instance().player;
+		throw new IllegalStateException("getPlayer is not working now. Use PlayerManager.getSelf()");
 	}
 	
 	@Deprecated

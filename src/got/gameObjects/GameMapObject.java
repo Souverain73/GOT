@@ -22,6 +22,7 @@ import got.utils.LoaderParams;
  */
 public class GameMapObject extends AbstractGameObject{
 	private HashMap<String, MapPartObject> map;
+	private static int counter = 0;
 	
 	private static GameMapObject _instance;
 	
@@ -81,6 +82,7 @@ public class GameMapObject extends AbstractGameObject{
 
 	private void parseRegions(Node root){
 		try{
+			counter = 0;
 			NodeList regions = root.getChildNodes();
 			for(int i=0; i<regions.getLength(); i++){
 				if (regions.item(i).getNodeType() == Node.TEXT_NODE) continue;
@@ -89,6 +91,7 @@ public class GameMapObject extends AbstractGameObject{
 				MapPartObject mapPart = new MapPartObject();
 				//атрибуты
 				params.put("name", attribValue(region, "name"));
+				params.put("id", counter++);
 				params.put("influence", Integer.valueOf(valueOrDefault(attribValue(region, "influence"),"0")));
 				params.put("resources", Integer.valueOf(valueOrDefault(attribValue(region, "resources"),"0")));
 				params.put("building", Integer.valueOf(valueOrDefault(attribValue(region, "building"),"0")));
@@ -200,6 +203,14 @@ public class GameMapObject extends AbstractGameObject{
 		});
 		
 		return result;
+	}
+	
+	//TODO implement HASH or something else
+	public MapPartObject getRegionByID(int id){
+		for(MapPartObject region: map.values()){
+			if (region.getID() == id) return region;
+		}
+		return null;
 	}
 	
 }

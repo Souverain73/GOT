@@ -12,15 +12,22 @@ import got.GameClient;
 import got.InputManager;
 import got.ModalState;
 import got.Player;
+import got.gameObjects.AbstractButtonObject;
 import got.gameObjects.ActionObject;
 import got.gameObjects.GameObject;
 import got.gameObjects.ImageButton;
 import got.gameObjects.MapPartObject;
 import got.gameObjects.ActionObject.Action;
+import got.gameObjects.GameMapObject;
+import got.graphics.DrawSpace;
 import got.interfaces.IClickListener;
+import got.network.Packages.PlayerSetAction;
+import got.network.Packages.Ready;
+import got.network.Packages.SetAction;
+import got.server.PlayerManager;
 import got.server.GameServer.PlayerConnection;
 
-public class PlanningPhase implements GameState, IClickListener {
+public class PlanningPhase extends AbstractGameState implements IClickListener {
 	private StateMachine stm;
 	private static final String name = "PlanningPhase";
 	private Vector<ActionObject> actions;
@@ -42,15 +49,32 @@ public class PlanningPhase implements GameState, IClickListener {
 		actions = ActionObject.getAllActionObjects();
 		objects = new Vector<GameObject>();
 		specials = 0;
+		
+		//Add ready button
+		AbstractButtonObject btn = new ImageButton("buttons/ready.png", 550, 430, 80, 40, null);
+		btn.setSpace(DrawSpace.SCREEN);
+		btn.setCallback((sender, param)->{
+			GameClient.instance().send(new Ready(!PlayerManager.getSelf().isReady()));
+		});
+		addObject(btn);
+		
+		//all players are not ready at beginning of that phase
+		for (Player pl: PlayerManager.instance().getPlayersList()){
+			pl.setReady(false);
+		}
+		
+		super.enter(stm);
 	}
 
 	@Override
 	public void exit() {
+		super.exit();
 	}
 
 	@Override
 	public void draw() {
 		objects.forEach((obj)->{obj.draw(this);});
+		super.draw();
 	}
 
 	@Override
@@ -61,14 +85,19 @@ public class PlanningPhase implements GameState, IClickListener {
 //			GameMapObject.instance().setEnabledByCondition(region -> region.getAction()!=null);
 			stm.setState(new FirePhase());
 		}
+		super.update();
 	}
 	
-	public ActionObject createActionSelector(Vector2f pos){
+	public Action createActionSelector(Vector2f pos){
 		ActionSelector selector = new ActionSelector(actions, pos);
 		
 		(new ModalState(selector)).run();
 		
-		return selector.result;
+		ActionObject selected = selector.result;
+		
+		if (selected == null) return null;
+		
+		return selected.getType();
 	}
 	
 	public void placeAction(MapPartObject region, ActionObject act){
@@ -83,12 +112,30 @@ public class PlanningPhase implements GameState, IClickListener {
 	
 	public void click(GameObject sender){
 		if (sender instanceof MapPartObject) {
-			MapPartObject region = (MapPartObject) sender; 
-			if (region.getAction() == null && region.getUnits().size()>0
-					&& region.getFraction() == GameClient.instance().getPlayer().getFraction()) {
-				placeAction(region, createActionSelector(InputManager.instance().getMousePosWorld()));
+			MapPartObject region = (MapPartObject) sender;
+			
+			//if player click not owned region
+			if (region.getFraction() != PlayerManager.getSelf().getFraction()) return;
+			
+			//if region have no action, have placed units, and it owned by player
+			//player can place her action
+			if (region.getAction() == null && region.getUnits().size()>0) {
+				
+				//create Action selector and wait until user select something
+				Action action = createActionSelector(InputManager.instance().getMousePosWorld());
+				
+				/*//place object on client side
+				 * you can do something on client side only after server let you
+					placeAction(region, action);
+				*/
+				
+				//player can just close selector without choice anything
+				if (action!=null)
+					//notify server about placed action
+					GameClient.instance().send(new SetAction(region.getID(), action));
 			} else if (region.getAction()!=null){
-				removeAction(region);
+				//if package passed with null it means player place nothing or remove object
+				GameClient.instance().send(new SetAction(region.getID(), null));
 			}
 		}else if (sender instanceof ActionObject){
 			System.out.println("ClickClick");
@@ -105,6 +152,32 @@ public class PlanningPhase implements GameState, IClickListener {
 		region.setAction(null);
 	}
 	
+	@Override
+	public void recieve(Connection connection, Object pkg) {
+		if (pkg instanceof PlayerSetAction){
+			PlayerSetAction msg = ((PlayerSetAction)pkg);
+			MapPartObject region = GameMapObject.instance().getRegionByID(msg.region);
+			GameClient.instance().registerTask(new Runnable() {
+				@Override
+				public void run() {
+					if (msg.action==null){
+						removeAction(GameMapObject.instance().getRegionByID(msg.region));
+					}else{
+						placeAction(region, ActionObject.getActionObject(msg.action));
+					}
+				}
+			});
+		}
+		
+	}
+	
+	@Override
+	public int getID() {
+		return StateID.PLANNING_PHASE;
+	}
+
+
+
 	private class ActionSelector implements GameState{
 		private static final String name = "ActionSelector";
 		private Vector<GameObject> objects;
@@ -126,7 +199,7 @@ public class PlanningPhase implements GameState, IClickListener {
 					result = (ActionObject)param;
 					close();
 				});
-				if ((actionObject.isSpecial() && specials>=GameClient.instance().getPlayer().getSpecials())
+				if ((actionObject.isSpecial() && specials>=PlayerManager.getSelf().getSpecials())
 						||	placed.containsKey(actionObject.getType())){
 					button.setEnabled(false);
 				}
@@ -176,11 +249,10 @@ public class PlanningPhase implements GameState, IClickListener {
 			// TODO Auto-generated method stub
 			
 		}
-	}
 
-	@Override
-	public void recieve(Connection connection, Object pkg) {
-		// TODO Auto-generated method stub
-		
+		@Override
+		public int getID() {
+			return -1;
+		}
 	}
 }
