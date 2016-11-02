@@ -4,7 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 
 import got.gameStates.StateID;
 
-public class FirePhase implements ServerState {
+public class FirePhaseState implements ServerState {
 	private static final String name = "FirePhase";
 
 	@Override

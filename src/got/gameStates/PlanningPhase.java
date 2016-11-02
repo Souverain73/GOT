@@ -101,7 +101,6 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 	}
 	
 	public void placeAction(MapPartObject region, ActionObject act){
-		region.setAction(act);
 		if (act!= null){
 			act.setOwner(region);
 			placed.put(act.getType(), region);
@@ -134,7 +133,7 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 					//notify server about placed action
 					GameClient.instance().send(new SetAction(region.getID(), action));
 			} else if (region.getAction()!=null){
-				//if package passed with null it means player place nothing or remove object
+				//if package passed with null it means player remove action
 				GameClient.instance().send(new SetAction(region.getID(), null));
 			}
 		}else if (sender instanceof ActionObject){
@@ -149,7 +148,7 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 			specials--;
 		oldAction.setOwner(0);
 		oldAction.finish();
-		region.setAction(null);
+
 	}
 	
 	@Override
@@ -161,9 +160,20 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 				@Override
 				public void run() {
 					if (msg.action==null){
-						removeAction(GameMapObject.instance().getRegionByID(msg.region));
+						//if it's your action. in this case it must be handled before remove action from map.
+						if (region.getFraction() == PlayerManager.getSelf().getFraction())
+							//do some routine to handle your actions set
+							removeAction(region);
+						//remove object from region
+						region.setAction(null); 
 					}else{
-						placeAction(region, ActionObject.getActionObject(msg.action));
+						ActionObject act = ActionObject.getActionObject(msg.action);
+						//add action to region
+						region.setAction(act);
+						//if it's your action
+						if (region.getFraction() == PlayerManager.getSelf().getFraction())
+							//handle your actions set
+							placeAction(region, act);
 					}
 				}
 			});
