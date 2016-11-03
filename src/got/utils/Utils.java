@@ -10,6 +10,7 @@ import java.nio.charset.CharsetEncoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
+import java.util.Random;
 
 import org.joml.Vector2f;;
 
@@ -18,6 +19,7 @@ public class Utils {
 	public static Charset charset = Charset.forName("windows-1251");
 	public static CharsetEncoder encoder = charset.newEncoder();
 	public static CharsetDecoder decoder = charset.newDecoder();
+	public static Random rand = new Random();
 	
 	
 	/**
@@ -55,5 +57,12 @@ public class Utils {
 	 */
 	static public float distance(Vector2f p1, Vector2f p2){
 		return (float)Math.sqrt((p1.x-p2.x)*(p1.x-p2.x)+(p1.y-p2.y)*(p1.y-p2.y));
+	}
+	
+	static public boolean chance(int chance){
+		if (rand.nextInt()%100<chance){
+			return true;
+		}
+		return false;
 	}
 }

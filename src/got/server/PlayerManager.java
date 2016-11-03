@@ -1,9 +1,11 @@
 package got.server;
 
+import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
 
 import got.Fraction;
 import got.Player;
+import got.utils.Utils;
 
 public class PlayerManager {
 	private static PlayerManager _instance = null;
@@ -105,6 +107,14 @@ public class PlayerManager {
 		return (Player[]) players.values().toArray(new Player[0]);
 	}
 	
+	public Player getPlayerByFraction(Fraction fraction){
+		for (Player pl: players.values()){
+			if (pl.getFraction() == fraction)
+				return pl;
+		}
+		return null;
+	}
+	
 	public boolean isAllPlayersReady(){
 		boolean ready = true;
 		for (Player pl : players.values()){
@@ -113,12 +123,46 @@ public class PlayerManager {
 		return ready;
 	}
 	
+	public void initRandomFractions(){
+		Fraction [] fractions = new Fraction[getPlayersCount()];
+		Fraction [] pool = Fraction.values();
+		
+		int count = getPlayersCount();
+		for (int i=0; i<count; i++){
+			fractions[i] = pool[i];
+		}
+		
+		int step = 3;
+		while (step-- > 0){
+			for (int i=0; i<count-1; i++){
+				if (Utils.chance(50)){
+					Fraction t = fractions[i];
+					fractions[i] = fractions[i+1];
+					fractions[i+1] = t;
+				}
+			}
+		}
+		
+		initFractions(fractions);
+	}
+	
+	/**
+	 * Set player fractions
+	 * where player.fraction = fractions[player.id];
+	 */
+	public void initFractions(Fraction[] fractions){
+		for (Player pl: players.values()){
+			pl.setFraction(fractions[pl.id]);
+		}
+	}
+	
 	public Fraction[] getFractions(){
-		return new Fraction[]{Fraction.STARK, 
-		                      Fraction.LANISTER,
-		                      Fraction.BARATEON,
-		                      Fraction.GREYJOY, 
-		                      Fraction.TIREL, 
-		                      Fraction.MARTEL};
+		Fraction [] result = new Fraction[getPlayersCount()];
+		
+		for (Player pl: players.values()){
+			result[pl.id] = pl.getFraction();
+		}
+		
+		return result;
 	}
 }

@@ -25,6 +25,7 @@ import got.network.Packages.PlayerSetAction;
 import got.network.Packages.Ready;
 import got.network.Packages.SetAction;
 import got.server.PlayerManager;
+import got.utils.UI;
 import got.server.GameServer.PlayerConnection;
 
 public class PlanningPhase extends AbstractGameState implements IClickListener {
@@ -63,6 +64,7 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 			pl.setReady(false);
 		}
 		
+		System.out.println("Entering PlanningPhase");
 		super.enter(stm);
 	}
 
@@ -80,11 +82,6 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 	@Override
 	public void update() {
 		objects.forEach((obj)->{obj.update(this);});
-		if (InputManager.instance().keyPressed(32)){
-			System.out.println("Space pressed");
-//			GameMapObject.instance().setEnabledByCondition(region -> region.getAction()!=null);
-			stm.setState(new FirePhase());
-		}
 		super.update();
 	}
 	
@@ -114,7 +111,8 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 			MapPartObject region = (MapPartObject) sender;
 			
 			//if player click not owned region
-			if (region.getFraction() != PlayerManager.getSelf().getFraction()) return;
+			if (region.getFraction() != PlayerManager.getSelf().getFraction())
+				return;
 			
 			//if region have no action, have placed units, and it owned by player
 			//player can place her action

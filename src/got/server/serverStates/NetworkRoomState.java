@@ -62,8 +62,6 @@ public class NetworkRoomState implements ServerState {
 			
 			if (PlayerManager.instance().isAllPlayersReady()){
 				//Start game start countdown
-				GameServer.getServer().sendToAllTCP(new Packages.SetFractions(PlayerManager.instance().getFractions()));
-				
 				timerThread = new Thread(new Runnable() {
 					@Override
 					public void run() {
@@ -78,6 +76,8 @@ public class NetworkRoomState implements ServerState {
 								
 							}
 						}
+						PlayerManager.instance().initRandomFractions();
+						GameServer.getServer().sendToAllTCP(new Packages.SetFractions(PlayerManager.instance().getFractions()));
 						connection.sendTCP(new Packages.ServerMessage("Start!!"));
 						stm.setState(new ChangeState(new MainState(), true));
 					}

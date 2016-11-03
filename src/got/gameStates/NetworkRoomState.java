@@ -151,9 +151,7 @@ public class NetworkRoomState extends AbstractGameState implements IClickListene
 		if (pkg instanceof SetFractions){
 			SetFractions msg = ((SetFractions)pkg);
 			Player[] players = PlayerManager.instance().getPlayersList();
-			for (int i=0; i<players.length; i++){
-				players[i].setFraction(msg.fractions[i]);
-			}
+			PlayerManager.instance().initFractions(msg.fractions);
 		}
 	}	
 }

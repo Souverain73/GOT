@@ -6,7 +6,7 @@ import got.gameStates.StateID;
 import got.server.GameServer;
 
 public class MainState implements ServerState {
-	private static String name;
+	private static String name = "MainState";
 	
 	@Override
 	public void recieve(Connection connection, Object pkg) {
