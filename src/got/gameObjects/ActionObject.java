@@ -19,7 +19,7 @@ import got.utils.Utils;
  * @author Souverain73
  *
  */
-public class ActionObject extends AbstractButtonObject{
+public class ActionObject extends AbstractButtonObject<ActionObject>{
 	public enum Action{
 		FIRE, FIREPLUS, MONEY, MONEYPLUS, MOVE, MOVEMINUS, MOVEPLUS, DEFEND, DEFENDPLUS, HELP, HELPPLUS 
 	}
@@ -249,6 +249,9 @@ public class ActionObject extends AbstractButtonObject{
 	public void setOwner(Object owner) {
 		this.owner = owner;
 	}
-	
-	
+
+	@Override
+	protected ActionObject getThis() {
+		return this;
+	}
 }

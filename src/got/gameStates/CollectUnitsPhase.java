@@ -29,6 +29,7 @@ public class CollectUnitsPhase extends ActionPhase {
 
 	@Override
 	public void click(GameObject sender) {
+		//TODO: если нет рядом моря, то нет смысла выбирать target
 		if (sender instanceof MapPartObject) {
 			MapPartObject region = (MapPartObject) sender;
 
@@ -56,7 +57,7 @@ public class CollectUnitsPhase extends ActionPhase {
 				hirePointsCache.put(source.getName(), hms.getHirePoints());
 				region.showUnits();
 				state = SubState.SELECT_SOURCE;
-				GameMapObject.instance().EnableAllRegions();
+				GameMapObject.instance().enableAllRegions();
 			}
 		}
 	}
@@ -72,7 +73,7 @@ public class CollectUnitsPhase extends ActionPhase {
 
 	@Override
 	public void exit() {
-		GameMapObject.instance().EnableAllRegions();
+		GameMapObject.instance().enableAllRegions();
 	}
 	
 	@Override

@@ -1,10 +1,9 @@
 package got.server.serverStates;
 
-import javax.swing.plaf.SliderUI;
-
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 
+import got.Game;
 import got.Player;
 import got.network.Packages;
 import got.network.Packages.ConnectionError;
@@ -77,7 +76,10 @@ public class NetworkRoomState implements ServerState {
 							}
 						}
 						PlayerManager.instance().initRandomFractions();
+						
+						Game.init(PlayerManager.instance().getPlayersCount());
 						GameServer.getServer().sendToAllTCP(new Packages.SetFractions(PlayerManager.instance().getFractions()));
+						
 						connection.sendTCP(new Packages.ServerMessage("Start!!"));
 						stm.setState(new ChangeState(new MainState(), true));
 					}

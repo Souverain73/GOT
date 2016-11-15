@@ -25,8 +25,6 @@ import got.network.Packages.PlayerSetAction;
 import got.network.Packages.Ready;
 import got.network.Packages.SetAction;
 import got.server.PlayerManager;
-import got.utils.UI;
-import got.server.GameServer.PlayerConnection;
 
 public class PlanningPhase extends AbstractGameState implements IClickListener {
 	private StateMachine stm;
@@ -52,7 +50,7 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 		specials = 0;
 		
 		//Add ready button
-		AbstractButtonObject btn = new ImageButton("buttons/ready.png", 550, 430, 80, 40, null);
+		AbstractButtonObject btn = new ImageButton("buttons/ready.png", 1070, 610, 200, 100, null);
 		btn.setSpace(DrawSpace.SCREEN);
 		btn.setCallback((sender, param)->{
 			GameClient.instance().send(new Ready(!PlayerManager.getSelf().isReady()));
@@ -63,6 +61,8 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 		for (Player pl: PlayerManager.instance().getPlayersList()){
 			pl.setReady(false);
 		}
+		
+		GameMapObject.instance().enableAllRegions();
 		
 		System.out.println("Entering PlanningPhase");
 		super.enter(stm);

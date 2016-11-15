@@ -1,5 +1,6 @@
 package got.gameStates.modals;
 
+import java.util.List;
 import java.util.Vector;
 
 import org.joml.Vector2f;
@@ -17,19 +18,18 @@ import got.gameObjects.UnitObject.UnitType;
 import got.gameStates.GameState;
 import got.gameStates.StateMachine;
 import got.graphics.TextureManager;
-import got.server.GameServer.PlayerConnection;
 
 public class HireMenuState implements GameState{
 	private static final String name = "HireMenu";
 	private int hirePoints;
-	private Vector<GameObject> objects;
-	private Vector<UnitObject> units = null;
+	private List<GameObject> objects;
+	private List<UnitObject> units = null;
 	private GameObject plusButton = null;
 	private ImageButton [] buttons;
 	private Vector2f pos;
 	private boolean sea;
 	
-	public HireMenuState(Vector<UnitObject> units, Vector2f pos, int hirePoints, boolean sea) {
+	public HireMenuState(List<UnitObject> units, Vector2f pos, int hirePoints, boolean sea) {
 		this.pos = pos;
 		this.sea = sea;
 		this.hirePoints = hirePoints;

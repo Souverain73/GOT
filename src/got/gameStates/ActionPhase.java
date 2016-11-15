@@ -19,7 +19,7 @@ public class ActionPhase extends AbstractGameState implements IClickListener{
 	@Override
 	public void enter(StateMachine stm) {
 		this.stm = stm;
-//		stm.pushState(new MovePhase());
+		super.enter(stm);
 	}
 
 	@Override

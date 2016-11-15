@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map>
 	<regions>
-		<region name="Castle Black" type="GROUND" influence="1" x="609" y="0" w="475" h="286" fraction="GREYJOY">
+		<region name="Castle Black" type="GROUND" influence="1" x="609" y="0" w="475" h="286" fraction="LANISTER">
 			<action x="95" y="191"/>
 			<unitpos x="335" y="50"/>
 			<unit type="KNIGHT" />
@@ -25,7 +25,7 @@
 			<unit type="KNIGHT"/>
 			<texture filename="Winterfell.png"/>
 		</region>
-		<region name="Widow's Watch" type="GROUND" resources="1" x="939" y="561" w="278" h="219" fraction="BARATEON">
+		<region name="Widow's Watch" type="GROUND" resources="1" x="939" y="561" w="278" h="219" fraction="LANISTER">
 			<action x="48" y="135"/>
 			<unitpos x="90" y="75"/>
 			<unit type="SOLDIER"/>

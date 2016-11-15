@@ -45,4 +45,8 @@ public class Track {
 	public Fraction getNext(Fraction fraction){
 		return data[(getPos(fraction)+1)%data.length];
 	}
+	
+	public Fraction getFirst(){
+		return data[0];
+	}
 }

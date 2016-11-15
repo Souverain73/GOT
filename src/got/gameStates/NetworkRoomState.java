@@ -7,6 +7,7 @@ import org.joml.Vector2f;
 
 import com.esotericsoftware.kryonet.Connection;
 
+import got.Game;
 import got.GameClient;
 import got.Player;
 import got.gameObjects.AbstractButtonObject;
@@ -39,15 +40,15 @@ public class NetworkRoomState extends AbstractGameState implements IClickListene
 	public void enter(StateMachine stm) {
 		System.out.println("Entering "+name);
 		npp = new NetPlayersPanel();
-		npp.setPos(new Vector2f(440,0));
+		npp.setPos(new Vector2f(1080, 0));
 		addObject(npp);
-		AbstractButtonObject btn = new ImageButton("buttons/ready.png", 460, 400, 80, 40, null);
+		AbstractButtonObject btn = new ImageButton("buttons/ready.png", 1080, 670, 80, 40, null);
 		btn.setSpace(DrawSpace.SCREEN);
 		btn.setCallback((sender, param)->{
 			GameClient.instance().send(new Ready(!PlayerManager.getSelf().isReady()));
 		});
 		addObject(btn);
-		btn = new ImageButton("buttons/exit.png", 550, 400, 80, 40, null);
+		btn = new ImageButton("buttons/exit.png", 1180, 670, 80, 40, null);
 		btn.setSpace(DrawSpace.SCREEN);
 		btn.setCallback((sender, param)->{
 			GameClient.instance().disconnect();
@@ -150,8 +151,8 @@ public class NetworkRoomState extends AbstractGameState implements IClickListene
 		
 		if (pkg instanceof SetFractions){
 			SetFractions msg = ((SetFractions)pkg);
-			Player[] players = PlayerManager.instance().getPlayersList();
 			PlayerManager.instance().initFractions(msg.fractions);
+			Game.init(PlayerManager.instance().getPlayersCount());
 		}
 	}	
 }

@@ -43,7 +43,7 @@ public class Packages {
 		kryo.register(Act.class);
 		kryo.register(SelectRegion.class);
 		kryo.register(Move.class);
-		kryo.register(CollectUnits.class);
+		kryo.register(ChangeUnits.class);
 		kryo.register(CollectInfluence.class);
 		kryo.register(SelectItem.class);
 		kryo.register(Bet.class);
@@ -77,6 +77,10 @@ public class Packages {
 		}
 	}
 
+	
+	/**
+	 * Запрос от клиента на подключение.
+	 */
 	public static class LogIn extends ClientServerPackage {
 		public String nickname;
 
@@ -86,6 +90,13 @@ public class Packages {
 		}
 	}
 	
+	
+	
+	/**
+	 *	Сообщение о ошибке подключения к сетевому лоби.
+	 *	Используется для сообщения клиенту о занятости лобби или иных причинах, 
+	 *	по которым подключение не возможно.
+	 */
 	public static class ConnectionError extends ServerClientPackage {
 		public final static int LobbyIsFull = 1; 
 		public int errorCode;
@@ -96,6 +107,10 @@ public class Packages {
 		}
 	}
 	
+	/**
+	 *	Передает клиенту список игроков.
+	 *	Используется для получения информации о составе сетевого лоби для вновь присоединившихся игроков.
+	 */
 	public static class PlayersList extends ServerClientPackage {
 		public Player [] players;
 		public PlayersList() {
@@ -106,6 +121,11 @@ public class Packages {
 		}
 	}
 
+	
+	/**
+	 *	Пакет, представляющий собой сообщение от сервера клиенту.
+	 *	Используется для передачи различных системных сообщений
+	 */
 	public static class ServerMessage extends ServerClientPackage {
 		public String message;
 		public ServerMessage(){};
@@ -143,6 +163,12 @@ public class Packages {
 		}
 	}
 
+	/**
+	 *	Пакет для передачи списка фракций. <br>
+	 *	Порядок фракций в массиве определяет принадлежность игроков к фракциям.<br>
+	 *	players[id].fraction = fractions[id];<br>
+	 *	Используется для инициализации распределения игроков по фракциям в начале игры.
+	 */
 	public static class SetFractions extends BroadcastPackage {
 		public Fraction[] fractions;
 		public SetFractions() {}
@@ -190,7 +216,7 @@ public class Packages {
 	}
 
 	/**
-	 * сообщает всем игрокам о готовности игрока player
+	 * сообщает всем игрокам о готовности игрока player.
 	 */
 	public static class PlayerReady extends BroadcastPackage {
 		public int playerID;
@@ -208,10 +234,14 @@ public class Packages {
 	 * сообщает всем игрокам, что сейчас ход игрока player
 	 */
 	public static class PlayerTurn extends BroadcastPackage {
-		int player;
+		public int playerID;
 
-		public PlayerTurn() {
+		public PlayerTurn() {}
+
+		public PlayerTurn(int playerID) {
+			this.playerID = playerID;
 		}
+		
 	}
 
 	/**
@@ -219,11 +249,16 @@ public class Packages {
 	 * на территорию to
 	 */
 	public static class PlayerAct extends BroadcastPackage {
-		int from;
-		int to;
+		public int from;
+		public int to;
 
-		public PlayerAct() {
+		public PlayerAct() {}
+
+		public PlayerAct(int from, int to) {
+			this.from = from;
+			this.to = to;
 		}
+		
 	}
 
 	/**
@@ -308,7 +343,7 @@ public class Packages {
 	}
 
 	/**
-	 * устанавливает готовность клиента к завершению фазы.
+	 * Устанавливает готовность клиента к завершению фазы или хода.
 	 */
 	public static class Ready extends ClientServerPackage {
 		public boolean ready;
@@ -325,11 +360,16 @@ public class Packages {
 	 * to
 	 */
 	public static class Act extends ClientServerPackage {
-		int from;
-		int to;
+		public int from;
+		public int to;
 
-		public Act() {
+		public Act() {}
+
+		public Act(int from, int to) {
+			this.from = from;
+			this.to = to;
 		}
+		
 	}
 
 	/**
@@ -360,12 +400,17 @@ public class Packages {
 	 * сообщает серверу, что игрок набирает войска в регионе и передает новый
 	 * набор юнитов.
 	 */
-	public static class CollectUnits extends ClientServerPackage {
-		int region;
-		int units[];
+	public static class ChangeUnits extends ClientServerPackage {
+		public int region;
+		public int units[];
 
-		public CollectUnits() {
+		public ChangeUnits() {
 			units = new int[4];
+		}
+
+		public ChangeUnits(int region, int[] units) {
+			this.region = region;
+			this.units = units;
 		}
 	}
 
@@ -373,9 +418,13 @@ public class Packages {
 	 * сообщает серверу, что игрок собирает очки влияния с региона.
 	 */
 	public static class CollectInfluence extends ClientServerPackage {
-		int region;
+		public int region;
 
 		public CollectInfluence() {
+		}
+
+		public CollectInfluence(int region) {
+			this.region = region;
 		}
 	}
 

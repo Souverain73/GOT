@@ -3,11 +3,16 @@ package got;
 public class Constants {
 //GAME MECHANICS
 	public static final int MAX_PLAYERS = 6;
+	public static final int MAX_MONEY = 21;
 	
 	
+//SCREEN
+	public static final int SCREEN_WIDTH = 1280;
+	public static final int SCREEN_HEIGHT = 720;
+
 //WINDOW
-	public static final int SCREEN_WIDTH = 640;
-	public static final int SCREEN_HEIGHT = 480;
+	public static final int WINDOW_WIDTH = 1280;
+	public static final int WINDOW_HEIGHT= 720;
 	
 //CAMERA
 	public static final float MAX_SCALE = 1.3f;

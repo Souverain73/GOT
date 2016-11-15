@@ -17,9 +17,15 @@ import got.utils.Utils;
  * @author  изиловћё
  *
  */
-public class ImageButton extends AbstractButtonObject {
+public class ImageButton extends AbstractButtonObject<ImageButton> {
 	private Texture texture;
 	private Object param;
+	
+	@Override
+	protected ImageButton getThis() {
+		return this;
+	}
+
 	
 	private ImageButton(int x, int y, int w, int h, Object param){
 		super();

@@ -5,21 +5,19 @@ import java.util.Vector;
 import org.joml.Vector2f;
 
 import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Listener;
 
+import got.Constants;
 import got.GameClient;
 import got.gameObjects.AbstractGameObject;
-import got.gameObjects.FPSCounterObject;
 import got.gameObjects.GameMapObject;
 import got.gameObjects.GameObject;
+import got.gameObjects.ImageObject;
 import got.gameObjects.TextObject;
 import got.graphics.DrawSpace;
+import got.graphics.TextureManager;
 import got.network.Packages.ChangeState;
 import got.server.PlayerManager;
-import got.server.GameServer.PlayerConnection;
 import got.utils.LoaderParams;
-
-import static got.network.Packages.Ready;
 
 public class MainState extends AbstractGameState {
 	private static final String name = "MainState";
@@ -36,6 +34,12 @@ public class MainState extends AbstractGameState {
 		gameObjects = new Vector<GameObject>();
 		stm = new StateMachine();
 		System.out.println("Entering "+name);
+		
+		ImageObject background = new ImageObject(TextureManager.instance().loadTexture("backgroundMain.png"), 
+				new Vector2f(0,0), Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+		background.setSpace(DrawSpace.SCREEN);
+		gameObjects.add(background);
+		
 		GameObject map = new GameMapObject();
 		map.init(new LoaderParams(new String[]{"filename", "data/map.xml"}));
 		gameObjects.addElement(map);
@@ -43,6 +47,7 @@ public class MainState extends AbstractGameState {
 		fractionText.setPos(new Vector2f(10,10));
 		fractionText.setSpace(DrawSpace.SCREEN);
 		addObject(fractionText);
+		
 		super.enter(extstm);
 	}
 

@@ -72,10 +72,32 @@ public class GraphicModule {
 	public static void resizeCallback(long window, int w, int h){
 		if (window != 0)
 			glViewport(0, 0, w, h);
+		
+		float screenW = Constants.SCREEN_WIDTH;
+		float screenH = Constants.SCREEN_HEIGHT;
+		
 		winW = w;
 		winH = h;
+		
+		//параметры, необходимые для проекции
+		float movH = 0, movW = 0;
+		float coef;
+		
+		//Получаем коэффицент для масштабирования.
+		coef = winW/screenW;
+					
+		//Если коэфицент слишком велик, получаем его по другой стороне.
+		if (screenH*coef > winH){
+			coef = winH/screenH;
+			//считаем смещение, для центрирования изображения.
+			movW = Math.abs((winW - screenW * coef)) / 2;
+		}else{
+			movH = Math.abs((winH - screenH * coef)) / 2;
+		}
+		
 		camera.windowResizeCallback(w, h);
-		screenProjection.setOrtho(0, w, h, 0, -1, 1);
+		System.out.println(String.format("coef=%f; movW=%f; movH=%f", coef, movW, movH));
+		screenProjection.identity().ortho(0, winW, winH, 0, -1, 1).translate(movW, movH, 0).scale(coef, coef, 1);
 	}
 	
 	public void initOpenGl(){
@@ -203,6 +225,10 @@ public class GraphicModule {
 		return projection;
 	}
 	
+	public Matrix4f getScreenProjection() {
+		return screenProjection;
+	}
+
 	public FloatBuffer getProjectionAsFloatBuffer(){
 		return fbProjection;
 	}

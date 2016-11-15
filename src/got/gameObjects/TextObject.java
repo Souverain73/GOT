@@ -7,9 +7,15 @@ import got.graphics.Font;
 import got.graphics.GraphicModule;
 import got.graphics.Text;
 
-public class TextObject extends AbstractGameObject{
+public class TextObject extends AbstractGameObject<TextObject>{
 	Font font = new Font("test");
 	Text text;
+	
+	@Override
+	protected TextObject getThis() {
+		return this;
+	}
+
 	
 	public TextObject(String message) {
 		text = Text.newInstance(message, font);
@@ -27,5 +33,9 @@ public class TextObject extends AbstractGameObject{
 		Vector2f cp = getPos();
 		GraphicModule.instance().setDrawSpace(getSpace());
 		text.draw(cp.x, cp.y, 1, 1);
+	}
+	
+	public void setText(String newText){
+		text.changeText(newText);
 	}
 }

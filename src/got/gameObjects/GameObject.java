@@ -9,7 +9,7 @@ import got.utils.LoaderParams;
  * @author Souverain73
  *
  */
-public interface GameObject{
+public interface GameObject<T extends GameObject<T>>{
 	public boolean init(LoaderParams params);
 	public void draw(GameState state);
 	public void update(GameState state);

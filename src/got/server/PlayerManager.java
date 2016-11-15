@@ -1,6 +1,5 @@
 package got.server;
 
-import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
 
 import got.Fraction;

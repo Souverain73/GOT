@@ -15,7 +15,7 @@ import got.utils.LoaderParams;
  * @author Souverain73
  *
  */
-public class AbstractGameObject implements GameObject, IComposer<AbstractGameObject>{
+public abstract class AbstractGameObject<T extends AbstractGameObject<T>> implements GameObject, IComposer<AbstractGameObject>{
 	protected Vector<AbstractGameObject> childs;
 	protected AbstractGameObject parent;
 	protected Vector2f pos;
@@ -23,6 +23,7 @@ public class AbstractGameObject implements GameObject, IComposer<AbstractGameObj
 	protected boolean visible;
 	protected DrawSpace space = DrawSpace.WORLD;
 	
+	protected abstract T getThis();
 	
 	public Vector2f getPos() {
 		return (parent == null) ? pos : new Vector2f(parent.getPos()).add(pos);
@@ -34,8 +35,9 @@ public class AbstractGameObject implements GameObject, IComposer<AbstractGameObj
 		childs = new Vector<AbstractGameObject>();
 	}
 	
-	public void setSpace(DrawSpace space){
+	public T setSpace(DrawSpace space){
 		this.space = space;
+		return getThis();
 	}
 	
 	public DrawSpace getSpace(){
@@ -90,20 +92,23 @@ public class AbstractGameObject implements GameObject, IComposer<AbstractGameObj
 		return w;
 	}
 
-	public void setW(float w) {
+	public T setW(float w) {
 		this.w = w;
+		return getThis();
 	}
 
 	public float getH() {
 		return h;
 	}
 
-	public void setH(float h) {
+	public T setH(float h) {
 		this.h = h;
+		return getThis();
 	}
 
-	public void setPos(Vector2f pos) {
+	public T setPos(Vector2f pos) {
 		this.pos = pos;
+		return getThis();
 	}
 
 	@Override

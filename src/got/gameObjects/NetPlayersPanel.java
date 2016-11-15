@@ -12,9 +12,14 @@ import got.graphics.Text;
 import got.graphics.Texture;
 import got.graphics.TextureManager;
 
-public class NetPlayersPanel extends AbstractGameObject {
+public class NetPlayersPanel extends AbstractGameObject<NetPlayersPanel> {
 	private Player[] players;
 	private NetPlayerPanel[] panels;
+	
+	@Override
+	protected NetPlayersPanel getThis() {
+		return this;
+	}
 	
 	public NetPlayersPanel() {
 		this(new Player[0]);
@@ -72,12 +77,17 @@ public class NetPlayersPanel extends AbstractGameObject {
 		}
 	}
 	
-	public class NetPlayerPanel extends AbstractGameObject {
+	public class NetPlayerPanel extends AbstractGameObject<NetPlayerPanel> {
 		Font font = new Font("test");
 		Text nick;
 		Texture readyGemTex, notReadyGemTex;
 		ImageObject readyImg;
 		ImageObject bgImg;
+		
+		@Override
+		protected NetPlayersPanel.NetPlayerPanel getThis() {
+			return this;
+		}
 		
 		public NetPlayerPanel(String nickname, boolean ready) {
 			//init textures

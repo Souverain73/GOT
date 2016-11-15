@@ -6,7 +6,12 @@ import got.graphics.Font;
 import got.graphics.GraphicModule;
 import got.graphics.Text;
 
-public class FPSCounterObject extends AbstractGameObject{
+public class FPSCounterObject extends AbstractGameObject<FPSCounterObject>{
+	@Override
+	protected FPSCounterObject getThis() {
+		return this;
+	}
+
 	private Text tFPS;
 	
 	private long counter;

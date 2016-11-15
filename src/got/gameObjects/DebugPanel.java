@@ -8,7 +8,7 @@ import got.graphics.Font;
 import got.graphics.GraphicModule;
 import got.graphics.Text;
 
-public class DebugPanel extends AbstractGameObject{
+public class DebugPanel extends AbstractGameObject<DebugPanel>{
 	private static DebugPanel _instance = null;
 	private boolean drawn = false;
 	private boolean updated = false;
@@ -55,5 +55,11 @@ public class DebugPanel extends AbstractGameObject{
 	
 	public void resetFlags(){
 		updated = drawn = false;
+	}
+
+	@Override
+	protected DebugPanel getThis() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

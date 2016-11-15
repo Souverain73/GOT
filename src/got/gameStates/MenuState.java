@@ -1,20 +1,14 @@
 package got.gameStates;
 
-import java.io.IOException;
-import java.util.Random;
+
 import java.util.Vector;
 
 import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Listener;
 
 import got.GameClient;
 import got.gameObjects.GameObject;
 import got.gameObjects.ImageButton;
-import got.network.Network;
-import got.network.Packages;
-import got.network.Packages.InitPlayer;
-import got.server.GameServer.PlayerConnection;
-import got.utils.UI;
+import got.graphics.DrawSpace;
 
 public class MenuState extends AbstractGameState {
 	private final String name = "MenuState";
@@ -31,13 +25,19 @@ public class MenuState extends AbstractGameState {
 		
 		System.out.println("Entering "+name);
 		//button play
-		gameObjects.add(new ImageButton("buttons/play.png", 100,100,200,100, null).setCallback((sender, params)->{
+		ImageButton btn = new ImageButton("buttons/play.png", 540, 260, 200, 100, null);
+		btn.setCallback((sender, params)->{
 			GameClient.instance().getStateMachine().setState(new NetworkRoomState());
-		}));
+		});
+		btn.setSpace(DrawSpace.SCREEN);
+		gameObjects.add(btn);
 		//button exit
-		gameObjects.add(new ImageButton("buttons/exit.png", 100,220,200,100, null).setCallback((sender, params)->{
+		btn = new ImageButton("buttons/exit.png", 540, 380, 200, 100, null);
+		btn.setCallback((sender, params)->{
 			GameClient.instance().exit();
-		}));
+		});
+		btn.setSpace(DrawSpace.SCREEN);
+		gameObjects.add(btn);
 		
 	}
 

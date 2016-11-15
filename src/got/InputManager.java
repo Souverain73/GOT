@@ -7,8 +7,12 @@ import static org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
+
+import com.sun.org.apache.xerces.internal.xni.grammars.Grammar;
 
 import got.gameObjects.AbstractGameObject;
 import got.gameObjects.GameObject;
@@ -32,6 +36,7 @@ public class InputManager {
 	private static InputManager _instance = null;
 	private boolean camMove;
 	private Vector2f lastMousePosWin;
+	private Vector2f lastMousePosScreen;
 	private Vector2f lastMousePosWorld;
 	private Vector2f lastMousePosNative;
 	private int states[];
@@ -44,6 +49,7 @@ public class InputManager {
 		lastMousePosWin = new Vector2f(0, 0);
 		lastMousePosWorld = new Vector2f(0, 0);
 		lastMousePosNative = new Vector2f(0, 0);
+		lastMousePosScreen = new Vector2f(0,0);
 		clickables = new ArrayList<IClickable>();
 	}
 
@@ -55,7 +61,7 @@ public class InputManager {
 	}
 	
 	public Vector2f getMousePosWin(){
-		return lastMousePosWin;
+		return lastMousePosScreen;
 	}
 	
 	public Vector2f getMousePosWorld(){
@@ -89,7 +95,20 @@ public class InputManager {
 		lastMousePosWin.x = (float)posx;
 		lastMousePosWin.y  = (float)posy;
 		lastMousePosNative = GameClient.instance().calcNativeCoord((float)posx, (float)posy); 
+		lastMousePosScreen = calcScreenCoord((float)posx, (float)posy);
 	}
+	
+	public Vector2f calcScreenCoord(float winX, float winY){
+		Vector2f nativeCoords = GameClient.instance().calcNativeCoord(winX, winY);
+		
+		Matrix4f invproj = new Matrix4f();
+		Vector4f mousePos = new Vector4f(nativeCoords.x, nativeCoords.y, 0, 1);
+		GraphicModule.instance().getScreenProjection().invert(invproj);
+		invproj.transform(mousePos);
+		
+		return new Vector2f(mousePos.x, mousePos.y);
+	}
+	
 	
 	public void mouseButtonCallback(long window, int button, int action, int mods){
 		int index = -1;
@@ -128,7 +147,7 @@ public class InputManager {
 				if (cl.getSpace() == DrawSpace.WORLD){
 					mouseCoord = lastMousePosWorld;
 				}else if (cl.getSpace() == DrawSpace.SCREEN){
-					mouseCoord = lastMousePosWin;
+					mouseCoord = lastMousePosScreen;
 				}else{
 					mouseCoord = lastMousePosNative;
 				}

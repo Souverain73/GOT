@@ -78,5 +78,11 @@ public class Player {
 				money, resouces, ready);
 	}
 	
+	public void addMoney(int money){
+		this.money+=money;
+		if (this.money>Constants.MAX_MONEY){
+			this.money = Constants.MAX_MONEY;
+		}
+	}
 	
 }

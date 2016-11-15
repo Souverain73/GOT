@@ -24,7 +24,7 @@ import got.utils.LoaderParams;
  * @author Souverain73
  *
  */
-public abstract class AbstractButtonObject extends AbstractGameObject implements IClickable{
+public abstract class AbstractButtonObject<T extends AbstractButtonObject<T>> extends AbstractGameObject<T> implements IClickable{
 	protected enum State {DOWN, FREE, HOVER, DISABLED};
 	protected BiConsumer<GameObject, Object> callback;
 	protected State state;
@@ -57,9 +57,9 @@ public abstract class AbstractButtonObject extends AbstractGameObject implements
 		return true;
 	}
 
-	public AbstractButtonObject setCallback(BiConsumer<GameObject, Object> cb){
+	public T setCallback(BiConsumer<GameObject, Object> cb){
 		callback = cb;
-		return this;
+		return getThis();
 	}
 	
 	@Override

@@ -32,6 +32,7 @@ import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 
+import java.awt.font.TextMeasurer;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -50,7 +51,10 @@ import com.esotericsoftware.kryonet.Listener;
 import got.gameStates.MenuState;
 import got.gameStates.StateID;
 import got.gameStates.StateMachine;
+import got.graphics.DrawSpace;
 import got.graphics.GraphicModule;
+import got.graphics.Texture;
+import got.graphics.TextureManager;
 import got.network.Network;
 import got.network.Packages;
 import got.network.Packages.ChangeState;
@@ -58,6 +62,8 @@ import got.network.Packages.ServerMessage;
 import got.server.PlayerManager;
 import got.server.GameServer.PlayerConnection;
 import got.utils.UI;
+import sun.print.BackgroundLookupListener;
+
 import static got.network.Packages.Ready;
 
 /**
@@ -69,6 +75,7 @@ public class GameClient {
 	private boolean debug = false;
 	private static GameClient _instance = null;
 	private LinkedList<ModalState> modalStates;
+	private Texture background = null;
 	
 	/*
 	 * All information about players must be handled by PlayerManager;
@@ -117,7 +124,7 @@ public class GameClient {
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 		
-		pWindow = glfwCreateWindow(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, "GOT", 0, 0);
+		pWindow = glfwCreateWindow(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, "GOT", 0, 0);
 		if (pWindow == 0){
 			throw new RuntimeException("Failed to create GLFW Window");
 		}
@@ -148,6 +155,7 @@ public class GameClient {
 	
 	public void initResources(){
 		stm.setState(new MenuState());
+		background = TextureManager.instance().loadTexture("background.png");
 	}
 	
 	public void initNetwork(){
@@ -251,6 +259,10 @@ public class GameClient {
 	public void updateGraphics(){
 		graphics.clear();
 
+		//draw Background
+		GraphicModule.instance().setDrawSpace(DrawSpace.SCREEN);
+		background.draw(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+		
 		stm.draw();
 
 		glfwSwapBuffers(pWindow);
@@ -295,7 +307,7 @@ public class GameClient {
 	public Vector2f calcNativeCoord(float winx, float winy){
 		float resx, resy;
 		resx = (winx*2/windowWidth)-1;
-		resy = (winx*2/windowHeight)-1;
+		resy = -((winy*2/windowHeight)-1);
 		return new Vector2f(resx, resy);
 	}
 	

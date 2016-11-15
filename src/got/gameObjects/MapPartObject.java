@@ -1,5 +1,6 @@
 package got.gameObjects;
 
+import java.util.List;
 import java.util.Vector;
 
 import org.joml.Vector2f;
@@ -21,8 +22,14 @@ import got.utils.Utils;
  * @author  изиловћё
  *
  */
-public class MapPartObject extends AbstractButtonObject {
+public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	public enum RegionType{	GROUND, SEA, PORT}
+	
+	@Override
+	protected MapPartObject getThis() {
+		return this;
+	}
+
 	
 	private Fraction fraction = Fraction.STARK;
 	
@@ -219,7 +226,7 @@ public class MapPartObject extends AbstractButtonObject {
 		return buildingLevel;
 	}
 	
-	public Vector<UnitObject> getUnits() {
+	public List<UnitObject> getUnits() {
 		return units;
 	}
 
@@ -252,6 +259,14 @@ public class MapPartObject extends AbstractButtonObject {
 
 	public void setFraction(Fraction fraction) {
 		this.fraction = fraction;
+	}
+
+	public int getBuildingLevel() {
+		return buildingLevel;
+	}
+	
+	public int getInfluencePoints() {
+		return influencePoints;
 	}
 
 	@Override

@@ -1,7 +1,8 @@
 package got.gameObjects;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Vector;
+import java.util.List;
 import java.util.function.Predicate;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,7 +21,12 @@ import got.utils.LoaderParams;
  * @author Souverain73
  *
  */
-public class GameMapObject extends AbstractGameObject{
+public class GameMapObject extends AbstractGameObject<GameMapObject>{
+	@Override
+	protected GameMapObject getThis() {
+		return this;
+	}
+
 	private HashMap<String, MapPartObject> map;
 	private static int counter = 0;
 	
@@ -163,7 +169,7 @@ public class GameMapObject extends AbstractGameObject{
 		else return value;
 	}
 	
-	public void EnableAllRegions(){
+	public void enableAllRegions(){
 		map.values().forEach(obj->obj.setEnabled(true));
 	}
 	
@@ -193,8 +199,8 @@ public class GameMapObject extends AbstractGameObject{
 		});
 	}
 	
-	public Vector<MapPartObject> getEnabledRegions(){
-		Vector<MapPartObject> result = new Vector<MapPartObject>();
+	public List<MapPartObject> getEnabledRegions(){
+		List<MapPartObject> result = new ArrayList<MapPartObject>();
 		
 		map.values().forEach(obj->{
 			if (obj.isActive()){

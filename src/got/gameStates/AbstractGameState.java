@@ -13,7 +13,7 @@ import static got.network.Packages.Ready;
  * @author Souverain73
  *	This class implements base for all GameStates
  */
-public class AbstractGameState implements GameState {
+public abstract class AbstractGameState implements GameState {
 	protected Vector<GameObject> gameObjects = new Vector<>();
 	/* 
 	 * If you want log all recieved packages use super.recieve(), otherwise skip it

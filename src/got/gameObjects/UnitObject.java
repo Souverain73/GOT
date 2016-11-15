@@ -16,7 +16,7 @@ import got.utils.LoaderParams;
  * @author  изиловћё
  *
  */
-public class UnitObject extends AbstractGameObject{
+public class UnitObject extends AbstractGameObject<UnitObject>{
 	public enum UnitType{
 		SOLDIER, KNIGHT, SIEGE, SHIP
 	}
@@ -28,6 +28,12 @@ public class UnitObject extends AbstractGameObject{
 	protected static final String TEXTURE_BASE = "units/";
 	
 	public UnitType type;
+	
+	@Override
+	protected UnitObject getThis() {
+		return this;
+	}
+
 	
 	public static UnitObject getUnitByType(UnitType type){
 		UnitObject result = new UnitObject(null);
@@ -84,10 +90,6 @@ public class UnitObject extends AbstractGameObject{
 	
 	public Vector2f getPos() {
 		return pos;
-	}
-
-	public void setPos(Vector2f pos) {
-		this.pos = pos;
 	}
 
 	public float getScale() {

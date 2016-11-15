@@ -10,6 +10,7 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 
+import got.Game;
 import got.Player;
 import got.network.Network;
 import got.network.Packages.InitPlayer;
