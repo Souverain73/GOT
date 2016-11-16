@@ -1,18 +1,22 @@
 package got.gameObjects;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import got.Constants;
-import got.Fraction;
 import got.InputManager;
 import got.gameStates.GameState;
 import got.graphics.Effect;
 import got.graphics.GraphicModule;
 import got.graphics.Texture;
+import got.model.Fraction;
+import got.model.Unit;
 import got.utils.LoaderParams;
 import got.utils.Utils;
 
@@ -45,12 +49,12 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	private int act_x, act_y;
 	private int unit_x, unit_y;
 	private ActionObject action;
-	private Vector<UnitObject> units;
+	private List<UnitObject> units;
 	
 	public MapPartObject() {
 		super();
 		neighbors = new Vector<MapPartObject>();
-		units = new Vector<UnitObject>();
+		units = new ArrayList<UnitObject>();
 	}
 	
 	@Override
@@ -166,6 +170,16 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		placeUnits();
 	}
 	
+	public void setUnits(Unit[] units){
+		this.units.forEach(obj -> obj.finish());
+		this.units.clear();
+		
+		for(Unit unit: units){
+			this.units.add(new UnitObject(unit));
+		}
+		updateUnits();
+	}
+	
 	public void updateUnits(){
 		placeUnits();
 	}
@@ -226,7 +240,15 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		return buildingLevel;
 	}
 	
-	public List<UnitObject> getUnits() {
+	public Unit[] getUnits() {
+		return units.stream().map(obj -> obj.getType()).toArray(n->new Unit[n]);
+	}
+	
+	/**
+	 * Нужен для обратной совместимости, в идеале надо бы это переписать.
+	 * @return
+	 */
+	public List<UnitObject> getUnitObjects(){
 		return units;
 	}
 

@@ -43,7 +43,7 @@
 			<unit type="SOLDIER"/>
 			<texture filename="TheStonyShore.png"/>
 		</region>
-		<region name="White Harbor" type="GROUND" building="1" x="746" y="423" w="379" h="511" fraction="MARTEL">
+		<region name="White Harbor" type="GROUND" building="1" x="746" y="423" w="379" h="511" fraction="LANISTER">
 			<action x="132" y="219"/>
 			<unitpos x="190" y="80"/>
 			<unit type="SOLDIER"/>

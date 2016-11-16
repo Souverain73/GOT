@@ -1,4 +1,4 @@
-package got;
+package got.model;
 
 import org.joml.Vector3f;
 

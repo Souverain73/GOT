@@ -16,7 +16,9 @@ import com.sun.org.apache.xerces.internal.xni.grammars.Grammar;
 
 import got.gameObjects.AbstractGameObject;
 import got.gameObjects.GameObject;
+import got.gameStates.GameState;
 import got.graphics.GraphicModule;
+import got.interfaces.IClickListener;
 import got.interfaces.IClickable;
 
 
@@ -42,6 +44,7 @@ public class InputManager {
 	private int states[];
 	private ArrayList<IClickable> clickables;
 	private GameObject mouseTarget;
+	private boolean freeClick = false;
 
 	private InputManager() {
 		states = new int[3];
@@ -119,9 +122,11 @@ public class InputManager {
 		}
 		if (index<0) return;
 		if (action == GLFW_PRESS){
+			if (states[index]!=1) mouseDown(index);
 			states[index] = 1;
 		}
 		if (action == GLFW_RELEASE){
+			if (states[index]!=0) mouseUp(index);
 			states[index] = 0;
 		}
 	}
@@ -163,6 +168,24 @@ public class InputManager {
 			mouseTarget = null;
 		}
 		
+	}
+	
+	private void setMouseTarget(GameObject newTarget){
+		mouseTarget = newTarget;
+	}
+	
+	private void mouseDown(int key){
+		freeClick = (mouseTarget == null);
+	}
+	
+	private void mouseUp(int key){
+		if (key!=MOUSE_LEFT) return;
+		if (mouseTarget == null && freeClick){
+			GameState cs = GameClient.instance().getCurrentState();
+			if (cs instanceof IClickListener){
+				((IClickListener) cs).click(null);
+			}
+		}
 	}
 	
 	public GameObject getMouseTarget() {

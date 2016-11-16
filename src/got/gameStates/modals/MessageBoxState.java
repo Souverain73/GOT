@@ -55,6 +55,9 @@ public class MessageBoxState implements GameState{
 		}
 	}
 	
+	public void tick(){
+	}
+	
 	private void close(){
 		GameClient.instance().closeModal();
 	}

@@ -11,8 +11,8 @@ public class Constants {
 	public static final int SCREEN_HEIGHT = 720;
 
 //WINDOW
-	public static final int WINDOW_WIDTH = 1280;
-	public static final int WINDOW_HEIGHT= 720;
+	public static final int WINDOW_WIDTH = 320;
+	public static final int WINDOW_HEIGHT= 180;
 	
 //CAMERA
 	public static final float MAX_SCALE = 1.3f;

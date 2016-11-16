@@ -9,9 +9,10 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
+import com.esotericsoftware.minlog.Log.Logger;
 
-import got.Game;
-import got.Player;
+import got.model.Game;
+import got.model.Player;
 import got.network.Network;
 import got.network.Packages.InitPlayer;
 import got.network.Packages.LogIn;
@@ -30,19 +31,23 @@ public class GameServer {
 	private ConcurrentLinkedQueue<Runnable> taskPool = new ConcurrentLinkedQueue<>();
 	
 	public static Server getServer(){
+		Log.set(Log.LEVEL_DEBUG);
 		return server;
 	}
 	
 	public static void main(String[] args) throws IOException {
-		new GameServer();
+		new GameServer(true);
 	}
 	
 	public static class PlayerConnection extends Connection{
 		public Player player;
 	}
 
-	
 	public GameServer() throws IOException{
+		this(false);
+	}
+	
+	public GameServer(boolean console) throws IOException{
 		if (server!=null) throw new IOException("Server aldeady exist");
 		// TODO create server code here
 		Server server = new Server(){
@@ -71,12 +76,16 @@ public class GameServer {
 				Player player = connection.player;
 				if (player != null){
 					PlayerManager.instance().disconnect(player.id);
-					System.out.println("Player "+player.getNickname()+"disconnected");
+					Log.debug("Player:"+player.getNickname()+" disconnected");
 					server.sendToAllExceptTCP(connection.getID(), new PlayerDisconnected(player));
 				}
 				
 				connection.close();
 				super.disconnected(connection);
+				if (server.getConnections().length == 0){
+					server.close();
+					System.exit(0);
+				}
 			}
 
 			@Override
@@ -84,8 +93,6 @@ public class GameServer {
 				PlayerConnection connection = (PlayerConnection)c;
 				Player player = connection.player;
 				//Handle all common packages
-				
-				
 				//pass state specified package to game state
 				stm.recieve(connection, pkg);
 			}
@@ -118,21 +125,23 @@ public class GameServer {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		//main server loop
 		//handles console commands and execute tasks
-		while (true){
-			executeTasks();
-			
-			String line = br.readLine().trim();
-			String [] command = line.split("\\s");
-			if (command.length == 0){
-				continue;
-			}
-			if (command[0].equals("stop")) {
-				server.close();
-				System.exit(0);
-			}else if(command[0].equals("say")){
-				ServerMessage msg = new ServerMessage();
-				msg.message = command[1];
-				server.sendToAllTCP(msg);
+		if (console){
+			while (true){
+				executeTasks();
+				
+				String line = br.readLine().trim();
+				String [] command = line.split("\\s");
+				if (command.length == 0){
+					continue;
+				}
+				if (command[0].equals("stop")) {
+					server.close();
+					System.exit(0);
+				}else if(command[0].equals("say")){
+					ServerMessage msg = new ServerMessage();
+					msg.message = command[1];
+					server.sendToAllTCP(msg);
+				}
 			}
 		}
 	}

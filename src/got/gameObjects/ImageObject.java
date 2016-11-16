@@ -5,6 +5,7 @@ import org.joml.Vector2f;
 import got.gameStates.GameState;
 import got.graphics.GraphicModule;
 import got.graphics.Texture;
+import got.graphics.TextureManager;
 
 /**
  * Implements simple image.
@@ -28,7 +29,8 @@ public class ImageObject extends AbstractGameObject<ImageObject>{
 	}
 	
 	public ImageObject(String textureName, Vector2f pos, int w, int h){
-		
+		this(TextureManager.instance().loadTexture(textureName),
+				pos, w, h);
 	}
 		
 	@Override

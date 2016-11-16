@@ -1,4 +1,4 @@
-package got;
+package got.model;
 
 public class Track {
 	private String name;

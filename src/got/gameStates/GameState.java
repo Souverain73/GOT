@@ -9,4 +9,5 @@ public interface GameState extends INetworkListener{
 	public void exit();
 	public void draw();
 	public void update();
+	public void tick();
 }

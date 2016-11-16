@@ -2,13 +2,13 @@ package got.gameStates;
 
 import com.esotericsoftware.kryonet.Connection;
 
-import got.Fraction;
 import got.GameClient;
 import got.gameObjects.GameMapObject;
 import got.gameObjects.GameObject;
 import got.gameObjects.MapPartObject;
 import got.gameObjects.ActionObject.Action;
 import got.gameObjects.MapPartObject.RegionType;
+import got.model.Fraction;
 import got.network.Packages;
 import got.server.PlayerManager;
 

@@ -48,6 +48,8 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
+import got.gameStates.GameState;
+import got.gameStates.MainState;
 import got.gameStates.MenuState;
 import got.gameStates.StateID;
 import got.gameStates.StateMachine;
@@ -55,6 +57,8 @@ import got.graphics.DrawSpace;
 import got.graphics.GraphicModule;
 import got.graphics.Texture;
 import got.graphics.TextureManager;
+import got.model.Fraction;
+import got.model.Player;
 import got.network.Network;
 import got.network.Packages;
 import got.network.Packages.ChangeState;
@@ -268,6 +272,10 @@ public class GameClient {
 		glfwSwapBuffers(pWindow);
 	}
 	
+	public void tick(){
+		stm.tick();
+	}
+	
 	public void exit(){
 		glfwSetWindowShouldClose(pWindow, true);
 	}
@@ -357,6 +365,31 @@ public class GameClient {
 	
 	public Client getClient(){
 		return client;
+	}
+	
+	/**
+	 * ¬озвращает текущее состо€ние, с учетом всех особенностей движка.<br>
+	 * ¬ простейшем случае это StateMachine.getCurrentState();
+	 * Ќо с учетом модальных состо€ний и основного состо€ни€ текущим состо€нием будет:<br>
+	 * 1. ≈сли есть модальные состо€ние - то последнее состо€ние в стеке модальных состо€ний.<br>
+	 * 2. ≈сли текущее состо€ние MainState, то текущее состо€ние из MainState<br>
+	 * 3. »наче текущее стсто€ние из GameClient;
+	 * @return “екущее состо€ние игры.
+	 */
+	public GameState getCurrentState(){
+		//ј тут значит костыль.
+		//MainState содержит свою машину состо€ний, поэтому что бы получить на самом деле текущее состо€ние, 
+		//недо получить текущее состо€ние из MainState
+		GameState result = null;
+		if (!modalStates.isEmpty()){
+			return modalStates.peek().getGameState();
+		}else{
+			result = stm.getCurrentState();
+			if (result instanceof MainState){
+				result = ((MainState) result).getCurrentState();
+			}
+		}
+		return result;
 	}
 }
 

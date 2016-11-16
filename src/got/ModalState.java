@@ -29,6 +29,10 @@ public class ModalState implements Runnable{
 		this.drawMain = drawMain;
 	}
 	
+	public GameState getGameState(){
+		return state;
+	}
+	
 	@Override
 	public void run() {
 		GameClient.instance().registerModalState(this);

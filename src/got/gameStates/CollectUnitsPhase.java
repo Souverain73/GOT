@@ -49,7 +49,7 @@ public class CollectUnitsPhase extends ActionPhase {
 					state = SubState.SELECT_TARGET;
 				}
 			} else if (state == SubState.SELECT_TARGET) {
-				HireMenuState hms = new HireMenuState(region.getUnits(), InputManager.instance().getMousePosWorld(),
+				HireMenuState hms = new HireMenuState(region.getUnitObjects(), InputManager.instance().getMousePosWorld(),
 						getHirePoints(source), region.getType() == RegionType.SEA);
 				region.hideUnits();
 				(new ModalState(hms)).run();

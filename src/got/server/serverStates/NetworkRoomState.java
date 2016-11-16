@@ -2,9 +2,10 @@ package got.server.serverStates;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
+import com.esotericsoftware.minlog.Log;
 
-import got.Game;
-import got.Player;
+import got.model.Game;
+import got.model.Player;
 import got.network.Packages;
 import got.network.Packages.ConnectionError;
 import got.network.Packages.InitPlayer;
@@ -51,7 +52,7 @@ public class NetworkRoomState implements ServerState {
 			PlayerConnected pc = new PlayerConnected();
 			pc.player = response.player;
 			server.sendToAllExceptTCP(connection.getID(), pc);
-			System.out.println("Player connected");
+			Log.debug("Player:"+pl.getNickname()+" connected");
 		}
 		
 		if (pkg instanceof Ready){

@@ -12,6 +12,7 @@ import org.w3c.dom.*;
 import got.gameStates.GameState;
 import got.graphics.Texture;
 import got.graphics.TextureManager;
+import got.model.Unit;
 import got.utils.LoaderParams;
 
 
@@ -125,8 +126,7 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 					}
 					if (paramNode.getNodeName().equals("unit")){
 						String sType = attribValue(paramNode, "type");
-						UnitObject.UnitType eType = UnitObject.UnitType.valueOf(sType);
-						mapPart.addUnit(UnitObject.getUnitByType(eType));
+						mapPart.addUnit(new UnitObject(Unit.valueOf(sType)));
 					}
 					if (paramNode.getNodeName().equals("action")){
 						params.put("action_x", Integer.valueOf(attribValue(paramNode,"x")));

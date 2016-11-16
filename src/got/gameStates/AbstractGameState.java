@@ -61,4 +61,8 @@ public abstract class AbstractGameState implements GameState {
 	public int getID() {
 		return 0;
 	}
+	
+	public void tick(){
+		gameObjects.forEach(obj->obj.tick());
+	}
 }

@@ -11,8 +11,6 @@ import got.Constants;
 import got.GameClient;
 import got.InputManager;
 import got.ModalState;
-import got.Player;
-import got.gameObjects.AbstractButtonObject;
 import got.gameObjects.ActionObject;
 import got.gameObjects.GameObject;
 import got.gameObjects.ImageButton;
@@ -21,6 +19,7 @@ import got.gameObjects.ActionObject.Action;
 import got.gameObjects.GameMapObject;
 import got.graphics.DrawSpace;
 import got.interfaces.IClickListener;
+import got.model.Player;
 import got.network.Packages.PlayerSetAction;
 import got.network.Packages.Ready;
 import got.network.Packages.SetAction;
@@ -50,7 +49,7 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 		specials = 0;
 		
 		//Add ready button
-		AbstractButtonObject btn = new ImageButton("buttons/ready.png", 1070, 610, 200, 100, null);
+		ImageButton btn = new ImageButton("buttons/ready.png", 1070, 610, 200, 100, null);
 		btn.setSpace(DrawSpace.SCREEN);
 		btn.setCallback((sender, param)->{
 			GameClient.instance().send(new Ready(!PlayerManager.getSelf().isReady()));
@@ -116,7 +115,7 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 			
 			//if region have no action, have placed units, and it owned by player
 			//player can place her action
-			if (region.getAction() == null && region.getUnits().size()>0) {
+			if (region.getAction() == null && region.getUnitObjects().size()>0) {
 				
 				//create Action selector and wait until user select something
 				Action action = createActionSelector(InputManager.instance().getMousePosWorld());
@@ -186,7 +185,7 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 
 
 
-	private class ActionSelector implements GameState{
+	public class ActionSelector implements GameState, IClickListener{
 		private static final String name = "ActionSelector";
 		private Vector<GameObject> objects;
 		public ActionObject result;
@@ -245,11 +244,11 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 
 		@Override
 		public void update() {
-			if (InputManager.instance().getMouseButtonState(InputManager.MOUSE_LEFT)==1 
-					&& !(InputManager.instance().getMouseTarget() instanceof ImageButton)){
-				close();
-			}
 			objects.forEach((obj)->{obj.update(this);});
+		}
+		
+		public void tick(){
+			objects.forEach(obj->obj.tick());
 		}
 
 		@Override
@@ -261,6 +260,13 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 		@Override
 		public int getID() {
 			return -1;
+		}
+
+		@Override
+		public void click(GameObject sender) {
+			if (sender == null){
+				close();
+			}
 		}
 	}
 }

@@ -1,10 +1,11 @@
 package got.server.serverStates;
 
 import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.minlog.Log;
 
-import got.Game;
-import got.Player;
 import got.gameStates.StateID;
+import got.model.Game;
+import got.model.Player;
 import got.network.Packages;
 import got.server.GameServer;
 import got.server.GameServer.PlayerConnection;

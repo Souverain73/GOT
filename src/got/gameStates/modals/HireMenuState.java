@@ -1,5 +1,6 @@
 package got.gameStates.modals;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -14,10 +15,10 @@ import got.gameObjects.GameObject;
 import got.gameObjects.ImageButton;
 import got.gameObjects.ImageObject;
 import got.gameObjects.UnitObject;
-import got.gameObjects.UnitObject.UnitType;
 import got.gameStates.GameState;
 import got.gameStates.StateMachine;
 import got.graphics.TextureManager;
+import got.model.Unit;
 
 public class HireMenuState implements GameState{
 	private static final String name = "HireMenu";
@@ -35,7 +36,7 @@ public class HireMenuState implements GameState{
 		this.hirePoints = hirePoints;
 		this.units = units;
 		this.buttons = new ImageButton[4];
-		objects = new Vector<GameObject>();
+		objects = new ArrayList<GameObject>();
 		//TODO create BG
 		float x = pos.x;
 		float y = pos.y;
@@ -93,14 +94,17 @@ public class HireMenuState implements GameState{
 		UnitObject unit = units.get(i);
 		if (unit.isUpgradeable() && hirePoints>0){
 			hideObjects();
-			Vector<UnitObject> upUnits = unit.getPossibleUpgrades();
+			Unit[] upUnits = unit.getPossibleUpgrades();
 			UnitSelectState ust = new UnitSelectState(upUnits, pos); 
+			
 			(new ModalState(ust)).run();
+			
 			if (ust.result!=null){
-				UnitObject newUnit = (UnitObject)ust.result;
-				units.set(i, newUnit);
+				Unit newUnit = (Unit)ust.result;
+				units.set(i, new UnitObject(newUnit));
 				hirePoints--;
 			}
+			
 			showObjects();
 			updateButtons();
 		}
@@ -108,22 +112,22 @@ public class HireMenuState implements GameState{
 	
 	private void plusButtonCallback(GameObject sender, Object param){
 		hideObjects();
-		UnitSelectState ust = new UnitSelectState(UnitObject.getUnitsByCondition(unit->{
+		UnitSelectState ust = new UnitSelectState(Unit.getUnitsByCondition(unit->{
 			if (unit.getCost()<=hirePoints){
-				if (sea && unit.getType()==UnitType.SHIP){
+				if (sea && unit==Unit.SHIP){
 					return true;
-				}else if(!sea && unit.getType()!=UnitType.SHIP){
+				}else if(!sea && unit!=Unit.SHIP){
 					return true;
 				}
 			}
 			return false;
-		}),
-				pos);
+		}),	pos);
+		
 		(new ModalState(ust)).run();
 		if (ust.result!=null){
-			UnitObject unit = (UnitObject)ust.result;
+			Unit unit = (Unit)ust.result;
 			hirePoints-=unit.getCost();
-			units.add(unit);
+			units.add(new UnitObject(unit));
 		}
 		showObjects();
 		updateButtons();
@@ -152,6 +156,10 @@ public class HireMenuState implements GameState{
 	public void draw() {
 //		System.out.println("Draw HireMenu");
 		objects.forEach(obj->obj.draw(this));
+	}
+	
+	public void tick(){
+		objects.forEach(obj->obj.tick());
 	}
 	
 	private void hideObjects(){

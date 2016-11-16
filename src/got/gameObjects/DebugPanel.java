@@ -1,12 +1,12 @@
 package got.gameObjects;
 
 import got.GameClient;
-import got.Player;
 import got.gameStates.GameState;
 import got.graphics.DrawSpace;
 import got.graphics.Font;
 import got.graphics.GraphicModule;
 import got.graphics.Text;
+import got.model.Player;
 
 public class DebugPanel extends AbstractGameObject<DebugPanel>{
 	private static DebugPanel _instance = null;

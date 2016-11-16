@@ -2,8 +2,8 @@ package got.server;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import got.Fraction;
-import got.Player;
+import got.model.Fraction;
+import got.model.Player;
 import got.utils.Utils;
 
 public class PlayerManager {

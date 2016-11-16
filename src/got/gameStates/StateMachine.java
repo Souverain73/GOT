@@ -55,6 +55,10 @@ public class StateMachine implements INetworkListener {
 			DebugPanel.instance().draw(getCurrentState());
 	}
 	
+	public void tick(){
+		getCurrentState().tick();
+	}
+	
 	public GameState getCurrentState(){
 		return _states.peek();
 	}

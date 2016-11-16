@@ -1,6 +1,6 @@
-package got;
+package got.model;
 
-import got.Track;
+import got.model.Track;
 
 /**
  * @author Souverain73 This class handles all Game data like tracks, provision,

@@ -71,6 +71,12 @@ public class MainState extends AbstractGameState {
 		super.update();
 		stm.update();
 	}
+	
+	public void tick(){
+		gameObjects.forEach(obj->obj.tick());
+		super.tick();
+		stm.tick();
+	}
 
 	@Override
 	public void recieve(Connection connection, Object pkg) {
@@ -90,5 +96,9 @@ public class MainState extends AbstractGameState {
 	@Override
 	public int getID() {
 		return StateID.MAIN_STATE;
+	}
+	
+	public GameState getCurrentState(){
+		return stm.getCurrentState();
 	}
 }

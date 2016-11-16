@@ -24,7 +24,8 @@ import got.utils.LoaderParams;
  * @author Souverain73
  *
  */
-public abstract class AbstractButtonObject<T extends AbstractButtonObject<T>> extends AbstractGameObject<T> implements IClickable{
+public abstract class AbstractButtonObject<T extends AbstractButtonObject<T>> extends AbstractGameObject<T> 
+																			  implements IClickable{
 	protected enum State {DOWN, FREE, HOVER, DISABLED};
 	protected BiConsumer<GameObject, Object> callback;
 	protected State state;
@@ -140,7 +141,7 @@ public abstract class AbstractButtonObject<T extends AbstractButtonObject<T>> ex
 
 	@Override
 	public boolean isActive() {
-		return (state!=State.DISABLED && isVisible());
+		return (state!=State.DISABLED && isVisible() && isUsed());
 	}
 	
 	@Override

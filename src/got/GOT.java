@@ -2,7 +2,8 @@ package got;
 
 import org.lwjgl.glfw.GLFW;
 
-import got.gameObjects.DebugPanel;;
+import got.gameObjects.DebugPanel;
+import got.server.GameServer;;
 
 /**
  * This class creates Game object and handles main loop
@@ -21,6 +22,7 @@ public class GOT {
 			GameClient.instance().updateInput();
 			GameClient.instance().updateLogic();
 			GameClient.instance().updateGraphics();
+			GameClient.instance().tick();
 		}
 
 		GameClient.instance().finish();

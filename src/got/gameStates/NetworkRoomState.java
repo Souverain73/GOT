@@ -7,15 +7,15 @@ import org.joml.Vector2f;
 
 import com.esotericsoftware.kryonet.Connection;
 
-import got.Game;
 import got.GameClient;
-import got.Player;
 import got.gameObjects.AbstractButtonObject;
 import got.gameObjects.GameObject;
 import got.gameObjects.ImageButton;
 import got.gameObjects.NetPlayersPanel;
 import got.graphics.DrawSpace;
 import got.interfaces.IClickListener;
+import got.model.Game;
+import got.model.Player;
 import got.network.Packages;
 import got.network.Packages.ConnectionError;
 import got.network.Packages.PlayerConnected;

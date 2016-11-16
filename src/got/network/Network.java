@@ -13,10 +13,15 @@ public class Network {
 	public static void register(EndPoint endpoint){
 		Kryo kryo = endpoint.getKryo();
 		Packages.register(endpoint);
-		kryo.register(got.Player.class);
-		kryo.register(got.Player[].class);
-		kryo.register(got.Fraction.class);
-		kryo.register(got.Fraction[].class);
+		kryo.register(got.model.Player.class);
+		kryo.register(got.model.Player[].class);
+		
+		kryo.register(got.model.Fraction.class);
+		kryo.register(got.model.Fraction[].class);
+		
+		kryo.register(got.model.Unit.class);
+		kryo.register(got.model.Unit[].class);
+		
 		kryo.register(ActionObject.Action.class);
 	}
 	

@@ -1,11 +1,14 @@
 package got.network;
 
+import java.util.Arrays;
+
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 
-import got.Fraction;
-import got.Player;
 import got.gameObjects.ActionObject.Action;
+import got.model.Fraction;
+import got.model.Player;
+import got.model.Unit;
 
 public class Packages {
 	private Packages() {
@@ -213,6 +216,11 @@ public class Packages {
 			this.action = action;
 		}
 		
+		@Override
+		public String toString() {
+			return String.format("PlayerSetAction [region=%s, action=%s]", region, action);
+		}
+		
 	}
 
 	/**
@@ -223,11 +231,16 @@ public class Packages {
 		public boolean ready;
 		public PlayerReady() {
 		}
+		
 		public PlayerReady(int playerID, boolean ready) {
 			this.playerID = playerID;
 			this.ready = ready;
 		}
 		
+		@Override
+		public String toString() {
+			return String.format("PlayerReady [playerID=%s, ready=%s]", playerID, ready);
+		}	
 	}
 
 	/**
@@ -241,7 +254,11 @@ public class Packages {
 		public PlayerTurn(int playerID) {
 			this.playerID = playerID;
 		}
-		
+
+		@Override
+		public String toString() {
+			return String.format("PlayerTurn [playerID=%s]", playerID);
+		}
 	}
 
 	/**
@@ -258,7 +275,11 @@ public class Packages {
 			this.from = from;
 			this.to = to;
 		}
-		
+
+		@Override
+		public String toString() {
+			return String.format("PlayerAct [from=%s, to=%s]", from, to);
+		}
 	}
 
 	/**
@@ -353,6 +374,11 @@ public class Packages {
 		public Ready(boolean ready){
 			this.ready = ready;
 		}
+		
+		@Override
+		public String toString() {
+			return String.format("Ready [ready=%s]", ready);
+		}
 	}
 
 	/**
@@ -402,16 +428,22 @@ public class Packages {
 	 */
 	public static class ChangeUnits extends ClientServerPackage {
 		public int region;
-		public int units[];
+		public Unit[] units;
 
 		public ChangeUnits() {
-			units = new int[4];
+			units = new Unit[4];
 		}
 
-		public ChangeUnits(int region, int[] units) {
+		public ChangeUnits(int region, Unit[] units) {
 			this.region = region;
 			this.units = units;
 		}
+
+		@Override
+		public String toString() {
+			return String.format("ChangeUnits [region=%s, units=%s]", region, Arrays.toString(units));
+		}
+		
 	}
 
 	/**

@@ -1,5 +1,7 @@
 package got.gameStates.modals;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import org.joml.Vector2f;
@@ -15,15 +17,16 @@ import got.gameObjects.UnitObject;
 import got.gameStates.GameState;
 import got.gameStates.StateMachine;
 import got.graphics.TextureManager;
+import got.model.Unit;
 import got.server.GameServer.PlayerConnection;
 
 public class UnitSelectState implements GameState{
 	private final String name = "UnitSelect";
 	public Object result;
-	Vector<GameObject> objects;
+	List<GameObject> objects;
 	
-	public UnitSelectState(Vector<UnitObject> units, Vector2f pos){
-		objects = new Vector<GameObject>();
+	public UnitSelectState(Unit[] units, Vector2f pos){
+		objects = new ArrayList<GameObject>();
 		float x = pos.x;
 		float y = pos.y;
 			ImageObject bg = new ImageObject(TextureManager.instance().loadTexture("unitsMenuBg.png"),
@@ -32,13 +35,13 @@ public class UnitSelectState implements GameState{
 		x = pos.x + 6;
 		y = pos.y + 5;
 		
-		int unitsCount = units.size();
+		int unitsCount = units.length;
 		for (int i=0; i<unitsCount; i++){
-			ImageButton btn = new ImageButton(units.get(i).getTexture(), 
+			ImageButton btn = new ImageButton(units[i].getTexture(), 
 					(int)x, (int)y, 
 					(int)Constants.UNIT_SIZE,
 					(int)Constants.UNIT_SIZE,
-					units.get(i));
+					units[i]);
 			btn.setCallback(this::clickCallback);
 			objects.add(btn);
 			x+=Constants.UNIT_SIZE + Constants.UNIT_STEP;
@@ -80,13 +83,16 @@ public class UnitSelectState implements GameState{
 		objects.forEach(obj->obj.update(this));
 	}
 
+	public void tick(){
+		objects.forEach(obj->obj.tick());
+	}
+		
 	public Object getResult(){
 		return result;
 	}
 
 	@Override
 	public void recieve(Connection connection, Object pkg) {
-		// TODO Auto-generated method stub
 		
 	}
 

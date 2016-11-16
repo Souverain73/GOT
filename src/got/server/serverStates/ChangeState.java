@@ -1,8 +1,9 @@
 package got.server.serverStates;
 
 import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.minlog.Log;
 
-import got.Player;
+import got.model.Player;
 import got.network.Packages;
 import got.network.Packages.Ready;
 import got.server.GameServer;
@@ -47,7 +48,7 @@ public class ChangeState implements ServerState {
 
 	@Override
 	public void enter(StateMachine stm) {
-		System.out.println("Changing state to:"+nextState.getName());
+		Log.warn("Change state to"+nextState.getName());
 		this.stm = stm;
 		for (Player pl: PlayerManager.instance().getPlayersList()){
 			pl.setReady(false);

@@ -1,4 +1,6 @@
-package got;
+package got.model;
+
+import got.Constants;
 
 /**
  * Class contains all player data

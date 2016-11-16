@@ -59,6 +59,10 @@ public class MenuState extends AbstractGameState {
 		gameObjects.forEach(obj->obj.update(this));
 	}
 
+	public void tick(){
+		gameObjects.forEach(obj->obj.tick());
+	}
+	
 	@Override
 	public void recieve(Connection connection, Object pkg) {
 	}

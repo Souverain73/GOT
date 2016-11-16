@@ -1,5 +1,7 @@
 package got.gameObjects;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import org.joml.Vector2f;
@@ -16,12 +18,13 @@ import got.utils.LoaderParams;
  *
  */
 public abstract class AbstractGameObject<T extends AbstractGameObject<T>> implements GameObject, IComposer<AbstractGameObject>{
-	protected Vector<AbstractGameObject> childs;
+	protected List<AbstractGameObject> childs;
 	protected AbstractGameObject parent;
 	protected Vector2f pos;
 	protected float w, h;
 	protected boolean visible;
 	protected DrawSpace space = DrawSpace.WORLD;
+	private boolean updated, drawed, used;
 	
 	protected abstract T getThis();
 	
@@ -31,8 +34,11 @@ public abstract class AbstractGameObject<T extends AbstractGameObject<T>> implem
 	
 	protected AbstractGameObject() {
 		visible = true;
+		updated = false;
+		drawed = false;
+		used = false;
 		pos = new Vector2f();
-		childs = new Vector<AbstractGameObject>();
+		childs = new ArrayList<AbstractGameObject>();
 	}
 	
 	public T setSpace(DrawSpace space){
@@ -83,6 +89,7 @@ public abstract class AbstractGameObject<T extends AbstractGameObject<T>> implem
 
 	@Override
 	public void draw(GameState state) {
+		drawed = true;
 		if (isVisible()){
 			childs.forEach(obj->obj.draw(state));
 		}
@@ -105,6 +112,26 @@ public abstract class AbstractGameObject<T extends AbstractGameObject<T>> implem
 		this.h = h;
 		return getThis();
 	}
+	
+	public T setDim(Vector2f dim){
+		this.w = dim.x;
+		this.h = dim.y;
+		return getThis();
+	}
+	
+	public Vector2f getDim(){
+		return new Vector2f(this.w, this.h);
+	}
+	
+	/**
+	 * Метод устанавливает одновременно ширину и высоту объекта равную size<br>
+	 * <b>(w = h = size)</b>
+	 * @param size
+	 */
+	public T setSize(float size){
+		this.w = this.h = size;
+		return getThis();
+	}
 
 	public T setPos(Vector2f pos) {
 		this.pos = pos;
@@ -113,6 +140,7 @@ public abstract class AbstractGameObject<T extends AbstractGameObject<T>> implem
 
 	@Override
 	public void update(GameState state) {
+		updated = true;
 		childs.forEach(obj->obj.update(state));
 	}
 
@@ -129,5 +157,16 @@ public abstract class AbstractGameObject<T extends AbstractGameObject<T>> implem
 	@Override
 	public void setVisible(boolean visible){
 		this.visible = visible;
+	}
+
+	@Override
+	public void tick() {
+		childs.forEach(obj->tick());
+		used = updated && drawed;
+		updated = drawed = false;
+	}
+
+	protected boolean isUsed() {
+		return used;
 	}
 }
