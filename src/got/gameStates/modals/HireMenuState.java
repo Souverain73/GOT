@@ -1,8 +1,6 @@
 package got.gameStates.modals;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import org.joml.Vector2f;
 
@@ -11,21 +9,21 @@ import com.esotericsoftware.kryonet.Connection;
 import got.Constants;
 import got.GameClient;
 import got.ModalState;
+import got.gameObjects.AbstractGameObject;
 import got.gameObjects.GameObject;
 import got.gameObjects.ImageButton;
 import got.gameObjects.ImageObject;
 import got.gameObjects.UnitObject;
-import got.gameStates.GameState;
-import got.gameStates.StateMachine;
+import got.gameStates.AbstractGameState;
 import got.graphics.TextureManager;
+import got.interfaces.IClickListener;
 import got.model.Unit;
 
-public class HireMenuState implements GameState{
+public class HireMenuState extends  AbstractGameState implements IClickListener{
 	private static final String name = "HireMenu";
 	private int hirePoints;
-	private List<GameObject> objects;
 	private List<UnitObject> units = null;
-	private GameObject plusButton = null;
+	private AbstractGameObject plusButton = null;
 	private ImageButton [] buttons;
 	private Vector2f pos;
 	private boolean sea;
@@ -36,14 +34,13 @@ public class HireMenuState implements GameState{
 		this.hirePoints = hirePoints;
 		this.units = units;
 		this.buttons = new ImageButton[4];
-		objects = new ArrayList<GameObject>();
 		//TODO create BG
 		float x = pos.x;
 		float y = pos.y;
 		
-			ImageObject bg = new ImageObject(TextureManager.instance().loadTexture("unitsMenuBg.png"),
-					new Vector2f(x,y), 220, 60);
-			objects.add(bg);
+		ImageObject bg = new ImageObject(TextureManager.instance().loadTexture("unitsMenuBg.png"),
+			new Vector2f(x,y), 220, 60);
+		addObject(bg);
 			
 		x = pos.x + 6;
 		y = pos.y + 5;
@@ -56,10 +53,11 @@ public class HireMenuState implements GameState{
 					cx, (int)y, 
 					(int)Constants.UNIT_SIZE,
 					(int)Constants.UNIT_SIZE,
-					i);
-			btn.setCallback(this::unitClickCallback);
-			btn.setVisible(false);
-			objects.add(btn);
+					i)
+					.setCallback(this::unitClickCallback);
+			
+			btn.setVisible(false);		
+			addObject(btn);
 			buttons[i] = btn;
 		}
 		if (unitsCount<4){
@@ -68,10 +66,10 @@ public class HireMenuState implements GameState{
 					cx, (int)y, 
 					(int)Constants.UNIT_SIZE,
 					(int)Constants.UNIT_SIZE,
-					null);
-			btn.setCallback(this::plusButtonCallback);
+					null)
+					.setCallback(this::plusButtonCallback);
 			plusButton = btn;
-			objects.add(btn);
+			addObject(btn);
 		}
 		updateButtons();
 	}
@@ -142,43 +140,26 @@ public class HireMenuState implements GameState{
 		return name;
 	}
 
-	@Override
-	public void enter(StateMachine stm) {
-		
-	}
-
-	@Override
-	public void exit() {
-		objects.forEach(obj->obj.finish());
-	}
-
-	@Override
-	public void draw() {
-//		System.out.println("Draw HireMenu");
-		objects.forEach(obj->obj.draw(this));
-	}
 	
-	public void tick(){
-		objects.forEach(obj->obj.tick());
-	}
+
 	
 	private void hideObjects(){
-		objects.forEach(obj->obj.setVisible(false));
+		gameObjects.forEach(obj->obj.setVisible(false));
 	}
 	
 	private void showObjects(){
-		objects.forEach(obj->obj.setVisible(true));
+		gameObjects.forEach(obj->obj.setVisible(true));
 	}
 
 	@Override
 	public void update() {
 		if (hirePoints == 0) close();
 		if (plusButton != null && (hirePoints<=0 || units.size()>=4)){
-			objects.remove(plusButton);
+			removeObject(plusButton);
 			plusButton.finish();
 			plusButton = null;
 		}
-		objects.forEach(obj->obj.update(this));
+		super.update();
 	}
 
 	public int getHirePoints() {
@@ -194,6 +175,13 @@ public class HireMenuState implements GameState{
 	@Override
 	public int getID() {
 		return -1;
+	}
+
+	@Override
+	public void click(GameObject sender) {
+		if (sender == null){
+			close();
+		}
 	}
 	
 }

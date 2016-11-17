@@ -28,7 +28,9 @@ public class UnitObject extends AbstractGameObject<UnitObject>{
 			type.getTexture().draw(cp.x, cp.y, getW(), getH());
 		}
 	}
-	
+
+
+
 	public void setType(Unit type){
 		this.type = type;
 	}
@@ -40,11 +42,11 @@ public class UnitObject extends AbstractGameObject<UnitObject>{
 	public Texture getTexture(){
 		return type.getTexture();
 	}
-	
+
 	public int getCost(){
 		return type.getCost();
 	}
-	
+
 	public boolean isUpgradeable(){
 		return !(type.getPosibleUpgrades() == null || type.getPosibleUpgrades().length==0);
 	}

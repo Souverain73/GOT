@@ -1,16 +1,12 @@
 package got.gameStates;
 
-import java.util.Vector;
-
 import org.joml.Vector2f;
 
 import com.esotericsoftware.kryonet.Connection;
 
 import got.Constants;
 import got.GameClient;
-import got.gameObjects.AbstractGameObject;
 import got.gameObjects.GameMapObject;
-import got.gameObjects.GameObject;
 import got.gameObjects.ImageObject;
 import got.gameObjects.TextObject;
 import got.graphics.DrawSpace;
@@ -21,8 +17,9 @@ import got.utils.LoaderParams;
 
 public class MainState extends AbstractGameState {
 	private static final String name = "MainState";
+	private static final String MAP_FILE = "data/map.xml";
 	private StateMachine stm;
-	private Vector<GameObject> gameObjects;
+	private GameMapObject map;
 	
 	@Override
 	public String getName() {
@@ -31,7 +28,6 @@ public class MainState extends AbstractGameState {
 
 	@Override
 	public void enter(StateMachine extstm) {
-		gameObjects = new Vector<GameObject>();
 		stm = new StateMachine();
 		System.out.println("Entering "+name);
 		
@@ -40,10 +36,11 @@ public class MainState extends AbstractGameState {
 		background.setSpace(DrawSpace.SCREEN);
 		gameObjects.add(background);
 		
-		GameObject map = new GameMapObject();
-		map.init(new LoaderParams(new String[]{"filename", "data/map.xml"}));
-		gameObjects.addElement(map);
-		AbstractGameObject fractionText = new TextObject(PlayerManager.getSelf().getFraction().toString()); 
+		map = new GameMapObject();
+		LoaderParams params = new LoaderParams(new String[]{"filename", MAP_FILE});
+		map.init(params);
+		//addObject(map);
+		TextObject fractionText = new TextObject(PlayerManager.getSelf().getFraction().toString()); 
 		fractionText.setPos(new Vector2f(10,10));
 		fractionText.setSpace(DrawSpace.SCREEN);
 		addObject(fractionText);
@@ -54,27 +51,27 @@ public class MainState extends AbstractGameState {
 	@Override
 	public void exit() {
 		super.exit();
-		gameObjects.forEach(o->o.finish());
+		map.finish();
 		System.out.println("Exit "+name);
 	}
 
 	@Override
 	public void draw() {
-		gameObjects.forEach(obj->obj.draw(stm.getCurrentState()));
 		super.draw();
+		map.draw(stm.getCurrentState());
 		stm.draw();
 	}
 
 	@Override
 	public void update() {
-		gameObjects.forEach(obj->obj.update(stm.getCurrentState()));
 		super.update();
+		map.update(stm.getCurrentState());
 		stm.update();
 	}
 	
 	public void tick(){
-		gameObjects.forEach(obj->obj.tick());
 		super.tick();
+		map.tick();
 		stm.tick();
 	}
 
@@ -82,12 +79,7 @@ public class MainState extends AbstractGameState {
 	public void recieve(Connection connection, Object pkg) {
 		if (pkg instanceof ChangeState){
 			int stateID = ((ChangeState) pkg).state;
-			GameClient.instance().registerTask(new Runnable() {
-				@Override
-				public void run() {
-					stm.setState(StateID.getGameStateByID(stateID));
-				}
-			});
+			GameClient.instance().registerTask(() -> stm.setState(StateID.getGameStateByID(stateID)));
 			return;
 		}
 		stm.recieve(connection, pkg);

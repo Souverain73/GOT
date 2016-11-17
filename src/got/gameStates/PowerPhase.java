@@ -24,16 +24,18 @@ import got.server.PlayerManager;
 import got.utils.UI;
 
 public class PowerPhase extends ActionPhase {
-	
+
 	private boolean firstTurn;
-	
+
 	@Override
 	public void enter(StateMachine stm) {
 		super.enter(stm);
 		firstTurn = true;
 		enableRegionsWithCrown();
 	}
-	
+
+
+
 	@Override
 	public void click(GameObject sender) {
 		//TODO: Handle clicks
@@ -41,7 +43,7 @@ public class PowerPhase extends ActionPhase {
 			MapPartObject region = (MapPartObject)sender;
 			if (region.getAction().getType() == Action.MONEYPLUS &&
 					region.getBuildingLevel()>0){
-				//Надо дать игроку выбор действия.
+				//РќР°РґРѕ РґР°С‚СЊ РёРіСЂРѕРєСѓ РІС‹Р±РѕСЂ РґРµР№СЃС‚РІРёСЏ.
 				int action = showSelectActionDialog();
 				if (action==-1){
 					return;
@@ -51,31 +53,31 @@ public class PowerPhase extends ActionPhase {
 					if (GameMapObject.instance().getEnabledRegions().isEmpty())
 						GameClient.instance().send(new Packages.Ready(false));
 				}else if (action==1){
-					//Если можем нанимать юнитов создаем меню для найма
-					//надо проверить, можем ли мы нанять в море, если да, то предоставить выбор.
+					//Р•СЃР»Рё РјРѕР¶РµРј РЅР°РЅРёРјР°С‚СЊ СЋРЅРёС‚РѕРІ СЃРѕР·РґР°РµРј РјРµРЅСЋ РґР»СЏ РЅР°Р№РјР°
+					//РЅР°РґРѕ РїСЂРѕРІРµСЂРёС‚СЊ, РјРѕР¶РµРј Р»Рё РјС‹ РЅР°РЅСЏС‚СЊ РІ РјРѕСЂРµ, РµСЃР»Рё РґР°, С‚Рѕ РїСЂРµРґРѕСЃС‚Р°РІРёС‚СЊ РІС‹Р±РѕСЂ.
 					region.hideUnits();
 					HireMenuState hms = new HireMenuState(
 							region.getUnitObjects(), InputManager.instance().getMousePosWin(),
 							region.getBuildingLevel(), region.getType() == RegionType.SEA);
 					(new ModalState(hms)).run();
 					region.showUnits();
-					//TODO: Есть варианты, когда игрок может набрать из одного региона в несколько других
-					//В такой ситуации надо дать ему возможность закрыть меню найма и заного открыть его для другого региона
+					//TODO: Р•СЃС‚СЊ РІР°СЂРёР°РЅС‚С‹, РєРѕРіРґР° РёРіСЂРѕРє РјРѕР¶РµС‚ РЅР°Р±СЂР°С‚СЊ РёР· РѕРґРЅРѕРіРѕ СЂРµРіРёРѕРЅР° РІ РЅРµСЃРєРѕР»СЊРєРѕ РґСЂСѓРіРёС…
+					//Р’ С‚Р°РєРѕР№ СЃРёС‚СѓР°С†РёРё РЅР°РґРѕ РґР°С‚СЊ РµРјСѓ РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊ Р·Р°РєСЂС‹С‚СЊ РјРµРЅСЋ РЅР°Р№РјР° Рё Р·Р°РЅРѕРіРѕ РѕС‚РєСЂС‹С‚СЊ РµРіРѕ РґР»СЏ РґСЂСѓРіРѕРіРѕ СЂРµРіРёРѕРЅР°
 					Unit[] newUnits = region.getUnits();
 					GameClient.instance().send(new Packages.ChangeUnits(
 							region.getID(), newUnits));
-					
-					//Если потратил все очки найма, надо отправить пакет об использовании действия.
+
+					//Р•СЃР»Рё РїРѕС‚СЂР°С‚РёР» РІСЃРµ РѕС‡РєРё РЅР°Р№РјР°, РЅР°РґРѕ РѕС‚РїСЂР°РІРёС‚СЊ РїР°РєРµС‚ РѕР± РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРё РґРµР№СЃС‚РІРёСЏ.
 					GameClient.instance().send(new Packages.Act(region.getID(), 0));
 					region.setEnabled(false);
 					if (GameMapObject.instance().getEnabledRegions().isEmpty())
 						GameClient.instance().send(new Packages.Ready(false));
 				}
-				
+
 			}
 		}
 	}
-	
+
 	@Override
 	public void recieve(Connection connection, Object pkg) {
 		//TODO: handle networking
@@ -85,8 +87,8 @@ public class PowerPhase extends ActionPhase {
 				UI.systemMessage("MyTurn");
 				if (!enableRegionsWithCrown()){
 					UI.systemMessage("I can't turn");
-					//Если не был активирован ни один регион, значит текущий игрок не может совершить ход.
-					//В таком случае необходлимо сообщить об этом серверу пакетом Ready.
+					//Р•СЃР»Рё РЅРµ Р±С‹Р» Р°РєС‚РёРІРёСЂРѕРІР°РЅ РЅРё РѕРґРёРЅ СЂРµРіРёРѕРЅ, Р·РЅР°С‡РёС‚ С‚РµРєСѓС‰РёР№ РёРіСЂРѕРє РЅРµ РјРѕР¶РµС‚ СЃРѕРІРµСЂС€РёС‚СЊ С…РѕРґ.
+					//Р’ С‚Р°РєРѕРј СЃР»СѓС‡Р°Рµ РЅРµРѕР±С…РѕРґР»РёРјРѕ СЃРѕРѕР±С‰РёС‚СЊ РѕР± СЌС‚РѕРј СЃРµСЂРІРµСЂСѓ РїР°РєРµС‚РѕРј Ready.
 					GameClient.instance().send(new Packages.Ready(false));
 				}else{
 					if (firstTurn){
@@ -96,58 +98,58 @@ public class PowerPhase extends ActionPhase {
 				}
 			}else{
 				UI.systemMessage("Not my turn :( cpid:"+msg.playerID);
-				//Если чужой ход, отключаем все регионы, так как в чужой ход мы не можем совершать действий.
+				//Р•СЃР»Рё С‡СѓР¶РѕР№ С…РѕРґ, РѕС‚РєР»СЋС‡Р°РµРј РІСЃРµ СЂРµРіРёРѕРЅС‹, С‚Р°Рє РєР°Рє РІ С‡СѓР¶РѕР№ С…РѕРґ РјС‹ РЅРµ РјРѕР¶РµРј СЃРѕРІРµСЂС€Р°С‚СЊ РґРµР№СЃС‚РІРёР№.
 				GameMapObject.instance().disableAllRegions();
 			}
 		}
 		if (pkg instanceof Packages.CollectInfluence){
-			//Собираем влияние(деньги)
+			//РЎРѕР±РёСЂР°РµРј РІР»РёСЏРЅРёРµ(РґРµРЅСЊРіРё)
 			Packages.CollectInfluence msg = ((Packages.CollectInfluence)pkg);
 			MapPartObject region = GameMapObject.instance().getRegionByID(msg.region);
-			
+
 			if (region.getFraction() == PlayerManager.getSelf().getFraction()){
 				PlayerManager.getSelf().addMoney(region.getInfluencePoints()+1);
 			}
 			GameClient.instance().registerTask(()->{region.setAction(null);});
 		}
-		
+
 		if (pkg instanceof Packages.ChangeUnits){
-			//изменяем состав войск в регионе
+			//РёР·РјРµРЅСЏРµРј СЃРѕСЃС‚Р°РІ РІРѕР№СЃРє РІ СЂРµРіРёРѕРЅРµ
 			Packages.ChangeUnits msg = ((Packages.ChangeUnits)pkg);
-			
+
 			MapPartObject region = GameMapObject.instance().getRegionByID(msg.region);
 			region.setUnits(msg.units);
 		}
 		if (pkg instanceof Packages.PlayerAct){
 			Packages.PlayerAct msg = ((Packages.PlayerAct)pkg);
 			MapPartObject region = GameMapObject.instance().getRegionByID(msg.from);
-			
+
 			GameClient.instance().registerTask(()->{region.setAction(null);});
 		}
 	}
-	
-	
+
+
 	private boolean enableRegionsWithCrown(){
 		Fraction selfFraction = PlayerManager.getSelf().getFraction();
-		
-		//обход ограничения на изменение переменных внутри лямбд
+
+		//РѕР±С…РѕРґ РѕРіСЂР°РЅРёС‡РµРЅРёСЏ РЅР° РёР·РјРµРЅРµРЅРёРµ РїРµСЂРµРјРµРЅРЅС‹С… РІРЅСѓС‚СЂРё Р»СЏРјР±Рґ
 		boolean []result = new boolean[1];
 		result[0] = false;
-		
+
 		GameMapObject.instance().setEnabledByCondition(region->{
 			boolean enable = region.getFraction() == selfFraction
-					&& region.getAction() != null 
+					&& region.getAction() != null
 					&& (region.getAction().getType() == Action.MONEY ||
 						region.getAction().getType() == Action.MONEYPLUS);
 			result[0] |= enable;
 			return enable;
 		});
-		
+
 		return result[0];
 	}
-	
+
 	/**
-	 * В первый ход автоматически играются все приказы для которых не требуется решение игрока.
+	 * Р’ РїРµСЂРІС‹Р№ С…РѕРґ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё РёРіСЂР°СЋС‚СЃСЏ РІСЃРµ РїСЂРёРєР°Р·С‹ РґР»СЏ РєРѕС‚РѕСЂС‹С… РЅРµ С‚СЂРµР±СѓРµС‚СЃСЏ СЂРµС€РµРЅРёРµ РёРіСЂРѕРєР°.
 	 */
 	private void firstTurn(){
 		for (MapPartObject region: GameMapObject.instance().getEnabledRegions()){
@@ -160,11 +162,11 @@ public class PowerPhase extends ActionPhase {
 			}
 		}
 	}
-	
+
 	private void sendCollectMoney(MapPartObject region){
 		GameClient.instance().send(new Packages.CollectInfluence(region.getID()));
 	}
-	
+
 	private int showSelectActionDialog(){
 		int result[] = new int[1];
 		result[0]=-1;
@@ -181,7 +183,7 @@ public class PowerPhase extends ActionPhase {
 		CustomModalState cms = new CustomModalState();
 		cms.addObject(background);
 		new ModalState(cms).run();
-		
+
 		return result[0];
 	}
 }

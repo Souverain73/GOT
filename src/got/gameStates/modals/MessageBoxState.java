@@ -1,19 +1,15 @@
 package got.gameStates.modals;
 
-import com.esotericsoftware.kryonet.Connection;
-
 import got.GameClient;
-import got.InputManager;
-import got.gameObjects.ImageButton;
-import got.gameStates.GameState;
-import got.gameStates.StateMachine;
+import got.gameObjects.GameObject;
+import got.gameStates.AbstractGameState;
 import got.graphics.DrawSpace;
 import got.graphics.Font;
 import got.graphics.GraphicModule;
 import got.graphics.Text;
-import got.server.GameServer.PlayerConnection;
+import got.interfaces.IClickListener;
 
-public class MessageBoxState implements GameState{
+public class MessageBoxState extends AbstractGameState implements IClickListener{
 	//TODO create BG and Buttons.
 	private static Font msgFont = new Font("test");
 	private Text text;
@@ -32,45 +28,31 @@ public class MessageBoxState implements GameState{
 	}
 
 	@Override
-	public void enter(StateMachine stm) {
-		
-	}
-
-	@Override
-	public void exit() {
-		
-	}
-
-	@Override
 	public void draw() {
+		super.draw();
 		GraphicModule.instance().setDrawSpace(DrawSpace.SCREEN);
 		text.draw(x, y, 1, 1);
 	}
 
 	@Override
 	public void update() {
-		if (InputManager.instance().getMouseButtonState(InputManager.MOUSE_LEFT)==1 
-				&& !(InputManager.instance().getMouseTarget() instanceof ImageButton)){
-			close();
-		}
+		super.update();
 	}
-	
-	public void tick(){
-	}
-	
+		
 	private void close(){
 		GameClient.instance().closeModal();
 	}
 
 	@Override
-	public void recieve(Connection connection, Object pkg) {
-		// TODO Auto-generated method stub
-		
+	public int getID() {
+		return -1;
 	}
 
 	@Override
-	public int getID() {
-		return -1;
+	public void click(GameObject sender) {
+		if (sender == null){
+			close();
+		}
 	}
 
 }

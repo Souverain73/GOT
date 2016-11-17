@@ -1,10 +1,13 @@
 package got.gameStates;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import com.esotericsoftware.kryonet.Connection;
 
 import got.GameClient;
+import got.gameObjects.AbstractGameObject;
 import got.gameObjects.GameObject;
 import got.utils.UI;
 import static got.network.Packages.Ready;
@@ -14,7 +17,8 @@ import static got.network.Packages.Ready;
  *	This class implements base for all GameStates
  */
 public abstract class AbstractGameState implements GameState {
-	protected Vector<GameObject> gameObjects = new Vector<>();
+	protected List<AbstractGameObject> gameObjects = new ArrayList<>();
+	protected StateMachine stm;
 	/* 
 	 * If you want log all recieved packages use super.recieve(), otherwise skip it
 	 */
@@ -31,6 +35,7 @@ public abstract class AbstractGameState implements GameState {
 	@Override
 	public void enter(StateMachine stm) {
 		GameClient.instance().sendReady(true);
+		this.stm = stm;
 	}
 
 	@Override
@@ -48,11 +53,11 @@ public abstract class AbstractGameState implements GameState {
 		gameObjects.forEach(obj->obj.update(this));
 	}
 	
-	protected void addObject(GameObject obj){
-		gameObjects.addElement(obj);
+	protected void addObject(AbstractGameObject obj){
+		gameObjects.add(obj);
 	}
 
-	protected void removeObject(GameObject obj){
+	protected void removeObject(AbstractGameObject obj){
 		gameObjects.remove(obj);
 		obj.finish();
 	}
@@ -62,6 +67,7 @@ public abstract class AbstractGameState implements GameState {
 		return 0;
 	}
 	
+	@Override
 	public void tick(){
 		gameObjects.forEach(obj->obj.tick());
 	}

@@ -60,6 +60,9 @@ public class ModalState implements Runnable{
 			if (GameClient.instance().isDebug())
 				DebugPanel.instance().draw(state);
 			
+			stm.tick();
+			state.tick();
+			
 			glfwSwapBuffers(GameClient.instance().pWindow);
 		}
 		
