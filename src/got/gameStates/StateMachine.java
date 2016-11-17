@@ -43,20 +43,22 @@ public class StateMachine implements INetworkListener {
 	
 	public void update(){
 		if (!_states.isEmpty())
-			_states.peek().update();
+			getCurrentState().update();
 		if (GameClient.instance().isDebug())
 			DebugPanel.instance().update(getCurrentState());
 	}
 	
 	public void draw(){
 		if (!_states.isEmpty())
-			_states.peek().draw();
+			getCurrentState().draw();
 		if (GameClient.instance().isDebug())
 			DebugPanel.instance().draw(getCurrentState());
 	}
 	
 	public void tick(){
-		getCurrentState().tick();
+		if (!_states.isEmpty()){
+			getCurrentState().tick();
+		}
 	}
 	
 	public GameState getCurrentState(){

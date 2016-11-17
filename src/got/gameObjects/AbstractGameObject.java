@@ -2,7 +2,6 @@ package got.gameObjects;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import org.joml.Vector2f;
 
@@ -161,7 +160,7 @@ public abstract class AbstractGameObject<T extends AbstractGameObject<T>> implem
 
 	@Override
 	public void tick() {
-		childs.forEach(obj->tick());
+		childs.forEach(obj->obj.tick());
 		used = updated && drawed;
 		updated = drawed = false;
 	}

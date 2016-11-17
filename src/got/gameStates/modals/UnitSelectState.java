@@ -1,8 +1,6 @@
 package got.gameStates.modals;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
+
 
 import org.joml.Vector2f;
 
@@ -13,25 +11,21 @@ import got.GameClient;
 import got.gameObjects.GameObject;
 import got.gameObjects.ImageButton;
 import got.gameObjects.ImageObject;
-import got.gameObjects.UnitObject;
-import got.gameStates.GameState;
-import got.gameStates.StateMachine;
+import got.gameStates.AbstractGameState;
 import got.graphics.TextureManager;
+import got.interfaces.IClickListener;
 import got.model.Unit;
-import got.server.GameServer.PlayerConnection;
 
-public class UnitSelectState implements GameState{
+public class UnitSelectState extends AbstractGameState implements IClickListener{
 	private final String name = "UnitSelect";
 	public Object result;
-	List<GameObject> objects;
 	
 	public UnitSelectState(Unit[] units, Vector2f pos){
-		objects = new ArrayList<GameObject>();
 		float x = pos.x;
 		float y = pos.y;
 			ImageObject bg = new ImageObject(TextureManager.instance().loadTexture("unitsMenuBg.png"),
 				new Vector2f(x,y), 220, 60);
-			objects.add(bg);
+			addObject(bg);
 		x = pos.x + 6;
 		y = pos.y + 5;
 		
@@ -43,7 +37,7 @@ public class UnitSelectState implements GameState{
 					(int)Constants.UNIT_SIZE,
 					units[i]);
 			btn.setCallback(this::clickCallback);
-			objects.add(btn);
+			addObject(btn);
 			x+=Constants.UNIT_SIZE + Constants.UNIT_STEP;
 		}
 	}
@@ -62,31 +56,6 @@ public class UnitSelectState implements GameState{
 		return name;
 	}
 
-	@Override
-	public void enter(StateMachine stm) {
-		
-	}
-
-	@Override
-	public void exit() {
-		objects.forEach(obj->obj.finish());
-		objects.clear();
-	}
-
-	@Override
-	public void draw() {
-		objects.forEach(obj->obj.draw(this));
-	}
-
-	@Override
-	public void update() {
-		objects.forEach(obj->obj.update(this));
-	}
-
-	public void tick(){
-		objects.forEach(obj->obj.tick());
-	}
-		
 	public Object getResult(){
 		return result;
 	}
@@ -99,5 +68,12 @@ public class UnitSelectState implements GameState{
 	@Override
 	public int getID() {
 		return -1;
+	}
+
+	@Override
+	public void click(GameObject sender) {
+		if (sender == null){
+			close();
+		}
 	}
 }

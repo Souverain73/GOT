@@ -69,6 +69,12 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 		map.values().forEach(part->part.update(st));
 	}
 	
+	@Override
+	public void tick() {
+		map.values().forEach(part->part.tick());
+		super.tick();
+	}
+	
 	private void readMapFromFile(String fileName){
 		try{
 			Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fileName);

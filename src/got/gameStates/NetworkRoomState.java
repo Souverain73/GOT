@@ -42,18 +42,18 @@ public class NetworkRoomState extends AbstractGameState implements IClickListene
 		npp = new NetPlayersPanel();
 		npp.setPos(new Vector2f(1080, 0));
 		addObject(npp);
-		AbstractButtonObject btn = new ImageButton("buttons/ready.png", 1080, 670, 80, 40, null);
-		btn.setSpace(DrawSpace.SCREEN);
-		btn.setCallback((sender, param)->{
-			GameClient.instance().send(new Ready(!PlayerManager.getSelf().isReady()));
-		});
+		ImageButton btn = new ImageButton("buttons/ready.png", 1080, 670, 80, 40, null)
+			.setSpace(DrawSpace.SCREEN)
+			.setCallback((sender, param)->{
+				GameClient.instance().send(new Ready(!PlayerManager.getSelf().isReady()));
+			});
 		addObject(btn);
-		btn = new ImageButton("buttons/exit.png", 1180, 670, 80, 40, null);
-		btn.setSpace(DrawSpace.SCREEN);
-		btn.setCallback((sender, param)->{
-			GameClient.instance().disconnect();
-			GameClient.instance().getStateMachine().setState(new MenuState());
-		});
+		btn = new ImageButton("buttons/exit.png", 1180, 670, 80, 40, null)
+				.setSpace(DrawSpace.SCREEN)
+				.setCallback((sender, param)->{
+					GameClient.instance().disconnect();
+					GameClient.instance().getStateMachine().setState(new MenuState());
+				});
 		addObject(btn);
 		
 		String host = UI.getString("Enter host", "host", "localhost");
@@ -69,27 +69,7 @@ public class NetworkRoomState extends AbstractGameState implements IClickListene
 		
 	}
 	
-
-	@Override
-	public void exit() {
-		super.exit();
-	}
-
-	@Override
-	public void draw() {
-		super.draw();
-	}
-
-	@Override
-	public void update() {
-		super.update();
-	}
 	
-	@Override
-	public void click(GameObject sender) {
-		
-	}
-
 	@Override
 	public void recieve(Connection connection, Object pkg) {
 		if (pkg instanceof ConnectionError){
@@ -154,5 +134,9 @@ public class NetworkRoomState extends AbstractGameState implements IClickListene
 			PlayerManager.instance().initFractions(msg.fractions);
 			Game.init(PlayerManager.instance().getPlayersCount());
 		}
+	}
+
+	@Override
+	public void click(GameObject sender) {	
 	}	
 }

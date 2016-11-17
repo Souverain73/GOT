@@ -74,14 +74,11 @@ public class CollectUnitsPhase extends ActionPhase {
 	@Override
 	public void exit() {
 		GameMapObject.instance().enableAllRegions();
+		super.exit();
 	}
 	
 	@Override
 	public void update() {
-		if (InputManager.instance().getMouseButtonState(InputManager.MOUSE_MIDDLE)==1){
-			(new ModalState(
-					new MessageBoxState("Hello, you just clicked MIDDLE mouse button", 64, 64)
-			)).run();
-		}	super.update();
+		super.update();
 	}
 }
