@@ -8,7 +8,8 @@ public enum Fraction {
 	BARATEON(new Vector3f(5,5,0)),
 	GREYJOY	(new Vector3f(0.6f, 0.6f, 0.6f)),
 	TIREL	(new Vector3f(1, 4, 1)), 
-	MARTEL	(new Vector3f(5, 2.5f, 1));
+	MARTEL	(new Vector3f(5, 2.5f, 1)),
+	NEUTRAL (new Vector3f(1, 1, 1));
 	
 	
 	private final Vector3f multiplyColor;

@@ -7,6 +7,7 @@ import java.util.function.Predicate;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import got.model.Fraction;
 import org.w3c.dom.*;
 
 import got.gameStates.GameState;
@@ -38,7 +39,7 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 	}
 	
 	public GameMapObject(){
-		map = new HashMap<String, MapPartObject>();
+		map = new HashMap<>();
 		_instance = this;
 	}
 	
@@ -200,13 +201,11 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 	}
 	
 	public void setEnabledByCondition(Predicate<MapPartObject> condition){
-		map.values().forEach((region)->{
-			region.setEnabled(condition.test(region));
-		});
+		map.values().forEach(region -> region.setEnabled(condition.test(region)));
 	}
 	
 	public List<MapPartObject> getEnabledRegions(){
-		List<MapPartObject> result = new ArrayList<MapPartObject>();
+		List<MapPartObject> result = new ArrayList<>();
 		
 		map.values().forEach(obj->{
 			if (obj.isActive()){
@@ -214,6 +213,23 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 			}
 		});
 		
+		return result;
+	}
+
+	public int[] getArmySizesForFraction(Fraction fraction){
+		ArrayList<Integer> armySizes = new ArrayList<>();
+		map.values().forEach(obj->{
+			if (obj.getFraction() == fraction){
+				armySizes.add(obj.getUnitsCount());
+			}
+		});
+
+		int result[] = new int[armySizes.size()];
+
+		int i=0;
+		for (Integer col: armySizes){
+			result[i++] = col;
+		}
 		return result;
 	}
 	

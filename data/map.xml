@@ -34,13 +34,11 @@
 			<unit type="SOLDIER"/>
 			<texture filename="WidowsWatch.png"/>
 		</region>
-		<region name="The Stony Shore" type="GROUND" resources="1" x="153" y="423" w="408" h="426" fraction="TIREL">
+		<region name="The Stony Shore" type="GROUND" resources="1" x="153" y="423" w="408" h="426" fraction="STARK">
 			<action x="76" y="164"/>
 			<unitpos x="260" y="220"/>
-			<unit type="SOLDIER"/>
-			<unit type="SOLDIER"/>
-			<unit type="SOLDIER"/>
-			<unit type="SOLDIER"/>
+			<unit type="KNIGHT"/>
+			<unit type="KNIGHT"/>
 			<texture filename="TheStonyShore.png"/>
 		</region>
 		<region name="White Harbor" type="GROUND" building="1" x="746" y="423" w="379" h="511" fraction="LANISTER">
@@ -55,14 +53,11 @@
 		<region name="Bay Of Ice" type="SEA" x="0" y="0" w="763" h="960">
 			<action x="292" y="115"/>
 			<unitpos x="90" y="380"/>
-			<unit type="SHIP" />
-			<unit type="SHIP" />
 			<texture filename="BayOfIce.png"/>
 		</region>
 		<region name="The Shivering Sea" type="SEA" x="1024" y="0" w="476" h="762">
 			<action x="365" y="170"/>
 			<unitpos x="180" y="520"/>
-			<unit type="SHIP"/>
 			<texture filename="TheShiveringSea.png"/>
 		</region>
 	</regions>

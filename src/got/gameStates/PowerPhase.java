@@ -23,7 +23,7 @@ import got.network.Packages.ChangeUnits;
 import got.server.PlayerManager;
 import got.utils.UI;
 
-public class PowerPhase extends ActionPhase {
+class PowerPhase extends ActionPhase {
 
 	private boolean firstTurn;
 
@@ -81,23 +81,23 @@ public class PowerPhase extends ActionPhase {
 	@Override
 	public void recieve(Connection connection, Object pkg) {
 		//TODO: handle networking
-		if (pkg instanceof Packages.PlayerTurn){
-			Packages.PlayerTurn msg = ((Packages.PlayerTurn)pkg);
-			if (PlayerManager.getSelf().id == msg.playerID){
+		if (pkg instanceof Packages.PlayerTurn) {
+			Packages.PlayerTurn msg = ((Packages.PlayerTurn) pkg);
+			if (PlayerManager.getSelf().id == msg.playerID) {
 				UI.systemMessage("MyTurn");
-				if (!enableRegionsWithCrown()){
+				if (!enableRegionsWithCrown()) {
 					UI.systemMessage("I can't turn");
 					//Если не был активирован ни один регион, значит текущий игрок не может совершить ход.
 					//В таком случае необходлимо сообщить об этом серверу пакетом Ready.
 					GameClient.instance().send(new Packages.Ready(false));
-				}else{
-					if (firstTurn){
+				} else {
+					if (firstTurn) {
 						firstTurn = false;
 						firstTurn();
 					}
 				}
-			}else{
-				UI.systemMessage("Not my turn :( cpid:"+msg.playerID);
+			} else {
+				UI.systemMessage("Not my turn :( current player id:" + msg.playerID);
 				//Если чужой ход, отключаем все регионы, так как в чужой ход мы не можем совершать действий.
 				GameMapObject.instance().disableAllRegions();
 			}
@@ -155,6 +155,7 @@ public class PowerPhase extends ActionPhase {
 		for (MapPartObject region: GameMapObject.instance().getEnabledRegions()){
 			if (region.getAction().getType() == Action.MONEY){
 				sendCollectMoney(region);
+				region.setEnabled(false);
 			}else if(region.getAction().getType() == Action.MONEYPLUS){
 				if (region.getBuildingLevel() == 0){
 					sendCollectMoney(region);

@@ -35,7 +35,7 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	}
 
 	
-	private Fraction fraction = Fraction.STARK;
+	private Fraction fraction = Fraction.NEUTRAL;
 	
 	private int ID = 0;
 	private RegionType type;
@@ -53,8 +53,8 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	
 	public MapPartObject() {
 		super();
-		neighbors = new Vector<MapPartObject>();
-		units = new ArrayList<UnitObject>();
+		neighbors = new Vector<>();
+		units = new ArrayList<>();
 	}
 	
 	@Override
@@ -77,10 +77,6 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		try{
 			fraction = Fraction.valueOf((String)params.get("fraction"));
 		}catch(Exception e){
-			
-		}
-		if (fraction == null){
-			fraction = Fraction.STARK;
 		}
 		placeUnits();
 		return false;
@@ -190,7 +186,7 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		float y = cp.y+unit_y;
 		float angle = 0;
 		float radius = Constants.UNIT_SIZE*Constants.UNIT_SCALE*0.7f;
-		float step = 0;
+		float step;
 		
 		if (units.size() == 0) return;
 		
@@ -241,12 +237,12 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	}
 	
 	public Unit[] getUnits() {
-		return units.stream().map(obj -> obj.getType()).toArray(n->new Unit[n]);
+		return units.stream().map(obj -> obj.getType()).toArray(Unit[]::new);
 	}
 	
 	/**
 	 * Нужен для обратной совместимости, в идеале надо бы это переписать.
-	 * @return
+	 * @return - возвращает список юнитов в виде игровых объектов
 	 */
 	public List<UnitObject> getUnitObjects(){
 		return units;
@@ -289,6 +285,10 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	
 	public int getInfluencePoints() {
 		return influencePoints;
+	}
+
+	public int getUnitsCount(){
+		return units.size();
 	}
 
 	@Override

@@ -12,21 +12,21 @@ import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.Random;
 
-import org.joml.Vector2f;;
+import org.joml.Vector2f;
 
 
 public class Utils {
-	public static Charset charset = Charset.forName("windows-1251");
-	public static CharsetEncoder encoder = charset.newEncoder();
-	public static CharsetDecoder decoder = charset.newDecoder();
-	public static Random rand = new Random();
+	private static Charset charset = Charset.forName("windows-1251");
+	private	static CharsetEncoder encoder = charset.newEncoder();
+	private static CharsetDecoder decoder = charset.newDecoder();
+	private static Random rand = new Random();
 	
 	
 	/**
 	 * Reads file into String;
 	 * @param path - path to file
 	 * @return all file data as encoded string.
-	 * @throws IOException
+	 * @throws IOException - if can't read file
 	 */
 	static public String readFile(String path) throws IOException 
 	{
@@ -36,7 +36,7 @@ public class Utils {
 	
 	/**
 	 * Check if point in rectangle
-	 * @param point
+	 * @param point - point
 	 * @param rectPos - top left corner of rectangle
 	 * @param rectDim - width and height of rectangle
 	 */
@@ -51,8 +51,8 @@ public class Utils {
 	
 	/**
 	 * Calculate distance between two points
-	 * @param p1
-	 * @param p2
+	 * @param p1 - point 1
+	 * @param p2 - point 2
 	 * @return distance between p1 and p2
 	 */
 	static public float distance(Vector2f p1, Vector2f p2){
@@ -60,9 +60,20 @@ public class Utils {
 	}
 	
 	static public boolean chance(int chance){
-		if (rand.nextInt()%100<chance){
-			return true;
-		}
-		return false;
+		return rand.nextInt()%100<chance;
+	}
+
+	static public int limitInt(int value, int min, int max){
+		if (value < min) value = min;
+		if (value > max) value = max;
+
+		return value;
+	}
+
+	static public float limitFloat(float value, float min, float max){
+		if (value < min) value = min;
+		if (value > max) value = max;
+
+		return value;
 	}
 }
