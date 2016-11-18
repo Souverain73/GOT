@@ -27,6 +27,7 @@ public class HireMenuState extends  AbstractGameState implements IClickListener{
 	private ImageButton [] buttons;
 	private Vector2f pos;
 	private boolean sea;
+	private boolean hired = false;
 	
 	public HireMenuState(List<UnitObject> units, Vector2f pos, int hirePoints, boolean sea) {
 		this.pos = pos;
@@ -100,6 +101,7 @@ public class HireMenuState extends  AbstractGameState implements IClickListener{
 			if (ust.result!=null){
 				Unit newUnit = (Unit)ust.result;
 				units.set(i, new UnitObject(newUnit));
+				hired = true;
 				hirePoints--;
 			}
 			
@@ -125,6 +127,7 @@ public class HireMenuState extends  AbstractGameState implements IClickListener{
 		if (ust.result!=null){
 			Unit unit = (Unit)ust.result;
 			hirePoints-=unit.getCost();
+			hired = true;
 			units.add(new UnitObject(unit));
 		}
 		showObjects();
@@ -162,6 +165,9 @@ public class HireMenuState extends  AbstractGameState implements IClickListener{
 		super.update();
 	}
 
+	/**
+	 * @return hirePoints - количество оставшихся очков для набора юнитов
+	 */
 	public int getHirePoints() {
 		return hirePoints;
 	}
@@ -175,6 +181,10 @@ public class HireMenuState extends  AbstractGameState implements IClickListener{
 	@Override
 	public int getID() {
 		return -1;
+	}
+
+	public boolean isHired() {
+		return hired;
 	}
 
 	@Override

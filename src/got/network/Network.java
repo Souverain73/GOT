@@ -2,9 +2,8 @@ package got.network;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
-import com.esotericsoftware.kryonet.Server;
 
-import got.gameObjects.ActionObject;
+import got.model.Action;
 
 public class Network {
 	public static int portTCP = 54555;
@@ -22,7 +21,7 @@ public class Network {
 		kryo.register(got.model.Unit.class);
 		kryo.register(got.model.Unit[].class);
 		
-		kryo.register(ActionObject.Action.class);
+		kryo.register(Action.class);
 	}
 	
 	

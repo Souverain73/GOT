@@ -6,8 +6,8 @@ import got.GameClient;
 import got.gameObjects.GameMapObject;
 import got.gameObjects.GameObject;
 import got.gameObjects.MapPartObject;
-import got.gameObjects.ActionObject.Action;
 import got.gameObjects.MapPartObject.RegionType;
+import got.model.Action;
 import got.model.Fraction;
 import got.network.Packages;
 import got.server.PlayerManager;
@@ -65,7 +65,6 @@ public class FirePhase extends ActionPhase {
 						}
 					});
 				}
-				//TODO: remove regions where is nothing to ignite and your own regions.
 				Fraction selfFraction = PlayerManager.getSelf().getFraction();
 				GameMapObject.instance().getEnabledRegions().forEach(obj->{
 					//disable if region have no action
@@ -73,14 +72,14 @@ public class FirePhase extends ActionPhase {
 						obj.setEnabled(false);
 					}else{
 						//Fire can't affect move action
-						Action type = obj.getAction().getType();
-						if (type == Action.MOVE || type == Action.MOVEMINUS
-								|| type == Action.MOVEPLUS){
+						Action action = obj.getAction();
+						if (action == Action.MOVE || action == Action.MOVEMINUS
+								|| action == Action.MOVEPLUS){
 							obj.setEnabled(false);
 						}
 						//Only FirePlus can affect defend actions
-						if ((type == Action.DEFEND || type == Action.DEFENDPLUS) 
-								&& region.getAction().getType() == Action.FIRE){
+						if ((action == Action.DEFEND || action == Action.DEFENDPLUS)
+								&& region.getAction() == Action.FIRE){
 							obj.setEnabled(false);
 						}
 					}
@@ -107,12 +106,12 @@ public class FirePhase extends ActionPhase {
 			Packages.PlayerTurn msg = ((Packages.PlayerTurn)pkg);
 			if (PlayerManager.getSelf().id == msg.playerID){
 				if (!enableRegionsWithFire()){
-					//Если не был активирован ни один регион, значит текущий игрок не может совершить ход.
-					//В таком случае необходлимо сообщить об этом серверу пакетом Ready.
+					//пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ.
+					//пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ Ready.
 					GameClient.instance().send(new Packages.Ready(false));
 				}
 			}else{
-				//Если чужой ход, отключаем все регионы, так как в чужой ход мы не можем совершать действий.
+				//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 				GameMapObject.instance().disableAllRegions();
 			}
 		}
@@ -133,21 +132,21 @@ public class FirePhase extends ActionPhase {
 	}
 	
 	/**
-	 * Функция активирует регионы с приказами набега текущего игрока и отключает остальные.
-	 * @return true - Если был активирован хотя бы 1 регион, иначе - false.
+	 * пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+	 * @return true - пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ 1 пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ - false.
 	 */
 	private boolean enableRegionsWithFire(){
 		Fraction selfFraction = PlayerManager.getSelf().getFraction();
 		
-		//обход ограничения на изменение переменных внутри лямбд
+		//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 		boolean []result = new boolean[1];
 		result[0] = false;
 		
 		GameMapObject.instance().setEnabledByCondition(region->{
 			boolean enable = region.getFraction() == selfFraction
 					&& region.getAction() != null 
-					&& (region.getAction().getType() == Action.FIRE ||
-						region.getAction().getType() == Action.FIREPLUS);
+					&& (region.getAction() == Action.FIRE ||
+						region.getAction() == Action.FIREPLUS);
 			result[0] |= enable;
 			return enable;
 		});

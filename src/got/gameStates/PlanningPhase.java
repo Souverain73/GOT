@@ -1,6 +1,8 @@
 package got.gameStates;
 
+import java.util.Arrays;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Vector;
 
 import org.joml.Vector2f;
@@ -11,11 +13,10 @@ import got.Constants;
 import got.GameClient;
 import got.InputManager;
 import got.ModalState;
-import got.gameObjects.ActionObject;
+import got.model.Action;
 import got.gameObjects.GameObject;
 import got.gameObjects.ImageButton;
 import got.gameObjects.MapPartObject;
-import got.gameObjects.ActionObject.Action;
 import got.gameObjects.GameMapObject;
 import got.graphics.DrawSpace;
 import got.interfaces.IClickListener;
@@ -27,7 +28,7 @@ import got.server.PlayerManager;
 
 public class PlanningPhase extends AbstractGameState implements IClickListener {
 	private static final String name = "PlanningPhase";
-	private Vector<ActionObject> actions;
+	private List<Action> actions;
 	private int specials;
 	private EnumMap<Action, MapPartObject> placed;
 	
@@ -40,7 +41,7 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 	@Override
 	public void enter(StateMachine stm) {
 		placed = new EnumMap<Action, MapPartObject>(Action.class);
-		actions = ActionObject.getAllActionObjects();
+		actions = Arrays.asList(Action.values());
 		specials = 0;
 		
 		//Add ready button
@@ -77,17 +78,12 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 		
 		(new ModalState(selector)).run();
 		
-		ActionObject selected = selector.result;
-		
-		if (selected == null) return null;
-		
-		return selected.getType();
+		return selector.result;
 	}
 	
-	public void placeAction(MapPartObject region, ActionObject act){
+	public void placeAction(MapPartObject region, Action act){
 		if (act!= null){
-			act.setOwner(region);
-			placed.put(act.getType(), region);
+			placed.put(act, region);
 			if (act.isSpecial()) 
 				specials++;
 		}
@@ -121,19 +117,14 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 				//if package passed with null it means player remove action
 				GameClient.instance().send(new SetAction(region.getID(), null));
 			}
-		}else if (sender instanceof ActionObject){
-			System.out.println("ClickClick");
 		}
 	}
 	
 	public void removeAction(MapPartObject region){
-		ActionObject oldAction = region.getAction();
-		placed.remove(oldAction.getType());
+		Action oldAction = region.getAction();
+		placed.remove(oldAction);
 		if(oldAction.isSpecial()) 
 			specials--;
-		oldAction.setOwner(0);
-		oldAction.finish();
-
 	}
 	
 	@Override
@@ -152,7 +143,7 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 						//remove object from region
 						region.setAction(null); 
 					}else{
-						ActionObject act = ActionObject.getActionObject(msg.action);
+						Action act = msg.action;
 						//add action to region
 						region.setAction(act);
 						//if it's your action
@@ -175,25 +166,25 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 
 	public class ActionSelector extends AbstractGameState implements IClickListener{
 		private static final String name = "ActionSelector";
-		public ActionObject result;
+		public Action result;
 		
-		public ActionSelector(Vector<ActionObject> actions, Vector2f pos) {
+		public ActionSelector(List<Action> actions, Vector2f pos) {
 			float x = pos.x;
 			float y = pos.y;
 			float angle = 0;
 			float step = (float)(32.7f*Math.PI/180.0f);
 			float radius = Constants.ACTION_SELECTOR_RADIUS;
 			
-			for (ActionObject actionObject : actions) {
+			for (Action action : actions) {
 				float cx = (float)(x+Math.cos(angle)*radius);
 				float cy = (float)(y+Math.sin(angle)*radius);
-				ImageButton button = new ImageButton(((ActionObject)actionObject).texture, (int)cx, (int)cy, Constants.ACTIONSELECTOR_IMAGE_SCALE, actionObject);
+				ImageButton button = new ImageButton(action.getTexture(), (int)cx, (int)cy, Constants.ACTIONSELECTOR_IMAGE_SCALE, action);
 				button.setCallback((sender, param)->{
-					result = (ActionObject)param;
+					result = (Action)param;
 					close();
 				});
-				if ((actionObject.isSpecial() && specials>=PlayerManager.getSelf().getSpecials())
-						||	placed.containsKey(actionObject.getType())){
+				if ((action.isSpecial() && specials>=PlayerManager.getSelf().getSpecials())
+						||	placed.containsKey(action)){
 					button.setEnabled(false);
 				}
 				addObject(button);

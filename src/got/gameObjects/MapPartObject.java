@@ -6,6 +6,9 @@ import java.util.Vector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import got.gameStates.PlanningPhase;
+import got.model.Action;
+import got.server.PlayerManager;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -23,7 +26,7 @@ import got.utils.Utils;
 /**
  * Handling all map region data, and region interactions.<br>
  * Also extends {@link AbstractButtonObject}.
- * @author  изиловћё
+ * @author Souverain73
  *
  */
 public class MapPartObject extends AbstractButtonObject<MapPartObject> {
@@ -44,16 +47,16 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	private int influencePoints;
 	private int buildingLevel;
 	private Texture texture;
-	private Vector<MapPartObject>  neighbors;
+	private List<MapPartObject>  neighbors;
 	private int w, h;
 	private int act_x, act_y;
 	private int unit_x, unit_y;
-	private ActionObject action;
+	private Action action;
 	private List<UnitObject> units;
 	
 	public MapPartObject() {
 		super();
-		neighbors = new Vector<>();
+		neighbors = new ArrayList<>();
 		units = new ArrayList<>();
 	}
 	
@@ -111,10 +114,17 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		Vector2f cp = getPos();
 		texture.draw(cp.x, cp.y, w, h, 0);
 		GraphicModule.instance().resetEffect();
-		if (action != null){
-			action.draw(st);
+		float actImgSize = Constants.ACTION_IMAGE_SIZE;
+		float halfActImgSize = Constants.ACTION_IMAGE_SIZE/2;
+		if (st instanceof PlanningPhase && action != null && fraction != PlayerManager.getSelf().getFraction()) {
+			//ј тут значит задник.
+			fraction.getBackTexture().draw(cp.x + act_x - halfActImgSize, cp.y + act_y - halfActImgSize, actImgSize, actImgSize);
+		}else{
+			if (action != null){
+				action.getTexture().draw(cp.x + act_x - halfActImgSize, cp.y + act_y -halfActImgSize, actImgSize, actImgSize);
+			}
 		}
-		
+
 		GraphicModule.instance().setEffect(
 				new Effect().Multiply(fraction.getMultiplyColor())
 		);
@@ -125,7 +135,7 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		super.draw(st);
 	}
 
-	public Vector<MapPartObject> getNeighbors(){
+	public List<MapPartObject> getNeighbors(){
 		return neighbors;
 	}
 	
@@ -134,15 +144,6 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	}
 	
 	
-	
-	@Override
-	public void update(GameState st) {
-		if (action != null){
-			action.update(st);
-		}
-		super.update(st);
-	}
-
 	//ћетод добавл€ющий соседа.
 	public void addNeighbor(MapPartObject neighbor){
 		if (neighbors.indexOf(neighbor)!=-1){
@@ -174,6 +175,16 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 			this.units.add(new UnitObject(unit));
 		}
 		updateUnits();
+	}
+
+	public List<MapPartObject> getRegionsForHire(){
+		List<MapPartObject> result = getNeighbors().stream().filter(obj->
+				((obj.getType() == RegionType.SEA) && ((obj.getFraction() == PlayerManager.getSelf().getFraction()))
+				|| obj.getFraction() == Fraction.NEUTRAL)
+						|| (obj.getType() == RegionType.PORT) || (obj == this)
+		).collect(Collectors.toList());
+		result.add(this);
+		return result;
 	}
 	
 	public void updateUnits(){
@@ -207,10 +218,7 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		}
 	}
 	
-	public void setAction(ActionObject act){
-		if (act!=null){
-			act.setPosition(new Vector2f(getPos().x+act_x, getPos().y+act_y));
-		}
+	public void setAction(Action act){
 		action = act;
 	}
 	
@@ -255,7 +263,7 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		super.click(st);
 	}
 
-	public ActionObject getAction() {
+	public Action getAction() {
 		return action;
 	}
 	

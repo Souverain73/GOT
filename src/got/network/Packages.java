@@ -1,14 +1,13 @@
 package got.network;
 
-import java.util.Arrays;
-
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
-
-import got.gameObjects.ActionObject.Action;
+import got.model.Action;
 import got.model.Fraction;
 import got.model.Player;
 import got.model.Unit;
+
+import java.util.Arrays;
 
 public class Packages {
 	private Packages() {

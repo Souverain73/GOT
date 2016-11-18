@@ -3,6 +3,7 @@ package got.gameStates;
 import com.esotericsoftware.kryonet.Connection;
 import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 
+import com.sun.corba.se.spi.orbutil.fsm.State;
 import got.GameClient;
 import got.InputManager;
 import got.ModalState;
@@ -14,68 +15,115 @@ import got.gameObjects.MapPartObject;
 import got.gameStates.modals.CustomModalState;
 import got.gameStates.modals.HireMenuState;
 import got.graphics.DrawSpace;
+import got.model.Action;
 import got.model.Fraction;
 import got.model.Unit;
-import got.gameObjects.ActionObject.Action;
 import got.gameObjects.MapPartObject.RegionType;
 import got.network.Packages;
-import got.network.Packages.ChangeUnits;
 import got.server.PlayerManager;
 import got.utils.UI;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 class PowerPhase extends ActionPhase {
+	private enum SubState {
+		SELECT_SOURCE, SELECT_TARGET
+	}
+
+	private SubState state;
+
 
 	private boolean firstTurn;
+	private Map<MapPartObject, Integer> hirePointsCache;
+	private MapPartObject sourceRegion = null;
 
 	@Override
 	public void enter(StateMachine stm) {
 		super.enter(stm);
 		firstTurn = true;
+		hirePointsCache = new HashMap<>();
+		state = SubState.SELECT_SOURCE;
 		enableRegionsWithCrown();
 	}
-
-
 
 	@Override
 	public void click(GameObject sender) {
 		//TODO: Handle clicks
 		if (sender instanceof MapPartObject){
-			MapPartObject region = (MapPartObject)sender;
-			if (region.getAction().getType() == Action.MONEYPLUS &&
-					region.getBuildingLevel()>0){
-				//Надо дать игроку выбор действия.
-				int action = showSelectActionDialog();
-				if (action==-1){
-					return;
-				}else if(action==0){
-					sendCollectMoney(region);
-					region.setEnabled(false);
-					if (GameMapObject.instance().getEnabledRegions().isEmpty())
-						GameClient.instance().send(new Packages.Ready(false));
-				}else if (action==1){
-					//Если можем нанимать юнитов создаем меню для найма
-					//надо проверить, можем ли мы нанять в море, если да, то предоставить выбор.
-					region.hideUnits();
-					HireMenuState hms = new HireMenuState(
-							region.getUnitObjects(), InputManager.instance().getMousePosWin(),
-							region.getBuildingLevel(), region.getType() == RegionType.SEA);
-					(new ModalState(hms)).run();
-					region.showUnits();
-					//TODO: Есть варианты, когда игрок может набрать из одного региона в несколько других
-					//В такой ситуации надо дать ему возможность закрыть меню найма и заного открыть его для другого региона
-					Unit[] newUnits = region.getUnits();
-					GameClient.instance().send(new Packages.ChangeUnits(
-							region.getID(), newUnits));
+			MapPartObject region = (MapPartObject) sender;
+			if (state == SubState.SELECT_SOURCE) {
+				if (region.getAction() == Action.MONEYPLUS &&
+						region.getBuildingLevel() > 0) {
+					//Надо дать игроку выбор действия.
+					int action = -1;
+					//Если игрок уже начал нанимать юнитов в регионе, то у него нет выбора.
+					//Пусть набирает дальше
+					if (hirePointsCache.containsKey(region)
+							&& hirePointsCache.get(region) != region.getHirePoints()) {
+						action = 1;
+					}else {
+						action = showSelectActionDialog();
+					}
 
-					//Если потратил все очки найма, надо отправить пакет об использовании действия.
-					GameClient.instance().send(new Packages.Act(region.getID(), 0));
-					region.setEnabled(false);
-					if (GameMapObject.instance().getEnabledRegions().isEmpty())
-						GameClient.instance().send(new Packages.Ready(false));
+					if (action == -1) {
+						return;
+					} else if (action == 0) {
+						sendCollectMoney(region);
+						region.setEnabled(false);
+						if (GameMapObject.instance().getEnabledRegions().isEmpty())
+							GameClient.instance().send(new Packages.Ready(false));
+					} else if (action == 1) {
+						//Если можем нанимать юнитов создаем меню для найма
+						//надо проверить, можем ли мы нанять в море, если да, то предоставить выбор.
+						{
+							List<MapPartObject> regionsForHire = region.getRegionsForHire();
+							if (regionsForHire.size() == 1) {
+								hireUnits(region, region);
+							} else {
+								GameMapObject.instance().disableAllRegions();
+								regionsForHire.forEach(obj -> obj.setEnabled(true));
+								state = SubState.SELECT_TARGET;
+								sourceRegion = region;
+							}
+						}
+					}
+
 				}
-
+			}else if(state == SubState.SELECT_TARGET){
+				hireUnits(sourceRegion, region);
 			}
 		}
+	}
+
+	private void hireUnits(MapPartObject source, MapPartObject target) {
+		target.hideUnits();
+		HireMenuState hms = new HireMenuState(
+                target.getUnitObjects(), InputManager.instance().getMousePosWin(),
+                getHirePoints(source), target.getType() == RegionType.SEA);
+		(new ModalState(hms)).run();
+		target.showUnits();
+
+		if (hms.isHired()) {
+
+			Unit[] newUnits = target.getUnits();
+			GameClient.instance().send(new Packages.ChangeUnits(
+                target.getID(), newUnits));
+
+			if (hms.getHirePoints() == 0) {
+				//Если потратил все очки найма, надо отправить пакет об использовании действия.
+				GameClient.instance().send(new Packages.Act(source.getID(), 0));
+				source.setEnabled(false);
+				if (GameMapObject.instance().getEnabledRegions().isEmpty())
+					GameClient.instance().send(new Packages.Ready(false));
+			} else {
+				hirePointsCache.put(source, hms.getHirePoints());
+			}
+		}
+
+		state = SubState.SELECT_SOURCE;
+		sourceRegion = null;
 	}
 
 	@Override
@@ -139,8 +187,8 @@ class PowerPhase extends ActionPhase {
 		GameMapObject.instance().setEnabledByCondition(region->{
 			boolean enable = region.getFraction() == selfFraction
 					&& region.getAction() != null
-					&& (region.getAction().getType() == Action.MONEY ||
-						region.getAction().getType() == Action.MONEYPLUS);
+					&& (region.getAction() == Action.MONEY ||
+						region.getAction() == Action.MONEYPLUS);
 			result[0] |= enable;
 			return enable;
 		});
@@ -153,14 +201,22 @@ class PowerPhase extends ActionPhase {
 	 */
 	private void firstTurn(){
 		for (MapPartObject region: GameMapObject.instance().getEnabledRegions()){
-			if (region.getAction().getType() == Action.MONEY){
+			if (region.getAction() == Action.MONEY){
 				sendCollectMoney(region);
 				region.setEnabled(false);
-			}else if(region.getAction().getType() == Action.MONEYPLUS){
+			}else if(region.getAction() == Action.MONEYPLUS){
 				if (region.getBuildingLevel() == 0){
 					sendCollectMoney(region);
 				}
 			}
+		}
+	}
+
+	private int getHirePoints(MapPartObject region){
+		if (hirePointsCache.get(region) == null){
+			return region.getHirePoints();
+		}else{
+			return hirePointsCache.get(region);
 		}
 	}
 

@@ -1,6 +1,7 @@
 package got.gameStates;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 
 import got.InputManager;
@@ -10,7 +11,7 @@ import got.gameObjects.GameObject;
 import got.gameObjects.MapPartObject;
 import got.gameObjects.MapPartObject.RegionType;
 import got.gameStates.modals.HireMenuState;
-import got.gameStates.modals.MessageBoxState;
+import got.server.PlayerManager;
 
 public class CollectUnitsPhase extends ActionPhase {
 	private enum SubState {
@@ -24,12 +25,12 @@ public class CollectUnitsPhase extends ActionPhase {
 
 	CollectUnitsPhase() {
 		state = SubState.SELECT_SOURCE;
-		hirePointsCache = new HashMap<String, Integer>();
+		hirePointsCache = new HashMap<>();
 	}
 
 	@Override
 	public void click(GameObject sender) {
-		//TODO: если нет рядом моря, то нет смысла выбирать target
+		//TODO: пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ target
 		if (sender instanceof MapPartObject) {
 			MapPartObject region = (MapPartObject) sender;
 
@@ -38,10 +39,11 @@ public class CollectUnitsPhase extends ActionPhase {
 				System.out.println("Click region. Hire points:" + hirePoints);
 				if (hirePoints > 0) {
 					// check if units can be placed in neighboring regions
-					Vector<MapPartObject> neighbors = region.getNeighbors();
+					List<MapPartObject> neighbors = region.getNeighbors();
 					GameMapObject.instance().disableAllRegions();
 					neighbors.forEach(obj -> {
-						if (obj.getType() == RegionType.SEA || obj.getType() == RegionType.PORT)
+						if ((obj.getType() == RegionType.SEA && obj.getFraction() == PlayerManager.getSelf().getFraction())
+								|| obj.getType() == RegionType.PORT)
 							obj.setEnabled(true);
 					});
 					region.setEnabled(true);
