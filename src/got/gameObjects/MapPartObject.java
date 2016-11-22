@@ -1,6 +1,7 @@
 package got.gameObjects;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -136,6 +137,22 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 
 	public List<MapPartObject> getNeighbors(){
 		return neighbors;
+	}
+
+	public List<MapPartObject> getRegionsToMove(){
+		PathFinder pf = new PathFinder(this.getFraction());
+		List<MapPartObject> result = pf.getRegionsToMoveFrom(this);
+		if (type == RegionType.GROUND){
+			return result
+					.stream()
+					.filter(reg->reg.type == RegionType.GROUND)
+					.collect(Collectors.toList());
+		}else{
+			return result
+					.stream()
+					.filter(reg->reg.type != RegionType.GROUND)
+					.collect(Collectors.toList());
+		}
 	}
 	
 	public String getName(){
@@ -305,5 +322,38 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 				+ "]";
 	}
 	
-	
+
+	public class PathFinder{
+		Fraction playerFraction;
+		HashSet<MapPartObject> visited = new HashSet<>();
+		boolean start = true;
+
+		public PathFinder(Fraction playerFraction) {
+			this.playerFraction = playerFraction;
+		}
+
+		public  List<MapPartObject> getRegionsToMoveFrom(MapPartObject from){
+			List<MapPartObject> result = new ArrayList<>();
+			result.add(from);
+			visited.add(from);
+
+			if (!canGo(from) && !start) {
+				return result;
+			}
+			start = false;
+
+			for (MapPartObject region: from.getNeighbors()){
+				if (!visited.contains(region)){
+					result.addAll(getRegionsToMoveFrom(region));
+				}
+			}
+
+			return result;
+		}
+
+		private boolean canGo(MapPartObject from){
+			return (from.getFraction() == playerFraction && from.type == RegionType.SEA);
+		}
+	}
+
 }

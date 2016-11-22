@@ -48,6 +48,8 @@ public class MovePhase extends ActionPhase {
 					System.out.println("Ok");
 					source = region;
 					changeSubState(SubState.SELECT_TARGET);
+					GameMapObject.instance().disableAllRegions();
+					region.getRegionsToMove().forEach(obj->obj.setEnabled(true));
 				}else{
 					System.out.println("Cancel");
 				}
