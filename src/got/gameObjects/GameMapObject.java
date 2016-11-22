@@ -3,6 +3,9 @@ package got.gameObjects;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -239,6 +242,10 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 			if (region.getID() == id) return region;
 		}
 		return null;
+	}
+
+	public void forEach(Consumer<? super MapPartObject> func){
+		map.values().forEach(func);
 	}
 	
 }

@@ -1,6 +1,7 @@
 package got.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -55,5 +56,10 @@ public enum Unit {
 		}
 		
 		return result.toArray(new Unit[0]);
+	}
+
+	@Override
+	public String toString() {
+		return "Unit{textureName='" + textureName + "\'} ";
 	}
 }

@@ -55,6 +55,7 @@ public class GraphicModule {
 		camera = new Ortho2DCamera();
 		screenProjection = new Matrix4f();
 		fbProjection = BufferUtils.createFloatBuffer(16);
+		effect = new Effect();
 		GraphicModule.resizeCallback(0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 	}
 
@@ -214,7 +215,7 @@ public class GraphicModule {
 	}
 	
 	public void resetEffect(){
-		effect = null;
+		effect = new Effect();
 	}
 	
 	public Effect getEffect(){

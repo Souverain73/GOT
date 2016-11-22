@@ -296,12 +296,16 @@ public class Packages {
 	 * территорию to юнитов units
 	 */
 	public static class PlayerMove extends BroadcastPackage {
-		int from;
-		int to;
-		int units[];
+		public int from;
+		public int to;
+		public Unit [] units;
 
-		public PlayerMove() {
-			units = new int[4];
+		public PlayerMove() {}
+
+		public PlayerMove(int from, int to, Unit[] units) {
+			this.from = from;
+			this.to = to;
+			this.units = units;
 		}
 	}
 
@@ -412,12 +416,16 @@ public class Packages {
 	 * юнитов units
 	 */
 	public static class Move extends ClientServerPackage {
-		int from;
-		int to;
-		int units[];
+		public int from;
+		public int to;
+		public Unit[] units;
 
-		public Move() {
-			units = new int[4];
+		public Move() {	}
+
+		public Move(int from, int to, Unit[] units) {
+			this.from = from;
+			this.to = to;
+			this.units = units;
 		}
 	}
 

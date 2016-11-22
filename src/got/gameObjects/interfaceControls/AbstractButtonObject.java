@@ -1,7 +1,9 @@
-package got.gameObjects;
+package got.gameObjects.interfaceControls;
 
 import java.util.function.BiConsumer;
 
+import got.gameObjects.AbstractGameObject;
+import got.gameObjects.GameObject;
 import org.joml.Vector2f;
 
 import got.InputManager;
@@ -24,7 +26,7 @@ import got.utils.LoaderParams;
  * @author Souverain73
  *
  */
-public abstract class AbstractButtonObject<T extends AbstractButtonObject<T>> extends AbstractGameObject<T> 
+public abstract class AbstractButtonObject<T extends AbstractButtonObject<T>> extends AbstractGameObject<T>
 																			  implements IClickable{
 	protected enum State {DOWN, FREE, HOVER, DISABLED};
 	protected BiConsumer<GameObject, Object> callback;
@@ -154,4 +156,5 @@ public abstract class AbstractButtonObject<T extends AbstractButtonObject<T>> ex
 			InputManager.instance().removeClickable(this);
 		}
 	}
+
 }

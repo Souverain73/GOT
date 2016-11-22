@@ -1,10 +1,9 @@
-package got.gameObjects;
+package got.gameObjects.interfaceControls;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import got.gameStates.GameState;
-import got.graphics.DrawSpace;
 import got.graphics.Effect;
 import got.graphics.GraphicModule;
 import got.graphics.Texture;
@@ -14,12 +13,12 @@ import got.utils.Utils;
 /**
  * Extends {@link AbstractButtonObject} with image.<br>
  * For usage look {@link AbstractButtonObject}.
- * @author КизиловМЮ
+ * @author пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
  *
  */
 public class ImageButton extends AbstractButtonObject<ImageButton> {
-	private Texture texture;
-	private Object param;
+	protected Texture texture;
+	protected Object param;
 	
 	@Override
 	protected ImageButton getThis() {
@@ -89,9 +88,7 @@ public class ImageButton extends AbstractButtonObject<ImageButton> {
 	}
 
 	private void setOverlay(Vector3f overlay){
-		Effect eff = new Effect();
-		eff.overlay = overlay;
-		GraphicModule.instance().setEffect(eff);
+		GraphicModule.instance().getEffect().Overlay(overlay);
 	}
 
 

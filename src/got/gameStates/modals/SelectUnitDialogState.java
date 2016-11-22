@@ -2,29 +2,28 @@ package got.gameStates.modals;
 
 
 
+import got.graphics.DrawSpace;
 import org.joml.Vector2f;
-
-import com.esotericsoftware.kryonet.Connection;
 
 import got.Constants;
 import got.GameClient;
 import got.gameObjects.GameObject;
-import got.gameObjects.ImageButton;
+import got.gameObjects.interfaceControls.ImageButton;
 import got.gameObjects.ImageObject;
 import got.gameStates.AbstractGameState;
 import got.graphics.TextureManager;
 import got.interfaces.IClickListener;
 import got.model.Unit;
 
-public class UnitSelectState extends AbstractGameState implements IClickListener{
+public class SelectUnitDialogState extends AbstractGameState implements IClickListener{
 	private final String name = "UnitSelect";
 	public Object result;
 	
-	public UnitSelectState(Unit[] units, Vector2f pos){
+	public SelectUnitDialogState(Unit[] units, Vector2f pos){
 		float x = pos.x;
 		float y = pos.y;
 			ImageObject bg = new ImageObject(TextureManager.instance().loadTexture("unitsMenuBg.png"),
-				new Vector2f(x,y), 220, 60);
+				new Vector2f(x,y), 220, 60).setSpace(DrawSpace.WORLD);
 			addObject(bg);
 		x = pos.x + 6;
 		y = pos.y + 5;
@@ -58,11 +57,6 @@ public class UnitSelectState extends AbstractGameState implements IClickListener
 
 	public Object getResult(){
 		return result;
-	}
-
-	@Override
-	public void recieve(Connection connection, Object pkg) {
-		
 	}
 
 	@Override

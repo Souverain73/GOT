@@ -1,15 +1,13 @@
 package got.gameStates;
 
 import com.esotericsoftware.kryonet.Connection;
-import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 
-import com.sun.corba.se.spi.orbutil.fsm.State;
 import got.GameClient;
 import got.InputManager;
 import got.ModalState;
 import got.gameObjects.GameMapObject;
 import got.gameObjects.GameObject;
-import got.gameObjects.ImageButton;
+import got.gameObjects.interfaceControls.ImageButton;
 import got.gameObjects.ImageObject;
 import got.gameObjects.MapPartObject;
 import got.gameStates.modals.CustomModalState;
@@ -26,6 +24,7 @@ import got.utils.UI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 class PowerPhase extends ActionPhase {
 	private enum SubState {
@@ -66,7 +65,7 @@ class PowerPhase extends ActionPhase {
 					}else {
 						action = showSelectActionDialog();
 					}
-
+					Stream.of("a", "b").findFirst();
 					if (action == -1) {
 						return;
 					} else if (action == 0) {
@@ -225,22 +224,22 @@ class PowerPhase extends ActionPhase {
 	}
 
 	private int showSelectActionDialog(){
-		int result[] = new int[1];
-		result[0]=-1;
+
+		CustomModalState<Integer> cms = new CustomModalState<>(-1);
+
 		ImageObject background = new ImageObject("selectActionBackground.png",
 				InputManager.instance().getMousePosWorld(), 430, 120).setSpace(DrawSpace.WORLD);
 		background.addChild(new ImageButton("Warriors.png", 10, 10, 200, 100, null).setCallback((sender, param)->{
-			result[0] = 1;
+			cms.setResult(1);
 			GameClient.instance().closeModal();
 		}).setSpace(DrawSpace.WORLD));
 		background.addChild(new ImageButton("Power.png", 220, 10, 200, 100, null).setCallback((sender, param)->{
-			result[0] = 0;
+			cms.setResult(0);
 			GameClient.instance().closeModal();
 		}).setSpace(DrawSpace.WORLD));
-		CustomModalState cms = new CustomModalState();
 		cms.addObject(background);
 		new ModalState(cms).run();
 
-		return result[0];
+		return cms.getResult();
 	}
 }

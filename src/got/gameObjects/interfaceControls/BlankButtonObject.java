@@ -1,4 +1,4 @@
-package got.gameObjects;
+package got.gameObjects.interfaceControls;
 
 import org.joml.Vector2f;
 

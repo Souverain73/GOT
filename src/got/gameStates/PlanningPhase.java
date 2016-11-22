@@ -3,7 +3,6 @@ package got.gameStates;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
-import java.util.Vector;
 
 import org.joml.Vector2f;
 
@@ -15,7 +14,7 @@ import got.InputManager;
 import got.ModalState;
 import got.model.Action;
 import got.gameObjects.GameObject;
-import got.gameObjects.ImageButton;
+import got.gameObjects.interfaceControls.ImageButton;
 import got.gameObjects.MapPartObject;
 import got.gameObjects.GameMapObject;
 import got.graphics.DrawSpace;

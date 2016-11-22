@@ -1,7 +1,7 @@
 package got.gameStates;
 
 import got.GameClient;
-import got.gameObjects.ImageButton;
+import got.gameObjects.interfaceControls.ImageButton;
 import got.graphics.DrawSpace;
 
 public class MenuState extends AbstractGameState {

@@ -11,7 +11,7 @@ import got.GameClient;
 import got.ModalState;
 import got.gameObjects.AbstractGameObject;
 import got.gameObjects.GameObject;
-import got.gameObjects.ImageButton;
+import got.gameObjects.interfaceControls.ImageButton;
 import got.gameObjects.ImageObject;
 import got.gameObjects.UnitObject;
 import got.gameStates.AbstractGameState;
@@ -94,7 +94,7 @@ public class HireMenuState extends  AbstractGameState implements IClickListener{
 		if (unit.isUpgradeable() && hirePoints>0){
 			hideObjects();
 			Unit[] upUnits = unit.getPossibleUpgrades();
-			UnitSelectState ust = new UnitSelectState(upUnits, pos); 
+			SelectUnitDialogState ust = new SelectUnitDialogState(upUnits, pos);
 			
 			(new ModalState(ust)).run();
 			
@@ -112,7 +112,7 @@ public class HireMenuState extends  AbstractGameState implements IClickListener{
 	
 	private void plusButtonCallback(GameObject sender, Object param){
 		hideObjects();
-		UnitSelectState ust = new UnitSelectState(Unit.getUnitsByCondition(unit->{
+		SelectUnitDialogState ust = new SelectUnitDialogState(Unit.getUnitsByCondition(unit->{
 			if (unit.getCost()<=hirePoints){
 				if (sea && unit==Unit.SHIP){
 					return true;
