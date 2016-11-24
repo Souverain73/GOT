@@ -31,18 +31,21 @@ import got.utils.Utils;
  *
  */
 public class MapPartObject extends AbstractButtonObject<MapPartObject> {
-	public enum RegionType{	GROUND, SEA, PORT}
-	
+
+
+	public enum RegionType{	GROUND, SEA, PORT;}
+
 	@Override
 	protected MapPartObject getThis() {
 		return this;
 	}
-
-	
 	private Fraction fraction = Fraction.NEUTRAL;
-	
+
 	private int ID = 0;
+
+
 	private RegionType type;
+
 	private String name;
 	private int resourcesCount;
 	private int influencePoints;
@@ -54,13 +57,11 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	private int unit_x, unit_y;
 	private Action action;
 	private List<UnitObject> units;
-	
 	public MapPartObject() {
 		super();
 		neighbors = new ArrayList<>();
 		units = new ArrayList<>();
 	}
-	
 	@Override
 	public boolean init(LoaderParams params) {
 		name = (String)params.get("name");
@@ -89,13 +90,13 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	public int getID(){
 		return ID;
 	}
-	
+
 	@Override
 	public void draw(GameState st) {
 		if (!isVisible()) return;
 		GraphicModule.instance().setDrawSpace(this.space);
 		if (state == State.FREE){
-			
+
 		}else if (state == State.HOVER){
 			GraphicModule.instance().setEffect(
 					new Effect().Overlay(new Vector3f(0.0f, 0.2f, 0.0f))
@@ -111,7 +112,7 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 					new Effect().Overlay(new Vector3f(-0.2f, -0.2f, -0.2f))
 			);
 		}
-		
+
 		Vector2f cp = getPos();
 		texture.draw(cp.x, cp.y, w, h, 0);
 		GraphicModule.instance().resetEffect();
@@ -155,12 +156,11 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 					.collect(Collectors.toList());
 		}
 	}
-	
+
 	public String getName(){
 		return name;
 	}
-	
-	
+
 	//Метод добавляющий соседа.
 	public void addNeighbor(MapPartObject neighbor){
 		if (neighbors.indexOf(neighbor)!=-1){
@@ -183,11 +183,12 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		unit.setVisible(true);
 		placeUnits();
 	}
-	
+
+
 	public void setUnits(Unit[] units){
 		this.units.forEach(obj -> obj.finish());
 		this.units.clear();
-		
+
 		for(Unit unit: units){
 			this.units.add(new UnitObject(unit));
 		}
@@ -203,11 +204,11 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		result.add(this);
 		return result;
 	}
-	
+
 	public void updateUnits(){
 		placeUnits();
 	}
-	
+
 	private void placeUnits(){
 		Vector2f cp = getPos();
 		float x = cp.x+unit_x;
@@ -215,9 +216,9 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		float angle = 0;
 		float radius = Constants.UNIT_SIZE*Constants.UNIT_SCALE*0.7f;
 		float step;
-		
+
 		if (units.size() == 0) return;
-		
+
 		if (units.size() == 1){
 			units.get(0).setPos(new Vector2f(x,y));
 		}else{
@@ -234,11 +235,11 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 			}
 		}
 	}
-	
+
 	public void setAction(Action act){
 		action = act;
 	}
-	
+
 	@Override
 	public boolean ifMouseIn(Vector2f mousePos) {
 		if (Utils.pointInRect(InputManager.instance().getMousePosWorld(), getPos(), new Vector2f(w,h))){
@@ -251,16 +252,16 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public int getPriority() {
 		return 0;
 	}
-	
+
 	public int getHirePoints(){
 		return buildingLevel;
 	}
-	
+
 	public Unit[] getUnits() {
 		return units.stream().map(obj -> obj.getType()).toArray(Unit[]::new);
 	}
@@ -305,7 +306,6 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		return true;
 	}
 
-
 	/**
 	 * Нужен для обратной совместимости, в идеале надо бы это переписать.
 	 * @return - возвращает список юнитов в виде игровых объектов
@@ -321,14 +321,15 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		super.click(st);
 	}
 
+
 	public Action getAction() {
 		return action;
 	}
-	
+
 	public void hideUnits(){
 		units.forEach(unit->unit.setVisible(false));
 	}
-	
+
 	public void showUnits(){
 		units.forEach(unit->unit.setVisible(true));
 	}
@@ -348,7 +349,7 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	public int getBuildingLevel() {
 		return buildingLevel;
 	}
-	
+
 	public int getInfluencePoints() {
 		return influencePoints;
 	}
@@ -363,13 +364,17 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 				+ ", influencePoints=" + influencePoints + ", buildingLevel=" + buildingLevel + ", w=" + w + ", h=" + h
 				+ "]";
 	}
-	
+
+	public void placePowerToken() {
+
+	}
 
 	public class PathFinder{
+
+
 		Fraction playerFraction;
 		HashSet<MapPartObject> visited = new HashSet<>();
 		boolean start = true;
-
 		public PathFinder(Fraction playerFraction) {
 			this.playerFraction = playerFraction;
 		}

@@ -81,7 +81,9 @@ public class PowerPhaseState implements ServerState{
 		
 		if (pkg instanceof Packages.ChangeUnits){
 			Packages.ChangeUnits msg = ((Packages.ChangeUnits)pkg);
-			GameServer.getServer().sendToAllTCP(msg);
+			GameServer.getServer().sendToAllTCP(new Packages.PlayerChangeUnits(
+					player.id, msg.region, msg.units
+			));
 		}
 		
 		if (pkg instanceof Packages.Act){

@@ -2,6 +2,7 @@ package got.gameStates.modals;
 
 import got.GameClient;
 import got.InputManager;
+import got.gameObjects.AbstractGameObject;
 import got.gameObjects.GameObject;
 import got.gameStates.AbstractGameState;
 import got.interfaces.IClickListener;
@@ -26,7 +27,7 @@ public class CustomModalState<T> extends AbstractGameState implements IClickList
 	public void click(InputManager.ClickEvent event) {
 		GameObject sender = event.getTarget();
 		if (sender == null){
-			GameClient.instance().closeModal();
+			close();
 		}	
 	}
 
@@ -36,5 +37,13 @@ public class CustomModalState<T> extends AbstractGameState implements IClickList
 
 	public void setResult(T result) {
 		this.result = result;
+	}
+
+	public void addObject(AbstractGameObject gameObject){
+		super.addObject(gameObject);
+	}
+
+	public void close() {
+		GameClient.instance().closeModal();
 	}
 }

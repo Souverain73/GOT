@@ -50,7 +50,7 @@ public class SuplyTrack {
         int [] maxArmy = getMaxArmiesValues(fraction);
         boolean [] slotUsed = new boolean[maxArmy.length];
         for (int armySize : armySizes) {
-            if (armySize == 1) continue;
+            if (armySize <= 1) continue;
             boolean correct = false;
             int slot = -1;
 
@@ -89,11 +89,11 @@ public class SuplyTrack {
         for (int i = 0; i < currentArmySizes.length; i++) {
             int size = currentArmySizes[i];
             if (size == fromArmySize && !changedFrom){
+                size -= sizeArmyToMove;
                 changedFrom = true;
-                currentArmySizes[i] -= sizeArmyToMove;
             }else if(size == toArmySize && !changedTo){
+                size += sizeArmyToMove;
                 changedTo = true;
-                currentArmySizes[i] += sizeArmyToMove;
             }
             newArmySizes.add(size);
         }
@@ -116,14 +116,34 @@ public class SuplyTrack {
         testCanHaveArmy(new int[] {4, 3, 3, 2, 2}, false);
         testCanHaveArmy(new int[] {5, 1}, false);
         testCanHaveArmy(new int[] {}, true);
+
+        testCanMove(new int[] {3, 3, 1}, 3, 3, 2, false);
+        testCanMove(new int[] {3, 3, 1}, 3, 3, 3, false);
+        testCanMove(new int[] {3, 3, 1}, 3, 3, 1, true);
+
+        testCanMove(new int[] {4, 3, 2, 2, 2, 1, 1}, 4, 0, 2, false);
+        testCanMove(new int[] {4, 3, 2, 2, 2, 1, 1}, 4, 0, 3, true);
+        testCanMove(new int[] {4, 3, 2, 2, 2, 1, 1}, 4, 0, 4, true);
+
+        testCanMove(new int[] {3, 1, 1}, 3, 0, 2, true);
     }
 
     public static void testCanHaveArmy(int[] data, boolean expectedResult){
         SuplyTrack track = new SuplyTrack();
-        System.out.println("Test for:" + Arrays.toString(data));
+        System.out.println("Test can have for:" + Arrays.toString(data));
 
         boolean result = track.canHaveArmies(Fraction.STARK, data);
 
         System.out.println(result == expectedResult ? "Passed":"Failed");
+    }
+
+    public static void testCanMove(int [] currentArmySizes, int fromArmySize, int toArmySize, int sizeArmyToMove, boolean expectedResult){
+        SuplyTrack track = new SuplyTrack();
+        System.out.println("Test can move :currentArmySizes = " + Arrays.toString(currentArmySizes) + ", fromArmySize = [" + fromArmySize + "], toArmySize = [" + toArmySize + "], sizeArmyToMove = [" + sizeArmyToMove + "]");
+
+        boolean result = track.canMove(Fraction.STARK, currentArmySizes, fromArmySize, toArmySize, sizeArmyToMove);
+
+        System.out.println(result == expectedResult ? "Passed":"Failed");
+
     }
 }

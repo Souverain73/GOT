@@ -5,6 +5,7 @@ import static org.lwjgl.glfw.GLFW.glfwGetMouseButton;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 import org.joml.Matrix4f;
@@ -31,6 +32,7 @@ import got.graphics.DrawSpace;
  */
 public class InputManager {
 //	CONSTANTS
+//Используется как индексы в массиве, поэтому не enum
 	public static final int MOUSE_LEFT = 0;
 	public static final int MOUSE_RIGHT = 1;
 	public static final int MOUSE_MIDDLE = 2;
@@ -82,6 +84,16 @@ public class InputManager {
 	}
 	
 	public void mouseMoveCallback(long window, double posx, double posy){
+        //И тут значит костыль.
+        /* Если двигаем камеру, клик не должен засчитываться.
+           Соответственно, если зажата правая клавиша и изменено положение курсора
+           надо сбросить флаг клика.
+         */
+        if (states[MOUSE_RIGHT] == 1){
+            targetChanged = true;
+        }
+        //Конец костыля :)
+
 		float dx = lastMousePosWin.x-(float)posx;
 		float dy = lastMousePosWin.y-(float)posy;
 		
@@ -115,7 +127,7 @@ public class InputManager {
 	
 	
 	public void mouseButtonCallback(long window, int button, int action, int mods){
-		int index = -1;
+        int index = -1;
 		switch (button){
 			case GLFW_MOUSE_BUTTON_LEFT: index = MOUSE_LEFT; break;
 			case GLFW_MOUSE_BUTTON_RIGHT: index = MOUSE_RIGHT; break;
@@ -123,15 +135,19 @@ public class InputManager {
 		}
 		if (index<0) return;
 		if (action == GLFW_PRESS){
-			if (states[index]!=1) mouseDown(index);
-			states[index] = 1;
-		}
+			if (changeState(index, 1)) mouseDown(index);
+        }
 		if (action == GLFW_RELEASE){
-			if (states[index]!=0) mouseUp(index);
-			states[index] = 0;
+			if (changeState(index, 0)) mouseUp(index);
 		}
 	}
-	
+
+	public boolean changeState(int key, int newState){
+        int oldState = states[key];
+        states[key] = newState;
+        return oldState != newState;
+    }
+
 	public void mouseScrollCallback(long window, double xoffset, double yoffset){
 		GraphicModule.instance().getCamera().scale((float)yoffset/30);
 	}

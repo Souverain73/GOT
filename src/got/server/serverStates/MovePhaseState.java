@@ -2,6 +2,7 @@ package got.server.serverStates;
 
 import com.esotericsoftware.kryonet.Connection;
 import got.gameStates.StateID;
+import got.model.Player;
 import got.network.Packages;
 import got.server.GameServer;
 
@@ -30,10 +31,13 @@ public class MovePhaseState implements ServerState {
     }
 
     @Override
-    public void recieve(Connection connection, Object pkg) {
+    public void recieve(Connection c, Object pkg) {
+        GameServer.PlayerConnection connection = (GameServer.PlayerConnection) c;
+        Player player = connection.player;
+
         if (pkg instanceof Packages.Move){
             Packages.Move msg = (Packages.Move) pkg;
-            GameServer.getServer().sendToAllTCP(new Packages.PlayerMove(msg.from, msg.to, msg.units));
+            GameServer.getServer().sendToAllTCP(new Packages.PlayerMove(player.id, msg.from, msg.to, msg.units));
         }
     }
 }

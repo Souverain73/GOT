@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map>
 	<regions>
-		<region name="Castle Black" type="GROUND" influence="1" x="609" y="0" w="475" h="286" fraction="LANISTER">
+		<region name="Castle Black" type="GROUND" influence="1" x="609" y="0" w="475" h="286">
 			<action x="95" y="191"/>
 			<unitpos x="335" y="50"/>
-			<unit type="KNIGHT" />
-			<unit type="SIEGE" />
-			<unit type="SIEGE" />
-			<unit type="SIEGE" />
 			<texture filename="CastleBlack.png"/>
 		</region>
 		<region name="Karhold" type="GROUND" influence="1" x="951" y="149" w="355" h="318" fraction="LANISTER">
@@ -27,13 +23,9 @@
 			<unit type="KNIGHT"/>
 			<texture filename="Winterfell.png"/>
 		</region>
-		<region name="Widow's Watch" type="GROUND" resources="1" x="939" y="561" w="278" h="219" fraction="LANISTER">
+		<region name="Widow's Watch" type="GROUND" resources="1" x="939" y="561" w="278" h="219">
 			<action x="48" y="135"/>
 			<unitpos x="90" y="75"/>
-			<unit type="SOLDIER"/>
-			<unit type="SOLDIER"/>
-			<unit type="SOLDIER"/>
-			<unit type="SOLDIER"/>
 			<texture filename="WidowsWatch.png"/>
 		</region>
 		<region name="The Stony Shore" type="GROUND" resources="1" x="153" y="423" w="408" h="426" fraction="STARK">

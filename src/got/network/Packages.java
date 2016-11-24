@@ -296,13 +296,15 @@ public class Packages {
 	 * территорию to юнитов units
 	 */
 	public static class PlayerMove extends BroadcastPackage {
+		public int player;
 		public int from;
 		public int to;
 		public Unit [] units;
 
 		public PlayerMove() {}
 
-		public PlayerMove(int from, int to, Unit[] units) {
+		public PlayerMove(int player, int from, int to, Unit[] units) {
+			this.player = player;
 			this.from = from;
 			this.to = to;
 			this.units = units;
@@ -450,7 +452,23 @@ public class Packages {
 		public String toString() {
 			return String.format("ChangeUnits [region=%s, units=%s]", region, Arrays.toString(units));
 		}
-		
+	}
+
+	/**
+	 * Сообщает клиентам, что игрок изменил состав юнитов в регионе.
+	 */
+	public static class PlayerChangeUnits extends ServerClientPackage {
+		public int player;
+		public int region;
+		public Unit[] units;
+
+		PlayerChangeUnits(){};
+
+		public PlayerChangeUnits(int player, int region, Unit[] units) {
+			this.player = player;
+			this.region = region;
+			this.units = units;
+		}
 	}
 
 	/**

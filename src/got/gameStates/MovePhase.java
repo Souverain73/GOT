@@ -7,10 +7,12 @@ import got.ModalState;
 import got.gameObjects.GameMapObject;
 import got.gameObjects.GameObject;
 import got.gameObjects.MapPartObject;
+import got.gameStates.modals.Dialogs;
 import got.gameStates.modals.SelectUnitsDialogState;
 import got.model.*;
 import got.network.Packages;
 import got.server.GameServer;
+import got.server.PlayerManager;
 
 import java.util.Arrays;
 
@@ -75,11 +77,28 @@ public class MovePhase extends ActionPhase {
 					System.out.println("Cancel");
 				}
 			}else if (state == SubState.SELECT_TARGET){
-				GameClient.instance().send(new Packages.Move(
-						source.getID(),
-						region.getID(),
-						selectedUnits
-				));
+				if (region == source)
+					changeSubState(SubState.SELECT_SOURCE);
+
+				if (region.getFraction() == Fraction.NEUTRAL ||
+						region.getFraction() == PlayerManager.getSelf().getFraction()){
+					GameClient.instance().send(new Packages.Move(
+							source.getID(),
+							region.getID(),
+							selectedUnits
+					));
+					if (source.getUnits().length == selectedUnits.length){
+						Dialogs.Dialog confirmDialog = Dialogs.createConfirmDialog(InputManager.instance().getMousePosWorld());
+
+						(new ModalState(confirmDialog)).run();
+
+						if (confirmDialog.getResult() == Dialogs.DialogResult.OK){
+							region.placePowerToken();
+						}
+					}
+				}else{
+					//Инициировать бой.
+				}
 				changeSubState(SubState.SELECT_SOURCE);
 			}
 
@@ -92,8 +111,16 @@ public class MovePhase extends ActionPhase {
 	public void recieve(Connection c, Object pkg) {
 		if (pkg instanceof Packages.PlayerMove) {
 			Packages.PlayerMove msg = (Packages.PlayerMove) pkg;
-			GameMapObject.instance().getRegionByID(msg.from).removeUnits(msg.units);
-			GameMapObject.instance().getRegionByID(msg.to).addUnits(msg.units);
+			GameClient.instance().registerTask(()->{
+				Player player = PlayerManager.instance().getPlayer(msg.player);
+
+				MapPartObject regionFrom = GameMapObject.instance().getRegionByID(msg.from);
+				regionFrom.removeUnits(msg.units);
+
+				MapPartObject regionTo = GameMapObject.instance().getRegionByID(msg.to);
+				regionTo.addUnits(msg.units);
+				regionTo.setFraction(player.getFraction());
+			});
 		}
 	}
 
@@ -101,8 +128,9 @@ public class MovePhase extends ActionPhase {
 		GameMapObject.instance().setEnabledByCondition((region)->{
 			Action act = region.getAction();
 			if (act == null) return false;
-			if (act == Action.MOVEMINUS || act == Action.MOVEPLUS
-					|| act == Action.MOVE) return true;
+			if ((act == Action.MOVEMINUS || act == Action.MOVEPLUS
+					|| act == Action.MOVE) &&
+					region.getFraction() == PlayerManager.getSelf().getFraction()) return true;
 			return false;
 		});
 	}

@@ -15,6 +15,7 @@ import got.gameStates.modals.HireMenuState;
 import got.graphics.DrawSpace;
 import got.model.Action;
 import got.model.Fraction;
+import got.model.Player;
 import got.model.Unit;
 import got.gameObjects.MapPartObject.RegionType;
 import got.network.Packages;
@@ -128,7 +129,6 @@ class PowerPhase extends ActionPhase {
 
 	@Override
 	public void recieve(Connection connection, Object pkg) {
-		//TODO: handle networking
 		if (pkg instanceof Packages.PlayerTurn) {
 			Packages.PlayerTurn msg = ((Packages.PlayerTurn) pkg);
 			if (PlayerManager.getSelf().id == msg.playerID) {
@@ -161,12 +161,16 @@ class PowerPhase extends ActionPhase {
 			GameClient.instance().registerTask(()->{region.setAction(null);});
 		}
 
-		if (pkg instanceof Packages.ChangeUnits){
+		if (pkg instanceof Packages.PlayerChangeUnits){
 			//изменяем состав войск в регионе
-			Packages.ChangeUnits msg = ((Packages.ChangeUnits)pkg);
+			Packages.PlayerChangeUnits msg = ((Packages.PlayerChangeUnits)pkg);
 
 			MapPartObject region = GameMapObject.instance().getRegionByID(msg.region);
+			Player player = PlayerManager.instance().getPlayer(msg.player);
 			region.setUnits(msg.units);
+			if (region.getFraction() == Fraction.NEUTRAL){
+				region.setFraction(player.getFraction());
+			}
 		}
 		if (pkg instanceof Packages.PlayerAct){
 			Packages.PlayerAct msg = ((Packages.PlayerAct)pkg);
