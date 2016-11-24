@@ -45,7 +45,7 @@ public class InputManager {
 	private int states[];
 	private ArrayList<IClickable> clickables;
 	private GameObject mouseTarget;
-	private boolean freeClick = false;
+	private boolean targetChanged;
 
 	private InputManager() {
 		states = new int[3];
@@ -158,7 +158,7 @@ public class InputManager {
 					mouseCoord = lastMousePosNative;
 				}
 				if (cl.ifMouseIn(mouseCoord)){
-					mouseTarget = (GameObject) cl;
+					setMouseTarget((GameObject) cl);
 					cl.setMouseIn(f = true);
 				}else{
 					cl.setMouseIn(false);
@@ -166,25 +166,26 @@ public class InputManager {
 			}
 		}
 		if (!f){
-			mouseTarget = null;
+			setMouseTarget(null);
 		}
 		
 	}
 	
 	private void setMouseTarget(GameObject newTarget){
+		if (mouseTarget != newTarget)
+			targetChanged = true;
 		mouseTarget = newTarget;
 	}
 	
 	private void mouseDown(int key){
-		freeClick = (mouseTarget == null);
+		targetChanged = false;
 	}
 	
 	private void mouseUp(int key){
-		if (key!=MOUSE_LEFT) return;
-		if (mouseTarget == null && freeClick){
+		if (!targetChanged){
 			GameState cs = GameClient.instance().getCurrentState();
 			if (cs instanceof IClickListener){
-				((IClickListener) cs).click(null);
+				((IClickListener) cs).click(new ClickEvent(key, mouseTarget));
 			}
 		}
 	}
@@ -201,5 +202,31 @@ public class InputManager {
 	
 	public void removeClickable(IClickable clickable){
 		clickables.remove(clickable);
+	}
+
+	public static class ClickEvent {
+		int buttonIndex;
+		GameObject target;
+
+		public ClickEvent(int buttonIndex, GameObject target) {
+			this.buttonIndex = buttonIndex;
+			this.target = target;
+		}
+
+		public int getButton() {
+			return buttonIndex;
+		}
+
+		public GameObject getTarget() {
+			return target;
+		}
+
+		@Override
+		public String toString() {
+			return "ClickEvent{" +
+					"buttonIndex=" + buttonIndex +
+					", target=" + target +
+					'}';
+		}
 	}
 }

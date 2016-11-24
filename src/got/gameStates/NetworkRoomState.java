@@ -26,7 +26,7 @@ import got.network.Packages.SetFractions;
 import got.server.PlayerManager;
 import got.utils.UI;
 
-public class NetworkRoomState extends AbstractGameState implements IClickListener {
+public class NetworkRoomState extends AbstractGameState{
 	private static String name = "NetworkRoomState";
 	NetPlayersPanel npp;
 	
@@ -134,8 +134,4 @@ public class NetworkRoomState extends AbstractGameState implements IClickListene
 			Game.init(PlayerManager.instance().getPlayersCount());
 		}
 	}
-
-	@Override
-	public void click(GameObject sender) {	
-	}	
 }

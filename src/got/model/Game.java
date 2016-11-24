@@ -51,13 +51,14 @@ public class Game {
 	Track throneTrack;
 	Track swordTrack;
 	Track crowTrack;
-	// resourcesTrack;
+	SuplyTrack suplyTrack;
 	// victoryTrack;
 
 	public void __init(int playersCount) {
 		throneTrack = new Track("Throne", throneDefault[playersCount-1]);
 		swordTrack = new Track("Sword", swordDefault[playersCount-1]);
 		crowTrack = new Track("Crow", crowDefault[playersCount-1]);
+		suplyTrack = new SuplyTrack();
 	}
 
 	public Track getThroneTrack() {
@@ -72,5 +73,7 @@ public class Game {
 		return crowTrack;
 	}
 
-	
+	public SuplyTrack getSuplyTrack() {
+		return suplyTrack;
+	}
 }

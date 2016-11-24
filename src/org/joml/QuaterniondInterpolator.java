@@ -174,7 +174,7 @@ public class QuaterniondInterpolator {
             for (k = 3 - 1; k >= 0; k--) { /* loop over singular values */
                 for (its = 0; its < maxIterations; its++) { /* loop over allowed iterations */
                     flag = 1;
-                    for (l = k; l >= 0; l--) { /* test for splitting */
+                    for (l = k; l >= 0; l--) { /* testCanHaveArmy for splitting */
                         nm = l - 1;
                         if (Math.abs(rv1[l]) + anorm == anorm) {
                             flag = 0;

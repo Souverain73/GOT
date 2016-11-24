@@ -2,6 +2,7 @@ package got.gameStates.modals;
 
 import java.util.List;
 
+import got.InputManager;
 import org.joml.Vector2f;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -187,8 +188,10 @@ public class HireMenuState extends  AbstractGameState implements IClickListener{
 		return hired;
 	}
 
+
 	@Override
-	public void click(GameObject sender) {
+	public void click(InputManager.ClickEvent event) {
+		GameObject sender = event.getTarget();
 		if (sender == null){
 			close();
 		}

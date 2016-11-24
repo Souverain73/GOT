@@ -2,8 +2,10 @@ package got.model;
 
 import got.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumMap;
+import java.util.List;
 
 /**
  * Created by Souverain73
@@ -79,18 +81,44 @@ public class SuplyTrack {
         return true;
     }
 
-    public static void main(String[] args) {
-        //test canHaveArmies;
-        //max is  {4, 3, 2, 2, 2}
-        test(new int[] {1}, true);
-        test(new int[] {4, 3, 2, 2, 2, 1, 1}, true);
-        test(new int[] {4, 3, 2, 2, 2, 2}, false);
-        test(new int[] {4, 3, 3, 2, 2}, false);
-        test(new int[] {5, 1}, false);
-        test(new int[] {}, true);
+
+    public boolean canMove(Fraction fraction, int [] currentArmySizes, int fromArmySize, int toArmySize, int sizeArmyToMove){
+        boolean changedFrom = false, changedTo = false;
+        List<Integer> newArmySizes = new ArrayList<>();
+
+        for (int i = 0; i < currentArmySizes.length; i++) {
+            int size = currentArmySizes[i];
+            if (size == fromArmySize && !changedFrom){
+                changedFrom = true;
+                currentArmySizes[i] -= sizeArmyToMove;
+            }else if(size == toArmySize && !changedTo){
+                changedTo = true;
+                currentArmySizes[i] += sizeArmyToMove;
+            }
+            newArmySizes.add(size);
+        }
+
+        if (!changedTo){
+            newArmySizes.add(sizeArmyToMove);
+        }
+
+        int[] newArmySizesInt = newArmySizes.stream().mapToInt(val->val).toArray();
+
+        return canHaveArmies(fraction, newArmySizesInt);
     }
 
-    public static void test(int[] data, boolean expectedResult){
+    public static void main(String[] args) {
+        //testCanHaveArmy canHaveArmies;
+        //max is  {4, 3, 2, 2, 2}
+        testCanHaveArmy(new int[] {1}, true);
+        testCanHaveArmy(new int[] {4, 3, 2, 2, 2, 1, 1}, true);
+        testCanHaveArmy(new int[] {4, 3, 2, 2, 2, 2}, false);
+        testCanHaveArmy(new int[] {4, 3, 3, 2, 2}, false);
+        testCanHaveArmy(new int[] {5, 1}, false);
+        testCanHaveArmy(new int[] {}, true);
+    }
+
+    public static void testCanHaveArmy(int[] data, boolean expectedResult){
         SuplyTrack track = new SuplyTrack();
         System.out.println("Test for:" + Arrays.toString(data));
 

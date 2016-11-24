@@ -2,6 +2,7 @@ package got.gameStates.modals;
 
 import got.Constants;
 import got.GameClient;
+import got.InputManager;
 import got.gameObjects.GameObject;
 import got.gameObjects.interfaceControls.ImageButton;
 import got.gameObjects.ImageObject;
@@ -84,8 +85,10 @@ public class SelectUnitsDialogState extends AbstractGameState implements IClickL
         return ok;
     }
 
+
     @Override
-    public void click(GameObject sender) {
+    public void click(InputManager.ClickEvent event) {
+        GameObject sender = event.getTarget();
         if (sender == null){
             close();
         }

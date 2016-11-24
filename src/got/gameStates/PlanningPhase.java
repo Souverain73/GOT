@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 
+import com.esotericsoftware.kryo.io.Input;
 import org.joml.Vector2f;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -88,9 +89,9 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 		}
 	}
 	
-	public void click(GameObject sender){
-		if (sender instanceof MapPartObject) {
-			MapPartObject region = (MapPartObject) sender;
+	public void click(InputManager.ClickEvent event){
+		if (event.getTarget() instanceof MapPartObject) {
+			MapPartObject region = (MapPartObject) event.getTarget();
 			
 			//if player click not owned region
 			if (region.getFraction() != PlayerManager.getSelf().getFraction())
@@ -212,8 +213,8 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 		}
 
 		@Override
-		public void click(GameObject sender) {
-			if (sender == null){
+		public void click(InputManager.ClickEvent event) {
+			if (event.getTarget() == null){
 				close();
 			}
 		}

@@ -12871,7 +12871,7 @@ public class Matrix4d implements Externalizable {
      * hold the <tt>(a, b, c, d)</tt> values of the equation.
      * <p>
      * The plane normal, which is <tt>(a, b, c)</tt>, is directed "inwards" of the frustum.
-     * Any plane/point test using <tt>a*x + b*y + c*z + d</tt> therefore will yield a result greater than zero
+     * Any plane/point testCanHaveArmy using <tt>a*x + b*y + c*z + d</tt> therefore will yield a result greater than zero
      * if the point is within the frustum (i.e. at the <i>positive</i> side of the frustum plane).
      * <p>
      * Reference: <a href="http://gamedevs.org/uploads/fast-extraction-viewing-frustum-planes-from-world-view-projection-matrix.pdf">
@@ -14286,7 +14286,7 @@ public class Matrix4d implements Externalizable {
             double dirY = p1y - p0y;
             double dirZ = p1z - p0z;
             double invDenom = 1.0 / dirY;
-            // test for intersection
+            // testCanHaveArmy for intersection
             for (int s = 0; s < 2; s++) {
                 double isectT = -(p0y + (s == 0 ? sLower : sUpper)) * invDenom;
                 if (isectT >= 0.0 && isectT <= 1.0) {

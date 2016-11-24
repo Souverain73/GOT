@@ -2,6 +2,7 @@ package got.gameStates.modals;
 
 
 
+import got.InputManager;
 import got.graphics.DrawSpace;
 import org.joml.Vector2f;
 
@@ -64,8 +65,10 @@ public class SelectUnitDialogState extends AbstractGameState implements IClickLi
 		return -1;
 	}
 
+
 	@Override
-	public void click(GameObject sender) {
+	public void click(InputManager.ClickEvent event) {
+		GameObject sender = event.getTarget();
 		if (sender == null){
 			close();
 		}

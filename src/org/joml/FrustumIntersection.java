@@ -194,7 +194,7 @@ public class FrustumIntersection {
      * Test whether the given point is within the frustum defined by <code>this</code> frustum culler.
      * 
      * @param point
-     *          the point to test
+     *          the point to testCanHaveArmy
      * @return <code>true</code> if the given point is inside the frustum; <code>false</code> otherwise
      */
     public boolean testPoint(Vector3f point) {
@@ -377,8 +377,8 @@ public class FrustumIntersection {
      */
     public boolean testAab(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
         /*
-         * This is an implementation of the "2.4 Basic intersection test" of the mentioned site.
-         * It does not distinguish between partially inside and fully inside, though, so the test with the 'p' vertex is omitted.
+         * This is an implementation of the "2.4 Basic intersection testCanHaveArmy" of the mentioned site.
+         * It does not distinguish between partially inside and fully inside, though, so the testCanHaveArmy with the 'p' vertex is omitted.
          */
         return nxX * (nxX < 0 ? minX : maxX) + nxY * (nxY < 0 ? minY : maxY) + nxZ * (nxZ < 0 ? minZ : maxZ) >= -nxW &&
                pxX * (pxX < 0 ? minX : maxX) + pxY * (pxY < 0 ? minY : maxY) + pxZ * (pxZ < 0 ? minZ : maxZ) >= -pxW &&
@@ -438,7 +438,7 @@ public class FrustumIntersection {
      */
     public int intersectAab(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
         /*
-         * This is an implementation of the "2.4 Basic intersection test" of the mentioned site.
+         * This is an implementation of the "2.4 Basic intersection testCanHaveArmy" of the mentioned site.
          * 
          * In addition to the algorithm in the paper, this method also returns the index of the first plane that culled the box.
          */
@@ -477,8 +477,8 @@ public class FrustumIntersection {
      * The box is specified via its <code>min</code> and <code>max</code> corner coordinates.
      * <p>
      * This method differs from {@link #intersectAab(Vector3f, Vector3f)} in that
-     * it allows to mask-off planes that should not be calculated. For example, in order to only test a box against the
-     * left frustum plane, use a mask of {@link #PLANE_MASK_NX}. Or in order to test all planes <i>except</i> the left plane, use 
+     * it allows to mask-off planes that should not be calculated. For example, in order to only testCanHaveArmy a box against the
+     * left frustum plane, use a mask of {@link #PLANE_MASK_NX}. Or in order to testCanHaveArmy all planes <i>except</i> the left plane, use
      * a mask of <tt>(~0 ^ PLANE_MASK_NX)</tt>.
      * <p>
      * The algorithm implemented by this method is conservative. This means that in certain circumstances a <i>false positive</i>
@@ -509,8 +509,8 @@ public class FrustumIntersection {
      * The box is specified via its min and max corner coordinates.
      * <p>
      * This method differs from {@link #intersectAab(float, float, float, float, float, float)} in that
-     * it allows to mask-off planes that should not be calculated. For example, in order to only test a box against the
-     * left frustum plane, use a mask of {@link #PLANE_MASK_NX}. Or in order to test all planes <i>except</i> the left plane, use 
+     * it allows to mask-off planes that should not be calculated. For example, in order to only testCanHaveArmy a box against the
+     * left frustum plane, use a mask of {@link #PLANE_MASK_NX}. Or in order to testCanHaveArmy all planes <i>except</i> the left plane, use
      * a mask of <tt>(~0 ^ PLANE_MASK_NX)</tt>.
      * <p>
      * The algorithm implemented by this method is conservative. This means that in certain circumstances a <i>false positive</i>
@@ -582,11 +582,11 @@ public class FrustumIntersection {
      * The box is specified via its <code>min</code> and <code>max</code> corner coordinates.
      * <p>
      * This method differs from {@link #intersectAab(Vector3f, Vector3f)} in that
-     * it allows to mask-off planes that should not be calculated. For example, in order to only test a box against the
-     * left frustum plane, use a mask of {@link #PLANE_MASK_NX}. Or in order to test all planes <i>except</i> the left plane, use 
+     * it allows to mask-off planes that should not be calculated. For example, in order to only testCanHaveArmy a box against the
+     * left frustum plane, use a mask of {@link #PLANE_MASK_NX}. Or in order to testCanHaveArmy all planes <i>except</i> the left plane, use
      * a mask of <tt>(~0 ^ PLANE_MASK_NX)</tt>.
      * <p>
-     * In addition, the <code>startPlane</code> denotes the first frustum plane to test the box against. To use this effectively means to store the
+     * In addition, the <code>startPlane</code> denotes the first frustum plane to testCanHaveArmy the box against. To use this effectively means to store the
      * plane that previously culled an axis-aligned box (as returned by <tt>intersectAab()</tt>) and in the next frame use the return value
      * as the argument to the <code>startPlane</code> parameter of this method. The assumption is that the plane that culled the object previously will also
      * cull it now (temporal coherency) and the culling computation is likely reduced in that case.
@@ -606,7 +606,7 @@ public class FrustumIntersection {
      *          {@link #PLANE_MASK_NY}, {@link #PLANE_MASK_PY}, 
      *          {@link #PLANE_MASK_NZ} and {@link #PLANE_MASK_PZ}
      * @param startPlane
-     *          the first frustum plane to test the axis-aligned box against. It is one of
+     *          the first frustum plane to testCanHaveArmy the axis-aligned box against. It is one of
      *          {@link #PLANE_NX}, {@link #PLANE_PX}, {@link #PLANE_NY}, {@link #PLANE_PY}, {@link #PLANE_NZ} and {@link #PLANE_PZ}
      * @return the index of the first plane that culled the box, if the box does not intersect the frustum,
      *         or {@link #INTERSECT} if the box intersects the frustum, or {@link #INSIDE} if the box is fully inside of the frustum.
@@ -622,11 +622,11 @@ public class FrustumIntersection {
      * The box is specified via its min and max corner coordinates.
      * <p>
      * This method differs from {@link #intersectAab(float, float, float, float, float, float)} in that
-     * it allows to mask-off planes that should not be calculated. For example, in order to only test a box against the
-     * left frustum plane, use a mask of {@link #PLANE_MASK_NX}. Or in order to test all planes <i>except</i> the left plane, use 
+     * it allows to mask-off planes that should not be calculated. For example, in order to only testCanHaveArmy a box against the
+     * left frustum plane, use a mask of {@link #PLANE_MASK_NX}. Or in order to testCanHaveArmy all planes <i>except</i> the left plane, use
      * a mask of <tt>(~0 ^ PLANE_MASK_NX)</tt>.
      * <p>
-     * In addition, the <code>startPlane</code> denotes the first frustum plane to test the box against. To use this effectively means to store the
+     * In addition, the <code>startPlane</code> denotes the first frustum plane to testCanHaveArmy the box against. To use this effectively means to store the
      * plane that previously culled an axis-aligned box (as returned by <tt>intersectAab()</tt>) and in the next frame use the return value
      * as the argument to the <code>startPlane</code> parameter of this method. The assumption is that the plane that culled the object previously will also
      * cull it now (temporal coherency) and the culling computation is likely reduced in that case.
@@ -656,7 +656,7 @@ public class FrustumIntersection {
      *          {@link #PLANE_MASK_NY}, {@link #PLANE_MASK_PY}, 
      *          {@link #PLANE_MASK_NZ} and {@link #PLANE_MASK_PZ}
      * @param startPlane
-     *          the first frustum plane to test the axis-aligned box against. It is one of
+     *          the first frustum plane to testCanHaveArmy the axis-aligned box against. It is one of
      *          {@link #PLANE_NX}, {@link #PLANE_PX}, {@link #PLANE_NY}, {@link #PLANE_PY}, {@link #PLANE_NZ} and {@link #PLANE_PZ}
      * @return the index of the first plane that culled the box, if the box does not intersect the frustum,
      *         or {@link #INTERSECT} if the box intersects the frustum, or {@link #INSIDE} if the box is fully inside of the frustum.

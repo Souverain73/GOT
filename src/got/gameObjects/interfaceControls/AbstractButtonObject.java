@@ -39,11 +39,7 @@ public abstract class AbstractButtonObject<T extends AbstractButtonObject<T>> ex
 		wasClick = false;
 		state = State.FREE;
 		InputManager.instance().registerClickable(this);
-		callback = (sender, param)->{
-			if (param instanceof IClickListener){
-				((IClickListener)param).click(sender);
-			}
-		};
+		callback = null;
 	}
 	
 	@Override

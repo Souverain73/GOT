@@ -3,6 +3,7 @@ package got.gameStates;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
+import got.InputManager;
 import got.gameObjects.GameObject;
 import got.interfaces.IClickListener;
 import got.server.GameServer.PlayerConnection;
@@ -21,7 +22,7 @@ public class ActionPhase extends AbstractGameState implements IClickListener{
 	}
 
 	@Override
-	public void click(GameObject sender){
+	public void click(InputManager.ClickEvent event){
 		
 	}
 }

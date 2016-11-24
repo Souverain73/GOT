@@ -47,9 +47,10 @@ class PowerPhase extends ActionPhase {
 		enableRegionsWithCrown();
 	}
 
+
 	@Override
-	public void click(GameObject sender) {
-		//TODO: Handle clicks
+	public void click(InputManager.ClickEvent event) {
+		GameObject sender = event.getTarget();
 		if (sender instanceof MapPartObject){
 			MapPartObject region = (MapPartObject) sender;
 			if (state == SubState.SELECT_SOURCE) {

@@ -23,6 +23,8 @@
 			<action x="611" y="152"/>
 			<unitpos x="355" y="520"/>
 			<unit type="KNIGHT"/>
+			<unit type="KNIGHT"/>
+			<unit type="KNIGHT"/>
 			<texture filename="Winterfell.png"/>
 		</region>
 		<region name="Widow's Watch" type="GROUND" resources="1" x="939" y="561" w="278" h="219" fraction="LANISTER">
@@ -37,6 +39,7 @@
 		<region name="The Stony Shore" type="GROUND" resources="1" x="153" y="423" w="408" h="426" fraction="STARK">
 			<action x="76" y="164"/>
 			<unitpos x="260" y="220"/>
+			<unit type="KNIGHT"/>
 			<unit type="KNIGHT"/>
 			<unit type="KNIGHT"/>
 			<texture filename="TheStonyShore.png"/>

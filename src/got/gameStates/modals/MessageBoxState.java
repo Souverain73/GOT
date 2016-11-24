@@ -1,6 +1,7 @@
 package got.gameStates.modals;
 
 import got.GameClient;
+import got.InputManager;
 import got.gameObjects.GameObject;
 import got.gameStates.AbstractGameState;
 import got.graphics.DrawSpace;
@@ -48,8 +49,10 @@ public class MessageBoxState extends AbstractGameState implements IClickListener
 		return -1;
 	}
 
+
 	@Override
-	public void click(GameObject sender) {
+	public void click(InputManager.ClickEvent event) {
+		GameObject sender = event.getTarget();
 		if (sender == null){
 			close();
 		}

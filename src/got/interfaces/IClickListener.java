@@ -1,6 +1,6 @@
 package got.interfaces;
 
-import got.gameObjects.GameObject;
+import got.InputManager;
 
 /**
  * Interface for mouse click listeners. 
@@ -8,5 +8,5 @@ import got.gameObjects.GameObject;
  *
  */
 public interface IClickListener {
-	public void click(GameObject sender);
+	public void click(InputManager.ClickEvent event);
 }

@@ -141,7 +141,7 @@ public class RayAabIntersection {
      * <p>
      * This implementation uses a tableswitch to dispatch to the correct intersection method.
      * <p>
-     * This method is thread-safe and can be used to test many axis-aligned boxes concurrently.
+     * This method is thread-safe and can be used to testCanHaveArmy many axis-aligned boxes concurrently.
      * 
      * @param minX
      *          the x coordinate of the minimum corner

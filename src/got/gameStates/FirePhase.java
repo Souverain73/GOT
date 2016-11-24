@@ -3,6 +3,7 @@ package got.gameStates;
 import com.esotericsoftware.kryonet.Connection;
 
 import got.GameClient;
+import got.InputManager;
 import got.gameObjects.GameMapObject;
 import got.gameObjects.GameObject;
 import got.gameObjects.MapPartObject;
@@ -34,9 +35,11 @@ public class FirePhase extends ActionPhase {
 		state = SubState.SELECT_SOURCE;
 		super.enter(stm);
 	}
-	
+
+
 	@Override
-	public void click(GameObject sender) {
+	public void click(InputManager.ClickEvent event) {
+		GameObject sender = event.getTarget();
 		if (sender instanceof MapPartObject){
 			MapPartObject region = (MapPartObject)sender;
 			if (state == SubState.SELECT_SOURCE){
@@ -97,7 +100,7 @@ public class FirePhase extends ActionPhase {
 			}
 		}
 
-		super.click(sender);
+		super.click(event);
 	}
 	
 	@Override

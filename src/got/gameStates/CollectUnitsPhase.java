@@ -29,8 +29,8 @@ public class CollectUnitsPhase extends ActionPhase {
 	}
 
 	@Override
-	public void click(GameObject sender) {
-		//TODO: ���� ��� ����� ����, �� ��� ������ �������� target
+	public void click(InputManager.ClickEvent event) {
+		GameObject sender = event.getTarget();
 		if (sender instanceof MapPartObject) {
 			MapPartObject region = (MapPartObject) sender;
 

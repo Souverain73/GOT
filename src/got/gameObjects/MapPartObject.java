@@ -2,6 +2,7 @@ package got.gameObjects;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -263,7 +264,48 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	public Unit[] getUnits() {
 		return units.stream().map(obj -> obj.getType()).toArray(Unit[]::new);
 	}
-	
+
+	public boolean addUnit(Unit unit){
+		if (units.size() >= 4) return false;
+
+		units.add(new UnitObject(unit));
+		updateUnits();
+		return true;
+	}
+
+	public boolean addUnits(Unit[] units){
+		for (Unit unit: units){
+			addUnit(unit);
+		}
+		updateUnits();
+		return true;
+	}
+
+	public boolean removeUnit(Unit unit){
+		if (units.isEmpty()) return false;
+
+		Iterator<UnitObject> iterator = units.iterator();
+		while (iterator.hasNext()) {
+			UnitObject next =  iterator.next();
+			if (next.getType() == unit){
+				next.finish();
+				iterator.remove();
+				updateUnits();
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean removeUnits(Unit[] units){
+		for (Unit unit: units){
+			removeUnit(unit);
+		}
+		updateUnits();
+		return true;
+	}
+
+
 	/**
 	 * Нужен для обратной совместимости, в идеале надо бы это переписать.
 	 * @return - возвращает список юнитов в виде игровых объектов

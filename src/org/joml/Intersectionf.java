@@ -942,7 +942,7 @@ public class Intersectionf {
         float t0 = maxT;
         float A = velX * velX + velY * velY + velZ * velZ;
         float radius2 = radius * radius;
-        // test against v0
+        // testCanHaveArmy against v0
         float centerV0X = centerX - v0X;
         float centerV0Y = centerY - v0Y;
         float centerV0Z = centerZ - v0Z;
@@ -957,7 +957,7 @@ public class Intersectionf {
             t0 = root0;
             isect = POINT_ON_TRIANGLE_VERTEX;
         }
-        // test against v1
+        // testCanHaveArmy against v1
         float centerV1X = centerX - v1X;
         float centerV1Y = centerY - v1Y;
         float centerV1Z = centerZ - v1Z;
@@ -973,7 +973,7 @@ public class Intersectionf {
             t0 = root1;
             isect = POINT_ON_TRIANGLE_VERTEX;
         }
-        // test against v2
+        // testCanHaveArmy against v2
         float centerV2X = centerX - v2X;
         float centerV2Y = centerY - v2Y;
         float centerV2Z = centerZ - v2Z;
@@ -989,7 +989,7 @@ public class Intersectionf {
             isect = POINT_ON_TRIANGLE_VERTEX;
         }
         float velLen = velX * velX + velY * velY + velZ * velZ;
-        // test against edge10
+        // testCanHaveArmy against edge10
         float len10 = v10X * v10X + v10Y * v10Y + v10Z * v10Z;
         float baseTo0Len = centerV0X * centerV0X + centerV0Y * centerV0Y + centerV0Z * centerV0Z;
         float v10Vel = (v10X * velX + v10Y * velY + v10Z * velZ);
@@ -1008,7 +1008,7 @@ public class Intersectionf {
             t0 = root10;
             isect = POINT_ON_TRIANGLE_EDGE;
         }
-        // test against edge20
+        // testCanHaveArmy against edge20
         float len20 = v20X * v20X + v20Y * v20Y + v20Z * v20Z;
         float v20Vel = (v20X * velX + v20Y * velY + v20Z * velZ);
         float A20 = len20 * -velLen + v20Vel * v20Vel;
@@ -1025,7 +1025,7 @@ public class Intersectionf {
             t0 = root20;
             isect = POINT_ON_TRIANGLE_EDGE;
         }
-        // test against edge21
+        // testCanHaveArmy against edge21
         float v21X = v2X - v1X;
         float v21Y = v2Y - v1Y;
         float v21Z = v2Z - v1Z;
@@ -1093,11 +1093,11 @@ public class Intersectionf {
      * Reference: <a href="http://www.peroxide.dk/papers/collision/collision.pdf">Improved Collision detection and Response</a>
      * 
      * @param pX
-     *              the x coordinate of the point to test
+     *              the x coordinate of the point to testCanHaveArmy
      * @param pY
-     *              the y coordinate of the point to test
+     *              the y coordinate of the point to testCanHaveArmy
      * @param pZ
-     *              the z coordinate of the point to test
+     *              the z coordinate of the point to testCanHaveArmy
      * @param v0X
      *              the x coordinate of the first vertex
      * @param v0Y
@@ -1722,7 +1722,7 @@ public class Intersectionf {
      * This is an implementation of the <a href="http://www.cs.virginia.edu/~gfx/Courses/2003/ImageSynthesis/papers/Acceleration/Fast%20MinimumStorage%20RayTriangle%20Intersection.pdf">
      * Fast, Minimum Storage Ray/Triangle Intersection</a> method.
      * <p>
-     * This test implements backface culling, that is, it will return <code>false</code> when the triangle is in clockwise
+     * This testCanHaveArmy implements backface culling, that is, it will return <code>false</code> when the triangle is in clockwise
      * winding order assuming a <i>right-handed</i> coordinate system when seen along the ray's direction, even if the ray intersects the triangle.
      * This is in compliance with how OpenGL handles backface culling with default frontface/backface settings.
      * 
@@ -1801,7 +1801,7 @@ public class Intersectionf {
      * This is an implementation of the <a href="http://www.cs.virginia.edu/~gfx/Courses/2003/ImageSynthesis/papers/Acceleration/Fast%20MinimumStorage%20RayTriangle%20Intersection.pdf">
      * Fast, Minimum Storage Ray/Triangle Intersection</a> method.
      * <p>
-     * This test implements backface culling, that is, it will return <code>false</code> when the triangle is in clockwise
+     * This testCanHaveArmy implements backface culling, that is, it will return <code>false</code> when the triangle is in clockwise
      * winding order assuming a <i>right-handed</i> coordinate system when seen along the ray's direction, even if the ray intersects the triangle.
      * This is in compliance with how OpenGL handles backface culling with default frontface/backface settings.
      * 
@@ -1832,7 +1832,7 @@ public class Intersectionf {
      * This is an implementation of the <a href="http://www.cs.virginia.edu/~gfx/Courses/2003/ImageSynthesis/papers/Acceleration/Fast%20MinimumStorage%20RayTriangle%20Intersection.pdf">
      * Fast, Minimum Storage Ray/Triangle Intersection</a> method.
      * <p>
-     * This test does not take into account the winding order of the triangle, so a ray will intersect a front-facing triangle as well as a back-facing triangle.
+     * This testCanHaveArmy does not take into account the winding order of the triangle, so a ray will intersect a front-facing triangle as well as a back-facing triangle.
      * 
      * @see #testRayTriangle(Vector3f, Vector3f, Vector3f, Vector3f, Vector3f, float)
      * 
@@ -1909,7 +1909,7 @@ public class Intersectionf {
      * This is an implementation of the <a href="http://www.cs.virginia.edu/~gfx/Courses/2003/ImageSynthesis/papers/Acceleration/Fast%20MinimumStorage%20RayTriangle%20Intersection.pdf">
      * Fast, Minimum Storage Ray/Triangle Intersection</a> method.
      * <p>
-     * This test does not take into account the winding order of the triangle, so a ray will intersect a front-facing triangle as well as a back-facing triangle.
+     * This testCanHaveArmy does not take into account the winding order of the triangle, so a ray will intersect a front-facing triangle as well as a back-facing triangle.
      * 
      * @see #testRayTriangle(float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float)
      * 
@@ -1939,7 +1939,7 @@ public class Intersectionf {
      * This is an implementation of the <a href="http://www.cs.virginia.edu/~gfx/Courses/2003/ImageSynthesis/papers/Acceleration/Fast%20MinimumStorage%20RayTriangle%20Intersection.pdf">
      * Fast, Minimum Storage Ray/Triangle Intersection</a> method.
      * <p>
-     * This test implements backface culling, that is, it will return <code>false</code> when the triangle is in clockwise
+     * This testCanHaveArmy implements backface culling, that is, it will return <code>false</code> when the triangle is in clockwise
      * winding order assuming a <i>right-handed</i> coordinate system when seen along the ray's direction, even if the ray intersects the triangle.
      * This is in compliance with how OpenGL handles backface culling with default frontface/backface settings.
      * 
@@ -2019,7 +2019,7 @@ public class Intersectionf {
      * This is an implementation of the <a href="http://www.cs.virginia.edu/~gfx/Courses/2003/ImageSynthesis/papers/Acceleration/Fast%20MinimumStorage%20RayTriangle%20Intersection.pdf">
      * Fast, Minimum Storage Ray/Triangle Intersection</a> method.
      * <p>
-     * This test implements backface culling, that is, it will return <code>false</code> when the triangle is in clockwise
+     * This testCanHaveArmy implements backface culling, that is, it will return <code>false</code> when the triangle is in clockwise
      * winding order assuming a <i>right-handed</i> coordinate system when seen along the ray's direction, even if the ray intersects the triangle.
      * This is in compliance with how OpenGL handles backface culling with default frontface/backface settings.
      * 
@@ -2052,7 +2052,7 @@ public class Intersectionf {
      * This is an implementation of the <a href="http://www.cs.virginia.edu/~gfx/Courses/2003/ImageSynthesis/papers/Acceleration/Fast%20MinimumStorage%20RayTriangle%20Intersection.pdf">
      * Fast, Minimum Storage Ray/Triangle Intersection</a> method.
      * <p>
-     * This test does not take into account the winding order of the triangle, so a ray will intersect a front-facing triangle as well as a back-facing triangle.
+     * This testCanHaveArmy does not take into account the winding order of the triangle, so a ray will intersect a front-facing triangle as well as a back-facing triangle.
      * 
      * @see #testRayTriangle(Vector3f, Vector3f, Vector3f, Vector3f, Vector3f, float)
      * 
@@ -2130,7 +2130,7 @@ public class Intersectionf {
      * This is an implementation of the <a href="http://www.cs.virginia.edu/~gfx/Courses/2003/ImageSynthesis/papers/Acceleration/Fast%20MinimumStorage%20RayTriangle%20Intersection.pdf">
      * Fast, Minimum Storage Ray/Triangle Intersection</a> method.
      * <p>
-     * This test does not take into account the winding order of the triangle, so a ray will intersect a front-facing triangle as well as a back-facing triangle.
+     * This testCanHaveArmy does not take into account the winding order of the triangle, so a ray will intersect a front-facing triangle as well as a back-facing triangle.
      * 
      * @see #intersectRayTriangle(float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float)
      * 
