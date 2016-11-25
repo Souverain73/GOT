@@ -32,7 +32,7 @@ import got.graphics.DrawSpace;
  */
 public class InputManager {
 //	CONSTANTS
-//Используется как индексы в массиве, поэтому не enum
+//ндексы в массиве, поэтому не enum
 	public static final int MOUSE_LEFT = 0;
 	public static final int MOUSE_RIGHT = 1;
 	public static final int MOUSE_MIDDLE = 2;
@@ -84,7 +84,7 @@ public class InputManager {
 	}
 	
 	public void mouseMoveCallback(long window, double posx, double posy){
-        //И тут значит костыль.
+        //тут значит костыль.
         /* Если двигаем камеру, клик не должен засчитываться.
            Соответственно, если зажата правая клавиша и изменено положение курсора
            надо сбросить флаг клика.

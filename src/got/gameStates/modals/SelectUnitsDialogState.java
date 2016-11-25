@@ -8,6 +8,7 @@ import got.gameObjects.interfaceControls.ImageButton;
 import got.gameObjects.ImageObject;
 import got.gameObjects.interfaceControls.ToggleImageButton;
 import got.gameStates.AbstractGameState;
+import got.gameStates.StateMachine;
 import got.graphics.DrawSpace;
 import got.graphics.TextureManager;
 import got.interfaces.IClickListener;
@@ -25,6 +26,11 @@ public class SelectUnitsDialogState extends AbstractGameState implements IClickL
     List<ToggleImageButton> buttons = new ArrayList<>(4);
     Unit[] units;
     boolean ok = false;
+
+    @Override
+    public void enter(StateMachine stm) {
+        this.stm = stm;
+    }
 
     public SelectUnitsDialogState(Unit[] unitsToSelect, Vector2f pos){
         float x = pos.x;

@@ -11,10 +11,7 @@ import got.gameStates.modals.Dialogs;
 import got.gameStates.modals.SelectUnitsDialogState;
 import got.model.*;
 import got.network.Packages;
-import got.server.GameServer;
 import got.server.PlayerManager;
-
-import java.util.Arrays;
 
 public class MovePhase extends ActionPhase {
 	private static final String name = "MovePhase";
@@ -96,11 +93,12 @@ public class MovePhase extends ActionPhase {
 					}
 				}else{
 					GameClient.instance().send(new Packages.Attack(source.getID(), region.getID()));
-					//Инициировать бой.
+
 					//На время отладки упростим бой до:
 					//У кого больше силы, тот победил. При равных условиях смотри трек.
 
 				}
+				GameMapObject.instance().disableAllRegions();
 				changeSubState(SubState.SELECT_SOURCE);
 			}
 
@@ -136,7 +134,7 @@ public class MovePhase extends ActionPhase {
 
 			if (msg.playerID == PlayerManager.getSelf().id){
 				usedRegion = null;
-				if (!enableRegionsWithMove()){
+				if (!enableRegionsWithMoveAction()){
 					GameClient.instance().sendReady(false);
 				}
 			}else{
@@ -158,7 +156,7 @@ public class MovePhase extends ActionPhase {
 		}
 	}
 
-	public boolean enableRegionsWithMove(){
+	public boolean enableRegionsWithMoveAction(){
 		if (usedRegion != null){
 			usedRegion.setEnabled(true);
 			return true;
@@ -179,7 +177,7 @@ public class MovePhase extends ActionPhase {
 		if (state == SubState.SELECT_TARGET) {
 			//enable regions where player can go
 		}else if (state == SubState.SELECT_SOURCE){
-			enableRegionsWithMove();
+			enableRegionsWithMoveAction();
 			source = null;
 			selectedUnits = null;
 		}
