@@ -546,4 +546,30 @@ public class Packages {
 		public SetGlobalState() {
 		}
 	}
+
+	public static class Attack extends ClientServerPackage {
+		public int from;
+		public int to;
+
+		public Attack(){}
+
+		public Attack(int from, int to) {
+			this.from = from;
+			this.to = to;
+		}
+	}
+
+	public static class PlayerAttack extends ServerClientPackage {
+		public int palyer;
+		public int from;
+		public int to;
+
+		public PlayerAttack(){}
+
+		public PlayerAttack(int palyer, int from, int to){
+			this.palyer = palyer;
+			this.from = from;
+			this.to = to;
+		}
+	}
 }

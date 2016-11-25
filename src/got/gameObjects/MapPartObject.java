@@ -33,20 +33,21 @@ import got.utils.Utils;
 public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 
 
-	public enum RegionType{	GROUND, SEA, PORT;}
+    public enum RegionType{	GROUND, SEA, PORT;}
 
 	@Override
 	protected MapPartObject getThis() {
 		return this;
 	}
+
 	private Fraction fraction = Fraction.NEUTRAL;
-
 	private int ID = 0;
-
 
 	private RegionType type;
 
+
 	private String name;
+
 	private int resourcesCount;
 	private int influencePoints;
 	private int buildingLevel;
@@ -86,7 +87,6 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		placeUnits();
 		return false;
 	}
-
 	public int getID(){
 		return ID;
 	}
@@ -184,7 +184,6 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		placeUnits();
 	}
 
-
 	public void setUnits(Unit[] units){
 		this.units.forEach(obj -> obj.finish());
 		this.units.clear();
@@ -194,6 +193,7 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		}
 		updateUnits();
 	}
+
 
 	public List<MapPartObject> getRegionsForHire(){
 		List<MapPartObject> result = getNeighbors().stream().filter(obj->
@@ -321,10 +321,10 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		super.click(st);
 	}
 
-
 	public Action getAction() {
 		return action;
 	}
+
 
 	public void hideUnits(){
 		units.forEach(unit->unit.setVisible(false));
@@ -365,8 +365,13 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 				+ "]";
 	}
 
-	public void placePowerToken() {
+	public boolean havePowerToket() {
+		//TODO: implement this
+		return false;
+	}
 
+	public void placePowerToken() {
+		//TODO: implement this
 	}
 
 	public class PathFinder{

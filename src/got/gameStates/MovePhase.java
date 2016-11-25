@@ -59,19 +59,8 @@ public class MovePhase extends ActionPhase {
 					changeSubState(SubState.SELECT_TARGET);
 					GameMapObject.instance().disableAllRegions();
 
-					region.getRegionsToMove().forEach(obj->{
-						//проверяем, позволяет ли снабжение совершить такой ход
-						if (    //На вражеские территории можно ходить не зависимо от снабжения.
-								obj.getFraction() != region.getFraction() ||
-								Game.instance().getSuplyTrack().canMove(
-									region.getFraction(),
-									GameMapObject.instance().getArmySizesForFraction(region.getFraction()),
-									region.getUnitsCount(),
-									obj.getUnitsCount(),
-									selectedUnits.length)
-								)
-							obj.setEnabled(true);
-					});
+					//Включаем регионы, в которые можно пойти.
+					enableRegionsToMove(region);
 
 				}else{
 					System.out.println("Cancel");
@@ -87,17 +76,24 @@ public class MovePhase extends ActionPhase {
 							region.getID(),
 							selectedUnits
 					));
-					if (source.getUnits().length == selectedUnits.length){
+					if (source.getUnits().length == selectedUnits.length
+							&& source.havePowerToket()
+							&& PlayerManager.getSelf().getMoney() > 0){
+
 						Dialogs.Dialog confirmDialog = Dialogs.createConfirmDialog(InputManager.instance().getMousePosWorld());
 
 						(new ModalState(confirmDialog)).run();
 
 						if (confirmDialog.getResult() == Dialogs.DialogResult.OK){
-							region.placePowerToken();
+							source.placePowerToken();
 						}
 					}
 				}else{
+					GameClient.instance().send(new Packages.Attack(source.getID(), region.getID()));
 					//Инициировать бой.
+					//На время отладки упростим бой до:
+					//У кого больше силы, тот победил. При равных условиях смотри трек.
+
 				}
 				changeSubState(SubState.SELECT_SOURCE);
 			}
@@ -105,6 +101,22 @@ public class MovePhase extends ActionPhase {
 		}
 
 		super.click(event);
+	}
+
+	private void enableRegionsToMove(MapPartObject region) {
+		region.getRegionsToMove().forEach(obj->{
+            //проверяем, позволяет ли снабжение совершить такой ход
+            if (    //На вражеские территории можно ходить не зависимо от снабжения.
+                    obj.getFraction() != region.getFraction()
+                    ||  Game.instance().getSuplyTrack().canMove(
+                        region.getFraction(),
+                        GameMapObject.instance().getArmySizesForFraction(region.getFraction()),
+                        region.getUnitsCount(),
+                        obj.getUnitsCount(),
+                        selectedUnits.length)
+                    )
+                obj.setEnabled(true);
+        });
 	}
 
 	@Override
