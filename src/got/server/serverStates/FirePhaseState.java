@@ -16,6 +16,10 @@ public class FirePhaseState extends StepByStepState {
 	private Player currentPlayer;
 	private StateMachine stm;
 
+	public FirePhaseState(){
+		super.setNextState(MovePhaseState.class);
+	}
+
 	@Override
 	public String getName() {
 		return name;

@@ -53,6 +53,7 @@ public class Packages {
 		kryo.register(ForceReadyAt.class);
 		kryo.register(AddInfluence.class);
 		kryo.register(SetGlobalState.class);
+		kryo.register(Attack.class);
 	}
 
 	public static class NetPackage {

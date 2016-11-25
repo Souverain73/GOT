@@ -2,16 +2,18 @@ package got.server.serverStates;
 
 import com.esotericsoftware.kryonet.Connection;
 import got.gameStates.StateID;
-import got.model.Game;
 import got.model.Player;
 import got.network.Packages;
 import got.server.GameServer;
-import got.server.PlayerManager;
 
 /**
  * Created by Souverain73 on 22.11.2016.
  */
 public class MovePhaseState extends StepByStepState {
+
+    public MovePhaseState(){
+        super.setNextState(PowerPhaseState.class);
+    }
 
     @Override
     public String getName() {

@@ -12,8 +12,9 @@ import got.server.PlayerManager;
  */
 public abstract class StepByStepState implements ServerState{
 
-    private StateMachine stm;
-    private Player currentPlayer;
+    protected StateMachine stm;
+    protected Player currentPlayer;
+    private Class<? extends ServerState> nextStateClass;
 
     @Override
     public String getName() {
@@ -63,7 +64,12 @@ public abstract class StepByStepState implements ServerState{
             }
             //проверяем, если все игроки готовы, значит никто больше не может совершить ход, значит можно переходить к следующей фазе.
             if (PlayerManager.instance().isAllPlayersReady()){
-                stm.setState(new ChangeState(new PlanningPhaseState(), true));
+                try {
+                    stm.setState(new ChangeState(nextStateClass.newInstance(), true));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println("Can't instantiate next State from CLASS");
+                }
             }
             //передаем управление следующему игроку.
             nextTurn();
@@ -75,4 +81,8 @@ public abstract class StepByStepState implements ServerState{
                 Game.instance().getThroneTrack().getNext(currentPlayer.getFraction()));
         GameServer.getServer().sendToAllTCP(new Packages.PlayerTurn(currentPlayer.id));
     };
+    
+    protected void setNextState(Class<? extends ServerState> nextStateClass){
+        this.nextStateClass = nextStateClass;
+    }
 }
