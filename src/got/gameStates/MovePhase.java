@@ -21,6 +21,7 @@ public class MovePhase extends ActionPhase {
 	private enum SubState {SELECT_SOURCE, SELECT_TARGET};
 	private SubState state = SubState.SELECT_SOURCE;
 	private MapPartObject source;
+	private MapPartObject usedRegion = null;
 	private Unit[] selectedUnits;
 
 	@Override
@@ -76,6 +77,7 @@ public class MovePhase extends ActionPhase {
 							region.getID(),
 							selectedUnits
 					));
+					usedRegion = source;
 					if (source.getUnits().length == selectedUnits.length
 							&& source.havePowerToket()
 							&& PlayerManager.getSelf().getMoney() > 0){
@@ -85,8 +87,12 @@ public class MovePhase extends ActionPhase {
 						(new ModalState(confirmDialog)).run();
 
 						if (confirmDialog.getResult() == Dialogs.DialogResult.OK){
+							//TODO: send package about it
 							source.placePowerToken();
 						}
+					}
+					if (usedRegion.getUnits().length == 0){
+						endTurn();
 					}
 				}else{
 					GameClient.instance().send(new Packages.Attack(source.getID(), region.getID()));
@@ -101,6 +107,10 @@ public class MovePhase extends ActionPhase {
 		}
 
 		super.click(event);
+	}
+
+	private void endTurn() {
+		GameClient.instance().sendReady(true);
 	}
 
 	private void enableRegionsToMove(MapPartObject region) {
@@ -121,6 +131,18 @@ public class MovePhase extends ActionPhase {
 
 	@Override
 	public void recieve(Connection c, Object pkg) {
+		if (pkg instanceof Packages.PlayerTurn) {
+			Packages.PlayerTurn msg = (Packages.PlayerTurn) pkg;
+
+			if (msg.playerID == PlayerManager.getSelf().id){
+				usedRegion = null;
+				if (!enableRegionsWithMove()){
+					GameClient.instance().sendReady(false);
+				}
+			}else{
+				GameMapObject.instance().disableAllRegions();
+			}
+		}
 		if (pkg instanceof Packages.PlayerMove) {
 			Packages.PlayerMove msg = (Packages.PlayerMove) pkg;
 			GameClient.instance().registerTask(()->{
@@ -136,15 +158,20 @@ public class MovePhase extends ActionPhase {
 		}
 	}
 
-	public void enableRegionsWithMove(){
-		GameMapObject.instance().setEnabledByCondition((region)->{
-			Action act = region.getAction();
-			if (act == null) return false;
-			if ((act == Action.MOVEMINUS || act == Action.MOVEPLUS
-					|| act == Action.MOVE) &&
-					region.getFraction() == PlayerManager.getSelf().getFraction()) return true;
-			return false;
-		});
+	public boolean enableRegionsWithMove(){
+		if (usedRegion != null){
+			usedRegion.setEnabled(true);
+			return true;
+		}else {
+			return GameMapObject.instance().setEnabledByCondition((region) -> {
+				Action act = region.getAction();
+				if (act == null) return false;
+				if ((act == Action.MOVEMINUS || act == Action.MOVEPLUS
+						|| act == Action.MOVE) &&
+						region.getFraction() == PlayerManager.getSelf().getFraction()) return true;
+				return false;
+			}) > 0;
+		}
 	}
 
 	public void changeSubState(SubState newState){

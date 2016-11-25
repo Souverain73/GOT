@@ -355,6 +355,7 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	}
 
 	public int getUnitsCount(){
+
 		return units.size();
 	}
 

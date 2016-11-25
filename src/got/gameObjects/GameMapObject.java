@@ -203,8 +203,20 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 		});
 	}
 	
-	public void setEnabledByCondition(Predicate<MapPartObject> condition){
-		map.values().forEach(region -> region.setEnabled(condition.test(region)));
+	public int setEnabledByCondition(Predicate<MapPartObject> condition){
+		int result[] = new int[1];
+		result[0] = 0;
+
+		map.values().forEach(region -> {
+			if (condition.test(region)) {
+				region.setEnabled(true);
+				result[0]++;
+			}else{
+				region.setEnabled(false);
+			}
+		});
+
+		return result[0];
 	}
 	
 	public List<MapPartObject> getEnabledRegions(){

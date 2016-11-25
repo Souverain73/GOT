@@ -140,21 +140,15 @@ public class FirePhase extends ActionPhase {
 	 */
 	private boolean enableRegionsWithFire(){
 		Fraction selfFraction = PlayerManager.getSelf().getFraction();
-		
-		//����� ����������� �� ��������� ���������� ������ �����
-		boolean []result = new boolean[1];
-		result[0] = false;
-		
-		GameMapObject.instance().setEnabledByCondition(region->{
+
+		return GameMapObject.instance().setEnabledByCondition(region->{
 			boolean enable = region.getFraction() == selfFraction
 					&& region.getAction() != null 
 					&& (region.getAction() == Action.FIRE ||
 						region.getAction() == Action.FIREPLUS);
-			result[0] |= enable;
 			return enable;
-		});
-		
-		return result[0];
+		}) > 0;
+
 	}
 	
 }

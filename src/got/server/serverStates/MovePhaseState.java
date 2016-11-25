@@ -2,17 +2,20 @@ package got.server.serverStates;
 
 import com.esotericsoftware.kryonet.Connection;
 import got.gameStates.StateID;
+import got.model.Game;
 import got.model.Player;
 import got.network.Packages;
 import got.server.GameServer;
+import got.server.PlayerManager;
 
 /**
  * Created by Souverain73 on 22.11.2016.
  */
-public class MovePhaseState implements ServerState {
+public class MovePhaseState extends StepByStepState {
+
     @Override
     public String getName() {
-        return null;
+        return "MovePhaseState";
     }
 
     @Override
@@ -22,16 +25,12 @@ public class MovePhaseState implements ServerState {
 
     @Override
     public void enter(StateMachine stm) {
-        System.out.println("Entering move phase");
-    }
-
-    @Override
-    public void exit() {
-
+        super.enter(stm);
     }
 
     @Override
     public void recieve(Connection c, Object pkg) {
+        super.recieve(c, pkg);
         GameServer.PlayerConnection connection = (GameServer.PlayerConnection) c;
         Player player = connection.player;
 
