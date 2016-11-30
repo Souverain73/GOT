@@ -40,5 +40,10 @@ public class MovePhaseState extends StepByStepState {
             Packages.Move msg = (Packages.Move) pkg;
             GameServer.getServer().sendToAllTCP(new Packages.PlayerMove(player.id, msg.from, msg.to, msg.units));
         }
+
+        if (pkg instanceof Packages.Attack) {
+            Packages.Attack attack = (Packages.Attack) pkg;
+            stm.setState(new ChangeState(new HelpPhaseState(attack.from, attack.to), true));
+        }
     }
 }

@@ -38,6 +38,9 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import com.esotericsoftware.minlog.Log;
+import got.gameObjects.GameMapObject;
+import got.gameObjects.battleDeck.BattleDeckObject;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
@@ -80,6 +83,7 @@ public class GameClient {
 	private static GameClient _instance = null;
 	private LinkedList<ModalState> modalStates;
 	private Texture background = null;
+	public static final Shared shared = new Shared();
 	
 	/*
 	 * All information about players must be handled by PlayerManager;
@@ -104,6 +108,7 @@ public class GameClient {
 	private int windowHeight;	
 	
 	private GameClient(){
+		Log.set(Log.LEVEL_DEBUG);
 		graphics = GraphicModule.instance();
 		stm = new StateMachine();
 		modalStates = new LinkedList<ModalState>();
@@ -390,6 +395,11 @@ public class GameClient {
 			}
 		}
 		return result;
+	}
+
+	public static class Shared{
+		public static BattleDeckObject battleDeck = null;
+		public static GameMapObject gameMap = null;
 	}
 }
 

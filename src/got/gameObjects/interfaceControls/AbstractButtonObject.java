@@ -116,12 +116,13 @@ public abstract class AbstractButtonObject<T extends AbstractButtonObject<T>> ex
 		}
 	}
 	
-	public void setEnabled(boolean enabled){
+	public T setEnabled(boolean enabled){
 		if (enabled){
 			state = State.FREE;
 		}else{
 			state = State.DISABLED;
 		}
+		return getThis();
 	}
 	
 	//IClickable implementation

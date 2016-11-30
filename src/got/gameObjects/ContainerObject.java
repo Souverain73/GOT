@@ -6,6 +6,6 @@ package got.gameObjects;
 public class ContainerObject extends AbstractGameObject<ContainerObject> {
     @Override
     protected ContainerObject getThis() {
-        return null;
+        return this;
     }
 }

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Battle state design</title>
+	<style type="text/css">
+		div {
+			position: absolute;
+		}
+		.viewport {
+			width: 1280px;
+			height: 720px;
+			border: 3px solid #000;
+		}
+		.container {
+			border: 2px solid #080;
+			margin: -2px;
+		}
+		.panel {
+			border: 1px solid #800;
+			margin: -1px;
+		}
+		.comment {
+			left:1310px;
+		}
+		.playerCard {
+			height: 200px;
+			width: 100px;
+			float: left;
+			position: relative;
+		}
+		.helpButton {
+			height: 200px;
+			width: 100px;
+			float: left;
+			position: relative;
+			background-color: #fdd;
+		}
+	</style>
+</head>
+<body>
+	<div class="viewport">
+	<div class="container" style="top: 0%; left: 0%; width: 100%; height: 100%">
+		Бои происходят на обычной карте мира. При этом поверх карты отображается боевой стол.
+	</div>
+	<div class="container" style="top:10%; left:140px;width: 1000px; height: 200px; margin-left: auto; margin-right: auto; text-align: center;">
+		<!-- Это боевой стол. -->
+		<div class="panel helpButton">
+			Помочь 1 стороне.
+		</div>
+		<div class="panel playerCard">
+			Игрок
+		</div>
+		<div class="panel playerCard">
+			Игрок
+		</div>
+		<div class="panel playerCard">
+			Игрок
+		</div>
+		<div class="panel playerCard">
+			Игрок
+		</div>
+		<div class="panel playerCard">
+			Игрок
+		</div>
+		<div class="panel playerCard">
+			Игрок
+		</div>
+		<div class="panel playerCard">
+			Игрок
+		</div>
+		<div class="panel playerCard">
+			Игрок
+		</div>
+		<div class="panel helpButton">
+			Помочь 2 стороне.
+		</div>
+	</div>
+	</div>
+</body>
+</html>

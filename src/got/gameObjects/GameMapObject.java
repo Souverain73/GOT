@@ -34,9 +34,15 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 
 	private HashMap<String, MapPartObject> map;
 	private static int counter = 0;
-	
+
+	@Deprecated
 	private static GameMapObject _instance;
-	
+
+	@Deprecated
+	/**
+	 * This method is deprecated.
+	 * Use GameClient.shared.gameMap
+	 */
 	public static GameMapObject instance(){
 		return _instance;
 	}
@@ -139,6 +145,9 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 						mapPart.addUnit(new UnitObject(Unit.valueOf(sType)));
 					}
 					if (paramNode.getNodeName().equals("action")){
+						params.put("action", attribValue(paramNode, "type"));
+					}
+					if (paramNode.getNodeName().equals("actionpos")){
 						params.put("action_x", Integer.valueOf(attribValue(paramNode,"x")));
 						params.put("action_y", Integer.valueOf(attribValue(paramNode,"y")));
 					}

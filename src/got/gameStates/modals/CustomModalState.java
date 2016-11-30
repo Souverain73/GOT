@@ -5,6 +5,7 @@ import got.InputManager;
 import got.gameObjects.AbstractGameObject;
 import got.gameObjects.GameObject;
 import got.gameStates.AbstractGameState;
+import got.gameStates.StateMachine;
 import got.interfaces.IClickListener;
 
 /**
@@ -22,6 +23,9 @@ public class CustomModalState<T> extends AbstractGameState implements IClickList
 		this.result = defaultResult;
 	}
 
+	@Override
+	public void enter(StateMachine stm) {
+	}
 
 	@Override
 	public void click(InputManager.ClickEvent event) {
@@ -45,5 +49,10 @@ public class CustomModalState<T> extends AbstractGameState implements IClickList
 
 	public void close() {
 		GameClient.instance().closeModal();
+	}
+
+	public void setResultAndClose(T result){
+		setResult(result);
+		close();
 	}
 }

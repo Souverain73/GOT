@@ -54,6 +54,10 @@ public class Packages {
 		kryo.register(AddInfluence.class);
 		kryo.register(SetGlobalState.class);
 		kryo.register(Attack.class);
+		kryo.register(PlayerAttack.class);
+		kryo.register(InitBattle.class);
+		kryo.register(Help.class);
+		kryo.register(PlayerHelp.class);
 	}
 
 	public static class NetPackage {
@@ -560,6 +564,7 @@ public class Packages {
 		}
 	}
 
+
 	public static class PlayerAttack extends ServerClientPackage {
 		public int palyer;
 		public int from;
@@ -573,4 +578,49 @@ public class Packages {
 			this.to = to;
 		}
 	}
+
+	public static class InitBattle extends ServerClientPackage{
+		public int from;
+		public int to;
+
+		public InitBattle(){
+
+		}
+
+		public InitBattle(int from, int to) {
+			this.from = from;
+			this.to = to;
+		}
+	}
+
+	public static class Help extends ClientServerPackage{
+		public static final int SIDE_NONE = 0;
+		public static final int SIDE_ATTACKER = 1;
+		public static final int SIDE_DEFENDER = 2;
+		public int side;
+
+		public Help(){};
+
+		public Help(int side){
+			this.side = side;
+		}
+	}
+
+	public static class PlayerHelp extends ServerClientPackage{
+		public static final int SIDE_NONE = Help.SIDE_NONE;
+		public static final int SIDE_ATTACKER = Help.SIDE_ATTACKER;
+		public static final int SIDE_DEFENDER = Help.SIDE_DEFENDER;
+
+		public int player;
+		public int side;
+
+		public PlayerHelp(){}
+
+		public PlayerHelp(int player, int side){
+			this.player = player;
+			this.side = side;
+		}
+	}
+
+
 }

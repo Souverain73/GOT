@@ -37,6 +37,7 @@ import static org.lwjgl.stb.STBImage.STBI_rgb_alpha;
 import static org.lwjgl.stb.STBImage.stbi_image_free;
 import static org.lwjgl.stb.STBImage.stbi_load;
 
+import java.io.FileNotFoundException;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -114,7 +115,7 @@ public class Texture {
 		stbi_image_free(data);
 	}
 	
-	public Texture(String fileName){
+	public Texture(String fileName) throws FileNotFoundException {
 		IntBuffer x = BufferUtils.createIntBuffer(1);
 		IntBuffer y = BufferUtils.createIntBuffer(1);
 		IntBuffer comp = BufferUtils.createIntBuffer(1);
@@ -132,7 +133,7 @@ public class Texture {
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glBindTexture(GL_TEXTURE_2D,0);
 		}else{
-			System.out.println("Can't laod texture "+fileName);
+			throw new FileNotFoundException("Can't load texture "+fileName);
 		}
 	}
 

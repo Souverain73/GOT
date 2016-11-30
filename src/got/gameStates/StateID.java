@@ -28,7 +28,7 @@ public class StateID {
 		case POWER_PHASE: return new PowerPhase();
 		case VESTEROS_PHASE: return new VesterosPhase();
 		case BATTLE_PHASE: return null;
-		case HELP_PHASE: return null;
+		case HELP_PHASE: return new HelpPhase();
 		}
 		return null;
 	}
@@ -43,7 +43,7 @@ public class StateID {
 		case POWER_PHASE: return new got.server.serverStates.PowerPhaseState();
 		case VESTEROS_PHASE: return null;
 		case BATTLE_PHASE: return null;
-		case HELP_PHASE: return null;
+		case HELP_PHASE: return new got.server.serverStates.HelpPhaseState();
 		}
 		return null;
 	}

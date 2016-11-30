@@ -1,9 +1,6 @@
 package got.gameObjects;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import got.gameObjects.interfaceControls.AbstractButtonObject;
@@ -41,14 +38,15 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	}
 
 	private Fraction fraction = Fraction.NEUTRAL;
+
 	private int ID = 0;
-
 	private RegionType type;
-
 
 	private String name;
 
+
 	private int resourcesCount;
+
 	private int influencePoints;
 	private int buildingLevel;
 	private Texture texture;
@@ -80,17 +78,18 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		unit_x = (Integer)params.get("unit_x");
 		unit_y = (Integer)params.get("unit_y");
 		type = RegionType.valueOf((String)params.get("type"));
+		try {
+			setAction(Action.valueOf((String)params.get("action")));
+		} catch (Exception e) {}
 		try{
 			fraction = Fraction.valueOf((String)params.get("fraction"));
-		}catch(Exception e){
-		}
+		}catch(Exception e){}
 		placeUnits();
 		return false;
 	}
 	public int getID(){
 		return ID;
 	}
-
 	@Override
 	public void draw(GameState st) {
 		if (!isVisible()) return;
@@ -155,6 +154,35 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 					.filter(reg->reg.type != RegionType.GROUND)
 					.collect(Collectors.toList());
 		}
+	}
+
+	public int getBattlePower() {
+		return Arrays.stream(getUnits()).mapToInt(Unit::getDamage).sum();
+	}
+
+	public int getBattlePowerForHelpers(Fraction helperFraction){
+		return getNeighbors().stream()
+				//фильтруем по фракции
+				.filter(region->region.getFraction() == helperFraction)
+				//фильтруем по приказу
+				.filter(region->region.getAction() == Action.HELP || region.getAction() == Action.HELPPLUS)
+				//считаем силу
+				.mapToInt(region->{
+					int power = Arrays.stream(region.getUnits())
+							.mapToInt(Unit::getDamage)
+							.sum();
+
+					if (region.getAction() == Action.HELPPLUS) power++;
+					return power;
+				}).sum();
+	}
+
+	public boolean canHelp(Fraction fraction){
+		return getNeighbors().stream()
+				.anyMatch(obj->
+				obj.getFraction() == fraction
+				&& obj.getAction() == Action.HELPPLUS
+				|| obj.getAction() == Action.HELP);
 	}
 
 	public String getName(){

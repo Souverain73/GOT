@@ -56,29 +56,37 @@ public abstract class StepByStepState implements ServerState{
         if (pkg instanceof Packages.Ready){
             //Если о готовности сообщает не текущий игрок, игнорируем сообщение.
             if (player.id != currentPlayer.id) return;
-            Packages.Ready msg = ((Packages.Ready)pkg);
-            //если свойство ready = true, значит игрок совершил ход
-            //если false, значит возможных ходов для него больше нет
-            if (!msg.ready){
-                player.setReady(true);
-            }
-            //проверяем, если все игроки готовы, значит никто больше не может совершить ход, значит можно переходить к следующей фазе.
-            if (PlayerManager.instance().isAllPlayersReady()){
-                try {
-                    stm.setState(new ChangeState(nextStateClass.newInstance(), true));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    System.out.println("Can't instantiate next State from CLASS");
-                }
-            }
-            //передаем управление следующему игроку.
-            nextTurn();
+            handleReady(player, ((Packages.Ready) pkg).ready);
         }
     }
 
+    protected void handleReady(Player player, boolean ready) {
+        //если свойство ready = true, значит игрок совершил ход
+        //если false, значит возможных ходов для него больше нет
+//        System.out.printf("Handle ready player id: %d ready: $s", player.id, ready);
+
+        if (!ready){
+            player.setReady(true);
+        }
+        //проверяем, если все игроки готовы, значит никто больше не может совершить ход, значит можно переходить к следующей фазе.
+        if (PlayerManager.instance().isAllPlayersReady()){
+            try {
+                stm.setState(new ChangeState(nextStateClass.newInstance(), true));
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Can't instantiate next State from CLASS");
+                System.exit(0);
+            }
+        }
+        //передаем управление следующему игроку.
+        nextTurn();
+    }
+
     private void nextTurn(){
-        currentPlayer = PlayerManager.instance().getPlayerByFraction(
-                Game.instance().getThroneTrack().getNext(currentPlayer.getFraction()));
+        do {
+            currentPlayer = PlayerManager.instance().getPlayerByFraction(
+                    Game.instance().getThroneTrack().getNext(currentPlayer.getFraction()));
+        }while (currentPlayer.isReady());
         GameServer.getServer().sendToAllTCP(new Packages.PlayerTurn(currentPlayer.id));
     };
     

@@ -9,7 +9,6 @@ import got.Constants;
 import got.GameClient;
 import got.gameObjects.GameMapObject;
 import got.gameObjects.ImageObject;
-import got.gameObjects.TextObject;
 import got.graphics.DrawSpace;
 import got.graphics.TextureManager;
 import got.network.Packages.ChangeState;
@@ -40,6 +39,7 @@ public class MainState extends AbstractGameState {
 		map = new GameMapObject();
 		LoaderParams params = new LoaderParams(new String[]{"filename", MAP_FILE});
 		map.init(params);
+		GameClient.shared.gameMap = map;
 		//addObject(map);
 		addObject(new PlayerPanelObject(PlayerManager.getSelf()));
 		
@@ -58,6 +58,11 @@ public class MainState extends AbstractGameState {
 	public void draw() {
 		background.draw(this);
 		map.draw(stm.getCurrentState());
+
+		if (GameClient.shared.battleDeck != null){
+			GameClient.shared.battleDeck.draw(stm.getCurrentState());
+		}
+
 		stm.draw();
 		super.draw();
 	}
@@ -66,6 +71,11 @@ public class MainState extends AbstractGameState {
 	public void update() {
 		background.update(this);
 		map.update(stm.getCurrentState());
+
+		if (GameClient.shared.battleDeck != null){
+			GameClient.shared.battleDeck.update(stm.getCurrentState());
+		}
+
 		stm.update();
 		super.update();
 	}
@@ -73,6 +83,11 @@ public class MainState extends AbstractGameState {
 	public void tick(){
 		background.tick();
 		map.tick();
+
+		if (GameClient.shared.battleDeck != null){
+			GameClient.shared.battleDeck.tick();
+		}
+
 		stm.tick();
 		super.tick();
 	}

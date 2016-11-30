@@ -1,5 +1,6 @@
 package got.graphics;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -11,6 +12,7 @@ public class TextureManager {
 	
 	private TextureManager(){
 		textures = new HashMap<String, Texture>();
+		loadTexture("dummy.png");
 	}
 	
 	public static TextureManager instance(){
@@ -23,8 +25,19 @@ public class TextureManager {
 	public Texture loadTexture(String fileName){
 		Texture res = textures.get(fileName);
 		if (res == null){
-			res = new Texture(textureBase+fileName);
-			textures.put(fileName, res);
+			try {
+				res = new Texture(textureBase + fileName);
+				textures.put(fileName, res);
+			}catch(FileNotFoundException e){
+				System.out.println("Can't load texture " + fileName + " replaced by dummy.");
+				Texture dummy;
+				if ((dummy = textures.get("dummy.png")) != null){
+					return dummy;
+				}else{
+					System.out.println("Can't load dummy.png");
+					System.exit(0);
+				}
+			}
 		}
 		return res;
 	}

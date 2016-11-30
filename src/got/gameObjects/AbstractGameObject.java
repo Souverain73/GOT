@@ -27,10 +27,18 @@ public abstract class AbstractGameObject<T extends AbstractGameObject<T>> implem
 	
 	protected abstract T getThis();
 	
-	public Vector2f getPos() {
-		return (parent == null) ? pos : new Vector2f(parent.getPos()).add(pos);
+//	public Vector2f getPos() {
+//		return (parent == null) ? pos : new Vector2f(parent.getPos()).add(pos);
+//	}
+
+	public Vector2f getPos(){
+		if (parent == null){
+			return pos;
+		}else{
+			return new Vector2f(parent.getPos()).add(pos);
+		}
 	}
-	
+
 	protected AbstractGameObject() {
 		visible = true;
 		updated = false;

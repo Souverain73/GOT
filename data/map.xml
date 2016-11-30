@@ -1,35 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map>
 	<regions>
-		<region name="Castle Black" type="GROUND" influence="1" x="609" y="0" w="475" h="286">
-			<action x="95" y="191"/>
+		<region name="Castle Black" type="GROUND" influence="1" x="609" y="0" w="475" h="286" fraction="TIREL">
+			<actionpos x="95" y="191"/>
 			<unitpos x="335" y="50"/>
 			<texture filename="CastleBlack.png"/>
+			<unit type="KNIGHT"/>
+			<action type="DEFEND"/>
 		</region>
 		<region name="Karhold" type="GROUND" influence="1" x="951" y="149" w="355" h="318" fraction="LANISTER">
-			<action x="282" y="116"/>
+			<actionpos x="282" y="116"/>
 			<unitpos x="165" y="215"/>			
 			<unit type="KNIGHT" />
 			<unit type="SOLDIER"/>
 			<unit type="SOLDIER"/>
 			<unit type="SOLDIER"/>
 			<texture filename="Karhold.png"/>
+			<action type="HELP"/>
 		</region>
 		<region name="Winterfell" type="GROUND" influence="1" resources="1" building="2" x="261" y="170" w="837" h="678" fraction="STARK">
-			<action x="611" y="152"/>
+			<actionpos x="611" y="152"/>
 			<unitpos x="355" y="520"/>
 			<unit type="KNIGHT"/>
 			<unit type="KNIGHT"/>
 			<unit type="KNIGHT"/>
 			<texture filename="Winterfell.png"/>
+			<action type="MOVEPLUS"/>
 		</region>
 		<region name="Widow's Watch" type="GROUND" resources="1" x="939" y="561" w="278" h="219">
-			<action x="48" y="135"/>
+			<actionpos x="48" y="135"/>
 			<unitpos x="90" y="75"/>
 			<texture filename="WidowsWatch.png"/>
 		</region>
 		<region name="The Stony Shore" type="GROUND" resources="1" x="153" y="423" w="408" h="426" fraction="STARK">
-			<action x="76" y="164"/>
+			<actionpos x="76" y="164"/>
 			<unitpos x="260" y="220"/>
 			<unit type="KNIGHT"/>
 			<unit type="KNIGHT"/>
@@ -37,7 +41,7 @@
 			<texture filename="TheStonyShore.png"/>
 		</region>
 		<region name="White Harbor" type="GROUND" building="1" x="746" y="423" w="379" h="511" fraction="LANISTER">
-			<action x="132" y="219"/>
+			<actionpos x="132" y="219"/>
 			<unitpos x="190" y="80"/>
 			<unit type="SOLDIER"/>
 			<unit type="SOLDIER"/>
@@ -46,13 +50,13 @@
 			<texture filename="WhiteHarbor.png"/>
 		</region>
 		<region name="Bay Of Ice" type="SEA" x="0" y="0" w="763" h="960" fraction="STARK">
-			<action x="292" y="115"/>
+			<actionpos x="292" y="115"/>
 			<unitpos x="90" y="380"/>
 			<unit type="SHIP"/>
 			<texture filename="BayOfIce.png"/>
 		</region>
 		<region name="The Shivering Sea" type="SEA" x="1024" y="0" w="476" h="762">
-			<action x="365" y="170"/>
+			<actionpos x="365" y="170"/>
 			<unitpos x="180" y="520"/>
 			<texture filename="TheShiveringSea.png"/>
 		</region>

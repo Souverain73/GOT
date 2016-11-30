@@ -28,9 +28,6 @@ public class MovePhase extends ActionPhase {
 
 	@Override
 	public void enter(StateMachine stm) {
-		GameMapObject.instance().forEach(region->{
-			region.setAction(Action.MOVE);
-		});
 		changeSubState(SubState.SELECT_SOURCE);
 		super.enter(stm);
 	}
