@@ -4,9 +4,11 @@ import got.gameObjects.*;
 import got.graphics.DrawSpace;
 import got.model.Fraction;
 import got.model.Player;
+import got.model.Unit;
 import org.joml.Vector2f;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -41,7 +43,7 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
                 .setDim(new Vector2f(500, 200))
                 .setSpace(DrawSpace.SCREEN);
 
-        attackerContainer.addChild(new PlayerCardObject(attacker.getFraction(), attacker.getBattlePower())
+        attackerContainer.addChild(new PlayerCardObject(attacker.getFraction(), attacker.getUnits())
                                                         .setSpace(DrawSpace.SCREEN).setPos(new Vector2f(400,0)));
 
         defenderContainer = new ContainerObject()
@@ -49,7 +51,7 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
                 .setDim(new Vector2f(500, 200))
                 .setSpace(DrawSpace.SCREEN);
 
-        attackerContainer.addChild(new PlayerCardObject(defender.getFraction(), defender.getBattlePower())
+        attackerContainer.addChild(new PlayerCardObject(defender.getFraction(), defender.getUnits())
                 .setSpace(DrawSpace.SCREEN).setPos(new Vector2f(500,0)));
 
         addChild(background);
@@ -66,8 +68,10 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
     }
 
     private void addBattler(Player player, List<PlayerCardObject> set, ContainerObject container){
+
         PlayerCardObject cpc = new PlayerCardObject(player.getFraction(),
-                defender.getBattlePowerForHelpers(player.getFraction()));
+                defender.getUnitsForHelp(player.getFraction()));
+
         set.add(cpc);
         container.addChild(cpc);
         updateState();
@@ -91,9 +95,15 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
             xd++;
         }
 
-        attackersPower = attackers.stream().mapToInt(PlayerCardObject::getBattlePower).sum();
-        defendersPower = defenders.stream().mapToInt(PlayerCardObject::getBattlePower).sum();
-        //TODO: calculate summary battle power;
+        //TODO: учесть зависимость атаки башни от строений.
+        attackersPower = getBattlePower(attackers);
+        defendersPower = getBattlePower(defenders);
+    }
+
+    private int getBattlePower(List<PlayerCardObject> set) {
+        return set.stream()
+                .flatMap(card-> Arrays.stream(card.getUnits()))
+                .mapToInt(Unit::getDamage).sum();
     }
 
     public MapPartObject getAttacker() {

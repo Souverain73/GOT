@@ -160,12 +160,23 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		return Arrays.stream(getUnits()).mapToInt(Unit::getDamage).sum();
 	}
 
-	public int getBattlePowerForHelpers(Fraction helperFraction){
+	public Unit[] getUnitsForHelp(Fraction helperFraction){
+		return getRegionsForHelp(helperFraction).stream()
+				.flatMap(reg->reg.units.stream())
+				.map(uo->uo.getType()).toArray(Unit[]::new);
+	}
+
+	public List<MapPartObject> getRegionsForHelp(Fraction helperFraction){
 		return getNeighbors().stream()
 				//фильтруем по фракции
 				.filter(region->region.getFraction() == helperFraction)
 				//фильтруем по приказу
 				.filter(region->region.getAction() == Action.HELP || region.getAction() == Action.HELPPLUS)
+				.collect(Collectors.toList());
+	}
+
+	public int getBattlePowerForHelpers(Fraction helperFraction){
+		return getRegionsForHelp(helperFraction).stream()
 				//считаем силу
 				.mapToInt(region->{
 					int power = Arrays.stream(region.getUnits())

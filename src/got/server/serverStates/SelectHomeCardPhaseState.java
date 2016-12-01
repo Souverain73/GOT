@@ -5,10 +5,10 @@ import com.esotericsoftware.kryonet.Connection;
 /**
  * Created by Souverain73 on 29.11.2016.
  */
-public class HomeCardPhaseState implements ServerState{
+public class SelectHomeCardPhaseState implements ServerState{
 
-    public HomeCardPhaseState(){
-        throw new IllegalStateException("This class need realization");
+    public SelectHomeCardPhaseState(){
+
     }
 
     @Override

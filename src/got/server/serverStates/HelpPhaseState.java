@@ -14,7 +14,7 @@ public class HelpPhaseState extends StepByStepState{
     private int defenderRegionId;
 
     public HelpPhaseState(){
-        setNextState(HomeCardPhaseState.class);
+        setNextState(SelectHomeCardPhaseState.class);
     }
 
     public HelpPhaseState(int attackerRegionId, int defenderRegionId){
