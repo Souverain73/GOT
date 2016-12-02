@@ -95,15 +95,23 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
             xd++;
         }
 
-        //TODO: учесть зависимость атаки башни от строений.
-        attackersPower = getBattlePower(attackers);
-        defendersPower = getBattlePower(defenders);
+        attackersPower = getAttackPower(attackers);
+        defendersPower = getDefendPower(defenders);
     }
 
-    private int getBattlePower(List<PlayerCardObject> set) {
-        return set.stream()
+    private int getAttackPower(List<PlayerCardObject> list) {
+        return list.stream()
                 .flatMap(card-> Arrays.stream(card.getUnits()))
-                .mapToInt(Unit::getDamage).sum();
+                .mapToInt(Unit::getDamage)
+                .sum();
+    }
+
+    private int getDefendPower(List<PlayerCardObject> list) {
+        return list.stream()
+                .flatMap(card-> Arrays.stream(card.getUnits()))
+                .filter(unit->unit != Unit.SIEGE)
+                .mapToInt(Unit::getDamage)
+                .sum();
     }
 
     public MapPartObject getAttacker() {
