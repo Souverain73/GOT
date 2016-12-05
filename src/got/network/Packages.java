@@ -1,6 +1,7 @@
 package got.network;
 
 import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.EndPoint;
 import got.model.Action;
 import got.model.Fraction;
@@ -392,6 +393,13 @@ public class Packages {
 	}
 
 	/**
+	 * Сообщает серверу, что клиент готов к смене состояния.
+	 */
+
+	public static class StateReady extends ClientServerPackage {
+	}
+
+	/**
 	 * сообщает серверу, что игрок играет приказ с территории from на территорию
 	 * to
 	 */
@@ -551,6 +559,7 @@ public class Packages {
 		public SetGlobalState() {
 		}
 	}
+
 
 	public static class Attack extends ClientServerPackage {
 		public int from;

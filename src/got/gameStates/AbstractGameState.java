@@ -9,6 +9,7 @@ import com.esotericsoftware.kryonet.Connection;
 import got.GameClient;
 import got.gameObjects.AbstractGameObject;
 import got.gameObjects.GameObject;
+import got.network.Packages;
 import got.utils.UI;
 import static got.network.Packages.Ready;
 
@@ -34,7 +35,7 @@ public abstract class AbstractGameState implements GameState {
 
 	@Override
 	public void enter(StateMachine stm) {
-		GameClient.instance().sendReady(true);
+		GameClient.instance().send(new Packages.StateReady());
 		this.stm = stm;
 	}
 

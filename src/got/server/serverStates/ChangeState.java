@@ -26,9 +26,9 @@ public class ChangeState implements ServerState {
 	public void recieve(Connection c, Object pkg) {
 		PlayerConnection connection = ((PlayerConnection)c);
 		Player player = connection.player;
-		if (pkg instanceof Ready){
-			Ready msg = ((Ready)pkg);
-			player.setReady(msg.ready);
+		if (pkg instanceof Packages.StateReady){
+			Packages.StateReady msg = ((Packages.StateReady)pkg);
+			player.setReady(true);
 			
 			//if all clients load state on client side server can run this state too
 			if (PlayerManager.instance().isAllPlayersReady()){
