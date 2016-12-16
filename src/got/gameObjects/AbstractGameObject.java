@@ -131,7 +131,7 @@ public abstract class AbstractGameObject<T extends AbstractGameObject<T>> implem
 	}
 	
 	/**
-	 * Метод устанавливает одновременно ширину и высоту объекта равную size<br>
+	 * РњРµС‚РѕРґ СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ РѕРґРЅРѕРІСЂРµРјРµРЅРЅРѕ С€РёСЂРёРЅСѓ Рё РІС‹СЃРѕС‚Сѓ РѕР±СЉРµРєС‚Р° СЂР°РІРЅСѓСЋ size<br>
 	 * <b>(w = h = size)</b>
 	 * @param size
 	 */

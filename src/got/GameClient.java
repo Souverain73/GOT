@@ -79,6 +79,10 @@ import static got.network.Packages.Ready;
  * @author Souverain73
  */
 public class GameClient {
+	public static class Shared{
+		public BattleDeckObject battleDeck = null;
+		public GameMapObject gameMap = null;
+	}
 	private boolean debug = false;
 	private static GameClient _instance = null;
 	private LinkedList<ModalState> modalStates;
@@ -185,7 +189,7 @@ public class GameClient {
 
 			@Override
 			public void received(Connection c, Object object) {
-				//Небольшой костыль.
+				//РќРµР±РѕР»СЊС€РѕР№ РєРѕСЃС‚С‹Р»СЊ.
 				if (object instanceof ChangeState){
 					int stateID = ((ChangeState) object).state;
 					if (stateID == StateID.MAIN_STATE)
@@ -373,18 +377,18 @@ public class GameClient {
 	}
 	
 	/**
-	 * Возвращает текущее состояние, с учетом всех особенностей движка.<br>
-	 * В простейшем случае это StateMachine.getCurrentState();
-	 * Но с учетом модальных состояний и основного состояния текущим состоянием будет:<br>
-	 * 1. Если есть модальные состояние - то последнее состояние в стеке модальных состояний.<br>
-	 * 2. Если текущее состояние MainState, то текущее состояние из MainState<br>
-	 * 3. Иначе текущее стстояние из GameClient;
-	 * @return Текущее состояние игры.
+	 * Р’РѕР·РІСЂР°С‰Р°РµС‚ С‚РµРєСѓС‰РµРµ СЃРѕСЃС‚РѕСЏРЅРёРµ, СЃ СѓС‡РµС‚РѕРј РІСЃРµС… РѕСЃРѕР±РµРЅРЅРѕСЃС‚РµР№ РґРІРёР¶РєР°.<br>
+	 * Р’ РїСЂРѕСЃС‚РµР№С€РµРј СЃР»СѓС‡Р°Рµ СЌС‚Рѕ StateMachine.getCurrentState();
+	 * РќРѕ СЃ СѓС‡РµС‚РѕРј РјРѕРґР°Р»СЊРЅС‹С… СЃРѕСЃС‚РѕСЏРЅРёР№ Рё РѕСЃРЅРѕРІРЅРѕРіРѕ СЃРѕСЃС‚РѕСЏРЅРёСЏ С‚РµРєСѓС‰РёРј СЃРѕСЃС‚РѕСЏРЅРёРµРј Р±СѓРґРµС‚:<br>
+	 * 1. Р•СЃР»Рё РµСЃС‚СЊ РјРѕРґР°Р»СЊРЅС‹Рµ СЃРѕСЃС‚РѕСЏРЅРёРµ - С‚Рѕ РїРѕСЃР»РµРґРЅРµРµ СЃРѕСЃС‚РѕСЏРЅРёРµ РІ СЃС‚РµРєРµ РјРѕРґР°Р»СЊРЅС‹С… СЃРѕСЃС‚РѕСЏРЅРёР№.<br>
+	 * 2. Р•СЃР»Рё С‚РµРєСѓС‰РµРµ СЃРѕСЃС‚РѕСЏРЅРёРµ MainState, С‚Рѕ С‚РµРєСѓС‰РµРµ СЃРѕСЃС‚РѕСЏРЅРёРµ РёР· MainState<br>
+	 * 3. РРЅР°С‡Рµ С‚РµРєСѓС‰РµРµ СЃС‚СЃС‚РѕСЏРЅРёРµ РёР· GameClient;
+	 * @return РўРµРєСѓС‰РµРµ СЃРѕСЃС‚РѕСЏРЅРёРµ РёРіСЂС‹.
 	 */
 	public GameState getCurrentState(){
-		//А тут значит костыль.
-		//MainState содержит свою машину состояний, поэтому что бы получить на самом деле текущее состояние, 
-		//недо получить текущее состояние из MainState
+		//Рђ С‚СѓС‚ Р·РЅР°С‡РёС‚ РєРѕСЃС‚С‹Р»СЊ.
+		//MainState СЃРѕРґРµСЂР¶РёС‚ СЃРІРѕСЋ РјР°С€РёРЅСѓ СЃРѕСЃС‚РѕСЏРЅРёР№, РїРѕСЌС‚РѕРјСѓ С‡С‚Рѕ Р±С‹ РїРѕР»СѓС‡РёС‚СЊ РЅР° СЃР°РјРѕРј РґРµР»Рµ С‚РµРєСѓС‰РµРµ СЃРѕСЃС‚РѕСЏРЅРёРµ, 
+		//РЅРµРґРѕ РїРѕР»СѓС‡РёС‚СЊ С‚РµРєСѓС‰РµРµ СЃРѕСЃС‚РѕСЏРЅРёРµ РёР· MainState
 		GameState result = null;
 		if (!modalStates.isEmpty()){
 			return modalStates.peek().getGameState();
@@ -395,11 +399,6 @@ public class GameClient {
 			}
 		}
 		return result;
-	}
-
-	public static class Shared{
-		public static BattleDeckObject battleDeck = null;
-		public static GameMapObject gameMap = null;
 	}
 }
 

@@ -89,13 +89,15 @@ public class MovePhase extends ActionPhase {
 						endTurn();
 					}
 				}else{
-					GameClient.instance().send(new Packages.Attack(source.getID(), region.getID()));
+					GameClient.instance().send(new Packages.Attack(source.getID(), region.getID(),
+							PlayerManager.instance().getPlayerByFraction(source.getFraction()).id,
+							PlayerManager.instance().getPlayerByFraction(region.getFraction()).id));
 
 					//На время отладки упростим бой до:
 					//У кого больше силы, тот победил. При равных условиях смотри трек.
 
 				}
-				GameMapObject.instance().disableAllRegions();
+				GameClient.shared.gameMap.disableAllRegions();
 				changeSubState(SubState.SELECT_SOURCE);
 			}
 
@@ -135,7 +137,7 @@ public class MovePhase extends ActionPhase {
 					GameClient.instance().sendReady(false);
 				}
 			}else{
-				GameMapObject.instance().disableAllRegions();
+				GameClient.shared.gameMap.disableAllRegions();
 			}
 		}
 		if (pkg instanceof Packages.PlayerMove) {
@@ -143,10 +145,10 @@ public class MovePhase extends ActionPhase {
 			GameClient.instance().registerTask(()->{
 				Player player = PlayerManager.instance().getPlayer(msg.player);
 
-				MapPartObject regionFrom = GameMapObject.instance().getRegionByID(msg.from);
+				MapPartObject regionFrom = GameClient.shared.gameMap.getRegionByID(msg.from);
 				regionFrom.removeUnits(msg.units);
 
-				MapPartObject regionTo = GameMapObject.instance().getRegionByID(msg.to);
+				MapPartObject regionTo = GameClient.shared.gameMap.getRegionByID(msg.to);
 				regionTo.addUnits(msg.units);
 				regionTo.setFraction(player.getFraction());
 			});
@@ -158,7 +160,7 @@ public class MovePhase extends ActionPhase {
 			usedRegion.setEnabled(true);
 			return true;
 		}else {
-			return GameMapObject.instance().setEnabledByCondition((region) -> {
+			return GameClient.shared.gameMap.setEnabledByCondition((region) -> {
 				Action act = region.getAction();
 				if (act == null) return false;
 				if ((act == Action.MOVEMINUS || act == Action.MOVEPLUS

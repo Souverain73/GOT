@@ -9,7 +9,7 @@ import got.graphics.TextureManager;
 
 /**
  * Implements simple image.
- * @author ÊèçèëîâÌŞ
+ * @author ĞšĞ¸Ğ·Ğ¸Ğ»Ğ¾Ğ²ĞœĞ®
  *
  */
 public class ImageObject extends AbstractGameObject<ImageObject>{

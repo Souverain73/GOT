@@ -112,7 +112,7 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 				Node region = regions.item(i);
 				LoaderParams params = new LoaderParams();
 				MapPartObject mapPart = new MapPartObject();
-				//атрибуты
+				//Р°С‚СЂРёР±СѓС‚С‹
 				params.put("name", attribValue(region, "name"));
 				params.put("id", counter++);
 				params.put("influence", Integer.valueOf(valueOrDefault(attribValue(region, "influence"),"0")));
@@ -126,7 +126,7 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 				params.put("type", attribValue(region, "type"));			
 				params.put("fraction", attribValue(region, "fraction"));
 				
-				//параметры
+				//РїР°СЂР°РјРµС‚СЂС‹
 				NodeList regionParams = region.getChildNodes();
 				for(int j=0; j<regionParams.getLength(); j++){
 					if (regionParams.item(j).getNodeType() == Node.TEXT_NODE) continue;

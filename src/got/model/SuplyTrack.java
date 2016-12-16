@@ -1,5 +1,7 @@
 package got.model;
 
+import got.GameClient;
+import got.gameObjects.MapPartObject;
 import got.utils.Utils;
 
 import java.util.ArrayList;
@@ -81,6 +83,13 @@ public class SuplyTrack {
         return true;
     }
 
+    public boolean canMove(Fraction fraction, MapPartObject from, MapPartObject to, int unitsCount){
+        return canMove(fraction,
+                GameClient.shared.gameMap.getArmySizesForFraction(fraction),
+                from.getUnitsCount(),
+                to.getUnitsCount(),
+                unitsCount);
+    }
 
     public boolean canMove(Fraction fraction, int [] currentArmySizes, int fromArmySize, int toArmySize, int sizeArmyToMove){
         boolean changedFrom = false, changedTo = false;

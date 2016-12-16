@@ -5,23 +5,16 @@ import got.gameStates.StateID;
 import got.model.Player;
 import got.network.Packages;
 import got.server.GameServer;
+import static got.server.GameServer.Shared.*;
 
 /**
  * Created by Souverain73 on 28.11.2016.
  */
 public class HelpPhaseState extends StepByStepState{
-    private int attackerRegionId;
-    private int defenderRegionId;
-
     public HelpPhaseState(){
-        setNextState(SelectHomeCardPhaseState.class);
+        setNextState(BattleResultState.class);
     }
 
-    public HelpPhaseState(int attackerRegionId, int defenderRegionId){
-        super();
-        this.attackerRegionId = attackerRegionId;
-        this.defenderRegionId = defenderRegionId;
-    }
 
     @Override
     public int getID() {
@@ -30,7 +23,8 @@ public class HelpPhaseState extends StepByStepState{
 
     @Override
     public void enter(StateMachine stm) {
-        GameServer.getServer().sendToAllTCP(new Packages.InitBattle(attackerRegionId, defenderRegionId));
+        GameServer.getServer().sendToAllTCP(new Packages.InitBattle(GameServer.shared.attackerRegionID,
+                GameServer.shared.defenderRegionID));
         super.enter(stm);
     }
 

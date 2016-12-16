@@ -46,6 +46,7 @@ public class Packages {
 		kryo.register(Act.class);
 		kryo.register(SelectRegion.class);
 		kryo.register(Move.class);
+		kryo.register(PlayerChangeUnits.class);
 		kryo.register(ChangeUnits.class);
 		kryo.register(CollectInfluence.class);
 		kryo.register(SelectItem.class);
@@ -59,6 +60,10 @@ public class Packages {
 		kryo.register(InitBattle.class);
 		kryo.register(Help.class);
 		kryo.register(PlayerHelp.class);
+		kryo.register(PlayerDamage.class);
+		kryo.register(GetBattleResult.class);
+		kryo.register(BattleResult.class);
+		kryo.register(StateReady.class);
 	}
 
 	public static class NetPackage {
@@ -87,7 +92,7 @@ public class Packages {
 
 	
 	/**
-	 * Запрос от клиента на подключение.
+	 * Р—Р°РїСЂРѕСЃ РѕС‚ РєР»РёРµРЅС‚Р° РЅР° РїРѕРґРєР»СЋС‡РµРЅРёРµ.
 	 */
 	public static class LogIn extends ClientServerPackage {
 		public String nickname;
@@ -101,9 +106,9 @@ public class Packages {
 	
 	
 	/**
-	 *	Сообщение о ошибке подключения к сетевому лоби.
-	 *	Используется для сообщения клиенту о занятости лобби или иных причинах, 
-	 *	по которым подключение не возможно.
+	 *	РЎРѕРѕР±С‰РµРЅРёРµ Рѕ РѕС€РёР±РєРµ РїРѕРґРєР»СЋС‡РµРЅРёСЏ Рє СЃРµС‚РµРІРѕРјСѓ Р»РѕР±Рё.
+	 *	РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ СЃРѕРѕР±С‰РµРЅРёСЏ РєР»РёРµРЅС‚Сѓ Рѕ Р·Р°РЅСЏС‚РѕСЃС‚Рё Р»РѕР±Р±Рё РёР»Рё РёРЅС‹С… РїСЂРёС‡РёРЅР°С…, 
+	 *	РїРѕ РєРѕС‚РѕСЂС‹Рј РїРѕРґРєР»СЋС‡РµРЅРёРµ РЅРµ РІРѕР·РјРѕР¶РЅРѕ.
 	 */
 	public static class ConnectionError extends ServerClientPackage {
 		public final static int LobbyIsFull = 1; 
@@ -116,8 +121,8 @@ public class Packages {
 	}
 	
 	/**
-	 *	Передает клиенту список игроков.
-	 *	Используется для получения информации о составе сетевого лоби для вновь присоединившихся игроков.
+	 *	РџРµСЂРµРґР°РµС‚ РєР»РёРµРЅС‚Сѓ СЃРїРёСЃРѕРє РёРіСЂРѕРєРѕРІ.
+	 *	РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ РёРЅС„РѕСЂРјР°С†РёРё Рѕ СЃРѕСЃС‚Р°РІРµ СЃРµС‚РµРІРѕРіРѕ Р»РѕР±Рё РґР»СЏ РІРЅРѕРІСЊ РїСЂРёСЃРѕРµРґРёРЅРёРІС€РёС…СЃСЏ РёРіСЂРѕРєРѕРІ.
 	 */
 	public static class PlayersList extends ServerClientPackage {
 		public Player [] players;
@@ -131,8 +136,8 @@ public class Packages {
 
 	
 	/**
-	 *	Пакет, представляющий собой сообщение от сервера клиенту.
-	 *	Используется для передачи различных системных сообщений
+	 *	РџР°РєРµС‚, РїСЂРµРґСЃС‚Р°РІР»СЏСЋС‰РёР№ СЃРѕР±РѕР№ СЃРѕРѕР±С‰РµРЅРёРµ РѕС‚ СЃРµСЂРІРµСЂР° РєР»РёРµРЅС‚Сѓ.
+	 *	РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ РїРµСЂРµРґР°С‡Рё СЂР°Р·Р»РёС‡РЅС‹С… СЃРёСЃС‚РµРјРЅС‹С… СЃРѕРѕР±С‰РµРЅРёР№
 	 */
 	public static class ServerMessage extends ServerClientPackage {
 		public String message;
@@ -143,21 +148,21 @@ public class Packages {
 	}
 
 	/**
-	 * Инициализирует модель игрока на клиенте
+	 * РРЅРёС†РёР°Р»РёР·РёСЂСѓРµС‚ РјРѕРґРµР»СЊ РёРіСЂРѕРєР° РЅР° РєР»РёРµРЅС‚Рµ
 	 */
 	public static class InitPlayer extends ServerClientPackage {
 		public Player player;
 	}
 
 	/**
-	 * Сообщает всем игрокам о подключении игрока
+	 * РЎРѕРѕР±С‰Р°РµС‚ РІСЃРµРј РёРіСЂРѕРєР°Рј Рѕ РїРѕРґРєР»СЋС‡РµРЅРёРё РёРіСЂРѕРєР°
 	 */
 	public static class PlayerConnected extends BroadcastPackage {
 		public Player player;
 	}
 
 	/**
-	 * Сообзает всем игрокам о отключении игрока
+	 * РЎРѕРѕР±Р·Р°РµС‚ РІСЃРµРј РёРіСЂРѕРєР°Рј Рѕ РѕС‚РєР»СЋС‡РµРЅРёРё РёРіСЂРѕРєР°
 	 */
 	public static class PlayerDisconnected extends BroadcastPackage {
 		public Player player;
@@ -172,10 +177,10 @@ public class Packages {
 	}
 
 	/**
-	 *	Пакет для передачи списка фракций. <br>
-	 *	Порядок фракций в массиве определяет принадлежность игроков к фракциям.<br>
+	 *	РџР°РєРµС‚ РґР»СЏ РїРµСЂРµРґР°С‡Рё СЃРїРёСЃРєР° С„СЂР°РєС†РёР№. <br>
+	 *	РџРѕСЂСЏРґРѕРє С„СЂР°РєС†РёР№ РІ РјР°СЃСЃРёРІРµ РѕРїСЂРµРґРµР»СЏРµС‚ РїСЂРёРЅР°РґР»РµР¶РЅРѕСЃС‚СЊ РёРіСЂРѕРєРѕРІ Рє С„СЂР°РєС†РёСЏРј.<br>
 	 *	players[id].fraction = fractions[id];<br>
-	 *	Используется для инициализации распределения игроков по фракциям в начале игры.
+	 *	РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ РёРЅРёС†РёР°Р»РёР·Р°С†РёРё СЂР°СЃРїСЂРµРґРµР»РµРЅРёСЏ РёРіСЂРѕРєРѕРІ РїРѕ С„СЂР°РєС†РёСЏРј РІ РЅР°С‡Р°Р»Рµ РёРіСЂС‹.
 	 */
 	public static class SetFractions extends BroadcastPackage {
 		public Fraction[] fractions;
@@ -186,7 +191,7 @@ public class Packages {
 	}
 	
 	/**
-	 * устанавливает набор юнитов на определенной територии.
+	 * СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ РЅР°Р±РѕСЂ СЋРЅРёС‚РѕРІ РЅР° РѕРїСЂРµРґРµР»РµРЅРЅРѕР№ С‚РµСЂРёС‚РѕСЂРёРё.
 	 */
 	public static class SetUnits extends BroadcastPackage {
 		int region;
@@ -198,7 +203,7 @@ public class Packages {
 	}
 
 	/**
-	 * устанавливает положение игроков на треках.
+	 * СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ РїРѕР»РѕР¶РµРЅРёРµ РёРіСЂРѕРєРѕРІ РЅР° С‚СЂРµРєР°С….
 	 */
 	public static class SetTrack extends BroadcastPackage {
 		int track;
@@ -210,7 +215,7 @@ public class Packages {
 	}
 
 	/**
-	 * устанавливает действие для региона.
+	 * СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ РґРµР№СЃС‚РІРёРµ РґР»СЏ СЂРµРіРёРѕРЅР°.
 	 */
 	public static class PlayerSetAction extends BroadcastPackage {
 		public int region;
@@ -229,7 +234,7 @@ public class Packages {
 	}
 
 	/**
-	 * сообщает всем игрокам о готовности игрока player.
+	 * СЃРѕРѕР±С‰Р°РµС‚ РІСЃРµРј РёРіСЂРѕРєР°Рј Рѕ РіРѕС‚РѕРІРЅРѕСЃС‚Рё РёРіСЂРѕРєР° player.
 	 */
 	public static class PlayerReady extends BroadcastPackage {
 		public int playerID;
@@ -249,7 +254,7 @@ public class Packages {
 	}
 
 	/**
-	 * сообщает всем игрокам, что сейчас ход игрока player
+	 * СЃРѕРѕР±С‰Р°РµС‚ РІСЃРµРј РёРіСЂРѕРєР°Рј, С‡С‚Рѕ СЃРµР№С‡Р°СЃ С…РѕРґ РёРіСЂРѕРєР° player
 	 */
 	public static class PlayerTurn extends BroadcastPackage {
 		public int playerID;
@@ -267,8 +272,8 @@ public class Packages {
 	}
 
 	/**
-	 * сообщает всем игрокам, что текущий игрок играет приказ с терриротии from
-	 * на территорию to
+	 * СЃРѕРѕР±С‰Р°РµС‚ РІСЃРµРј РёРіСЂРѕРєР°Рј, С‡С‚Рѕ С‚РµРєСѓС‰РёР№ РёРіСЂРѕРє РёРіСЂР°РµС‚ РїСЂРёРєР°Р· СЃ С‚РµСЂСЂРёСЂРѕС‚РёРё from
+	 * РЅР° С‚РµСЂСЂРёС‚РѕСЂРёСЋ to
 	 */
 	public static class PlayerAct extends BroadcastPackage {
 		public int from;
@@ -288,7 +293,7 @@ public class Packages {
 	}
 
 	/**
-	 * сообщеат всем игрокам, что текущий игрок выбрал регион region
+	 * СЃРѕРѕР±С‰РµР°С‚ РІСЃРµРј РёРіСЂРѕРєР°Рј, С‡С‚Рѕ С‚РµРєСѓС‰РёР№ РёРіСЂРѕРє РІС‹Р±СЂР°Р» СЂРµРіРёРѕРЅ region
 	 */
 	public static class PlayerSelectRegion extends BroadcastPackage {
 		int region;
@@ -298,8 +303,8 @@ public class Packages {
 	}
 
 	/**
-	 * сообщает всем игрокам, что текущий игрок перемещает с терриротии from на
-	 * территорию to юнитов units
+	 * СЃРѕРѕР±С‰Р°РµС‚ РІСЃРµРј РёРіСЂРѕРєР°Рј, С‡С‚Рѕ С‚РµРєСѓС‰РёР№ РёРіСЂРѕРє РїРµСЂРµРјРµС‰Р°РµС‚ СЃ С‚РµСЂСЂРёСЂРѕС‚РёРё from РЅР°
+	 * С‚РµСЂСЂРёС‚РѕСЂРёСЋ to СЋРЅРёС‚РѕРІ units
 	 */
 	public static class PlayerMove extends BroadcastPackage {
 		public int player;
@@ -318,7 +323,7 @@ public class Packages {
 	}
 
 	/**
-	 * сообщает игрокам, что открыта карта card из колоды number.
+	 * СЃРѕРѕР±С‰Р°РµС‚ РёРіСЂРѕРєР°Рј, С‡С‚Рѕ РѕС‚РєСЂС‹С‚Р° РєР°СЂС‚Р° card РёР· РєРѕР»РѕРґС‹ number.
 	 */
 	public static class OpenCard extends BroadcastPackage {
 		int number;
@@ -329,7 +334,7 @@ public class Packages {
 	}
 
 	/**
-	 * сообщает игрокам, что была выбрана позиция select.
+	 * СЃРѕРѕР±С‰Р°РµС‚ РёРіСЂРѕРєР°Рј, С‡С‚Рѕ Р±С‹Р»Р° РІС‹Р±СЂР°РЅР° РїРѕР·РёС†РёСЏ select.
 	 */
 	public static class PlayerSelectItem extends BroadcastPackage {
 		int select;
@@ -339,7 +344,7 @@ public class Packages {
 	}
 
 	/**
-	 * сообщает игрокам, какие ставки были сделаны.
+	 * СЃРѕРѕР±С‰Р°РµС‚ РёРіСЂРѕРєР°Рј, РєР°РєРёРµ СЃС‚Р°РІРєРё Р±С‹Р»Рё СЃРґРµР»Р°РЅС‹.
 	 */
 	public static class PlayerBets extends BroadcastPackage {
 		int bets[];
@@ -350,7 +355,7 @@ public class Packages {
 	}
 
 	/**
-	 * Передает информацию о смене фазы игры.
+	 * РџРµСЂРµРґР°РµС‚ РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ СЃРјРµРЅРµ С„Р°Р·С‹ РёРіСЂС‹.
 	 */
 	public static class ChangeState extends BroadcastPackage {
 		public int state;
@@ -358,10 +363,17 @@ public class Packages {
 		public ChangeState(int state) {
 			this.state = state;
 		}
+
+		@Override
+		public String toString() {
+			return "ChangeState{" +
+					"state=" + state +
+					'}';
+		}
 	}
 
 	/**
-	 * устанавливает действие для региона.
+	 * СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ РґРµР№СЃС‚РІРёРµ РґР»СЏ СЂРµРіРёРѕРЅР°.
 	 */
 	public static class SetAction extends ClientServerPackage {
 		public int region;
@@ -375,7 +387,7 @@ public class Packages {
 	}
 
 	/**
-	 * Устанавливает готовность клиента к завершению фазы или хода.
+	 * РЈСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ РіРѕС‚РѕРІРЅРѕСЃС‚СЊ РєР»РёРµРЅС‚Р° Рє Р·Р°РІРµСЂС€РµРЅРёСЋ С„Р°Р·С‹ РёР»Рё С…РѕРґР°.
 	 */
 	public static class Ready extends ClientServerPackage {
 		public boolean ready;
@@ -393,14 +405,14 @@ public class Packages {
 	}
 
 	/**
-	 * Сообщает серверу, что клиент готов к смене состояния.
+	 * РЎРѕРѕР±С‰Р°РµС‚ СЃРµСЂРІРµСЂСѓ, С‡С‚Рѕ РєР»РёРµРЅС‚ РіРѕС‚РѕРІ Рє СЃРјРµРЅРµ СЃРѕСЃС‚РѕСЏРЅРёСЏ.
 	 */
 
 	public static class StateReady extends ClientServerPackage {
 	}
 
 	/**
-	 * сообщает серверу, что игрок играет приказ с территории from на территорию
+	 * СЃРѕРѕР±С‰Р°РµС‚ СЃРµСЂРІРµСЂСѓ, С‡С‚Рѕ РёРіСЂРѕРє РёРіСЂР°РµС‚ РїСЂРёРєР°Р· СЃ С‚РµСЂСЂРёС‚РѕСЂРёРё from РЅР° С‚РµСЂСЂРёС‚РѕСЂРёСЋ
 	 * to
 	 */
 	public static class Act extends ClientServerPackage {
@@ -417,7 +429,7 @@ public class Packages {
 	}
 
 	/**
-	 * сообщает серверу, что игрок выбрал регион region
+	 * СЃРѕРѕР±С‰Р°РµС‚ СЃРµСЂРІРµСЂСѓ, С‡С‚Рѕ РёРіСЂРѕРє РІС‹Р±СЂР°Р» СЂРµРіРёРѕРЅ region
 	 */
 	public static class SelectRegion extends ClientServerPackage {
 		int region;
@@ -427,8 +439,8 @@ public class Packages {
 	}
 
 	/**
-	 * сообщает серверу, что игрок перемещает с территории from на территорию to
-	 * юнитов units
+	 * СЃРѕРѕР±С‰Р°РµС‚ СЃРµСЂРІРµСЂСѓ, С‡С‚Рѕ РёРіСЂРѕРє РїРµСЂРµРјРµС‰Р°РµС‚ СЃ С‚РµСЂСЂРёС‚РѕСЂРёРё from РЅР° С‚РµСЂСЂРёС‚РѕСЂРёСЋ to
+	 * СЋРЅРёС‚РѕРІ units
 	 */
 	public static class Move extends ClientServerPackage {
 		public int from;
@@ -445,8 +457,8 @@ public class Packages {
 	}
 
 	/**
-	 * сообщает серверу, что игрок набирает войска в регионе и передает новый
-	 * набор юнитов.
+	 * СЃРѕРѕР±С‰Р°РµС‚ СЃРµСЂРІРµСЂСѓ, С‡С‚Рѕ РёРіСЂРѕРє РЅР°Р±РёСЂР°РµС‚ РІРѕР№СЃРєР° РІ СЂРµРіРёРѕРЅРµ Рё РїРµСЂРµРґР°РµС‚ РЅРѕРІС‹Р№
+	 * РЅР°Р±РѕСЂ СЋРЅРёС‚РѕРІ.
 	 */
 	public static class ChangeUnits extends ClientServerPackage {
 		public int region;
@@ -468,7 +480,7 @@ public class Packages {
 	}
 
 	/**
-	 * Сообщает клиентам, что игрок изменил состав юнитов в регионе.
+	 * РЎРѕРѕР±С‰Р°РµС‚ РєР»РёРµРЅС‚Р°Рј, С‡С‚Рѕ РёРіСЂРѕРє РёР·РјРµРЅРёР» СЃРѕСЃС‚Р°РІ СЋРЅРёС‚РѕРІ РІ СЂРµРіРёРѕРЅРµ.
 	 */
 	public static class PlayerChangeUnits extends ServerClientPackage {
 		public int player;
@@ -485,7 +497,7 @@ public class Packages {
 	}
 
 	/**
-	 * сообщает серверу, что игрок собирает очки влияния с региона.
+	 * СЃРѕРѕР±С‰Р°РµС‚ СЃРµСЂРІРµСЂСѓ, С‡С‚Рѕ РёРіСЂРѕРє СЃРѕР±РёСЂР°РµС‚ РѕС‡РєРё РІР»РёСЏРЅРёСЏ СЃ СЂРµРіРёРѕРЅР°.
 	 */
 	public static class CollectInfluence extends ClientServerPackage {
 		public int region;
@@ -509,7 +521,7 @@ public class Packages {
 	}
 
 	/**
-	 * сообщает серверу, что игрок ставит value очков влияния.
+	 * СЃРѕРѕР±С‰Р°РµС‚ СЃРµСЂРІРµСЂСѓ, С‡С‚Рѕ РёРіСЂРѕРє СЃС‚Р°РІРёС‚ value РѕС‡РєРѕРІ РІР»РёСЏРЅРёСЏ.
 	 */
 	public static class Bet extends ClientServerPackage {
 		int value;
@@ -519,8 +531,8 @@ public class Packages {
 	}
 
 	/**
-	 * запрашивает у сервера информацию о текущем состоянии. Используется для
-	 * восстановления при сбоях.
+	 * Р·Р°РїСЂР°С€РёРІР°РµС‚ Сѓ СЃРµСЂРІРµСЂР° РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ С‚РµРєСѓС‰РµРј СЃРѕСЃС‚РѕСЏРЅРёРё. РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ
+	 * РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёСЏ РїСЂРё СЃР±РѕСЏС….
 	 */
 	public static class GetGlobalState extends ClientServerPackage {
 		public GetGlobalState() {
@@ -528,8 +540,8 @@ public class Packages {
 	}
 
 	/**
-	 * сообщает клиенту что через seconds секунд, готовность игрока будет
-	 * проставлена автоматически.
+	 * СЃРѕРѕР±С‰Р°РµС‚ РєР»РёРµРЅС‚Сѓ С‡С‚Рѕ С‡РµСЂРµР· seconds СЃРµРєСѓРЅРґ, РіРѕС‚РѕРІРЅРѕСЃС‚СЊ РёРіСЂРѕРєР° Р±СѓРґРµС‚
+	 * РїСЂРѕСЃС‚Р°РІР»РµРЅР° Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё.
 	 */
 	public static class ForceReadyAt extends ServerClientPackage {
 		int seconds;
@@ -539,8 +551,8 @@ public class Packages {
 	}
 
 	/**
-	 * добавляет игроку очки влияния в количестве value. Value может быть
-	 * отрицательным.
+	 * РґРѕР±Р°РІР»СЏРµС‚ РёРіСЂРѕРєСѓ РѕС‡РєРё РІР»РёСЏРЅРёСЏ РІ РєРѕР»РёС‡РµСЃС‚РІРµ value. Value РјРѕР¶РµС‚ Р±С‹С‚СЊ
+	 * РѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Рј.
 	 */
 	public static class AddInfluence extends ServerClientPackage {
 		int value;
@@ -550,8 +562,8 @@ public class Packages {
 	}
 
 	/**
-	 * передает всю информацию о текущем состоянии игры. Используется для
-	 * восстановления разорванных игровых сессий и синхронизации после сбоя.
+	 * РїРµСЂРµРґР°РµС‚ РІСЃСЋ РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ С‚РµРєСѓС‰РµРј СЃРѕСЃС‚РѕСЏРЅРёРё РёРіСЂС‹. РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ
+	 * РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёСЏ СЂР°Р·РѕСЂРІР°РЅРЅС‹С… РёРіСЂРѕРІС‹С… СЃРµСЃСЃРёР№ Рё СЃРёРЅС…СЂРѕРЅРёР·Р°С†РёРё РїРѕСЃР»Рµ СЃР±РѕСЏ.
 	 */
 	public static class SetGlobalState extends ServerClientPackage {
 		int stateData;
@@ -564,12 +576,16 @@ public class Packages {
 	public static class Attack extends ClientServerPackage {
 		public int from;
 		public int to;
+		public int attackerId;
+		public int defenderId;
 
 		public Attack(){}
 
-		public Attack(int from, int to) {
+		public Attack(int from, int to, int attackerId, int defenderId) {
 			this.from = from;
 			this.to = to;
+			this.attackerId = attackerId;
+			this.defenderId = defenderId;
 		}
 	}
 
@@ -602,6 +618,74 @@ public class Packages {
 		}
 	}
 
+	/**
+	 * РЎРѕРѕР±С‰Р°РµС‚ СЃРµСЂРІРµСЂСѓ Рѕ С…Р°СЂР°РєС‚РµСЂРёСЃС‚РёРєРё РёРіСЂРѕРєРѕРІ РїРѕ СЂРµР·СѓР»СЊС‚Р°С‚Р°Рј Р±РѕСЏ
+	 */
+	public static class PlayerDamage extends ClientServerPackage{
+		public int attackerDamage;
+		public int defenderDamage;
+
+		public PlayerDamage() {
+		}
+
+		public PlayerDamage(int attackerDamage, int defenderDamage) {
+			this.attackerDamage = attackerDamage;
+			this.defenderDamage = defenderDamage;
+		}
+
+		@Override
+		public String toString() {
+			return "PlayerDamage{" +
+					"attackerDamage=" + attackerDamage +
+					", defenderDamage=" + defenderDamage +
+					'}';
+		}
+	}
+
+	/**
+	 * Р—Р°РїСЂРѕСЃ РёРЅС„РѕСЂРјР°С†РёРё Рѕ СЂРµР·СѓР»СЊС‚Р°С‚Р°С… Р±РѕСЏ РѕС‚ РєР»РёРµРЅС‚РѕРІ
+	 */
+	public static class GetBattleResult extends ServerClientPackage{
+	}
+
+	/**
+	 * РЎРѕРѕР±С‰Р°РµС‚ РёРіСЂРѕРєР°Рј СЂРµР·СѓР»СЊС‚Р°С‚С‹ Р±РѕСЏ.
+	 */
+	public static class BattleResult extends ServerClientPackage {
+		public int winnerID;
+		public int looserID;
+		public int killUnits;
+
+		public BattleResult() {
+		}
+
+		public BattleResult(int winnerID, int looserID, int killUnits) {
+			this.winnerID = winnerID;
+			this.looserID = looserID;
+			this.killUnits = killUnits;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+
+			BattleResult that = (BattleResult) o;
+
+			if (winnerID != that.winnerID) return false;
+			if (looserID != that.looserID) return false;
+			return killUnits == that.killUnits;
+
+		}
+	}
+
+	/**
+	 * РџР°РєРµС‚ СЃРѕРѕР±С‰Р°РµС‚ СЃРµСЂРІРµСЂСѓ, С‡С‚Рѕ РїСЂРѕРёРіСЂР°РІС€РёР№ РёРіСЂРѕРє Р·Р°РєРѕРЅС‡РёР» СѓР±РёР№СЃС‚РІРѕ СЋРЅРёС‚РѕРІ Рё РѕС‚СЃС‚СѓРїР»РµРЅРёРµ.
+	 */
+	public static class LooserReady extends ClientServerPackage{
+
+	}
+
 	public static class Help extends ClientServerPackage{
 		public static final int SIDE_NONE = 0;
 		public static final int SIDE_ATTACKER = 1;
@@ -630,6 +714,4 @@ public class Packages {
 			this.side = side;
 		}
 	}
-
-
 }

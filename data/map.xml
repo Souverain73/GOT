@@ -8,15 +8,10 @@
 			<unit type="KNIGHT"/>
 			<action type="DEFEND"/>
 		</region>
-		<region name="Karhold" type="GROUND" influence="1" x="951" y="149" w="355" h="318" fraction="LANISTER">
+		<region name="Karhold" type="GROUND" influence="1" x="951" y="149" w="355" h="318">
 			<actionpos x="282" y="116"/>
 			<unitpos x="165" y="215"/>			
-			<unit type="KNIGHT" />
-			<unit type="SOLDIER"/>
-			<unit type="SOLDIER"/>
-			<unit type="SOLDIER"/>
 			<texture filename="Karhold.png"/>
-			<action type="HELP"/>
 		</region>
 		<region name="Winterfell" type="GROUND" influence="1" resources="1" building="2" x="261" y="170" w="837" h="678" fraction="STARK">
 			<actionpos x="611" y="152"/>
@@ -27,10 +22,11 @@
 			<texture filename="Winterfell.png"/>
 			<action type="MOVEPLUS"/>
 		</region>
-		<region name="Widow's Watch" type="GROUND" resources="1" x="939" y="561" w="278" h="219">
+		<region name="Widow's Watch" type="GROUND" resources="1" x="939" y="561" w="278" h="219" fraction="LANISTER">
 			<actionpos x="48" y="135"/>
 			<unitpos x="90" y="75"/>
 			<texture filename="WidowsWatch.png"/>
+			<unit type="SOLDIER"/>
 		</region>
 		<region name="The Stony Shore" type="GROUND" resources="1" x="153" y="423" w="408" h="426" fraction="STARK">
 			<actionpos x="76" y="164"/>

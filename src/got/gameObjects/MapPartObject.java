@@ -40,14 +40,15 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	private Fraction fraction = Fraction.NEUTRAL;
 
 	private int ID = 0;
+
 	private RegionType type;
-
 	private String name;
-
 
 	private int resourcesCount;
 
+
 	private int influencePoints;
+
 	private int buildingLevel;
 	private Texture texture;
 	private List<MapPartObject>  neighbors;
@@ -118,7 +119,7 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		float actImgSize = Constants.ACTION_IMAGE_SIZE;
 		float halfActImgSize = Constants.ACTION_IMAGE_SIZE/2;
 		if (st instanceof PlanningPhase && action != null && fraction != PlayerManager.getSelf().getFraction()) {
-			//А тут значит задник.
+			//Рђ С‚СѓС‚ Р·РЅР°С‡РёС‚ Р·Р°РґРЅРёРє.
 			fraction.getBackTexture().draw(cp.x + act_x - halfActImgSize, cp.y + act_y - halfActImgSize, actImgSize, actImgSize);
 		}else{
 			if (action != null){
@@ -135,7 +136,6 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		GraphicModule.instance().resetEffect();
 		super.draw(st);
 	}
-
 	public List<MapPartObject> getNeighbors(){
 		return neighbors;
 	}
@@ -166,18 +166,23 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 				.map(uo->uo.getType()).toArray(Unit[]::new);
 	}
 
+	public List<MapPartObject> getRegionsToRetreat() {
+		//TODO: РЎРґРµР»Р°С‚СЊ РІ СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРё СЃ РїСЂР°РІРёР»Р°РјРё
+		return getNeighbors().stream().filter(region->fraction==region.getFraction()).collect(Collectors.toList());
+	}
+
 	public List<MapPartObject> getRegionsForHelp(Fraction helperFraction){
 		return getNeighbors().stream()
-				//фильтруем по фракции
+				//С„РёР»СЊС‚СЂСѓРµРј РїРѕ С„СЂР°РєС†РёРё
 				.filter(region->region.getFraction() == helperFraction)
-				//фильтруем по приказу
+				//С„РёР»СЊС‚СЂСѓРµРј РїРѕ РїСЂРёРєР°Р·Сѓ
 				.filter(region->region.getAction() == Action.HELP || region.getAction() == Action.HELPPLUS)
 				.collect(Collectors.toList());
 	}
 
 	public int getBattlePowerForHelpers(Fraction helperFraction){
 		return getRegionsForHelp(helperFraction).stream()
-				//считаем силу
+				//СЃС‡РёС‚Р°РµРј СЃРёР»Сѓ
 				.mapToInt(region->{
 					int power = Arrays.stream(region.getUnits())
 							.mapToInt(Unit::getDamage)
@@ -200,15 +205,15 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		return name;
 	}
 
-	//Метод добавляющий соседа.
+	//РњРµС‚РѕРґ РґРѕР±Р°РІР»СЏСЋС‰РёР№ СЃРѕСЃРµРґР°.
 	public void addNeighbor(MapPartObject neighbor){
 		if (neighbors.indexOf(neighbor)!=-1){
-			//если сосед уже есть то делать ничего не надо
+			//РµСЃР»Рё СЃРѕСЃРµРґ СѓР¶Рµ РµСЃС‚СЊ С‚Рѕ РґРµР»Р°С‚СЊ РЅРёС‡РµРіРѕ РЅРµ РЅР°РґРѕ
 			return;
 		}else{
-			//Если соседа нет, дбавляем его к соседям
+			//Р•СЃР»Рё СЃРѕСЃРµРґР° РЅРµС‚, РґР±Р°РІР»СЏРµРј РµРіРѕ Рє СЃРѕСЃРµРґСЏРј
 			neighbors.add(neighbor);
-			//Добавляем обратную связь
+			//Р”РѕР±Р°РІР»СЏРµРј РѕР±СЂР°С‚РЅСѓСЋ СЃРІСЏР·СЊ
 			neighbor.addNeighbor(this);
 		}
 	}
@@ -346,8 +351,8 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	}
 
 	/**
-	 * Нужен для обратной совместимости, в идеале надо бы это переписать.
-	 * @return - возвращает список юнитов в виде игровых объектов
+	 * РќСѓР¶РµРЅ РґР»СЏ РѕР±СЂР°С‚РЅРѕР№ СЃРѕРІРјРµСЃС‚РёРјРѕСЃС‚Рё, РІ РёРґРµР°Р»Рµ РЅР°РґРѕ Р±С‹ СЌС‚Рѕ РїРµСЂРµРїРёСЃР°С‚СЊ.
+	 * @return - РІРѕР·РІСЂР°С‰Р°РµС‚ СЃРїРёСЃРѕРє СЋРЅРёС‚РѕРІ РІ РІРёРґРµ РёРіСЂРѕРІС‹С… РѕР±СЉРµРєС‚РѕРІ
 	 */
 	public List<UnitObject> getUnitObjects(){
 		return units;

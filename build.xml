@@ -24,9 +24,6 @@
         <pathelement location="lib/jsonbeans-0.5.jar"/>
     </path>
     
-
-
-
 	<target name="init" description="Create the output directories.">
 		<mkdir dir="${build}" />
 		<mkdir dir="${build.data}\textures" />
@@ -36,7 +33,7 @@
 	</target>
 
 	<target name="compile" depends="init" description="Compile the source.">
-		<javac destdir="${build.classes}" includeantruntime="false" optimize="on" debug="on" source="${source}" target="${target}" nowarn="off">
+		<javac destdir="${build.classes}" includeantruntime="false" optimize="on" debug="on" source="${source}" target="${target}" nowarn="on" encoding="UTF-8">
 			<compilerarg value="-Xlint:deprecation"/>
 			<compilerarg value="-Xlint:unchecked"/>
 	        <classpath refid="GOT.classpath"/>

@@ -11,6 +11,8 @@ import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 import com.esotericsoftware.minlog.Log.Logger;
 
+import got.gameObjects.MapPartObject;
+import got.model.Fraction;
 import got.model.Game;
 import got.model.Player;
 import got.network.Network;
@@ -24,8 +26,14 @@ import got.server.serverStates.NetworkRoomState;
 import got.server.serverStates.ServerState;
 import got.server.serverStates.StateMachine;
 
-public class GameServer {	
-	
+public class GameServer {
+	public static class Shared{
+		public int attackerRegionID;
+		public int defenderRegionID;
+		public int attackerID;
+		public int defenderID;
+	}
+	public static Shared shared = new Shared();
 	private static StateMachine stm = new StateMachine();
 	private static Server server = null;
 	private ConcurrentLinkedQueue<Runnable> taskPool = new ConcurrentLinkedQueue<>();
@@ -48,7 +56,7 @@ public class GameServer {
 	}
 	
 	public GameServer(boolean console) throws IOException{
-		if (server!=null) throw new IOException("Server aldeady exist");
+		if (server!=null) throw new IOException("Server already exist");
 		// TODO create server code here
 		Server server = new Server(){
 			@Override

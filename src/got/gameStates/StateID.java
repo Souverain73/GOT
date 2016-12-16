@@ -17,33 +17,36 @@ public class StateID {
 	public static final int VESTEROS_PHASE = 6;
 	public static final int BATTLE_PHASE = 7;
 	public static final int HELP_PHASE = 8;
+	public static final int BATTLE_RESULT_PHASE = 9;
 	
 	public static GameState getGameStateByID(int id){
 		switch(id){
-		case MAIN_STATE: return new MainState();
-		case PLANNING_PHASE: return new PlanningPhase();
-		case ACTION_PHASE: return new ActionPhase();
-		case FIRE_PHASE: return new FirePhase();
-		case MOVE_PHASE: return new MovePhase();
-		case POWER_PHASE: return new PowerPhase();
-		case VESTEROS_PHASE: return new VesterosPhase();
-		case BATTLE_PHASE: return null;
-		case HELP_PHASE: return new HelpPhase();
+			case MAIN_STATE: return new MainState();
+			case PLANNING_PHASE: return new PlanningPhase();
+			case ACTION_PHASE: return new ActionPhase();
+			case FIRE_PHASE: return new FirePhase();
+			case MOVE_PHASE: return new MovePhase();
+			case POWER_PHASE: return new PowerPhase();
+			case VESTEROS_PHASE: return new VesterosPhase();
+			case BATTLE_PHASE: return null;
+			case HELP_PHASE: return new HelpPhase();
+			case BATTLE_RESULT_PHASE: return new BattleResultState();
 		}
 		return null;
 	}
 	
 	public static got.server.serverStates.ServerState getServerStateByID(int id){
 		switch(id){
-		case MAIN_STATE: return new got.server.serverStates.MainState();
-		case PLANNING_PHASE: return new got.server.serverStates.PlanningPhaseState();
-		case ACTION_PHASE: return null;
-		case FIRE_PHASE: return new got.server.serverStates.FirePhaseState();
-		case MOVE_PHASE: return null;
-		case POWER_PHASE: return new got.server.serverStates.PowerPhaseState();
-		case VESTEROS_PHASE: return null;
-		case BATTLE_PHASE: return null;
-		case HELP_PHASE: return new got.server.serverStates.HelpPhaseState();
+			case MAIN_STATE: return new got.server.serverStates.MainState();
+			case PLANNING_PHASE: return new got.server.serverStates.PlanningPhaseState();
+			case ACTION_PHASE: return null;
+			case FIRE_PHASE: return new got.server.serverStates.FirePhaseState();
+			case MOVE_PHASE: return null;
+			case POWER_PHASE: return new got.server.serverStates.PowerPhaseState();
+			case VESTEROS_PHASE: return null;
+			case BATTLE_PHASE: return null;
+			case HELP_PHASE: return new got.server.serverStates.HelpPhaseState();
+			case BATTLE_RESULT_PHASE: return new got.server.serverStates.BattleResultState();
 		}
 		return null;
 	}

@@ -1,6 +1,7 @@
 package got.server.serverStates;
 
 import com.esotericsoftware.kryonet.Connection;
+import got.gameStates.GameState;
 import got.gameStates.StateID;
 import got.model.Player;
 import got.network.Packages;
@@ -43,7 +44,11 @@ public class MovePhaseState extends StepByStepState {
 
         if (pkg instanceof Packages.Attack) {
             Packages.Attack attack = (Packages.Attack) pkg;
-            stm.setState(new ChangeState(new HelpPhaseState(attack.from, attack.to), true));
+            GameServer.shared.attackerRegionID = attack.from;
+            GameServer.shared.defenderRegionID = attack.to;
+            GameServer.shared.attackerID = attack.attackerId;
+            GameServer.shared.defenderID = attack.defenderId;
+            stm.setState(new ChangeState(new HelpPhaseState(), true));
         }
     }
 }

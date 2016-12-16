@@ -28,8 +28,8 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
     private final MapPartObject defender;
 
 
-    private int attackersPower;
-    private int defendersPower;
+    public int attackersPower;
+    public int defendersPower;
 
     public BattleDeckObject(MapPartObject atacker, MapPartObject defender) {
         this.attacker = atacker;
@@ -43,20 +43,25 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
                 .setDim(new Vector2f(500, 200))
                 .setSpace(DrawSpace.SCREEN);
 
-        attackerContainer.addChild(new PlayerCardObject(attacker.getFraction(), attacker.getUnits())
-                                                        .setSpace(DrawSpace.SCREEN).setPos(new Vector2f(400,0)));
+        PlayerCardObject attackerCard = new PlayerCardObject(this.attacker.getFraction(), this.attacker.getUnits())
+                .setSpace(DrawSpace.SCREEN).setPos(new Vector2f(400, 0));
+        attackers.add(attackerCard);
+        attackerContainer.addChild(attackerCard);
 
         defenderContainer = new ContainerObject()
                 .setPos(new Vector2f(500, 0))
                 .setDim(new Vector2f(500, 200))
                 .setSpace(DrawSpace.SCREEN);
 
-        attackerContainer.addChild(new PlayerCardObject(defender.getFraction(), defender.getUnits())
-                .setSpace(DrawSpace.SCREEN).setPos(new Vector2f(500,0)));
+        PlayerCardObject defenderCard = new PlayerCardObject(defender.getFraction(), defender.getUnits())
+                .setSpace(DrawSpace.SCREEN).setPos(new Vector2f(0, 0));
+        defenders.add(defenderCard);
+        defenderContainer.addChild(defenderCard);
 
         addChild(background);
         background.addChild(attackerContainer);
         background.addChild(defenderContainer);
+        updateState();
     }
 
     public void addAttackerHelper(Player player){
@@ -78,9 +83,9 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
     }
 
     private void updateState() {
-        int xa = 300;
-        int xd = 100;
-        for (int i = 0; i < 3; i++) {
+        int xa = 400;
+        int xd = 000;
+        for (int i = 0; i < 4; i++) {
             if (i < attackers.size()) {
                 PlayerCardObject attacker = attackers.get(i);
                 attacker.setPos(new Vector2f(xa, 0));
@@ -124,5 +129,19 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
 
     public boolean isBattleMember(Fraction fraction){
         return  (attacker.getFraction() == fraction || defender.getFraction() == fraction);
+    }
+
+    public boolean isDefender(Fraction fraction) {
+        return fraction == defender.getFraction();
+    }
+
+    public boolean isAttacker(Fraction fraction){
+        return fraction == attacker.getFraction();
+    }
+
+    public MapPartObject getPlayerRegion(Player player) {
+        if (player.getFraction() == defender.getFraction()) return defender;
+        if (player.getFraction() == attacker.getFraction()) return attacker;
+        throw new IllegalStateException("Игрок попыталя получить свой регион в бою, но он не был участником боя.");
     }
 }
