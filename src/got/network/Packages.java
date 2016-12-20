@@ -64,6 +64,10 @@ public class Packages {
 		kryo.register(GetBattleResult.class);
 		kryo.register(BattleResult.class);
 		kryo.register(StateReady.class);
+		kryo.register(KillAllUnitsAtRegion.class);
+		kryo.register(PlayerKillAllUnitsAtRegion.class);
+		kryo.register(MoveAttackerToAttackRegion.class);
+		kryo.register(LooserReady.class);
 	}
 
 	public static class NetPackage {
@@ -713,5 +717,32 @@ public class Packages {
 			this.player = player;
 			this.side = side;
 		}
+	}
+
+	public static class KillAllUnitsAtRegion extends ClientServerPackage{
+		public int regionID;
+
+		public KillAllUnitsAtRegion(int regionID) {
+			this.regionID = regionID;
+		}
+
+		public KillAllUnitsAtRegion() {
+		}
+	}
+
+	public static class PlayerKillAllUnitsAtRegion extends BroadcastPackage{
+		public int player;
+		public int regionID;
+
+		public PlayerKillAllUnitsAtRegion(int player, int regionID) {
+			this.player = player;
+			this.regionID = regionID;
+		}
+
+		public PlayerKillAllUnitsAtRegion() {
+		}
+	}
+
+	public static class MoveAttackerToAttackRegion extends BroadcastPackage{
 	}
 }

@@ -11,6 +11,13 @@ import static got.server.GameServer.Shared.*;
  * Created by Souverain73 on 28.11.2016.
  */
 public class HelpPhaseState extends StepByStepState{
+    private static final String name = "HelpState";
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
     public HelpPhaseState(){
         setNextState(BattleResultState.class);
     }

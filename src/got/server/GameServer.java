@@ -57,7 +57,6 @@ public class GameServer {
 	
 	public GameServer(boolean console) throws IOException{
 		if (server!=null) throw new IOException("Server already exist");
-		// TODO create server code here
 		Server server = new Server(){
 			@Override
 			protected Connection newConnection() {

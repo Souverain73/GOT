@@ -23,7 +23,6 @@ public class TextObject extends AbstractGameObject<TextObject>{
 	
 	@Override
 	public void update(GameState state) {
-		// TODO Auto-generated method stub
 		super.update(state);
 	}
 	

@@ -59,7 +59,6 @@ public class DebugPanel extends AbstractGameObject<DebugPanel>{
 
 	@Override
 	protected DebugPanel getThis() {
-		// TODO Auto-generated method stub
-		return null;
+		return this;
 	}
 }

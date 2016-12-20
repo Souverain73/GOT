@@ -30,7 +30,7 @@ import got.utils.Utils;
 public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 
 
-    public enum RegionType{	GROUND, SEA, PORT;}
+	public enum RegionType{	GROUND, SEA, PORT;}
 
 	@Override
 	protected MapPartObject getThis() {
@@ -42,14 +42,15 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	private int ID = 0;
 
 	private RegionType type;
+
 	private String name;
-
 	private int resourcesCount;
-
 
 	private int influencePoints;
 
+
 	private int buildingLevel;
+
 	private Texture texture;
 	private List<MapPartObject>  neighbors;
 	private int w, h;
@@ -139,7 +140,6 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	public List<MapPartObject> getNeighbors(){
 		return neighbors;
 	}
-
 	public List<MapPartObject> getRegionsToMove(){
 		PathFinder pf = new PathFinder(this.getFraction());
 		List<MapPartObject> result = pf.getRegionsToMoveFrom(this);
@@ -238,7 +238,6 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		updateUnits();
 	}
 
-
 	public List<MapPartObject> getRegionsForHire(){
 		List<MapPartObject> result = getNeighbors().stream().filter(obj->
 				((obj.getType() == RegionType.SEA) && ((obj.getFraction() == PlayerManager.getSelf().getFraction()))
@@ -248,6 +247,7 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		result.add(this);
 		return result;
 	}
+
 
 	public void updateUnits(){
 		placeUnits();
@@ -350,6 +350,10 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		return true;
 	}
 
+	public void removeAllUnits(){
+		removeUnits(getUnits());
+	}
+
 	/**
 	 * Нужен для обратной совместимости, в идеале надо бы это переписать.
 	 * @return - возвращает список юнитов в виде игровых объектов
@@ -429,7 +433,13 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 			this.playerFraction = playerFraction;
 		}
 
-		public  List<MapPartObject> getRegionsToMoveFrom(MapPartObject from){
+		public List<MapPartObject> getRegionsToMoveFrom(MapPartObject from){
+			List<MapPartObject> result = __getRegionsToMoveFrom(from);
+			result.remove(from);
+			return result;
+		}
+
+		private  List<MapPartObject> __getRegionsToMoveFrom(MapPartObject from){
 			List<MapPartObject> result = new ArrayList<>();
 			result.add(from);
 			visited.add(from);
@@ -441,7 +451,7 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 
 			for (MapPartObject region: from.getNeighbors()){
 				if (!visited.contains(region)){
-					result.addAll(getRegionsToMoveFrom(region));
+					result.addAll(__getRegionsToMoveFrom(region));
 				}
 			}
 

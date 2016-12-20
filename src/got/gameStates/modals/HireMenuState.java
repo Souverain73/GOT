@@ -36,7 +36,6 @@ public class HireMenuState extends  AbstractGameState implements IClickListener{
 		this.hirePoints = hirePoints;
 		this.units = units;
 		this.buttons = new ImageButton[4];
-		//TODO create BG
 		float x = pos.x;
 		float y = pos.y;
 		
@@ -175,8 +174,6 @@ public class HireMenuState extends  AbstractGameState implements IClickListener{
 
 	@Override
 	public void recieve(Connection connection, Object pkg) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

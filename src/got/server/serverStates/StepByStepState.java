@@ -38,8 +38,8 @@ public abstract class StepByStepState implements ServerState{
         //get first player on throne track
         currentPlayer = PlayerManager.instance().getPlayerByFraction(
                 Game.instance().getThroneTrack().getFirst());
-        //Правильно было бы проверить, может ли игрок совершить ход. Если игрок не имеет приказов набега,
-        //нет смысла передавать ему ход. Но в текущей архитектуе сервер самостоятельно не может этого сделать,
+        //Правильно было бы проверить, может ли игрок совершить ход.
+        //Но в текущей архитектуе сервер самостоятельно не может этого сделать,
         //поэтому отдадим это на сторону клиента.
         GameServer.getServer().sendToAllTCP(new Packages.PlayerTurn(currentPlayer.id));
     }
@@ -63,7 +63,6 @@ public abstract class StepByStepState implements ServerState{
     protected void handleReady(Player player, boolean ready) {
         //если свойство ready = true, значит игрок совершил ход
         //если false, значит возможных ходов для него больше нет
-//        System.out.printf("Handle ready player id: %d ready: $s", player.id, ready);
 
         if (!ready){
             player.setReady(true);
@@ -72,9 +71,10 @@ public abstract class StepByStepState implements ServerState{
         if (PlayerManager.instance().isAllPlayersReady()){
             try {
                 stm.setState(new ChangeState(nextStateClass.newInstance(), true));
+                return;
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println("Can't instantiate next State from CLASS");
+                System.out.println("Can't instantiate next State from CLASS object");
                 System.exit(0);
             }
         }
@@ -88,7 +88,7 @@ public abstract class StepByStepState implements ServerState{
                     Game.instance().getThroneTrack().getNext(currentPlayer.getFraction()));
         }while (currentPlayer.isReady());
         GameServer.getServer().sendToAllTCP(new Packages.PlayerTurn(currentPlayer.id));
-    };
+    }
     
     protected void setNextState(Class<? extends ServerState> nextStateClass){
         this.nextStateClass = nextStateClass;

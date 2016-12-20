@@ -90,7 +90,6 @@ public abstract class AbstractGameObject<T extends AbstractGameObject<T>> implem
 	
 	@Override
 	public boolean init(LoaderParams params) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

@@ -81,7 +81,7 @@ public class MovePhase extends ActionPhase {
 						(new ModalState(confirmDialog)).run();
 
 						if (confirmDialog.getResult() == Dialogs.DialogResult.OK){
-							//TODO: send package about it
+							//TODO: отправить на сервер пакет о том что игрок оставляет жетон власти
 							source.placePowerToken();
 						}
 					}

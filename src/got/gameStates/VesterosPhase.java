@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 
 import got.server.GameServer.PlayerConnection;
 
+//TODO: реализовать отображение карт и выбор по необходимым картам.
 public class VesterosPhase extends AbstractGameState {
 	private static final String name = "VesterosPhase";
 	
@@ -23,13 +24,10 @@ public class VesterosPhase extends AbstractGameState {
 
 	@Override
 	public void draw() {
-		//TODO: draw cards here
 	}
 
 	@Override
 	public void update() {
-		//TODO: update cards
-
 	}
 
 	@Override

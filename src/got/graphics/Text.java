@@ -130,14 +130,12 @@ public class Text {
 	 * @param y vertical position
 	 * @param w width scale
 	 * @param h height scale
-	 * @param space drawing space
 	 */
 	public void draw(float x, float y, float w, float h){
 		this.draw(x, y, w, h, 0);
 	}
 	
 	public void draw(float x, float y, float w, float h, float z){
-		//TODO: draw text here;
 		mv.identity().translate(x,y,-z).scale(w, h, 1).get(mvFB);
 		pm = GraphicModule.instance().getProjectionAsFloatBuffer();
 		

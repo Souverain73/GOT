@@ -60,8 +60,6 @@ public class PlanningPhaseState implements ServerState{
 		
 		if (pkg instanceof SetAction){
 			SetAction msg = ((SetAction)pkg);
-			//TODO: handle serverside model and do some checks
-			
 			//if all is ok notify all clients
 			server.sendToAllTCP(new PlayerSetAction(msg.region, msg.action));
 		}

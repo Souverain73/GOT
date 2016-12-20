@@ -88,7 +88,7 @@ public class HelpPhase extends ActionPhase {
                         BattleSide userSelect = showSelectSideDialogAndGetResult();
 
                         GameClient.instance().send(new Packages.Help(userSelect.getId()));
-                    }else {//TODO: Если нет возможности помочь
+                    }else {
                         GameClient.instance().sendReady(false);
                     }
                 }

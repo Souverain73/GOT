@@ -15,12 +15,13 @@ import static com.esotericsoftware.minlog.Log.debug;
 public class BattleResultState implements ServerState{
     private enum Winner { ATTACKER, DEFENDER}
 
-    private String name = "Battle result State";
+    private String name = "BattleRresult state";
     private boolean defenderSendResult = false;
     private boolean attackerSendResult = false;
     private Packages.PlayerDamage defenderResult;
     private Packages.PlayerDamage attackerResult;
     private Winner winner = null;
+    private StateMachine stm;
 
     @Override
     public String getName() {
@@ -34,6 +35,7 @@ public class BattleResultState implements ServerState{
 
     @Override
     public void enter(StateMachine stm){
+        this.stm = stm;
         GameServer.getServer().sendToAllTCP(new Packages.GetBattleResult());
     }
 
@@ -74,18 +76,24 @@ public class BattleResultState implements ServerState{
                 }
                 GameServer.getServer().sendToAllTCP(battleResult);
             }
+
         }else if (pkg instanceof Packages.ChangeUnits) {
             Packages.ChangeUnits msg = (Packages.ChangeUnits) pkg;
             GameServer.getServer().sendToAllTCP(new Packages.PlayerChangeUnits(player.id, msg.region, msg.units));
+
         }else if (pkg instanceof Packages.Move) {
             Packages.Move msg = (Packages.Move) pkg;
             GameServer.getServer().sendToAllTCP(new Packages.PlayerMove(player.id, msg.from, msg.to, msg.units));
+
         }else if (pkg instanceof Packages.LooserReady) {
-            Packages.LooserReady looser = (Packages.LooserReady) pkg;
-            //TODO: надо двинуть атакующего, если он победил.
             if (winner == Winner.ATTACKER){
-                //todo: двинуть
+                GameServer.getServer().sendToAllTCP(new Packages.MoveAttackerToAttackRegion());
             }
+            stm.setState(new ChangeState(new MovePhaseState(), true));
+
+        }else if (pkg instanceof Packages.KillAllUnitsAtRegion) {
+            Packages.KillAllUnitsAtRegion msg = (Packages.KillAllUnitsAtRegion) pkg;
+            GameServer.getServer().sendToAllTCP(new Packages.PlayerKillAllUnitsAtRegion(player.id, msg.regionID));
         }
     }
 }

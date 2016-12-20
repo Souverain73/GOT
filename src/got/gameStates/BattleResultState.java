@@ -6,12 +6,14 @@ import got.InputManager;
 import got.ModalState;
 import got.gameObjects.MapPartObject;
 import got.gameStates.modals.SelectUnitsDialogState;
-import got.model.Game;
-import got.model.Player;
-import got.model.SuplyTrack;
-import got.model.Unit;
+import got.model.*;
 import got.network.Packages;
 import got.server.PlayerManager;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static sun.audio.AudioPlayer.player;
 
 /**
  * Created by Souverain73 on 15.12.2016.
@@ -36,14 +38,7 @@ public class BattleResultState extends ActionPhase{
         }else if (pkg instanceof Packages.PlayerMove) {
             Packages.PlayerMove msg = (Packages.PlayerMove) pkg;
             GameClient.instance().registerTask(()->{
-                Player player = PlayerManager.instance().getPlayer(msg.player);
-
-                MapPartObject regionFrom = GameClient.shared.gameMap.getRegionByID(msg.from);
-                regionFrom.removeUnits(msg.units);
-
-                MapPartObject regionTo = GameClient.shared.gameMap.getRegionByID(msg.to);
-                regionTo.addUnits(msg.units);
-                regionTo.setFraction(player.getFraction());
+                moveAllUnits(msg.from, msg.to);
             });
         }else if (pkg instanceof Packages.GetBattleResult) {
             Packages.GetBattleResult getBattleResul = (Packages.GetBattleResult) pkg;
@@ -53,7 +48,29 @@ public class BattleResultState extends ActionPhase{
                         GameClient.shared.battleDeck.defendersPower
                 ));
             }
+        }else if (pkg instanceof Packages.PlayerKillAllUnitsAtRegion) {
+            Packages.PlayerKillAllUnitsAtRegion msg = (Packages.PlayerKillAllUnitsAtRegion) pkg;
+            GameClient.shared.gameMap.getRegionByID(msg.regionID).removeAllUnits();
+        }else if (pkg instanceof Packages.MoveAttackerToAttackRegion) {
+            GameClient.instance().registerTask(()->{
+                moveAllUnits(GameClient.shared.battleDeck.getAttacker(), GameClient.shared.battleDeck.getDefender());
+            });
         }
+    }
+
+    private void moveAllUnits(int regionFromId, int regionToId) {
+        MapPartObject regionFrom = GameClient.shared.gameMap.getRegionByID(regionFromId);
+        MapPartObject regionTo = GameClient.shared.gameMap.getRegionByID(regionToId);
+
+        moveAllUnits(regionFrom, regionTo);
+    }
+
+    private void moveAllUnits(MapPartObject regionFrom, MapPartObject regionTo){
+        Unit[] units = regionFrom.getUnits();
+
+        regionFrom.removeUnits(units);
+        regionTo.addUnits(units);
+        regionTo.setFraction(regionFrom.getFraction());
     }
 
     private void onBattleResult(Packages.BattleResult battleResult) {
@@ -63,15 +80,14 @@ public class BattleResultState extends ActionPhase{
             if (battleResult.killUnits>0) {
                 Unit[] unitsToKill = null;
                 while(unitsToKill == null) {
-                    showKillUnitsDialog(playerRegion.getUnits(), battleResult.killUnits);
+                    unitsToKill = showKillUnitsDialog(playerRegion.getUnits(), battleResult.killUnits);
                 }
                 playerRegion.removeUnits(unitsToKill);
                 GameClient.instance().send(new Packages.ChangeUnits(playerRegion.getID(), playerRegion.getUnits()));
             }
             if (GameClient.shared.battleDeck.isDefender(PlayerManager.getSelf().getFraction())){
-                //Если ты оборонялся, ты можешь выбрать куда отсткупить
-                MapPartObject region = GameClient.shared.battleDeck.getDefender();
-                region.getRegionsToRetreat().forEach(r->r.setEnabled(true));
+                //Если ты оборонялся, ты можешь выбрать куда отступить
+                enableRegionsToRetreatOrKillUnits();
             }else{
                 GameClient.instance().send(new Packages.LooserReady());
             }
@@ -84,37 +100,67 @@ public class BattleResultState extends ActionPhase{
         if (event.getTarget() instanceof MapPartObject) {
             MapPartObject playerRegion = GameClient.shared.battleDeck.getPlayerRegion(PlayerManager.getSelf());
             MapPartObject moveRegion = (MapPartObject) event.getTarget();
-            //todo: передвинуть войска и установить им флаг усталости.
-            //todo: проверить снабжение
-            if (!Game.instance().getSuplyTrack().canMove(playerRegion.getFraction(),
-                    playerRegion, moveRegion, playerRegion.getUnitsCount())){
-                //Надо коого то убить.
-                //Считаем сколько юнитов должны умереть
-                int countUnitsToKill = playerRegion.getUnitsCount() - (4-moveRegion.getUnitsCount());
-                countUnitsToKill = countUnitsToKill < 0 ? 0 : countUnitsToKill;
-
-                int i=playerRegion.getUnitsCount()-countUnitsToKill;
-                for (;i>0; i--){
-                    if(Game.instance().getSuplyTrack().canMove(playerRegion.getFraction(),
-                        playerRegion, moveRegion, i)) return;
+            //todo: установить флаг усталости
+            //Активным может быть регион не проходящий по снабжению, поэтому проверяем снабжение
+            if (!Game.instance().getSuplyTrack().canMove(playerRegion.getFraction(), playerRegion, moveRegion, playerRegion.getUnitsCount())){
+                //Считаем сколько юнитов надо убить что бы совершить этот ход
+                int i = 0;
+                while(i<4 && Game.instance().getSuplyTrack().canMove(playerRegion.getFraction(), playerRegion, moveRegion, i+1)){
+                    i++;
                 }
-                countUnitsToKill = playerRegion.getUnitsCount() - i;
-
-                if (countUnitsToKill == playerRegion.getUnitsCount()){
-                    //todo: show message: Сюда отступить нельзя. Убить всех юнитов?
-                    return;
+                if (i==0){
+                    throw new IllegalStateException("Активен регион в который пользователь не может совершить ход");
                 }
-                Unit[] unitsToKill = showKillUnitsDialog(playerRegion.getUnits(), countUnitsToKill);
-                if (unitsToKill == null){//Если пользователь нажал отмена
-                    return;
+                int unitsToKillCount = playerRegion.getUnitsCount() - i;
+                Unit[] unitsToKill = showKillUnitsDialog(playerRegion.getUnits(), unitsToKillCount);
+                if (unitsToKill != null) {
+                    playerRegion.removeUnits(unitsToKill);
+                    GameClient.instance().send(new Packages.ChangeUnits(playerRegion.getID(), playerRegion.getUnits()));
+                    GameClient.instance().send(new Packages.Move(playerRegion.getID(), moveRegion.getID(), playerRegion.getUnits()));
+                    GameClient.instance().send(new Packages.LooserReady());
                 }
-                playerRegion.removeUnits(unitsToKill);
-                GameClient.instance().send(new Packages.ChangeUnits(playerRegion.getID(), playerRegion.getUnits()));
-                GameClient.instance().send(new Packages.Move(playerRegion.getID(), moveRegion.getID(), playerRegion.getUnits()));
-                GameClient.instance().send(new Packages.LooserReady());
+                //TODO: сказать, что так нельзя. Надо либо выбрать другой регион, либо убивать юнитов.
             }
         }
 
+    }
+
+    private void enableRegionsToRetreatOrKillUnits() {
+        GameClient.shared.gameMap.disableAllRegions();
+        MapPartObject regionFrom = GameClient.shared.battleDeck.getDefender();
+        List<MapPartObject> regionsToMove = regionFrom.getRegionsToMove();
+        //Ищем регионы куда можно отступить не нарушая снабжения
+        List<MapPartObject> regionsToRetreat =
+                regionsToMove.stream().filter(r->{
+                    //нельзя отступить в чужой регион
+                    if (regionFrom.getFraction() != r.getFraction() && r.getFraction() != Fraction.NEUTRAL) return false;
+
+                    return Game.instance().getSuplyTrack().canMove(regionFrom.getFraction(), regionFrom, r, regionFrom.getUnitsCount());
+                }).collect(Collectors.toList());
+
+        if (regionsToRetreat.size() > 0){
+            regionsToRetreat.forEach(r->r.setEnabled(true));
+            return;
+        }
+
+        //Если нет регионов в которые можно пойти без убийства юнитов, ищем регион в который можно пойти хотя бы 1-м юнитом
+        regionsToRetreat =
+                regionsToMove.stream().filter(r->{
+                    //нельзя отступить в чужой регион
+                    if (regionFrom.getFraction() != r.getFraction() && r.getFraction() != Fraction.NEUTRAL) return false;
+
+                    return Game.instance().getSuplyTrack().canMove(regionFrom.getFraction(), regionFrom, r, 1);
+                }).collect(Collectors.toList());
+
+        if (regionsToRetreat.size() > 0){
+            regionsToRetreat.forEach(r->r.setEnabled(true));
+            return;
+        }
+
+        //Если нет регионов куда вообще можно пойти, убиваем всех юнитов.
+        GameClient.instance().send(new Packages.KillAllUnitsAtRegion(regionFrom.getID()));
+        //Сообщаем, что проигравций закончил отступление.
+        GameClient.instance().send(new Packages.LooserReady());
     }
 
     private Unit[] showKillUnitsDialog(Unit[] units, int countToKill){

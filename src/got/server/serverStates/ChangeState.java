@@ -48,7 +48,7 @@ public class ChangeState implements ServerState {
 
 	@Override
 	public void enter(StateMachine stm) {
-		Log.warn("Change state to"+nextState.getName());
+		Log.warn("Change state to "+nextState.getName());
 		this.stm = stm;
 		for (Player pl: PlayerManager.instance().getPlayersList()){
 			pl.setReady(false);
@@ -64,7 +64,6 @@ public class ChangeState implements ServerState {
 
 	@Override
 	public int getID() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
