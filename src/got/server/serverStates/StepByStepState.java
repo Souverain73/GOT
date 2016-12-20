@@ -7,11 +7,14 @@ import got.network.Packages;
 import got.server.GameServer;
 import got.server.PlayerManager;
 
+import java.util.Arrays;
+
 /**
  * Created by Souverain73 on 25.11.2016.
  */
 public abstract class StepByStepState implements ServerState{
 
+    protected boolean playersReady[];
     protected StateMachine stm;
     protected Player currentPlayer;
     private Class<? extends ServerState> nextStateClass;
@@ -31,9 +34,9 @@ public abstract class StepByStepState implements ServerState{
         this.stm = stm;
         //Если у игрока стоит признак готовности, значит он не может больше совершить ход
         //Когда все игроки будут готовы, необходимо осуществить переход к следующей фазе.
-        for (Player pl: PlayerManager.instance().getPlayersList()){
-            pl.setReady(false);
-        }
+
+        //Все ID лежат в диапазоне [0..количество игроков).
+        playersReady = new boolean[PlayerManager.instance().getPlayersCount()];
 
         //get first player on throne track
         currentPlayer = PlayerManager.instance().getPlayerByFraction(
@@ -56,7 +59,7 @@ public abstract class StepByStepState implements ServerState{
         if (pkg instanceof Packages.Ready){
             //Если о готовности сообщает не текущий игрок, игнорируем сообщение.
             if (player.id != currentPlayer.id) return;
-            handleReady(player, ((Packages.Ready) pkg).ready);
+            handleReady(currentPlayer, ((Packages.Ready) pkg).ready);
         }
     }
 
@@ -65,10 +68,10 @@ public abstract class StepByStepState implements ServerState{
         //если false, значит возможных ходов для него больше нет
 
         if (!ready){
-            player.setReady(true);
+            playersReady[player.id] = true;
         }
         //проверяем, если все игроки готовы, значит никто больше не может совершить ход, значит можно переходить к следующей фазе.
-        if (PlayerManager.instance().isAllPlayersReady()){
+        if (isAllPlayersReady()){
             try {
                 stm.setState(new ChangeState(nextStateClass.newInstance(), true));
                 return;
@@ -80,6 +83,13 @@ public abstract class StepByStepState implements ServerState{
         }
         //передаем управление следующему игроку.
         nextTurn();
+    }
+
+    private boolean isAllPlayersReady() {
+        for(boolean ready: playersReady){
+            if (!ready) return false;
+        }
+        return true;
     }
 
     private void nextTurn(){
