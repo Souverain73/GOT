@@ -89,7 +89,7 @@ public class BattleResultState implements ServerState{
             if (winner == Winner.ATTACKER){
                 GameServer.getServer().sendToAllTCP(new Packages.MoveAttackerToAttackRegion());
             }
-            stm.setState(new ChangeState(new MovePhaseState(), true));
+            stm.setState(new ChangeState(new MovePhaseState(), ChangeState.ChangeAction.REMOVE));
 
         }else if (pkg instanceof Packages.KillAllUnitsAtRegion) {
             Packages.KillAllUnitsAtRegion msg = (Packages.KillAllUnitsAtRegion) pkg;

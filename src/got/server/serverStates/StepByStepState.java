@@ -1,6 +1,7 @@
 package got.server.serverStates;
 
 import com.esotericsoftware.kryonet.Connection;
+import got.interfaces.IPauseable;
 import got.model.Game;
 import got.model.Player;
 import got.network.Packages;
@@ -12,7 +13,7 @@ import java.util.Arrays;
 /**
  * Created by Souverain73 on 25.11.2016.
  */
-public abstract class StepByStepState implements ServerState{
+public abstract class StepByStepState implements ServerState, IPauseable{
 
     protected boolean playersReady[];
     protected StateMachine stm;
@@ -73,7 +74,7 @@ public abstract class StepByStepState implements ServerState{
         //проверяем, если все игроки готовы, значит никто больше не может совершить ход, значит можно переходить к следующей фазе.
         if (isAllPlayersReady()){
             try {
-                stm.setState(new ChangeState(nextStateClass.newInstance(), true));
+                stm.setState(new ChangeState(nextStateClass.newInstance(), ChangeState.ChangeAction.SET));
                 return;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -96,11 +97,21 @@ public abstract class StepByStepState implements ServerState{
         do {
             currentPlayer = PlayerManager.instance().getPlayerByFraction(
                     Game.instance().getThroneTrack().getNext(currentPlayer.getFraction()));
-        }while (currentPlayer.isReady());
+        }while (playersReady[currentPlayer.id]);
         GameServer.getServer().sendToAllTCP(new Packages.PlayerTurn(currentPlayer.id));
     }
     
     protected void setNextState(Class<? extends ServerState> nextStateClass){
         this.nextStateClass = nextStateClass;
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+        nextTurn();
     }
 }

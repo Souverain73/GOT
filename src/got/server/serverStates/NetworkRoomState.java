@@ -82,7 +82,7 @@ public class NetworkRoomState implements ServerState {
 						GameServer.getServer().sendToAllTCP(new Packages.SetFractions(PlayerManager.instance().getFractions()));
 						
 						connection.sendTCP(new Packages.ServerMessage("Start!!"));
-						stm.setState(new ChangeState(new MainState(), true));
+						stm.setState(new ChangeState(new MainState(), ChangeState.ChangeAction.SET));
 					}
 				}, "TimerThread");
 				timerThread.start();

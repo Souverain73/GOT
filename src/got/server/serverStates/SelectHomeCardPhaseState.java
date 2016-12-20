@@ -23,7 +23,7 @@ public class SelectHomeCardPhaseState implements ServerState{
 
     @Override
     public void enter(StateMachine stm) {
-        stm.setState(new ChangeState(new BattleResultState(), true));
+        stm.setState(new ChangeState(new BattleResultState(), ChangeState.ChangeAction.SET));
     }
 
     @Override

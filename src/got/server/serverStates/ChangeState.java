@@ -3,22 +3,27 @@ package got.server.serverStates;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.minlog.Log;
 
+import got.interfaces.IPauseable;
 import got.model.Player;
 import got.network.Packages;
-import got.network.Packages.Ready;
 import got.server.GameServer;
 import got.server.PlayerManager;
 import got.server.GameServer.PlayerConnection;
 
 public class ChangeState implements ServerState {
+	public enum ChangeAction {
+		SET,
+		PUSH,
+		REMOVE
+	}
 	private String name = "ChangeGameState";
 	private StateMachine stm;
 	private ServerState nextState;
-	private boolean replace;
+	private ChangeAction method;
 	
-	public ChangeState(ServerState nextState, boolean replace){
+	public ChangeState(ServerState nextState, ChangeAction method){
 		this.nextState = nextState;
-		this.replace = replace;
+		this.method = method;
 		this.name = "ChangeStateTo:"+nextState.getName();
 	}
 	
@@ -32,10 +37,17 @@ public class ChangeState implements ServerState {
 			
 			//if all clients load state on client side server can run this state too
 			if (PlayerManager.instance().isAllPlayersReady()){
-				if (replace){
+				if (method == ChangeAction.SET){
 					stm.setState(nextState);
-				}else{
+				}else if(method == ChangeAction.PUSH){
+					if (!(nextState instanceof IPauseable)){
+						throw new IllegalStateException("Only pauseable state can be pushed");
+					}
+					stm.removeState(); //remove ChangeState
 					stm.pushState(nextState);
+					((IPauseable) nextState).pause();
+				}else{
+					stm.removeState();
 				}
 			}
 		}

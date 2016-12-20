@@ -13,8 +13,6 @@ import got.server.PlayerManager;
 
 public class FirePhaseState extends StepByStepState {
 	private static final String name = "FirePhase";
-	private Player currentPlayer;
-	private StateMachine stm;
 
 	public FirePhaseState(){
 		super.setNextState(MovePhaseState.class);
