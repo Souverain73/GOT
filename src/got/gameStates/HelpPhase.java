@@ -137,4 +137,9 @@ public class HelpPhase extends ActionPhase {
 
         return cms.getResult();
     }
+
+    @Override
+    public void exit() {
+        GameClient.shared.battleDeck.setVisible(false);
+    }
 }

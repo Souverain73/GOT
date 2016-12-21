@@ -13,8 +13,6 @@ import got.server.PlayerManager;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static sun.audio.AudioPlayer.player;
-
 /**
  * Created by Souverain73 on 15.12.2016.
  */
@@ -40,7 +38,6 @@ public class BattleResultState extends ActionPhase{
                 moveAllUnits(msg.from, msg.to);
             });
         }else if (pkg instanceof Packages.GetBattleResult) {
-            Packages.GetBattleResult getBattleResul = (Packages.GetBattleResult) pkg;
             if (GameClient.shared.battleDeck.isBattleMember(PlayerManager.getSelf().getFraction())) {
                 GameClient.instance().send(new Packages.PlayerDamage(
                         GameClient.shared.battleDeck.attackersPower,
@@ -70,6 +67,9 @@ public class BattleResultState extends ActionPhase{
         regionFrom.removeUnits(units);
         regionTo.addUnits(units);
         regionTo.setFraction(regionFrom.getFraction());
+        if (!regionFrom.havePowerToket()){
+            regionFrom.setFraction(Fraction.NEUTRAL);
+        }
     }
 
     private void onBattleResult(Packages.BattleResult battleResult) {
@@ -78,6 +78,7 @@ public class BattleResultState extends ActionPhase{
         if (GameClient.shared.battleDeck.isAttacker(PlayerManager.instance().getPlayer(battleResult.winnerID).getFraction())){
             GameClient.shared.battleDeck.getDefender().setAction(null);
         }
+        GameClient.shared.gameMap.getRegionByID(battleResult.looserRegionID).killUnits();
         if (battleResult.looserID == PlayerManager.getSelf().id){
             //Если ты проигравший
             MapPartObject playerRegion = GameClient.shared.battleDeck.getPlayerRegion(PlayerManager.getSelf());
@@ -124,6 +125,9 @@ public class BattleResultState extends ActionPhase{
                     GameClient.instance().send(new Packages.LooserReady());
                 }
                 //TODO: сказать, что так нельзя. Надо либо выбрать другой регион, либо убивать юнитов.
+            }else{
+                GameClient.instance().send(new Packages.Move(playerRegion.getID(), moveRegion.getID(), playerRegion.getUnits()));
+                GameClient.instance().send(new Packages.LooserReady());
             }
         }
 
@@ -174,5 +178,11 @@ public class BattleResultState extends ActionPhase{
         if (suds.isOk()) {
             return suds.getSelectedUnits();
         } else return null;
+    }
+
+    @Override
+    public void exit() {
+        GameClient.shared.battleDeck.finish();
+        GameClient.shared.battleDeck = null;
     }
 }

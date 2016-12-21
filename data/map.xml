@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map>
 	<regions>
-		<region name="Castle Black" type="GROUND" influence="1" x="609" y="0" w="475" h="286" fraction="TIREL">
+		<region name="Castle Black" type="GROUND" influence="1" x="609" y="0" w="475" h="286" fraction="LANISTER">
 			<actionpos x="95" y="191"/>
 			<unitpos x="335" y="50"/>
 			<texture filename="CastleBlack.png"/>
 			<unit type="KNIGHT"/>
-			<action type="DEFEND"/>
+			<action type="MOVE"/>
 		</region>
 		<region name="Karhold" type="GROUND" influence="1" x="951" y="149" w="355" h="318">
 			<actionpos x="282" y="116"/>

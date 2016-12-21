@@ -68,10 +68,12 @@ public class BattleResultState implements ServerState{
                 Packages.BattleResult battleResult;
                 //TODO: get home cards effects, calculate units killed and send it to players
                 if (defenderResult.defenderDamage >= defenderResult.attackerDamage){
-                    battleResult = new Packages.BattleResult(GameServer.shared.defenderID, GameServer.shared.attackerID, 0);
+                    battleResult = new Packages.BattleResult(GameServer.shared.defenderID, GameServer.shared.attackerID,
+                            GameServer.shared.defenderRegionID, GameServer.shared.attackerRegionID, 0);
                     winner = Winner.DEFENDER;
                 }else{
-                    battleResult = new Packages.BattleResult(GameServer.shared.attackerID, GameServer.shared.defenderID, 0);
+                    battleResult = new Packages.BattleResult(GameServer.shared.attackerID, GameServer.shared.defenderID,
+                            GameServer.shared.attackerID, GameServer.shared.defenderRegionID, 0);
                     winner = Winner.ATTACKER;
                 }
                 GameServer.getServer().sendToAllTCP(battleResult);

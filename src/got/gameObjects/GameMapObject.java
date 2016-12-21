@@ -265,7 +265,7 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 		return null;
 	}
 
-	public void forEach(Consumer<? super MapPartObject> func){
+	public void forEachRegion(Consumer<? super MapPartObject> func){
 		map.values().forEach(func);
 	}
 	

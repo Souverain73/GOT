@@ -50,5 +50,10 @@ public class MovePhaseState extends StepByStepState {
             GameServer.shared.defenderID = attack.defenderId;
             stm.changeState(new HelpPhaseState(), StateMachine.ChangeAction.PUSH);
         }
+
+        if (pkg instanceof Packages.Act) {
+            Packages.Act msg = (Packages.Act) pkg;
+            GameServer.getServer().sendToAllTCP(new Packages.PlayerAct(msg.from, msg.to));
+        }
     }
 }

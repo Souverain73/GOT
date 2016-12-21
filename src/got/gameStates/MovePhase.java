@@ -49,33 +49,31 @@ public class MovePhase extends ActionPhase {
 				(new ModalState(suds)).run();
 				selectedUnits = suds.getSelectedUnits();
 				if (suds.isOk() && selectedUnits.length!=0){
-					System.out.println("Ok");
 					source = region;
 					changeSubState(SubState.SELECT_TARGET);
-					GameMapObject.instance().disableAllRegions();
+					GameClient.shared.gameMap.disableAllRegions();
 
 					//Включаем регионы, в которые можно пойти.
 					enableRegionsToMove(region);
 
 				}else{
-					System.out.println("Cancel");
+					endTurn(region);
 				}
 			}else if (state == SubState.SELECT_TARGET){
-				if (region == source)
-					changeSubState(SubState.SELECT_SOURCE);
-
 				if (region.getFraction() == Fraction.NEUTRAL ||
 						region.getFraction() == PlayerManager.getSelf().getFraction()){
+
 					GameClient.instance().send(new Packages.Move(
 							source.getID(),
 							region.getID(),
 							selectedUnits
 					));
 					usedRegion = source;
+					//Если покидаем регион без жетона власти и есть свободные жетоны
 					if (source.getUnits().length == selectedUnits.length
-							&& source.havePowerToket()
+							&& !source.havePowerToket()
 							&& PlayerManager.getSelf().getMoney() > 0){
-
+						//оставить ли жетон?
 						Dialogs.Dialog confirmDialog = Dialogs.createConfirmDialog(InputManager.instance().getMousePosWorld());
 
 						(new ModalState(confirmDialog)).run();
@@ -85,8 +83,8 @@ public class MovePhase extends ActionPhase {
 							source.placePowerToken();
 						}
 					}
-					if (usedRegion.getUnits().length == 0){
-						endTurn();
+					if (usedRegion.getUnits().length == selectedUnits.length){
+						endTurn(usedRegion);
 					}
 				}else{
 					GameClient.instance().send(new Packages.Attack(source.getID(), region.getID(),
@@ -95,7 +93,6 @@ public class MovePhase extends ActionPhase {
 
 					//На время отладки упростим бой до:
 					//У кого больше силы, тот победил. При равных условиях смотри трек.
-
 				}
 				GameClient.shared.gameMap.disableAllRegions();
 				changeSubState(SubState.SELECT_SOURCE);
@@ -106,7 +103,10 @@ public class MovePhase extends ActionPhase {
 		super.click(event);
 	}
 
-	private void endTurn() {
+	private void endTurn(MapPartObject regionWithUsedAction) {
+		if (regionWithUsedAction != null){
+			GameClient.instance().send(new Packages.Act(regionWithUsedAction.getID(), 0));
+		}
 		GameClient.instance().sendReady(true);
 	}
 
@@ -117,13 +117,14 @@ public class MovePhase extends ActionPhase {
                     obj.getFraction() != region.getFraction()
                     ||  Game.instance().getSuplyTrack().canMove(
                         region.getFraction(),
-                        GameMapObject.instance().getArmySizesForFraction(region.getFraction()),
+                        GameClient.shared.gameMap.getArmySizesForFraction(region.getFraction()),
                         region.getUnitsCount(),
                         obj.getUnitsCount(),
                         selectedUnits.length)
                     )
                 obj.setEnabled(true);
         });
+		region.setEnabled(true);
 	}
 
 	@Override
@@ -152,6 +153,9 @@ public class MovePhase extends ActionPhase {
 				regionTo.addUnits(msg.units);
 				regionTo.setFraction(player.getFraction());
 			});
+		}
+		if (pkg instanceof Packages.PlayerAct) {
+			GameClient.shared.gameMap.getRegionByID(((Packages.PlayerAct) pkg).from).setAction(null);
 		}
 	}
 

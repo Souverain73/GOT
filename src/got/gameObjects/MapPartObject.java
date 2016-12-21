@@ -30,7 +30,7 @@ import got.utils.Utils;
 public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 
 
-	public enum RegionType{	GROUND, SEA, PORT;}
+    public enum RegionType{	GROUND, SEA, PORT;}
 
 	@Override
 	protected MapPartObject getThis() {
@@ -44,14 +44,15 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	private RegionType type;
 
 	private String name;
+
 	private int resourcesCount;
-
 	private int influencePoints;
-
 
 	private int buildingLevel;
 
+
 	private Texture texture;
+
 	private List<MapPartObject>  neighbors;
 	private int w, h;
 	private int act_x, act_y;
@@ -155,7 +156,6 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 					.collect(Collectors.toList());
 		}
 	}
-
 	public int getBattlePower() {
 		return Arrays.stream(getUnits()).mapToInt(Unit::getDamage).sum();
 	}
@@ -248,10 +248,10 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		return result;
 	}
 
-
 	public void updateUnits(){
 		placeUnits();
 	}
+
 
 	private void placeUnits(){
 		Vector2f cp = getPos();
@@ -352,6 +352,15 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 
 	public void removeAllUnits(){
 		removeUnits(getUnits());
+	}
+
+	public void killUnits() {
+		setUnits(Arrays.stream(getUnits()).map(Unit::getKilled).toArray(Unit[]::new));
+	}
+
+
+	public void resurectUnits() {
+		setUnits(Arrays.stream(getUnits()).map(Unit::getAlive).toArray(Unit[]::new));
 	}
 
 	/**

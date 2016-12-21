@@ -40,7 +40,14 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 	
 	@Override
 	public void enter(StateMachine stm) {
-		placed = new EnumMap<Action, MapPartObject>(Action.class);
+		//готовим игровую карту.
+		//TODO: перенести в фазу вестероса, когда она будет готова
+		GameClient.shared.gameMap.forEachRegion(region->{
+			region.setAction(null);
+			region.resurectUnits();
+		});
+
+		placed = new EnumMap<>(Action.class);
 		actions = Arrays.asList(Action.values());
 		specials = 0;
 		

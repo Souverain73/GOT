@@ -658,15 +658,19 @@ public class Packages {
 	public static class BattleResult extends ServerClientPackage {
 		public int winnerID;
 		public int looserID;
+		public int winnerRegionID;
+		public int looserRegionID;
 		public int killUnits;
 
-		public BattleResult() {
-		}
-
-		public BattleResult(int winnerID, int looserID, int killUnits) {
+		public BattleResult(int winnerID, int looserID, int winnerRegionID, int looserRegionID, int killUnits) {
 			this.winnerID = winnerID;
 			this.looserID = looserID;
+			this.winnerRegionID = winnerRegionID;
+			this.looserRegionID = looserRegionID;
 			this.killUnits = killUnits;
+		}
+
+		public BattleResult() {
 		}
 
 		@Override
