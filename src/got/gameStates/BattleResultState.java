@@ -22,7 +22,6 @@ public class BattleResultState extends ActionPhase{
     @Override
     public void enter(StateMachine stm) {
         super.enter(stm);
-        //Участники боя объявляют результаты.
         GameClient.shared.gameMap.disableAllRegions();
     }
 
@@ -74,6 +73,11 @@ public class BattleResultState extends ActionPhase{
     }
 
     private void onBattleResult(Packages.BattleResult battleResult) {
+        //Убираем приказы
+        GameClient.shared.battleDeck.getAttacker().setAction(null);
+        if (GameClient.shared.battleDeck.isAttacker(PlayerManager.instance().getPlayer(battleResult.winnerID).getFraction())){
+            GameClient.shared.battleDeck.getDefender().setAction(null);
+        }
         if (battleResult.looserID == PlayerManager.getSelf().id){
             //Если ты проигравший
             MapPartObject playerRegion = GameClient.shared.battleDeck.getPlayerRegion(PlayerManager.getSelf());

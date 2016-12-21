@@ -54,7 +54,7 @@ public class PlanningPhaseState implements ServerState{
 			//if all players is ready change phase to "FIRE PHASE"
 			if (PlayerManager.instance().isAllPlayersReady()){
 				server.sendToAllTCP("Next phase");
-				stm.setState(new ChangeState(new PowerPhaseState(), ChangeState.ChangeAction.SET));
+				stm.changeState(new PowerPhaseState(), StateMachine.ChangeAction.SET);
 			}
 		}
 		

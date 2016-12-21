@@ -20,7 +20,7 @@ public class MainState implements ServerState {
 
 	@Override
 	public void enter(StateMachine stm) {
-		stm.setState(new ChangeState(new MovePhaseState(), ChangeState.ChangeAction.SET));
+		stm.changeState(new MovePhaseState(), StateMachine.ChangeAction.SET);
 	}
 
 	@Override

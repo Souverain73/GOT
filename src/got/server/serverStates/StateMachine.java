@@ -9,12 +9,21 @@ import got.interfaces.IPauseable;
 import got.server.GameServer.PlayerConnection;
 
 public class StateMachine implements INetworkListener{
+	public enum ChangeAction {
+		SET,
+		PUSH,
+		REMOVE
+	}
 	private LinkedList<ServerState> _states;
 	
 	public StateMachine(){
 		_states = new LinkedList<ServerState>();
 	}
-	
+
+	public void changeState(ServerState nextState, ChangeAction action){
+		pushState(new ChangeState(nextState, action));
+	}
+
 	public void setState(ServerState state){
 		if (!_states.isEmpty()){
 			_states.poll().exit();
@@ -22,18 +31,27 @@ public class StateMachine implements INetworkListener{
 		_states.push(state);
 		state.enter(this);
 	}
-	
+
 	public void pushState(ServerState state){
+		if (getCurrentState() instanceof IPauseable){
+			((IPauseable) getCurrentState()).pause();
+		}
 		_states.push(state);
 		state.enter(this);
 	}
 	
-	public void removeState(){
+	public void removeStateAndResume(){
 		if (!_states.isEmpty()){
 			_states.poll().exit();
 			if (getCurrentState() instanceof IPauseable){
 				((IPauseable) getCurrentState()).resume();
 			}
+		}
+	}
+
+	public void removeState(){
+		if (!_states.isEmpty()) {
+			_states.poll().exit();
 		}
 	}
 	

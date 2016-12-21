@@ -48,14 +48,7 @@ public enum Unit {
 	}
 	
 	public static Unit[] getUnitsByCondition(Predicate<Unit> condition){
-		List<Unit> result = new ArrayList<>();
-		for(Unit unit: Unit.values()){
-			if(condition.test(unit)){
-				result.add(unit);
-			}
-		}
-		
-		return result.toArray(new Unit[0]);
+		return Arrays.stream(Unit.values()).filter(condition).toArray(Unit[]::new);
 	}
 
 	@Override

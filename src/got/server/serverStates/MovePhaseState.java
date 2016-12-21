@@ -48,7 +48,7 @@ public class MovePhaseState extends StepByStepState {
             GameServer.shared.defenderRegionID = attack.to;
             GameServer.shared.attackerID = attack.attackerId;
             GameServer.shared.defenderID = attack.defenderId;
-            stm.setState(new ChangeState(new HelpPhaseState(), ChangeState.ChangeAction.PUSH));
+            stm.changeState(new HelpPhaseState(), StateMachine.ChangeAction.PUSH);
         }
     }
 }

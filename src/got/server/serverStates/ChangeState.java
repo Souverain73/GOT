@@ -11,17 +11,12 @@ import got.server.PlayerManager;
 import got.server.GameServer.PlayerConnection;
 
 public class ChangeState implements ServerState {
-	public enum ChangeAction {
-		SET,
-		PUSH,
-		REMOVE
-	}
 	private String name = "ChangeGameState";
 	private StateMachine stm;
 	private ServerState nextState;
-	private ChangeAction method;
-	
-	public ChangeState(ServerState nextState, ChangeAction method){
+	private StateMachine.ChangeAction method;
+
+	public ChangeState(ServerState nextState, StateMachine.ChangeAction method){
 		this.nextState = nextState;
 		this.method = method;
 		this.name = "ChangeStateTo:"+nextState.getName();
@@ -37,17 +32,13 @@ public class ChangeState implements ServerState {
 			
 			//if all clients load state on client side server can run this state too
 			if (PlayerManager.instance().isAllPlayersReady()){
-				if (method == ChangeAction.SET){
+				stm.removeState(); //remove ChangeState
+				if (method == StateMachine.ChangeAction.SET){
 					stm.setState(nextState);
-				}else if(method == ChangeAction.PUSH){
-					if (!(nextState instanceof IPauseable)){
-						throw new IllegalStateException("Only pauseable state can be pushed");
-					}
-					stm.removeState(); //remove ChangeState
+				}else if(method == StateMachine.ChangeAction.PUSH){
 					stm.pushState(nextState);
-					((IPauseable) nextState).pause();
 				}else{
-					stm.removeState();
+					stm.removeStateAndResume();
 				}
 			}
 		}

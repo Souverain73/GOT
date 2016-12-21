@@ -27,6 +27,7 @@
 			<unitpos x="90" y="75"/>
 			<texture filename="WidowsWatch.png"/>
 			<unit type="SOLDIER"/>
+			<action type="MOVE"/>
 		</region>
 		<region name="The Stony Shore" type="GROUND" resources="1" x="153" y="423" w="408" h="426" fraction="STARK">
 			<actionpos x="76" y="164"/>

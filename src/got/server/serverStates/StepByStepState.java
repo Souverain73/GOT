@@ -74,7 +74,7 @@ public abstract class StepByStepState implements ServerState, IPauseable{
         //проверяем, если все игроки готовы, значит никто больше не может совершить ход, значит можно переходить к следующей фазе.
         if (isAllPlayersReady()){
             try {
-                stm.setState(new ChangeState(nextStateClass.newInstance(), ChangeState.ChangeAction.SET));
+                stm.changeState(nextStateClass.newInstance(), StateMachine.ChangeAction.SET);
                 return;
             } catch (Exception e) {
                 e.printStackTrace();
