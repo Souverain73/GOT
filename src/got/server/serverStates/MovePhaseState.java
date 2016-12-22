@@ -55,5 +55,10 @@ public class MovePhaseState extends StepByStepState {
             Packages.Act msg = (Packages.Act) pkg;
             GameServer.getServer().sendToAllTCP(new Packages.PlayerAct(msg.from, msg.to));
         }
+
+        if (pkg instanceof Packages.PlacePowerToken) {
+            Packages.PlacePowerToken msg = (Packages.PlacePowerToken) pkg;
+            GameServer.getServer().sendToAllTCP(new Packages.PlayerPlacePowerToken(player.id, msg.regionId));
+        }
     }
 }

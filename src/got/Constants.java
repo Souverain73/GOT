@@ -4,8 +4,7 @@ public class Constants {
 //GAME MECHANICS
 	public static final int MAX_PLAYERS = 6;
 	public static final int MAX_MONEY = 21;
-	
-	
+
 //SCREEN
 	public static final int SCREEN_WIDTH = 1280;
 	public static final int SCREEN_HEIGHT = 720;
@@ -29,6 +28,9 @@ public class Constants {
 	public static final float UNIT_SIZE = 50;
 	public static final float UNIT_SCALE = 1; 
 	public static final float UNIT_STEP = 3;
+
+//POWER TOKEN
+	public static final float POWER_TOKEN_IMAGE_SIZE = 50;
 	
 //CLICK PRIORITY (more first)
 	public static final float INTERFACE_Z = 1;

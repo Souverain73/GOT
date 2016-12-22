@@ -60,33 +60,34 @@ public class MovePhase extends ActionPhase {
 					endTurn(region);
 				}
 			}else if (state == SubState.SELECT_TARGET){
-				if (region.getFraction() == Fraction.NEUTRAL ||
-						region.getFraction() == PlayerManager.getSelf().getFraction()){
+				if (region == source){
+					GameClient.shared.gameMap.disableAllRegions();
+					changeSubState(SubState.SELECT_SOURCE);
+					return;
+				}
+				//можно пойти
+				if (region.getFraction() == Fraction.NEUTRAL || //в нейтральные земли
+						region.getFraction() == PlayerManager.getSelf().getFraction() || //в свои земли
+						region.getUnitsCount() == 0 ){ //в земли врага, где нет войск
+
+					usedRegion = source;
+
+					checkIfPowerTokenNeededAndCanBePlaced(source);
+
 
 					GameClient.instance().send(new Packages.Move(
 							source.getID(),
 							region.getID(),
 							selectedUnits
 					));
-					usedRegion = source;
-					//Если покидаем регион без жетона власти и есть свободные жетоны
-					if (source.getUnits().length == selectedUnits.length
-							&& !source.havePowerToket()
-							&& PlayerManager.getSelf().getMoney() > 0){
-						//оставить ли жетон?
-						Dialogs.Dialog confirmDialog = Dialogs.createConfirmDialog(InputManager.instance().getMousePosWorld());
 
-						(new ModalState(confirmDialog)).run();
-
-						if (confirmDialog.getResult() == Dialogs.DialogResult.OK){
-							//TODO: отправить на сервер пакет о том что игрок оставляет жетон власти
-							source.placePowerToken();
-						}
-					}
 					if (usedRegion.getUnits().length == selectedUnits.length){
 						endTurn(usedRegion);
 					}
 				}else{
+					//Жетон власти оставляется до начала боя
+					checkIfPowerTokenNeededAndCanBePlaced(source);
+
 					GameClient.instance().send(new Packages.Attack(source.getID(), region.getID(),
 							PlayerManager.instance().getPlayerByFraction(source.getFraction()).id,
 							PlayerManager.instance().getPlayerByFraction(region.getFraction()).id));
@@ -101,6 +102,22 @@ public class MovePhase extends ActionPhase {
 		}
 
 		super.click(event);
+	}
+
+	private void checkIfPowerTokenNeededAndCanBePlaced(MapPartObject region) {
+		//Если покидаем регион без ж етона власти и есть свободные жетоны
+		if (region.getUnits().length == selectedUnits.length
+                && !region.havePowerToket()
+                && PlayerManager.getSelf().getMoney() > 0){
+            //оставить ли жетон?
+            Dialogs.Dialog confirmDialog = Dialogs.createConfirmDialog(InputManager.instance().getMousePosWorld());
+
+            (new ModalState(confirmDialog)).run();
+
+            if (confirmDialog.getResult() == Dialogs.DialogResult.OK){
+                GameClient.instance().send(new Packages.PlacePowerToken(region.getID()));
+            }
+        }
 	}
 
 	private void endTurn(MapPartObject regionWithUsedAction) {
@@ -150,12 +167,20 @@ public class MovePhase extends ActionPhase {
 				regionFrom.removeUnits(msg.units);
 
 				MapPartObject regionTo = GameClient.shared.gameMap.getRegionByID(msg.to);
+				//Если перешел во вражеский регион, надо убрать жетон власти
+				if (player.getFraction() != regionTo.getFraction()){
+					regionTo.removePowerToken();
+				}
 				regionTo.addUnits(msg.units);
 				regionTo.setFraction(player.getFraction());
 			});
 		}
 		if (pkg instanceof Packages.PlayerAct) {
 			GameClient.shared.gameMap.getRegionByID(((Packages.PlayerAct) pkg).from).setAction(null);
+		}
+		if (pkg instanceof Packages.PlayerPlacePowerToken) {
+			Packages.PlayerPlacePowerToken msg = (Packages.PlayerPlacePowerToken) pkg;
+			GameClient.shared.gameMap.getRegionByID(msg.regionId).placePowerToken();
 		}
 	}
 

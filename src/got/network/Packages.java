@@ -68,6 +68,8 @@ public class Packages {
 		kryo.register(PlayerKillAllUnitsAtRegion.class);
 		kryo.register(MoveAttackerToAttackRegion.class);
 		kryo.register(LooserReady.class);
+		kryo.register(PlacePowerToken.class);
+		kryo.register(PlayerPlacePowerToken.class);
 	}
 
 	public static class NetPackage {
@@ -748,5 +750,29 @@ public class Packages {
 	}
 
 	public static class MoveAttackerToAttackRegion extends BroadcastPackage{
+	}
+
+	public static class PlacePowerToken extends ClientServerPackage{
+		public int regionId;
+
+		public PlacePowerToken(int regionId) {
+			this.regionId = regionId;
+		}
+
+		public PlacePowerToken() {
+		}
+	}
+
+	public static class PlayerPlacePowerToken extends BroadcastPackage{
+		public int playerId;
+		public int regionId;
+
+		public PlayerPlacePowerToken(int playerId, int regionId) {
+			this.playerId = playerId;
+			this.regionId = regionId;
+		}
+
+		public PlayerPlacePowerToken() {
+		}
 	}
 }

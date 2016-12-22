@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import got.gameObjects.interfaceControls.AbstractButtonObject;
 import got.gameStates.PlanningPhase;
 import got.model.Action;
+import got.model.PowerToken;
 import got.server.PlayerManager;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -57,8 +58,10 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	private int w, h;
 	private int act_x, act_y;
 	private int unit_x, unit_y;
+	private int token_x, token_y;
 	private Action action;
 	private List<UnitObject> units;
+	private boolean powerToken;
 	public MapPartObject() {
 		super();
 		neighbors = new ArrayList<>();
@@ -88,6 +91,10 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 			fraction = Fraction.valueOf((String)params.get("fraction"));
 		}catch(Exception e){}
 		placeUnits();
+
+		//todo: Вынести в xml
+		token_x = w/2;
+		token_y = h/2;
 		return false;
 	}
 	public int getID(){
@@ -120,12 +127,15 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		GraphicModule.instance().resetEffect();
 		float actImgSize = Constants.ACTION_IMAGE_SIZE;
 		float halfActImgSize = Constants.ACTION_IMAGE_SIZE/2;
+		float tokenImageSize = Constants.POWER_TOKEN_IMAGE_SIZE;
 		if (st instanceof PlanningPhase && action != null && fraction != PlayerManager.getSelf().getFraction()) {
 			//А тут значит задник.
-			fraction.getBackTexture().draw(cp.x + act_x - halfActImgSize, cp.y + act_y - halfActImgSize, actImgSize, actImgSize);
+			fraction.getBackTexture().draw(cp.x + act_x - halfActImgSize, cp.y + act_y - halfActImgSize,
+					actImgSize, actImgSize);
 		}else{
 			if (action != null){
-				action.getTexture().draw(cp.x + act_x - halfActImgSize, cp.y + act_y -halfActImgSize, actImgSize, actImgSize);
+				action.getTexture().draw(cp.x + act_x - halfActImgSize, cp.y + act_y -halfActImgSize,
+						actImgSize, actImgSize);
 			}
 		}
 
@@ -135,9 +145,15 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		if (units != null){
 			units.forEach(unit->unit.draw(st));
 		}
+
+		if (powerToken){
+			PowerToken.getTexture().draw(cp.x + token_x, cp.y + token_y,
+					tokenImageSize, tokenImageSize);
+		}
 		GraphicModule.instance().resetEffect();
 		super.draw(st);
 	}
+
 	public List<MapPartObject> getNeighbors(){
 		return neighbors;
 	}
@@ -156,19 +172,11 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 					.collect(Collectors.toList());
 		}
 	}
-	public int getBattlePower() {
-		return Arrays.stream(getUnits()).mapToInt(Unit::getDamage).sum();
-	}
 
 	public Unit[] getUnitsForHelp(Fraction helperFraction){
 		return getRegionsForHelp(helperFraction).stream()
 				.flatMap(reg->reg.units.stream())
 				.map(uo->uo.getType()).toArray(Unit[]::new);
-	}
-
-	public List<MapPartObject> getRegionsToRetreat() {
-		//TODO: Сделать в соответствии с правилами
-		return getNeighbors().stream().filter(region->fraction==region.getFraction()).collect(Collectors.toList());
 	}
 
 	public List<MapPartObject> getRegionsForHelp(Fraction helperFraction){
@@ -424,12 +432,15 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	}
 
 	public boolean havePowerToket() {
-		//TODO: implement this
-		return false;
+		return powerToken;
 	}
 
 	public void placePowerToken() {
-		//TODO: implement this
+		powerToken = true;
+	}
+
+	public void removePowerToken(){
+		powerToken = false;
 	}
 
 	public class PathFinder{

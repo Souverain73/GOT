@@ -27,11 +27,12 @@ import got.utils.LoaderParams;
  *
  */
 public class GameMapObject extends AbstractGameObject<GameMapObject>{
-	@Override
-	protected GameMapObject getThis() {
+	@Override protected GameMapObject getThis() {
 		return this;
 	}
 
+
+	private static final String TEXTURE_BASE = "map/";
 	private HashMap<String, MapPartObject> map;
 	private static int counter = 0;
 
@@ -39,10 +40,7 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 	private static GameMapObject _instance;
 
 	@Deprecated
-	/**
-	 * This method is deprecated.
-	 * Use GameClient.shared.gameMap
-	 */
+
 	public static GameMapObject instance(){
 		return _instance;
 	}
@@ -133,7 +131,7 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 					Node paramNode = regionParams.item(j);
 					if (paramNode.getNodeName().equals("texture")){
 						String texName = attribValue(paramNode, "filename");
-						Texture tex = TextureManager.instance().loadTexture(texName);
+						Texture tex = TextureManager.instance().loadTexture(TEXTURE_BASE + texName);
 						params.put("texture", tex);
 					}
 					if (paramNode.getNodeName().equals("unitpos")){
