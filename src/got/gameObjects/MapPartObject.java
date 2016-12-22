@@ -38,7 +38,7 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		return this;
 	}
 
-	private Fraction fraction = Fraction.NEUTRAL;
+	private Fraction fraction = Fraction.NONE;
 
 	private int ID = 0;
 
@@ -249,7 +249,7 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	public List<MapPartObject> getRegionsForHire(){
 		List<MapPartObject> result = getNeighbors().stream().filter(obj->
 				((obj.getType() == RegionType.SEA) && ((obj.getFraction() == PlayerManager.getSelf().getFraction()))
-				|| obj.getFraction() == Fraction.NEUTRAL)
+				|| obj.getFraction() == Fraction.NONE)
 						|| (obj.getType() == RegionType.PORT) || (obj == this)
 		).collect(Collectors.toList());
 		result.add(this);

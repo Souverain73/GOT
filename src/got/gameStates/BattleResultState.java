@@ -68,7 +68,7 @@ public class BattleResultState extends ActionPhase{
         regionTo.addUnits(units);
         regionTo.setFraction(regionFrom.getFraction());
         if (!regionFrom.havePowerToket()){
-            regionFrom.setFraction(Fraction.NEUTRAL);
+            regionFrom.setFraction(Fraction.NONE);
         }
     }
 
@@ -141,7 +141,7 @@ public class BattleResultState extends ActionPhase{
         List<MapPartObject> regionsToRetreat =
                 regionsToMove.stream().filter(r->{
                     //нельзя отступить в чужой регион
-                    if (regionFrom.getFraction() != r.getFraction() && r.getFraction() != Fraction.NEUTRAL) return false;
+                    if (regionFrom.getFraction() != r.getFraction() && r.getFraction() != Fraction.NONE) return false;
 
                     return Game.instance().getSuplyTrack().canMove(regionFrom.getFraction(), regionFrom, r, regionFrom.getUnitsCount());
                 }).collect(Collectors.toList());
@@ -155,7 +155,7 @@ public class BattleResultState extends ActionPhase{
         regionsToRetreat =
                 regionsToMove.stream().filter(r->{
                     //нельзя отступить в чужой регион
-                    if (regionFrom.getFraction() != r.getFraction() && r.getFraction() != Fraction.NEUTRAL) return false;
+                    if (regionFrom.getFraction() != r.getFraction() && r.getFraction() != Fraction.NONE) return false;
 
                     return Game.instance().getSuplyTrack().canMove(regionFrom.getFraction(), regionFrom, r, 1);
                 }).collect(Collectors.toList());

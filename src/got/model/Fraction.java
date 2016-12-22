@@ -11,7 +11,8 @@ public enum Fraction {
 	GREYJOY	(new Vector3f(0.6f, 0.6f, 0.6f), "back.png"),
 	TIREL	(new Vector3f(1, 4, 1), "back.png"),
 	MARTEL	(new Vector3f(5, 2.5f, 1), "back.png"),
-	NEUTRAL (new Vector3f(1, 1, 1), "back.png");
+	NONE	(new Vector3f(1, 1, 1), "back.png"),
+	NEUTRAL_LORD(new Vector3f(1, 1, 1), "back.png");
 	
 	
 	private final Vector3f multiplyColor;

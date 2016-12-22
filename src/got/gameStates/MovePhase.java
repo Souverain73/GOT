@@ -4,7 +4,6 @@ import com.esotericsoftware.kryonet.Connection;
 import got.GameClient;
 import got.InputManager;
 import got.ModalState;
-import got.gameObjects.GameMapObject;
 import got.gameObjects.GameObject;
 import got.gameObjects.MapPartObject;
 import got.gameStates.modals.Dialogs;
@@ -66,7 +65,7 @@ public class MovePhase extends ActionPhase {
 					return;
 				}
 				//можно пойти
-				if (region.getFraction() == Fraction.NEUTRAL || //в нейтральные земли
+				if (region.getFraction() == Fraction.NONE || //в нейтральные земли
 						region.getFraction() == PlayerManager.getSelf().getFraction() || //в свои земли
 						region.getUnitsCount() == 0 ){ //в земли врага, где нет войск
 

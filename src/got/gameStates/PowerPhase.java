@@ -168,7 +168,7 @@ class PowerPhase extends ActionPhase {
 			MapPartObject region = GameMapObject.instance().getRegionByID(msg.region);
 			Player player = PlayerManager.instance().getPlayer(msg.player);
 			region.setUnits(msg.units);
-			if (region.getFraction() == Fraction.NEUTRAL){
+			if (region.getFraction() == Fraction.NONE){
 				region.setFraction(player.getFraction());
 			}
 		}
