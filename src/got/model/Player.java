@@ -1,6 +1,7 @@
 package got.model;
 
 import got.Constants;
+import got.gameObjects.MapPartObject;
 
 /**
  * Class contains all player data
@@ -72,6 +73,11 @@ public class Player {
 
 	public void setReady(boolean ready) {
 		this.ready = ready;
+	}
+
+	public void placePowerTokenAtRegion(MapPartObject region){
+		region.placePowerToken();
+		money--;
 	}
 
 	@Override

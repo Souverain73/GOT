@@ -165,6 +165,10 @@ public class MovePhase extends ActionPhase {
 				MapPartObject regionFrom = GameClient.shared.gameMap.getRegionByID(msg.from);
 				regionFrom.removeUnits(msg.units);
 
+				if (regionFrom.getUnitsCount() == 0 && !regionFrom.havePowerToket()){
+					regionFrom.setFraction(Fraction.NONE);
+				}
+
 				MapPartObject regionTo = GameClient.shared.gameMap.getRegionByID(msg.to);
 				//Если перешел во вражеский регион, надо убрать жетон власти
 				if (player.getFraction() != regionTo.getFraction()){
@@ -179,7 +183,7 @@ public class MovePhase extends ActionPhase {
 		}
 		if (pkg instanceof Packages.PlayerPlacePowerToken) {
 			Packages.PlayerPlacePowerToken msg = (Packages.PlayerPlacePowerToken) pkg;
-			GameClient.shared.gameMap.getRegionByID(msg.regionId).placePowerToken();
+			PlayerManager.getSelf().placePowerTokenAtRegion(GameClient.shared.gameMap.getRegionByID(msg.regionId));
 		}
 	}
 

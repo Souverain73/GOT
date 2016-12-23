@@ -6,7 +6,6 @@
 			<unitpos x="335" y="50"/>
 			<texture filename="CastleBlack.png"/>
 			<unit type="KNIGHT"/>
-			<action type="MOVE"/>
 		</region>
 		<region name="Karhold" type="GROUND" influence="1" x="951" y="149" w="355" h="318">
 			<actionpos x="282" y="116"/>
@@ -20,14 +19,12 @@
 			<unit type="KNIGHT"/>
 			<unit type="KNIGHT"/>
 			<texture filename="Winterfell.png"/>
-			<action type="MOVEPLUS"/>
 		</region>
 		<region name="Widow's Watch" type="GROUND" resources="1" x="939" y="561" w="278" h="219" fraction="LANISTER">
 			<actionpos x="48" y="135"/>
 			<unitpos x="90" y="75"/>
 			<texture filename="WidowsWatch.png"/>
 			<unit type="SOLDIER"/>
-			<action type="MOVE"/>
 		</region>
 		<region name="The Stony Shore" type="GROUND" resources="1" x="153" y="423" w="408" h="426" fraction="STARK">
 			<actionpos x="76" y="164"/>

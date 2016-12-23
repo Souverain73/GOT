@@ -12,6 +12,10 @@ import got.model.Action;
 import got.model.Fraction;
 import got.network.Packages;
 import got.server.PlayerManager;
+import got.utils.UI;
+
+import java.util.List;
+import java.util.stream.Stream;
 
 public class FirePhase extends ActionPhase {
 	private enum SubState {
@@ -47,53 +51,12 @@ public class FirePhase extends ActionPhase {
 				source = region;
 				//change state
 				state = SubState.SELECT_TARGET;
-				
-				GameMapObject.instance().disableAllRegions();
-				//enable regions, that can be affected by fire.
-				if (region.getType() == RegionType.SEA){
-					//if Fire placed in sea you can use it on all neighbors.
-					region.getNeighbors().forEach(obj->obj.setEnabled(true));
-				}else if(region.getType() == RegionType.GROUND){
-					//you can't affect SEA and ports.
-					region.getNeighbors().forEach(obj->{
-						if (obj.getType()==RegionType.GROUND){
-							obj.setEnabled(true);
-						}
-					});
-				}else if(region.getType() == RegionType.PORT){
-					//if you are in port you can use Fire only on neighboring sea.
-					region.getNeighbors().forEach(obj->{
-						if (obj.getType()==RegionType.SEA){
-							obj.setEnabled(true);
-						}
-					});
-				}
-				Fraction selfFraction = PlayerManager.getSelf().getFraction();
-				GameMapObject.instance().getEnabledRegions().forEach(obj->{
-					//disable if region have no action
-					if (obj.getAction() == null || obj.getFraction() == selfFraction){
-						obj.setEnabled(false);
-					}else{
-						//Fire can't affect move action
-						Action action = obj.getAction();
-						if (action == Action.MOVE || action == Action.MOVEMINUS
-								|| action == Action.MOVEPLUS){
-							obj.setEnabled(false);
-						}
-						//Only FirePlus can affect defend actions
-						if ((action == Action.DEFEND || action == Action.DEFENDPLUS)
-								&& region.getAction() == Action.FIRE){
-							obj.setEnabled(false);
-						}
-					}
-					
-				});
-				
-				//if you use Fire on itself you just remove it, so you can do it in all cases.
-				region.setEnabled(true);
+				enableRegionsAffectedByFire(region);
+
+
 			}else if (state == SubState.SELECT_TARGET){
 				GameClient.instance().send(new Packages.Act(source.getID(), region.getID()));
-				GameMapObject.instance().disableAllRegions();
+				GameClient.shared.gameMap.disableAllRegions();
 				GameClient.instance().send(new Packages.Ready(true));
 				state = SubState.SELECT_SOURCE;
 				source = null;
@@ -102,29 +65,62 @@ public class FirePhase extends ActionPhase {
 
 		super.click(event);
 	}
-	
+
+	private void enableRegionsAffectedByFire(MapPartObject regionFrom) {
+		GameClient.shared.gameMap.disableAllRegions();
+		Fraction selfFraction = regionFrom.getFraction();
+		Stream<MapPartObject> affectedRegions = regionFrom.getNeighbors().stream();
+
+		if (regionFrom.getType() == RegionType.SEA){
+			//Можно напасть на всех
+		}else if(regionFrom.getType() == RegionType.GROUND){
+			//Можно напасть только на землю
+			affectedRegions = affectedRegions.filter(obj->obj.getType()== RegionType.GROUND);
+		}else if(regionFrom.getType() == RegionType.PORT){
+			//Можно нападать только на море
+			affectedRegions = affectedRegions.filter(obj->obj.getType()== RegionType.SEA);
+		}
+
+		//убираем регионы без дприказов и свои регионы
+		affectedRegions = affectedRegions.filter(reg->!(reg.getAction() == null || reg.getFraction() == selfFraction));
+		//Убираем регионы с приказами походов
+		affectedRegions = affectedRegions.filter(reg->!(reg.getAction() == Action.MOVE || reg.getAction() == Action.MOVEMINUS
+				|| reg.getAction() == Action.MOVEPLUS));
+		//Если это обычный набег, убираем регионы с приказом обороны
+		if (regionFrom.getAction() == Action.FIRE){
+			affectedRegions = affectedRegions.filter(reg->!(reg.getAction() == Action.DEFEND || reg.getAction() == Action.DEFENDPLUS));
+		}
+
+		affectedRegions.forEach(reg->reg.setEnabled(true));
+
+		//if you use Fire on itself you just remove it, so you can do it in all cases.
+		regionFrom.setEnabled(true);
+	}
+
 	@Override
 	public void recieve(Connection connection, Object pkg) {
 		if (pkg instanceof Packages.PlayerTurn){
 			Packages.PlayerTurn msg = ((Packages.PlayerTurn)pkg);
 			if (PlayerManager.getSelf().id == msg.playerID){
 				if (!enableRegionsWithFire()){
-					//���� �� ��� ����������� �� ���� ������, ������ ������� ����� �� ����� ��������� ���.
-					//� ����� ������ ����������� �������� �� ���� ������� ������� Ready.
 					GameClient.instance().send(new Packages.Ready(false));
 				}
 			}else{
-				//���� ����� ���, ��������� ��� �������, ��� ��� � ����� ��� �� �� ����� ��������� ��������.
-				GameMapObject.instance().disableAllRegions();
+				GameClient.shared.gameMap.disableAllRegions();
 			}
 		}
 		
 		if (pkg instanceof Packages.PlayerAct){
 			Packages.PlayerAct msg = ((Packages.PlayerAct)pkg);
-			MapPartObject source = GameMapObject.instance().getRegionByID(msg.from);
-			MapPartObject target = GameMapObject.instance().getRegionByID(msg.to);
-			//TODO: if target action is Money or Moneyplus get 1 money from target and put 1 money to source
-			
+			MapPartObject source = GameClient.shared.gameMap.getRegionByID(msg.from);
+			MapPartObject target = GameClient.shared.gameMap.getRegionByID(msg.to);
+
+			//if target action is Money or Moneyplus get 1 money from target and put 1 money to source
+			if (target.getAction() == Action.MONEY || target.getAction() == Action.MONEYPLUS) {
+				source.getOwnerPlayer().addMoney(1);
+				target.getOwnerPlayer().addMoney(-1);
+			}
+
 			//remove actions from source and target region
 			source.setAction(null);
 			
@@ -133,15 +129,11 @@ public class FirePhase extends ActionPhase {
 		}
 		
 	}
-	
-	/**
-	 * ������� ���������� ������� � ��������� ������ �������� ������ � ��������� ���������.
-	 * @return true - ���� ��� ����������� ���� �� 1 ������, ����� - false.
-	 */
+
 	private boolean enableRegionsWithFire(){
 		Fraction selfFraction = PlayerManager.getSelf().getFraction();
 
-		return GameMapObject.instance().setEnabledByCondition(region->{
+		return GameClient.shared.gameMap.setEnabledByCondition(region->{
 			boolean enable = region.getFraction() == selfFraction
 					&& region.getAction() != null 
 					&& (region.getAction() == Action.FIRE ||

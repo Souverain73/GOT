@@ -5,8 +5,7 @@ import java.util.stream.Collectors;
 
 import got.gameObjects.interfaceControls.AbstractButtonObject;
 import got.gameStates.PlanningPhase;
-import got.model.Action;
-import got.model.PowerToken;
+import got.model.*;
 import got.server.PlayerManager;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -17,8 +16,6 @@ import got.gameStates.GameState;
 import got.graphics.Effect;
 import got.graphics.GraphicModule;
 import got.graphics.Texture;
-import got.model.Fraction;
-import got.model.Unit;
 import got.utils.LoaderParams;
 import got.utils.Utils;
 
@@ -31,7 +28,7 @@ import got.utils.Utils;
 public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 
 
-    public enum RegionType{	GROUND, SEA, PORT;}
+	public enum RegionType{	GROUND, SEA, PORT;}
 
 	@Override
 	protected MapPartObject getThis() {
@@ -47,14 +44,15 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	private String name;
 
 	private int resourcesCount;
+
 	private int influencePoints;
-
 	private int buildingLevel;
-
 
 	private Texture texture;
 
+
 	private List<MapPartObject>  neighbors;
+
 	private int w, h;
 	private int act_x, act_y;
 	private int unit_x, unit_y;
@@ -153,10 +151,10 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		GraphicModule.instance().resetEffect();
 		super.draw(st);
 	}
-
 	public List<MapPartObject> getNeighbors(){
 		return neighbors;
 	}
+
 	public List<MapPartObject> getRegionsToMove(){
 		PathFinder pf = new PathFinder(this.getFraction());
 		List<MapPartObject> result = pf.getRegionsToMoveFrom(this);
@@ -172,7 +170,6 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 					.collect(Collectors.toList());
 		}
 	}
-
 	public Unit[] getUnitsForHelp(Fraction helperFraction){
 		return getRegionsForHelp(helperFraction).stream()
 				.flatMap(reg->reg.units.stream())
@@ -248,9 +245,10 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 
 	public List<MapPartObject> getRegionsForHire(){
 		List<MapPartObject> result = getNeighbors().stream().filter(obj->
-				((obj.getType() == RegionType.SEA) && ((obj.getFraction() == PlayerManager.getSelf().getFraction()))
-				|| obj.getFraction() == Fraction.NONE)
-						|| (obj.getType() == RegionType.PORT) || (obj == this)
+				((obj.getType() == RegionType.SEA || obj.getType() == RegionType.PORT) &&
+						((obj.getFraction() == PlayerManager.getSelf().getFraction())
+							|| obj.getFraction() == Fraction.NONE))
+				|| (obj == this)
 		).collect(Collectors.toList());
 		result.add(this);
 		return result;
@@ -259,7 +257,6 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	public void updateUnits(){
 		placeUnits();
 	}
-
 
 	private void placeUnits(){
 		Vector2f cp = getPos();
@@ -287,6 +284,7 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 			}
 		}
 	}
+
 
 	public void setAction(Action act){
 		action = act;
@@ -366,10 +364,10 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		setUnits(Arrays.stream(getUnits()).map(Unit::getKilled).toArray(Unit[]::new));
 	}
 
-
 	public void resurectUnits() {
 		setUnits(Arrays.stream(getUnits()).map(Unit::getAlive).toArray(Unit[]::new));
 	}
+
 
 	/**
 	 * Нужен для обратной совместимости, в идеале надо бы это переписать.
@@ -390,10 +388,10 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		return action;
 	}
 
-
 	public void hideUnits(){
 		units.forEach(unit->unit.setVisible(false));
 	}
+
 
 	public void showUnits(){
 		units.forEach(unit->unit.setVisible(true));
@@ -422,6 +420,10 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	public int getUnitsCount(){
 
 		return units.size();
+	}
+
+	public Player getOwnerPlayer() {
+		return PlayerManager.instance().getPlayerByFraction(fraction);
 	}
 
 	@Override
