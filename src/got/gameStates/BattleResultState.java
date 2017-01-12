@@ -49,7 +49,7 @@ public class BattleResultState extends ActionPhase{
             GameClient.shared.gameMap.getRegionByID(msg.regionID).removeAllUnits();
         }else if (pkg instanceof Packages.MoveAttackerToAttackRegion) {
             GameClient.instance().registerTask(()->{
-                moveAllUnits(GameClient.shared.battleDeck.getAttacker(), GameClient.shared.battleDeck.getDefender());
+                moveAllUnits(GameClient.shared.battleDeck.getAttackerRegion(), GameClient.shared.battleDeck.getDefenderRegion());
             });
         }
     }
@@ -74,9 +74,9 @@ public class BattleResultState extends ActionPhase{
 
     private void onBattleResult(Packages.BattleResult battleResult) {
         //Убираем приказы
-        GameClient.shared.battleDeck.getAttacker().setAction(null);
+        GameClient.shared.battleDeck.getAttackerRegion().setAction(null);
         if (GameClient.shared.battleDeck.isAttacker(PlayerManager.instance().getPlayer(battleResult.winnerID).getFraction())){
-            GameClient.shared.battleDeck.getDefender().setAction(null);
+            GameClient.shared.battleDeck.getDefenderRegion().setAction(null);
         }
         GameClient.shared.gameMap.getRegionByID(battleResult.looserRegionID).killUnits();
         if (battleResult.looserID == PlayerManager.getSelf().id){
@@ -135,7 +135,7 @@ public class BattleResultState extends ActionPhase{
 
     private void enableRegionsToRetreatOrKillUnits() {
         GameClient.shared.gameMap.disableAllRegions();
-        MapPartObject regionFrom = GameClient.shared.battleDeck.getDefender();
+        MapPartObject regionFrom = GameClient.shared.battleDeck.getDefenderRegion();
         List<MapPartObject> regionsToMove = regionFrom.getRegionsToMove();
         //Ищем регионы куда можно отступить не нарушая снабжения
         List<MapPartObject> regionsToRetreat =

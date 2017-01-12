@@ -1,6 +1,7 @@
 package got.gameStates;
 
 import got.gameObjects.PlayerPanelObject;
+import got.gameObjects.TextObject;
 import org.joml.Vector2f;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -21,6 +22,7 @@ public class MainState extends AbstractGameState {
 	private StateMachine stm;
 	private GameMapObject map;
 	private ImageObject background;
+	private TextObject tooltipText;
 
 	@Override
 	public String getName() {
@@ -42,6 +44,7 @@ public class MainState extends AbstractGameState {
 		GameClient.shared.gameMap = map;
 		//addObject(map);
 		addObject(new PlayerPanelObject(PlayerManager.getSelf()));
+		addObject(tooltipText = new TextObject("Tooltip").setPos(new Vector2f(300,10)).setSpace(DrawSpace.SCREEN));
 		
 		super.enter(extstm);
 	}
@@ -58,6 +61,7 @@ public class MainState extends AbstractGameState {
 	public void draw() {
 		background.draw(this);
 		map.draw(stm.getCurrentState());
+		tooltipText.draw(this);
 
 		if (GameClient.shared.battleDeck != null){
 			GameClient.shared.battleDeck.draw(stm.getCurrentState());
@@ -71,6 +75,7 @@ public class MainState extends AbstractGameState {
 	public void update() {
 		background.update(this);
 		map.update(stm.getCurrentState());
+		tooltipText.update(this);
 
 		if (GameClient.shared.battleDeck != null){
 			GameClient.shared.battleDeck.update(stm.getCurrentState());
@@ -83,6 +88,7 @@ public class MainState extends AbstractGameState {
 	public void tick(){
 		background.tick();
 		map.tick();
+		tooltipText.tick();
 
 		if (GameClient.shared.battleDeck != null){
 			GameClient.shared.battleDeck.tick();
@@ -100,6 +106,10 @@ public class MainState extends AbstractGameState {
 			return;
 		}
 		stm.recieve(connection, pkg);
+	}
+
+	public void setTooltipText(String text){
+		tooltipText.setText(text);
 	}
 
 	@Override

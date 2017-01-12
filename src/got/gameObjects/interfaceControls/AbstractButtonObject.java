@@ -2,8 +2,10 @@ package got.gameObjects.interfaceControls;
 
 import java.util.function.BiConsumer;
 
+import com.esotericsoftware.minlog.Log;
 import got.gameObjects.AbstractGameObject;
 import got.gameObjects.GameObject;
+import got.utils.UI;
 import org.joml.Vector2f;
 
 import got.InputManager;
@@ -63,6 +65,8 @@ public abstract class AbstractButtonObject<T extends AbstractButtonObject<T>> ex
 	
 	@Override
 	public void update(GameState st) {
+		super.update(st);
+
 		if (state == State.DISABLED) return;
 		
 		if (state == State.FREE){
@@ -89,17 +93,16 @@ public abstract class AbstractButtonObject<T extends AbstractButtonObject<T>> ex
 			}
 		}
 		
-		if (state == State.HOVER){
-			if (!mouseIn){
+		if (state == State.HOVER) {
+			if (!mouseIn) {
 				mouseOut();
 			}
-			if (InputManager.instance().getMouseButtonState(InputManager.MOUSE_LEFT)==1){
+			if (InputManager.instance().getMouseButtonState(InputManager.MOUSE_LEFT) == 1) {
 				state = State.DOWN;
-			}else{
+			} else {
 				wasClick = false;
 			}
 		}
-		super.update(st);
 	}
 	
 	protected void mouseEnter(){
@@ -122,6 +125,7 @@ public abstract class AbstractButtonObject<T extends AbstractButtonObject<T>> ex
 		}else{
 			state = State.DISABLED;
 		}
+
 		return getThis();
 	}
 	

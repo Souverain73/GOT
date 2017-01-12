@@ -202,8 +202,8 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		return getNeighbors().stream()
 				.anyMatch(obj->
 				obj.getFraction() == fraction
-				&& obj.getAction() == Action.HELPPLUS
-				|| obj.getAction() == Action.HELP);
+				&& (obj.getAction() == Action.HELPPLUS
+				|| obj.getAction() == Action.HELP));
 	}
 
 	public String getName(){
@@ -212,15 +212,14 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 
 	//Метод добавляющий соседа.
 	public void addNeighbor(MapPartObject neighbor){
-		if (neighbors.indexOf(neighbor)!=-1){
+		if (neighbors.indexOf(neighbor)!=-1)
 			//если сосед уже есть то делать ничего не надо
 			return;
-		}else{
-			//Если соседа нет, дбавляем его к соседям
-			neighbors.add(neighbor);
-			//Добавляем обратную связь
-			neighbor.addNeighbor(this);
-		}
+
+		//Если соседа нет, дбавляем его к соседям
+		neighbors.add(neighbor);
+		//Добавляем обратную связь
+		neighbor.addNeighbor(this);
 	}
 
 	public void addUnit(UnitObject unit){

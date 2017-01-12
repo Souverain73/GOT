@@ -3,7 +3,10 @@ package got.network;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 
+import got.houseCards.HouseCard;
 import got.model.Action;
+
+import java.util.ArrayList;
 
 public class Network {
 	public static int portTCP = 54555;
@@ -20,7 +23,7 @@ public class Network {
 		
 		kryo.register(got.model.Unit.class);
 		kryo.register(got.model.Unit[].class);
-		
+
 		kryo.register(Action.class);
 	}
 	

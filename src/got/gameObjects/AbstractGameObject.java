@@ -3,6 +3,7 @@ package got.gameObjects;
 import java.util.ArrayList;
 import java.util.List;
 
+import got.gameObjects.interfaceControls.AbstractButtonObject;
 import org.joml.Vector2f;
 
 import got.gameStates.GameState;
@@ -23,7 +24,7 @@ public abstract class AbstractGameObject<T extends AbstractGameObject<T>> implem
 	protected float w, h;
 	protected boolean visible;
 	protected DrawSpace space = DrawSpace.WORLD;
-	private boolean updated, drawed, used;
+	protected boolean updated, drawed, used;
 	
 	protected abstract T getThis();
 	
@@ -40,10 +41,11 @@ public abstract class AbstractGameObject<T extends AbstractGameObject<T>> implem
 	}
 
 	protected AbstractGameObject() {
+		//new objects are active
 		visible = true;
-		updated = false;
-		drawed = false;
-		used = false;
+		updated = true;
+		drawed = true;
+		used = true;
 		pos = new Vector2f();
 		childs = new ArrayList<AbstractGameObject>();
 	}
@@ -94,6 +96,7 @@ public abstract class AbstractGameObject<T extends AbstractGameObject<T>> implem
 	}
 
 	@Override
+
 	public void draw(GameState state) {
 		drawed = true;
 		if (isVisible()){

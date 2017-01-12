@@ -59,7 +59,6 @@ public class PlayerCardObject extends AbstractGameObject<PlayerCardObject>{
         int x = BASE_UNITS_X;
         int y = BASE_UNITS_Y;
         for (int i=0; i<units.length; i++){
-            System.out.printf("Place unit at x=%d y=%d", x, y);
             unitObjects[i].setPos(new Vector2f( x, y));
             x += UNITS_SIZE + UNITS_SPACING * 2;
             if (x > 100 /*ширина панельки*/){

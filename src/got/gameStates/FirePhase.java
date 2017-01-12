@@ -17,6 +17,8 @@ import got.utils.UI;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static got.utils.UI.logAction;
+
 public class FirePhase extends ActionPhase {
 	private enum SubState {
 		SELECT_SOURCE, SELECT_TARGET
@@ -100,6 +102,7 @@ public class FirePhase extends ActionPhase {
 	@Override
 	public void recieve(Connection connection, Object pkg) {
 		if (pkg instanceof Packages.PlayerTurn){
+			logAction("Next turn");
 			Packages.PlayerTurn msg = ((Packages.PlayerTurn)pkg);
 			if (PlayerManager.getSelf().id == msg.playerID){
 				if (!enableRegionsWithFire()){
@@ -114,6 +117,8 @@ public class FirePhase extends ActionPhase {
 			Packages.PlayerAct msg = ((Packages.PlayerAct)pkg);
 			MapPartObject source = GameClient.shared.gameMap.getRegionByID(msg.from);
 			MapPartObject target = GameClient.shared.gameMap.getRegionByID(msg.to);
+
+			logAction("Player play action from " + source.getName() + " to " + target.getName());
 
 			//if target action is Money or Moneyplus get 1 money from target and put 1 money to source
 			if (target.getAction() == Action.MONEY || target.getAction() == Action.MONEYPLUS) {

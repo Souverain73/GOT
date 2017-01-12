@@ -8,12 +8,13 @@ import got.gameObjects.ImageObject;
 import got.gameObjects.battleDeck.BattleDeckObject;
 import got.gameObjects.interfaceControls.ImageButton;
 import got.gameStates.modals.CustomModalState;
-import got.gameStates.modals.Dialogs;
 import got.graphics.DrawSpace;
 import got.model.Player;
 import got.network.Packages;
 import got.server.PlayerManager;
 import org.joml.Vector2f;
+
+import static got.utils.UI.logAction;
 
 /**
  * Created by Souverain73 on 28.11.2016.
@@ -66,7 +67,7 @@ public class HelpPhase extends ActionPhase {
         GameClient.instance().registerTask(()->{
             if (pkg instanceof Packages.InitBattle) {
                 Packages.InitBattle msg = (Packages.InitBattle) pkg;
-                System.out.printf("Init battle from %d to %d", msg.from, msg.to);
+                logAction(String.format("Init battle from %d to %d", msg.from, msg.to));
                 bdo = new BattleDeckObject(
                         GameClient.shared.gameMap.getRegionByID(msg.from),
                         GameClient.shared.gameMap.getRegionByID(msg.to)
@@ -75,19 +76,27 @@ public class HelpPhase extends ActionPhase {
             }
 
             if (pkg instanceof Packages.PlayerTurn) {
+                logAction("Next turn");
                 Packages.PlayerTurn msg = (Packages.PlayerTurn) pkg;
                 if (PlayerManager.getSelf().id == msg.playerID){
-                    if (bdo.isBattleMember(PlayerManager.getSelf().getFraction())){
-                        GameClient.instance().sendReady(false);
-                    }else if(bdo.getDefender().canHelp(PlayerManager.getSelf().getFraction())){
-                        int battlePointsToHelp = bdo.getDefender().getBattlePowerForHelpers(
+                    if(bdo.getDefenderRegion().canHelp(PlayerManager.getSelf().getFraction())){
+                        int battlePointsToHelp = bdo.getDefenderRegion().getBattlePowerForHelpers(
                                 PlayerManager.getSelf().getFraction()
                         );
 
-                        //TODO: отображать количество очков в диалоге выбора.
-                        BattleSide userSelect = showSelectSideDialogAndGetResult();
+                        BattleSide side;
+                        if (bdo.isBattleMember(PlayerManager.getSelf().getFraction())) {
+                            if (bdo.isAttacker(PlayerManager.getSelf().getFraction())){
+                                side = BattleSide.SIDE_ATTACKER;
+                            }else{
+                                side = BattleSide.SIDE_DEFENDER;
+                            }
+                        }else {
+                            //TODO: отображать количество очков в диалоге выбора.
+                            side = showSelectSideDialogAndGetResult();
+                        }
 
-                        GameClient.instance().send(new Packages.Help(userSelect.getId()));
+                        GameClient.instance().send(new Packages.Help(side.getId()));
                     }else {
                         GameClient.instance().sendReady(false);
                     }
@@ -97,9 +106,9 @@ public class HelpPhase extends ActionPhase {
                 Packages.PlayerHelp msg = (Packages.PlayerHelp) pkg;
                 Player player = PlayerManager.instance().getPlayer(msg.player);
                 if (msg.side == Packages.Help.SIDE_NONE){
-                    System.out.printf("Player %s will help nobody.", player.getNickname());
+                    logAction(String.format("Player %s will help nobody.", player.getNickname()));
                 } else{
-                    System.out.printf("Player %s will help %s", player.getNickname(), msg.side);
+                    logAction(String.format("Player %s will help %s", player.getNickname(), msg.side));
                     if (msg.side == BattleSide.SIDE_ATTACKER.getId()){
                         bdo.addAttackerHelper(player);
                     }else if (msg.side == BattleSide.SIDE_DEFENDER.getId()){
@@ -140,6 +149,6 @@ public class HelpPhase extends ActionPhase {
 
     @Override
     public void exit() {
-        GameClient.shared.battleDeck.setVisible(false);
+
     }
 }

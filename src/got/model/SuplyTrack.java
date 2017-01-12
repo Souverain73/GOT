@@ -28,12 +28,12 @@ public class SuplyTrack {
 
     //init it with default values;
     private EnumMap<Fraction, Integer> fractionPos = new EnumMap<Fraction, Integer>(Fraction.class){{
-        put(Fraction.BARATEON, 6);
+        put(Fraction.BARATHEON, 6);
         put(Fraction.GREYJOY, 6);
         put(Fraction.LANISTER, 6);
         put(Fraction.MARTEL, 6);
         put(Fraction.STARK, 6);
-        put(Fraction.TIREL, 6);
+        put(Fraction.TYRELL, 6);
     }};
 
     public int getPos(Fraction fract){

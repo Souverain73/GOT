@@ -26,26 +26,26 @@ public class Game {
 	
 	private Fraction[][] throneDefault = new Fraction[][] { { Fraction.STARK }, 
 			{ Fraction.STARK, Fraction.LANISTER },
-			{ Fraction.STARK, Fraction.LANISTER, Fraction.BARATEON },
-			{ Fraction.BARATEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY },
-			{ Fraction.BARATEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY, Fraction.TIREL },
-			{ Fraction.BARATEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY, Fraction.TIREL,
+			{ Fraction.STARK, Fraction.LANISTER, Fraction.BARATHEON },
+			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY },
+			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY, Fraction.TYRELL },
+			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY, Fraction.TYRELL,
 					Fraction.MARTEL } };
 
 	private Fraction[][] swordDefault = new Fraction[][] { { Fraction.STARK }, 
 			{ Fraction.STARK, Fraction.LANISTER },
-			{ Fraction.STARK, Fraction.LANISTER, Fraction.BARATEON },
-			{ Fraction.BARATEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY },
-			{ Fraction.BARATEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY, Fraction.TIREL },
-			{ Fraction.BARATEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY, Fraction.TIREL,
+			{ Fraction.STARK, Fraction.LANISTER, Fraction.BARATHEON },
+			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY },
+			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY, Fraction.TYRELL },
+			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY, Fraction.TYRELL,
 					Fraction.MARTEL } };
 
 	private Fraction[][] crowDefault = new Fraction[][] { { Fraction.STARK }, 
 			{ Fraction.STARK, Fraction.LANISTER },
-			{ Fraction.STARK, Fraction.LANISTER, Fraction.BARATEON },
-			{ Fraction.BARATEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY },
-			{ Fraction.BARATEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY, Fraction.TIREL },
-			{ Fraction.BARATEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY, Fraction.TIREL,
+			{ Fraction.STARK, Fraction.LANISTER, Fraction.BARATHEON },
+			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY },
+			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY, Fraction.TYRELL },
+			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY, Fraction.TYRELL,
 					Fraction.MARTEL } };
 
 	Track throneTrack;

@@ -41,6 +41,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import com.esotericsoftware.minlog.Log;
 import got.gameObjects.GameMapObject;
 import got.gameObjects.battleDeck.BattleDeckObject;
+import got.houseCards.HouseCardsLoader;
+import got.server.GameServer;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
@@ -112,7 +114,7 @@ public class GameClient {
 	private int windowHeight;	
 	
 	private GameClient(){
-		Log.set(Log.LEVEL_DEBUG);
+		Log.set(Log.LEVEL_INFO);
 		graphics = GraphicModule.instance();
 		stm = new StateMachine();
 		modalStates = new LinkedList<ModalState>();
@@ -169,6 +171,7 @@ public class GameClient {
 	public void initResources(){
 		stm.setState(new MenuState());
 		background = TextureManager.instance().loadTexture("background.png");
+		HouseCardsLoader.instance();
 	}
 	
 	public void initNetwork(){
@@ -247,26 +250,6 @@ public class GameClient {
 	public void updateInput(){
 		glfwPollEvents();
 		InputManager.instance().update();
-		if (debug){
-			if(InputManager.instance().keyPressed(GLFW_KEY_1)){
-				player.setFraction(Fraction.BARATEON);
-			}
-			if(InputManager.instance().keyPressed(GLFW_KEY_2)){
-				player.setFraction(Fraction.LANISTER);
-			}
-			if(InputManager.instance().keyPressed(GLFW_KEY_3)){
-				player.setFraction(Fraction.STARK);
-			}
-			if(InputManager.instance().keyPressed(GLFW_KEY_4)){
-				player.setFraction(Fraction.TIREL);
-			}
-			if(InputManager.instance().keyPressed(GLFW_KEY_5)){
-				player.setFraction(Fraction.GREYJOY);
-			}
-			if(InputManager.instance().keyPressed(GLFW_KEY_6)){
-				player.setFraction(Fraction.MARTEL);
-			}
-		}
 	}
 	
 	public void updateGraphics(){
@@ -371,6 +354,14 @@ public class GameClient {
 	public boolean isDebug() {
 		return debug;
 	}
+
+	public void setTooltipText(String text){
+		GameState st = stm.getCurrentState();
+		if (st instanceof MainState) {
+			MainState mainState = (MainState) st;
+			mainState.setTooltipText(text);
+		}
+	}
 	
 	public Client getClient(){
 		return client;
@@ -386,9 +377,6 @@ public class GameClient {
 	 * @return Текущее состояние игры.
 	 */
 	public GameState getCurrentState(){
-		//А тут значит костыль.
-		//MainState содержит свою машину состояний, поэтому что бы получить на самом деле текущее состояние, 
-		//недо получить текущее состояние из MainState
 		GameState result = null;
 		if (!modalStates.isEmpty()){
 			return modalStates.peek().getGameState();

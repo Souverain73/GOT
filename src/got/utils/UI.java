@@ -1,5 +1,7 @@
 package got.utils;
 
+import com.esotericsoftware.minlog.Log;
+
 import javax.swing.JOptionPane;
 
 public class UI {
@@ -16,5 +18,9 @@ public class UI {
 	
 	public static void systemMessage(String message){
 		System.out.println("[System]:"+message);
+	}
+
+	public static void logAction(String message){
+		Log.info("[Action]:" + message);
 	}
 }

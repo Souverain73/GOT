@@ -70,6 +70,8 @@ public class Packages {
 		kryo.register(LooserReady.class);
 		kryo.register(PlacePowerToken.class);
 		kryo.register(PlayerPlacePowerToken.class);
+		kryo.register(SelectHouseCard.class);
+		kryo.register(PlayerSelectHouseCard.class);
 	}
 
 	public static class NetPackage {
@@ -773,6 +775,30 @@ public class Packages {
 		}
 
 		public PlayerPlacePowerToken() {
+		}
+	}
+
+	public static class SelectHouseCard extends ClientServerPackage{
+		public int card;
+
+		public SelectHouseCard(int card) {
+			this.card = card;
+		}
+
+		public SelectHouseCard() {
+		}
+	}
+
+	public static class PlayerSelectHouseCard extends BroadcastPackage{
+		public int player;
+		public int card;
+
+		public PlayerSelectHouseCard(int player, int card) {
+			this.player = player;
+			this.card = card;
+		}
+
+		public PlayerSelectHouseCard() {
 		}
 	}
 }

@@ -152,7 +152,7 @@ class PowerPhase extends ActionPhase {
         }
         if (pkg instanceof Packages.CollectInfluence) {
             //Собираем влияние(деньги)
-            UI.systemMessage("Collecr influence recieved");
+            UI.systemMessage("Collect influence recieved");
             Packages.CollectInfluence msg = ((Packages.CollectInfluence) pkg);
             MapPartObject region = GameClient.shared.gameMap.getRegionByID(msg.region);
 
@@ -189,20 +189,12 @@ class PowerPhase extends ActionPhase {
     private boolean enableRegionsWithCrown() {
         Fraction selfFraction = PlayerManager.getSelf().getFraction();
 
-        //обход ограничения на изменение переменных внутри лямбд
-        boolean[] result = new boolean[1];
-        result[0] = false;
-
-        GameClient.shared.gameMap.setEnabledByCondition(region -> {
-            boolean enable = region.getFraction() == selfFraction
-                    && region.getAction() != null
-                    && (region.getAction() == Action.MONEY ||
-                    region.getAction() == Action.MONEYPLUS);
-            result[0] |= enable;
-            return enable;
-        });
-
-        return result[0];
+        return GameClient.shared.gameMap.setEnabledByCondition(region ->
+             region.getFraction() == selfFraction
+             && region.getAction() != null
+             && (region.getAction() == Action.MONEY ||
+             region.getAction() == Action.MONEYPLUS)
+        ) > 0;
     }
 
     /**
@@ -210,8 +202,8 @@ class PowerPhase extends ActionPhase {
      */
     private void firstTurn() {
         UI.systemMessage("Enabled regions");
-        GameClient.shared.gameMap.getEnabledRegions().forEach(reg->UI.systemMessage(reg.getName()));
-        for (MapPartObject region :GameClient.shared.gameMap.getEnabledRegions()) {
+        UI.systemMessage(String.valueOf(GameClient.shared.gameMap.getEnabledRegions().size()));
+        for (MapPartObject region : GameClient.shared.gameMap.getEnabledRegions()) {
             if (region.getAction() == Action.MONEY) {
                 UI.systemMessage("FT: Collect influence and disable region " + region.getName());
                 sendCollectMoney(region);

@@ -18,13 +18,15 @@ public class Player {
 	private int resouces;
 	private String nickname;
 	private boolean ready;
+	private transient Deck deck;
 	
 	public Player() {
 		nickname = "dumb";
 		fraction = null;
 		specials = 3;
-		money = 100;
+		money = 5;
 		ready = false;
+		deck = null;
 	}
 
 	public int getSpecials() {
@@ -57,6 +59,8 @@ public class Player {
 
 	public void setFraction(Fraction fraction) {
 		this.fraction = fraction;
+		//При смене фракции игроку надо дать новую колоду карт домов.
+		this.deck = new Deck(this);
 	}
 	
 	public String getNickname() {
@@ -66,7 +70,11 @@ public class Player {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
-	
+
+	public Deck getDeck() {
+		return deck;
+	}
+
 	public boolean isReady() {
 		return ready;
 	}
@@ -76,8 +84,20 @@ public class Player {
 	}
 
 	public void placePowerTokenAtRegion(MapPartObject region){
+		if (money == 0) {
+			throw new IllegalStateException("Player try place power token, but player have no power tokens");
+		}
 		region.placePowerToken();
 		money--;
+	}
+
+	public void addMoney(int money){
+		this.money+=money;
+		if (this.money>Constants.MAX_MONEY){
+			this.money = Constants.MAX_MONEY;
+		}else if(this.money < 0){
+			this.money = 0;
+		}
 	}
 
 	@Override
@@ -85,12 +105,5 @@ public class Player {
 		return String.format("Player [fraction=%s, specials=%s, money=%s, resouces=%s, ready=%s]", fraction, specials,
 				money, resouces, ready);
 	}
-	
-	public void addMoney(int money){
-		this.money+=money;
-		if (this.money>Constants.MAX_MONEY){
-			this.money = Constants.MAX_MONEY;
-		}
-	}
-	
+
 }

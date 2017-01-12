@@ -12,6 +12,8 @@ import got.model.*;
 import got.network.Packages;
 import got.server.PlayerManager;
 
+import static got.utils.UI.logAction;
+
 public class MovePhase extends ActionPhase {
 	private static final String name = "MovePhase";
 	private enum SubState {SELECT_SOURCE, SELECT_TARGET};
@@ -146,6 +148,7 @@ public class MovePhase extends ActionPhase {
 	@Override
 	public void recieve(Connection c, Object pkg) {
 		if (pkg instanceof Packages.PlayerTurn) {
+			logAction("Next turn");
 			Packages.PlayerTurn msg = (Packages.PlayerTurn) pkg;
 
 			if (msg.playerID == PlayerManager.getSelf().id){
@@ -174,6 +177,7 @@ public class MovePhase extends ActionPhase {
 				if (player.getFraction() != regionTo.getFraction()){
 					regionTo.removePowerToken();
 				}
+				logAction("Player " + player.getNickname() + " move units from " + regionFrom.getName() + " to " + regionTo.getName());
 				regionTo.addUnits(msg.units);
 				regionTo.setFraction(player.getFraction());
 			});
@@ -182,6 +186,7 @@ public class MovePhase extends ActionPhase {
 			GameClient.shared.gameMap.getRegionByID(((Packages.PlayerAct) pkg).from).setAction(null);
 		}
 		if (pkg instanceof Packages.PlayerPlacePowerToken) {
+			logAction("Player place power token region");
 			Packages.PlayerPlacePowerToken msg = (Packages.PlayerPlacePowerToken) pkg;
 			PlayerManager.getSelf().placePowerTokenAtRegion(GameClient.shared.gameMap.getRegionByID(msg.regionId));
 		}

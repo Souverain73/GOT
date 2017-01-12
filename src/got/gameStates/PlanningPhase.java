@@ -26,6 +26,8 @@ import got.network.Packages.Ready;
 import got.network.Packages.SetAction;
 import got.server.PlayerManager;
 
+import static got.utils.UI.logAction;
+
 public class PlanningPhase extends AbstractGameState implements IClickListener {
 	private static final String name = "PlanningPhase";
 	private List<Action> actions;
@@ -138,11 +140,12 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 	public void recieve(Connection connection, Object pkg) {
 		if (pkg instanceof PlayerSetAction){
 			PlayerSetAction msg = ((PlayerSetAction)pkg);
-			MapPartObject region = GameMapObject.instance().getRegionByID(msg.region);
+			MapPartObject region = GameClient.shared.gameMap.getRegionByID(msg.region);
 			GameClient.instance().registerTask(new Runnable() {
 				@Override
 				public void run() {
 					if (msg.action==null){
+						logAction("Player remove action from " + region.getName());
 						//if it's your action. in this case it must be handled before remove action from map.
 						if (region.getFraction() == PlayerManager.getSelf().getFraction())
 							//do some routine to handle your actions set
@@ -151,6 +154,7 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 						region.setAction(null); 
 					}else{
 						Action act = msg.action;
+						logAction("Player place " + act.toString() + " on region " + region.getName());
 						//add action to region
 						region.setAction(act);
 						//if it's your action

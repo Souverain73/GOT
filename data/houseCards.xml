@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<house fraction="STARK">
+		<card class="got.houseCards.stark.CatelynStark" power="0" title="Catelyn Stark">
+			<texture filename="CatelynStark.png"/>
+		</card>
+		<card class="got.houseCards.stark.Blackfish" power="1" title="The Blackfish">
+			<texture filename="TheBlackfish.png"/>
+		</card>
+		<card power="1" towers="2" title="Ser Roderick Cassel">
+			<texture filename="SerRoderickCassel.png"/>
+		</card>
+		<card power="1" swords="1" title="Greation Umber">
+			<texture filename="GreationUmber.png"/>
+		</card>
+		<card class="got.houseCards.stark.RooseBolton" power="2" title="Roose Bolton">
+			<texture filename="RooseBolton.png"/>
+		</card>
+		<card class="got.houseCards.stark.RobStark" power="3" title="Rob Stark">
+			<texture filename="RobStark.png"/>
+		</card>
+		<card power="4" swords="2" title="Eddard Stark">
+			<texture filename="EddardStark.png"/>
+		</card>
+	</house>
+	<house fraction="LANISTER">
+		<card class="got.houseCards.lanister.CerseiLanister" power="0" title="Cersei Lanister">
+			<texture filename="CerseiLanister.png"/>
+		</card>
+		<card class="got.houseCards.lanister.TyrionLanister" power="1" title="Tyrion Lanister">
+			<texture filename="TyrionLanister.png"/>
+		</card>
+		<card class="got.houseCards.lanister.SerKevanLanister" power="1" title="Ser Kevan Lanister">
+			<texture filename="SerKevanLanister.png"/>
+		</card>
+		<card power="2" towers="2" title="The Hound">
+			<texture filename="TheHound.png"/>
+		</card>
+		<card power="2" swords="1" title="Ser Jaime Lanister">
+			<texture filename="SerJaimeLanister.png"/>
+		</card>
+		<card power="3" swords="3" title="Ser Gregor Clegane">
+			<texture filename="SerGregorClegane.png"/>
+		</card>
+		<card class="got.houseCards.lanister.TywinLanister" power="4" title="Tywin Lanister">
+			<texture filename="TywinLanister.png"/>
+		</card>
+	</house>
+	<house fraction="BARATHEON">
+		<card power="4" title="Stanis Baratheon">
+			<texture filename="homeCard.png"/>
+		</card>
+	</house>
+	<house fraction="GREYJOY">
+		<card power="4" swords="1" title="Euron Crow's Eye">
+			<texture filename="homeCard.png"/>
+		</card>
+	</house>
+	<house fraction="TYRELL">
+		<card power="4" title="Mace Tyrell">
+			<texture filename="homeCard.png"/>
+		</card>
+	</house>
+	<house fraction="MARTEL">
+		<card power="4" swords="2" towers="1" title="The Red Viper">
+			<texture filename="homeCard.png"/>
+		</card>
+	</house>
+</root>

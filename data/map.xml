@@ -20,7 +20,7 @@
 			<unit type="KNIGHT"/>
 			<texture filename="Winterfell.png"/>
 		</region>
-		<region name="Widow's Watch" type="GROUND" resources="1" x="939" y="561" w="278" h="219" fraction="LANISTER">
+		<region name="Widow's Watch" type="GROUND" resources="1" x="939" y="561" w="278" h="219" fraction="STARK">
 			<actionpos x="48" y="135"/>
 			<unitpos x="90" y="75"/>
 			<texture filename="WidowsWatch.png"/>

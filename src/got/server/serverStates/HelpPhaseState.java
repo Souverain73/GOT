@@ -2,6 +2,7 @@ package got.server.serverStates;
 
 import com.esotericsoftware.kryonet.Connection;
 import got.GameClient;
+import got.gameStates.SelectHouseCardPhase;
 import got.gameStates.StateID;
 import got.model.Player;
 import got.network.Packages;
@@ -20,7 +21,7 @@ public class HelpPhaseState extends StepByStepState{
     }
 
     public HelpPhaseState(){
-        setNextState(BattleResultState.class);
+        setNextState(SelectHouseCardPhaseState.class);
     }
 
 

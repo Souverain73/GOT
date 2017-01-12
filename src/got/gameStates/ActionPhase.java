@@ -8,6 +8,8 @@ import got.gameObjects.GameObject;
 import got.interfaces.IClickListener;
 import got.server.GameServer.PlayerConnection;
 
+import static got.utils.UI.logAction;
+
 public class ActionPhase extends AbstractGameState implements IClickListener{
 	private static final String name = "ActionPhase";
 	
@@ -19,6 +21,7 @@ public class ActionPhase extends AbstractGameState implements IClickListener{
 	@Override
 	public void enter(StateMachine stm) {
 		super.enter(stm);
+		logAction("Entering " + getName() + " state");
 	}
 
 	@Override
