@@ -28,6 +28,12 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
     private final List<PlayerCardObject> attackers = new ArrayList<>();
     private final List<PlayerCardObject> defenders = new ArrayList<>();
 
+    private final ImageObject attackerHouseCardObject;
+    private final ImageObject defenderHouseCardObject;
+
+    private final TextObject attackersPowerText;
+    private final TextObject defendersPowerText;
+
     private final MapPartObject attackerRegion;
     private final MapPartObject defenderRegion;
 
@@ -70,6 +76,21 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
                 .setSpace(DrawSpace.SCREEN).setPos(new Vector2f(0, 0));
         defenders.add(defenderCard);
         defenderContainer.addChild(defenderCard);
+
+        //House cards
+        attackerHouseCardObject = new ImageObject(attackerPlayer.getFraction().getCoverTexture(),
+                new Vector2f(20, 50), 100, 200).setSpace(DrawSpace.SCREEN);
+        defenderHouseCardObject = new ImageObject(defenderPlayer.getFraction().getCoverTexture(),
+                new Vector2f(1160, 50), 100, 200).setSpace(DrawSpace.SCREEN);
+
+        addChild(attackerHouseCardObject);
+        addChild(defenderHouseCardObject);
+
+        attackersPowerText = new TextObject("").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(140, 20));
+        defendersPowerText = new TextObject("").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(1120, 20));
+
+        addChild(attackersPowerText);
+        addChild(defendersPowerText);
 
         addChild(background);
         background.addChild(attackerContainer);
@@ -120,11 +141,16 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
             attackersPower += attackerRegion.getAction().getPower();
         }
 
+        attackersPowerText.setText(String.valueOf(attackersPower));
+
         defendersPower = getDefendPower(defenders);
         if (defenderCard!=null) defendersPower += defenderCard.getPower();
         if (defenderRegion.getAction() == Action.DEFENDPLUS || defenderRegion.getAction() == Action.DEFEND){
             defendersPower += defenderRegion.getAction().getPower();
         }
+
+        defendersPowerText.setText(String.valueOf(defendersPower));
+
         UI.logAction("Battle deck updated: " + attackersPower + " vs " + defendersPower);
     }
 
@@ -146,9 +172,11 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
     public void placeCard(HouseCard card, Player player){
         if (isAttacker(player.getFraction())){
             attackerCard = card;
+            attackerHouseCardObject.setTexture(card.getTexture());
         }
         if (isDefender(player.getFraction())){
             defenderCard = card;
+            defenderHouseCardObject.setTexture(card.getTexture());
         }
         if (attackerCard != null && defenderCard != null){
             defenderCard.onPlace(defenderPlayer.getFraction());

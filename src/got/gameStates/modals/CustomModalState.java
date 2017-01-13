@@ -17,10 +17,16 @@ import got.interfaces.IClickListener;
 
 public class CustomModalState<T> extends AbstractGameState implements IClickListener{
 	private T result;
+	private boolean closeOnFreeClick = false;
 
 	public CustomModalState(T defaultResult){
 		super();
 		this.result = defaultResult;
+	}
+
+	public CustomModalState(T defaultResult, boolean closeOnFreeClick){
+		this(defaultResult);
+		this.closeOnFreeClick = closeOnFreeClick;
 	}
 
 	@Override
@@ -30,7 +36,7 @@ public class CustomModalState<T> extends AbstractGameState implements IClickList
 	@Override
 	public void click(InputManager.ClickEvent event) {
 		GameObject sender = event.getTarget();
-		if (sender == null){
+		if (sender == null && closeOnFreeClick){
 			close();
 		}	
 	}

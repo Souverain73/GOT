@@ -34,6 +34,7 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 
 import got.Constants;
@@ -53,6 +54,7 @@ public class GraphicModule {
 
 	private GraphicModule() {
 		camera = new Ortho2DCamera();
+		camera.lookAt(new Vector3f(600, 600, 0));
 		screenProjection = new Matrix4f();
 		fbProjection = BufferUtils.createFloatBuffer(16);
 		effect = new Effect();
@@ -97,7 +99,6 @@ public class GraphicModule {
 		}
 		
 		camera.windowResizeCallback(w, h);
-		System.out.println(String.format("coef=%f; movW=%f; movH=%f", coef, movW, movH));
 		screenProjection.identity().ortho(0, winW, winH, 0, -1, 1).translate(movW, movH, 0).scale(coef, coef, 1);
 	}
 	

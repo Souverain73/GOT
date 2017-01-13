@@ -46,7 +46,7 @@ public class Ortho2DCamera implements ICamera{
 		rotation = new AxisAngle4f(0, 0, 0, 1);
 		w = 0;
 		h = 0;
-		scale = 0.5f;
+		scale = 0.2f;
 		this.forceUpdate = forceUpdate;
 		this.debug = debug;
 		updateCamera();
@@ -95,8 +95,8 @@ public class Ortho2DCamera implements ICamera{
 
 	@Override
 	public void lookAt(Vector3f target) {
-		position.x = target.x;
-		position.y = target.y;
+		position.x = -target.x;
+		position.y = -target.y;
 		if (forceUpdate) updateCamera();
 	}
 

@@ -61,7 +61,7 @@ public class SelectHouseCardPhase extends ActionPhase {
     }
 
     private HouseCard showSelectHouseCardDialog() {
-        CustomModalState<HouseCard> cms = new CustomModalState<>(null);
+        CustomModalState<HouseCard> cms = new CustomModalState<>(null, false);
         Player player = PlayerManager.getSelf();
         List<HouseCard> cardsToSelect = player.getDeck().getActiveCards();
         ContainerObject cnt = new ContainerObject().setSpace(DrawSpace.SCREEN).setPos(new Vector2f(0, 0));

@@ -26,9 +26,10 @@
 			<texture filename="WidowsWatch.png"/>
 			<unit type="SOLDIER"/>
 		</region>
-		<region name="The Stony Shore" type="GROUND" resources="1" x="153" y="423" w="408" h="426" fraction="STARK">
+		<region name="The Stony Shore" type="GROUND" resources="1" x="153" y="423" w="408" h="426" fraction="LANISTER">
 			<actionpos x="76" y="164"/>
 			<unitpos x="260" y="220"/>
+			<unit type="KNIGHT"/>
 			<unit type="KNIGHT"/>
 			<unit type="KNIGHT"/>
 			<unit type="KNIGHT"/>
