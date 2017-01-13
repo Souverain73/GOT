@@ -65,7 +65,7 @@ public class SelectHouseCardPhase extends ActionPhase {
         Player player = PlayerManager.getSelf();
         List<HouseCard> cardsToSelect = player.getDeck().getActiveCards();
         ContainerObject cnt = new ContainerObject().setSpace(DrawSpace.SCREEN).setPos(new Vector2f(0, 0));
-        int cx = 0; int cy = 0;
+        int cx = 290; int cy = 200;
 
         for (HouseCard card : cardsToSelect){
             ImageButton ib = new ImageButton(card.getTexture(), cx, cy, 100, 200, card).setSpace(DrawSpace.SCREEN);

@@ -1,5 +1,6 @@
 package got.houseCards.lanister;
 
+import got.gameStates.GameState;
 import got.houseCards.ActiveHouseCard;
 import got.model.Fraction;
 
@@ -12,4 +13,6 @@ public class CerseiLanister extends ActiveHouseCard {
         super.onWin();
         //todo: убрать приказ врага на выбор
     }
+
+
 }
