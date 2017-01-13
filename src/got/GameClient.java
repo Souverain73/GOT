@@ -196,12 +196,7 @@ public class GameClient {
 				if (object instanceof ChangeState){
 					int stateID = ((ChangeState) object).state;
 					if (stateID == StateID.MAIN_STATE)
-						GameClient.instance().registerTask(new Runnable() {
-							@Override
-							public void run() {
-								stm.setState(StateID.getGameStateByID(stateID));
-							}
-						});	
+						GameClient.instance().registerTask(() -> stm.setState(StateID.getGameStateByID(stateID)));
 				}
 				//handle common packages	
 				if (object instanceof Packages.InitPlayer){

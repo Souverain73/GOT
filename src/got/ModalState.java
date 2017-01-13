@@ -44,22 +44,21 @@ public class ModalState implements Runnable{
 		while(running && GameClient.instance().isRunning()){
 			DebugPanel.instance().resetFlags();
 			GameClient.instance().updateInput();
+
+			//update logic
 			if (updateMain){
 				stm.update();
 			}
 			state.update();
-			if (GameClient.instance().isDebug())
-				DebugPanel.instance().update(state);
-			
+
+			//update graphic
 			GraphicModule.instance().clear();
 
 			if (drawMain){
 				stm.draw();
 			}
 			state.draw();
-			if (GameClient.instance().isDebug())
-				DebugPanel.instance().draw(state);
-			
+
 			stm.tick();
 			state.tick();
 			
