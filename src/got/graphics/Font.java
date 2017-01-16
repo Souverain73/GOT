@@ -6,6 +6,7 @@ import java.nio.ByteOrder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Locale;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -23,6 +24,7 @@ public class Font{
 	private Texture map;
 	private int size = 32;
 	private final int spacing = 0;
+	private final LocaleEncoder encoder;
 	
 	/**
 	 * Load font data, like size, characters width, etc<br>
@@ -40,8 +42,9 @@ public class Font{
 	 * </p>
 	 * @param fontName - name of font to load
 	 */
-	public Font(String fontName){
+	public Font(String fontName, LocaleEncoder encoder){
 		this.name = fontName;
+		this.encoder = encoder;
 		Path dataPath = Paths.get(fontsBase+fontName+".dat");
 		Path texturePath = Paths.get(fontsBase+fontName+".png");
 
@@ -79,7 +82,11 @@ public class Font{
 			e.printStackTrace();
 		}
 	}
-	
+
+	public Font(String name) {
+		this(name, new RussianEncoder());
+	}
+
 	protected static void init(){
 		
 	}
@@ -94,9 +101,10 @@ public class Font{
 		float [] pos = new float[length*18];
 		
 		for (int i=0; i<length; i++){
-			addGplyphUV(text.charAt(i), i, UV);
+			char code = encoder.encode(text.charAt(i));
+			addGplyphUV(code, i, UV);
 			addGlyphPos(x, y, i, pos);
-			x+=charWidths[text.charAt(i)] + spacing;
+			x+=charWidths[code] + spacing;
 		}
 
 		
@@ -149,9 +157,10 @@ public class Font{
 		float [] pos = new float[length*18];
 		
 		for (int i=0; i<length; i++){
-			addGplyphUV(newText.charAt(i), i, UV);
+			char code = encoder.encode(newText.charAt(i));
+			addGplyphUV(code, i, UV);
 			addGlyphPos(x, y, i, pos);
-			x+=charWidths[newText.charAt(i)] + spacing;
+			x+=charWidths[code] + spacing;
 		}
 		
 		text.setFont(this);
@@ -174,5 +183,19 @@ public class Font{
 		return "Font [name=" + name + ", mapWidth=" + mapWidth + ", mapHeight=" + mapHeight + ", cellWidth=" + cellWidth
 				+ ", cellHeight=" + cellHeight + ", startChar=" + startChar + ", size=" + size + ", spacing=" + spacing
 				+ "]";
+	}
+
+	private interface LocaleEncoder{
+		char encode(char charCode);
+	}
+
+	public static class RussianEncoder implements LocaleEncoder {
+		@Override
+		public char encode(char charCode) {
+			if (charCode > 1039 && charCode < 1104){
+				return (char) (charCode - 848);
+			}
+			return charCode;
+		}
 	}
 }

@@ -6,12 +6,15 @@ import got.gameStates.StateID;
 import got.model.Player;
 import got.network.Packages;
 import got.server.GameServer;
+import got.server.PlayerManager;
 
 /**
  * Created by Souverain73 on 29.11.2016.
  */
 public class SelectHouseCardPhaseState implements ServerState{
-
+    private StateMachine stm;
+    private boolean attackerReady = false;
+    private boolean defenderReady = false;
     public SelectHouseCardPhaseState(){
 
     }
@@ -28,7 +31,8 @@ public class SelectHouseCardPhaseState implements ServerState{
 
     @Override
     public void enter(StateMachine stm) {
-//        stm.changeState(new BattleResultState(), StateMachine.ChangeAction.SET);
+       this.stm = stm;
+
     }
 
     @Override
@@ -43,6 +47,14 @@ public class SelectHouseCardPhaseState implements ServerState{
         if (pkg instanceof Packages.SelectHouseCard) {
             Packages.SelectHouseCard msg = (Packages.SelectHouseCard) pkg;
             GameServer.getServer().sendToAllTCP(new Packages.PlayerSelectHouseCard(player.id, msg.card));
+        }
+        if (pkg instanceof Packages.Ready) {
+            Packages.Ready ready = (Packages.Ready) pkg;
+            if (player.id == GameServer.shared.attackerID) attackerReady = true;
+            if (player.id == GameServer.shared.defenderID) defenderReady = true;
+            if (defenderReady && attackerReady){
+                stm.changeState(new BattleResultState(), StateMachine.ChangeAction.SET);
+            }
         }
     }
 }

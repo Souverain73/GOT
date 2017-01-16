@@ -87,6 +87,7 @@ public class MovePhase extends ActionPhase {
 					}
 				}else{
 					//Жетон власти оставляется до начала боя
+					selectedUnits = source.getUnits();
 					checkIfPowerTokenNeededAndCanBePlaced(source);
 
 					GameClient.instance().send(new Packages.Attack(source.getID(), region.getID(),
@@ -106,7 +107,7 @@ public class MovePhase extends ActionPhase {
 	}
 
 	private void checkIfPowerTokenNeededAndCanBePlaced(MapPartObject region) {
-		//Если покидаем регион без ж етона власти и есть свободные жетоны
+		//Если покидаем регион без жетона власти и есть свободные жетоны
 		if (region.getUnits().length == selectedUnits.length
                 && !region.havePowerToket()
                 && PlayerManager.getSelf().getMoney() > 0){

@@ -42,6 +42,7 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 	
 	@Override
 	public void enter(StateMachine stm) {
+		GameClient.instance().setTooltipText("Выберите регион");
 		//готовим игровую карту.
 		//TODO: перенести в фазу вестероса, когда она будет готова
 		GameClient.shared.gameMap.forEachRegion(region->{
@@ -66,7 +67,7 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 			pl.setReady(false);
 		}
 		
-		GameMapObject.instance().enableAllRegions();
+		GameClient.shared.gameMap.enableAllRegions();
 		
 		System.out.println("Entering PlanningPhase");
 		super.enter(stm);
@@ -205,6 +206,7 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 		}
 		
 		private void close(){
+			GameClient.instance().setTooltipText("Выберите регион");
 			GameClient.instance().closeModal();
 		}
 		
@@ -215,7 +217,7 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 
 		@Override
 		public void enter(StateMachine stm) {
-			
+			GameClient.instance().setTooltipText("Выберите приказ");
 		}
 
 		@Override

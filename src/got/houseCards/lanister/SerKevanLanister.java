@@ -1,6 +1,7 @@
 package got.houseCards.lanister;
 
 import got.GameClient;
+import got.gameObjects.battleDeck.BattleCardObject;
 import got.houseCards.ActiveHouseCard;
 import got.model.Fraction;
 import got.model.Unit;
@@ -17,9 +18,24 @@ public class SerKevanLanister extends ActiveHouseCard {
         super.onPlace(fraction);
 
         if(GameClient.shared.battleDeck.isAttacker(fraction)){
-            bonusPower = (int)GameClient.shared.battleDeck.getAttackers().stream().flatMap(card->
-                Arrays.stream(card.getUnits())
-            ).filter(unit->unit == Unit.SOLDIER).count();
+            GameClient.shared.battleDeck.getAttackers().forEach(card->{
+                card.addEffect(new BattleCardObject.UnitEffect() {
+                    @Override
+                    public int getAffectedPower(int power) {
+                        return 2;
+                    }
+
+                    @Override
+                    public boolean isAffected(Unit unit) {
+                        return unit==Unit.SOLDIER;
+                    }
+
+                    @Override
+                    public int getPriority() {
+                        return 0;
+                    }
+                });
+            });
         }
     }
 }

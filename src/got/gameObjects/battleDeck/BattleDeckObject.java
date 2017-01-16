@@ -3,17 +3,13 @@ package got.gameObjects.battleDeck;
 import got.gameObjects.*;
 import got.graphics.DrawSpace;
 import got.houseCards.HouseCard;
-import got.model.Action;
-import got.model.Fraction;
-import got.model.Player;
-import got.model.Unit;
+import got.model.*;
 import got.utils.UI;
 import org.joml.Vector2f;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Souverain73 on 25.11.2016.
@@ -25,8 +21,8 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
     private final ContainerObject attackerContainer;
     private final ContainerObject defenderContainer;
 
-    private final List<PlayerCardObject> attackers = new ArrayList<>();
-    private final List<PlayerCardObject> defenders = new ArrayList<>();
+    private final List<BattleCardObject> attackers = new ArrayList<>();
+    private final List<BattleCardObject> defenders = new ArrayList<>();
 
     private final ImageObject attackerHouseCardObject;
     private final ImageObject defenderHouseCardObject;
@@ -62,7 +58,7 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
                 .setDim(new Vector2f(500, 200))
                 .setSpace(DrawSpace.SCREEN);
 
-        PlayerCardObject attackerCard = new PlayerCardObject(this.attackerRegion.getFraction(), this.attackerRegion.getUnits())
+        BattleCardObject attackerCard = new BattleCardObject(attackerRegion.getFraction(), attackerRegion.getAction(), attackerRegion.getUnits())
                 .setSpace(DrawSpace.SCREEN).setPos(new Vector2f(400, 0));
         attackers.add(attackerCard);
         attackerContainer.addChild(attackerCard);
@@ -72,7 +68,7 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
                 .setDim(new Vector2f(500, 200))
                 .setSpace(DrawSpace.SCREEN);
 
-        PlayerCardObject defenderCard = new PlayerCardObject(defenderRegion.getFraction(), defenderRegion.getUnits())
+        BattleCardObject defenderCard = new BattleCardObject(defenderRegion.getFraction(), defenderRegion.getAction(), defenderRegion.getUnits())
                 .setSpace(DrawSpace.SCREEN).setPos(new Vector2f(0, 0));
         defenders.add(defenderCard);
         defenderContainer.addChild(defenderCard);
@@ -106,14 +102,15 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
         addBattler(player, defenders, defenderContainer);
     }
 
-    private void addBattler(Player player, List<PlayerCardObject> set, ContainerObject container){
+    private void addBattler(Player player, List<BattleCardObject> set, ContainerObject container){
 
-        PlayerCardObject cpc = new PlayerCardObject(player.getFraction(),
-                defenderRegion.getUnitsForHelp(player.getFraction()));
-
-        set.add(cpc);
-        container.addChild(cpc);
-        updateState(true);
+        List<MapPartObject> regionsForHelp = defenderRegion.getRegionsForHelp(player.getFraction());
+        for (MapPartObject region : regionsForHelp){
+            BattleCardObject cpc = new BattleCardObject(player.getFraction(), region.getAction(), region.getUnits());
+            set.add(cpc);
+            container.addChild(cpc);
+            updateState(true);
+        }
     }
 
     private void updateState(boolean fullUpdate) {
@@ -122,12 +119,12 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
             int xd = 000;
             for (int i = 0; i < 4; i++) {
                 if (i < attackers.size()) {
-                    PlayerCardObject attacker = attackers.get(i);
+                    BattleCardObject attacker = attackers.get(i);
                     attacker.setPos(new Vector2f(xa, 0));
                 }
 
                 if (i < defenders.size()) {
-                    PlayerCardObject defender = defenders.get(i);
+                    BattleCardObject defender = defenders.get(i);
                     defender.setPos(new Vector2f(xd, 0));
                 }
 
@@ -137,35 +134,26 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
         }
         attackersPower = getAttackPower(attackers);
         if (attackerCard!=null) attackersPower += attackerCard.getPower();
-        if (attackerRegion.getAction() == Action.MOVEMINUS || attackerRegion.getAction() == Action.MOVEPLUS){
-            attackersPower += attackerRegion.getAction().getPower();
-        }
 
         attackersPowerText.setText(String.valueOf(attackersPower));
 
         defendersPower = getDefendPower(defenders);
         if (defenderCard!=null) defendersPower += defenderCard.getPower();
-        if (defenderRegion.getAction() == Action.DEFENDPLUS || defenderRegion.getAction() == Action.DEFEND){
-            defendersPower += defenderRegion.getAction().getPower();
-        }
 
         defendersPowerText.setText(String.valueOf(defendersPower));
 
         UI.logAction("Battle deck updated: " + attackersPower + " vs " + defendersPower);
     }
 
-    private int getAttackPower(List<PlayerCardObject> list) {
+    private int getAttackPower(List<BattleCardObject> list) {
         return list.stream()
-                .flatMap(card-> Arrays.stream(card.getUnits()))
-                .mapToInt(Unit::getDamage)
+                .mapToInt(card->card.getBattlePower(BattleSide.ATTACKER, defenderRegion.getBuildingLevel()>0))
                 .sum();
     }
 
-    private int getDefendPower(List<PlayerCardObject> list) {
+    private int getDefendPower(List<BattleCardObject> list) {
         return list.stream()
-                .flatMap(card-> Arrays.stream(card.getUnits()))
-                .filter(unit->unit != Unit.SIEGE)
-                .mapToInt(Unit::getDamage)
+                .mapToInt(card->card.getBattlePower(BattleSide.DEFENDER, defenderRegion.getBuildingLevel()>0))
                 .sum();
     }
 
@@ -180,7 +168,7 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
         }
         if (attackerCard != null && defenderCard != null){
             defenderCard.onPlace(defenderPlayer.getFraction());
-            attackerCard.onPlace(defenderPlayer.getFraction());
+            attackerCard.onPlace(attackerPlayer.getFraction());
             updateState(false);
         }
     }
@@ -193,11 +181,11 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
         return defenderRegion;
     }
 
-    public List<PlayerCardObject> getAttackers() {
+    public List<BattleCardObject> getAttackers() {
         return attackers;
     }
 
-    public List<PlayerCardObject> getDefenders() {
+    public List<BattleCardObject> getDefenders() {
         return defenders;
     }
 

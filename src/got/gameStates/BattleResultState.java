@@ -13,10 +13,17 @@ import got.server.PlayerManager;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static got.utils.UI.logAction;
+
 /**
  * Created by Souverain73 on 15.12.2016.
  */
 public class BattleResultState extends ActionPhase{
+    @Override
+    public String getName() {
+        return "Battle result state";
+    }
+
     @Override
     public void enter(StateMachine stm) {
         super.enter(stm);
@@ -48,9 +55,9 @@ public class BattleResultState extends ActionPhase{
             Packages.PlayerKillAllUnitsAtRegion msg = (Packages.PlayerKillAllUnitsAtRegion) pkg;
             GameClient.shared.gameMap.getRegionByID(msg.regionID).removeAllUnits();
         }else if (pkg instanceof Packages.MoveAttackerToAttackRegion) {
-            GameClient.instance().registerTask(()->{
-                moveAllUnits(GameClient.shared.battleDeck.getAttackerRegion(), GameClient.shared.battleDeck.getDefenderRegion());
-            });
+            GameClient.instance().registerTask(()->
+                moveAllUnits(GameClient.shared.battleDeck.getAttackerRegion(), GameClient.shared.battleDeck.getDefenderRegion())
+            );
         }
     }
 
@@ -70,9 +77,13 @@ public class BattleResultState extends ActionPhase{
         if (!regionFrom.havePowerToket()){
             regionFrom.setFraction(Fraction.NONE);
         }
+        logAction("Игрок перемещает юнитов из " + regionFrom.getName() + " в " + regionTo.getName());
     }
 
     private void onBattleResult(Packages.BattleResult battleResult) {
+        Player winner = PlayerManager.instance().getPlayer(battleResult.winnerID);
+        Player looser = PlayerManager.instance().getPlayer(battleResult.looserID);
+        logAction("Битва закончена игрок " + winner.getNickname() + " победил, игрок " + looser.getNickname() + " проиграл.");
         //Убираем приказы
         GameClient.shared.battleDeck.getAttackerRegion().setAction(null);
         if (GameClient.shared.battleDeck.isAttacker(PlayerManager.instance().getPlayer(battleResult.winnerID).getFraction())){
@@ -105,7 +116,7 @@ public class BattleResultState extends ActionPhase{
         if (event.getTarget() instanceof MapPartObject) {
             MapPartObject playerRegion = GameClient.shared.battleDeck.getPlayerRegion(PlayerManager.getSelf());
             MapPartObject moveRegion = (MapPartObject) event.getTarget();
-            //todo: установить флаг усталости
+
             //Активным может быть регион не проходящий по снабжению, поэтому проверяем снабжение
             if (!Game.instance().getSuplyTrack().canMove(playerRegion.getFraction(), playerRegion, moveRegion, playerRegion.getUnitsCount())){
                 //Считаем сколько юнитов надо убить что бы совершить этот ход
@@ -148,6 +159,7 @@ public class BattleResultState extends ActionPhase{
 
         if (regionsToRetreat.size() > 0){
             regionsToRetreat.forEach(r->r.setEnabled(true));
+            GameClient.instance().setTooltipText("Выберите регион для отступления");
             return;
         }
 
@@ -162,10 +174,12 @@ public class BattleResultState extends ActionPhase{
 
         if (regionsToRetreat.size() > 0){
             regionsToRetreat.forEach(r->r.setEnabled(true));
+            GameClient.instance().setTooltipText("Выберите регион для отступления");
             return;
         }
 
         //Если нет регионов куда вообще можно пойти, убиваем всех юнитов.
+        logAction("Некуда отступать, все юниты умирают");
         GameClient.instance().send(new Packages.KillAllUnitsAtRegion(regionFrom.getID()));
         //Сообщаем, что проигравций закончил отступление.
         GameClient.instance().send(new Packages.LooserReady());

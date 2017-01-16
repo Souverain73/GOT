@@ -117,7 +117,7 @@ public class GameClient {
 		Log.set(Log.LEVEL_INFO);
 		graphics = GraphicModule.instance();
 		stm = new StateMachine();
-		modalStates = new LinkedList<ModalState>();
+		modalStates = new LinkedList<>();
 	}
 	
 	public long init(){	
@@ -351,11 +351,13 @@ public class GameClient {
 	}
 
 	public void setTooltipText(String text){
-		GameState st = stm.getCurrentState();
-		if (st instanceof MainState) {
-			MainState mainState = (MainState) st;
-			mainState.setTooltipText(text);
-		}
+		registerTask(()->{
+			GameState st = stm.getCurrentState();
+			if (st instanceof MainState) {
+				MainState mainState = (MainState) st;
+				mainState.setTooltipText(text);
+			}
+		});
 	}
 	
 	public Client getClient(){
