@@ -108,7 +108,7 @@ public class BattleResultState extends ActionPhase{
         }else{
             //победил защищавшийся
             GameClient.shared.battleDeck.getDefenderCard().onWin();
-            GameClient.shared.battleDeck.getAttackerCard().onWin();
+            GameClient.shared.battleDeck.getAttackerCard().onLoose();
         }
 
 
@@ -160,6 +160,7 @@ public class BattleResultState extends ActionPhase{
                     GameClient.instance().send(new Packages.ChangeUnits(playerRegion.getID(), playerRegion.getUnits()));
                     GameClient.instance().send(new Packages.Move(playerRegion.getID(), moveRegion.getID(), playerRegion.getUnits()));
                     GameClient.instance().send(new Packages.LooserReady());
+                    GameClient.instance().sendReady(true);
                 }
                 //TODO: сказать, что так нельзя. Надо либо выбрать другой регион, либо убивать юнитов.
             }else{
@@ -210,6 +211,7 @@ public class BattleResultState extends ActionPhase{
         GameClient.instance().send(new Packages.KillAllUnitsAtRegion(regionFrom.getID()));
         //Сообщаем, что проигравций закончил отступление.
         GameClient.instance().send(new Packages.LooserReady());
+        GameClient.instance().sendReady(true);
     }
 
     private Unit[] showKillUnitsDialog(Unit[] units, int countToKill){

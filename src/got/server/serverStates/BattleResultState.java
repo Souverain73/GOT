@@ -21,7 +21,6 @@ public class BattleResultState extends ParallelState{
     private Packages.PlayerDamage defenderResult;
     private Packages.PlayerDamage attackerResult;
     private Winner winner = null;
-    private StateMachine stm;
 
     @Override
     public String getName() {
@@ -35,17 +34,14 @@ public class BattleResultState extends ParallelState{
 
     @Override
     public void enter(StateMachine stm){
-        this.stm = stm;
+        super.enter(stm);
         GameServer.getServer().sendToAllTCP(new Packages.GetBattleResult());
     }
 
-    @Override
-    public void exit() {
-        
-    }
 
     @Override
     public void recieve(Connection c, Object pkg) {
+        super.recieve(c, pkg);
         GameServer.PlayerConnection connection = (GameServer.PlayerConnection) c;
         Player player = connection.player;
 

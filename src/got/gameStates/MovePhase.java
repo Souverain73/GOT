@@ -191,7 +191,7 @@ public class MovePhase extends ActionPhase {
 			Packages.PlayerPlacePowerToken msg = (Packages.PlayerPlacePowerToken) pkg;
 			MapPartObject region = GameClient.shared.gameMap.getRegionByID(msg.regionId);
 			logAction("Игрок кладет жетон власти в регионе " + region.getName());
-			PlayerManager.getSelf().placePowerTokenAtRegion(region);
+			PlayerManager.instance().getPlayer(msg.playerId).placePowerTokenAtRegion(region);
 		}
 	}
 

@@ -1,5 +1,6 @@
 package got;
 
+import static got.utils.UI.logSystem;
 import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_1;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_2;
@@ -197,8 +198,18 @@ public class GameClient {
 					Packages.InitPlayer msg = (Packages.InitPlayer)object;
 					UI.serverMessage("InitPlayer:\n"+msg.player.toString());
 					PlayerManager.instance().initPlayer(msg.player);
-				}else if (object instanceof ServerMessage){
+				}
+				if (object instanceof ServerMessage){
 					UI.serverMessage(((ServerMessage)object).message);
+				}
+				if (object instanceof Packages.PlayerResumeModal) {
+					Packages.PlayerResumeModal res = (Packages.PlayerResumeModal) object;
+					Player player = PlayerManager.instance().getPlayer(res.player);
+					logSystem("Player " + player.getNickname() + " just resumed paused modal state");
+
+					if (!modalStates.isEmpty()) {
+						modalStates.getLast().getGameState().recieve(c, object);
+					}
 				}
 				//handle state specific packages
 				stm.recieve(c, object);

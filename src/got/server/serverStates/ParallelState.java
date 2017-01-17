@@ -6,6 +6,9 @@ import got.model.Player;
 import got.network.Packages;
 import got.server.GameServer;
 import got.server.PlayerManager;
+import got.utils.UI;
+
+import java.util.Arrays;
 
 /**
  * Created by Souverain73 on 17.01.2017.
@@ -46,6 +49,7 @@ public abstract class ParallelState implements ServerState, IPauseable {
         Player player = c.player;
         if (pkg instanceof Packages.Ready) {
             Packages.Ready msg = (Packages.Ready) pkg;
+            UI.logSystem("player " + player.getNickname() + " set Ready");
             playersReady[player.id] = msg.ready;
             if (isAllPlayersReady()){
                 onReadyToChangeState();
@@ -75,4 +79,9 @@ public abstract class ParallelState implements ServerState, IPauseable {
     }
 
     protected abstract void onReadyToChangeState();
+
+    @Override
+    public String toString() {
+        return getName() + Arrays.toString(playersReady);
+    }
 }

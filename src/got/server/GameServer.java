@@ -16,6 +16,7 @@ import got.model.Fraction;
 import got.model.Game;
 import got.model.Player;
 import got.network.Network;
+import got.network.Packages;
 import got.network.Packages.InitPlayer;
 import got.network.Packages.LogIn;
 import got.network.Packages.PlayerConnected;
@@ -101,6 +102,14 @@ public class GameServer {
 				Player player = connection.player;
 				//Handle all common packages
 				//pass state specified package to game state
+				if (pkg instanceof Packages.ResumeModal) {
+					getServer().sendToAllTCP(new Packages.PlayerResumeModal(player.id));
+					return;
+				}
+				if (pkg instanceof Packages.WaitForModal) {
+					//todo: обработать паузу
+				}
+
 				stm.recieve(connection, pkg);
 			}
 
@@ -148,6 +157,8 @@ public class GameServer {
 					ServerMessage msg = new ServerMessage();
 					msg.message = command[1];
 					server.sendToAllTCP(msg);
+				}else if(command[0].equals("dump")){
+					System.out.println("Current State Dump: " + stm.getCurrentState());
 				}
 			}
 		}

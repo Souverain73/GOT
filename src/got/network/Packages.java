@@ -1,7 +1,6 @@
 package got.network;
 
 import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.EndPoint;
 import got.model.Action;
 import got.model.Fraction;
@@ -72,6 +71,9 @@ public class Packages {
 		kryo.register(PlayerPlacePowerToken.class);
 		kryo.register(SelectHouseCard.class);
 		kryo.register(PlayerSelectHouseCard.class);
+		kryo.register(WaitForModal.class);
+		kryo.register(ResumeModal.class);
+		kryo.register(PlayerResumeModal.class);
 	}
 
 	public static class NetPackage {
@@ -799,6 +801,23 @@ public class Packages {
 		}
 
 		public PlayerSelectHouseCard() {
+		}
+	}
+
+	public static class WaitForModal extends ClientServerPackage{
+	}
+
+	public static class ResumeModal extends ClientServerPackage {
+	}
+
+	public static class PlayerResumeModal extends BroadcastPackage{
+		public int player;
+
+		public PlayerResumeModal(int player) {
+			this.player = player;
+		}
+
+		public PlayerResumeModal() {
 		}
 	}
 }

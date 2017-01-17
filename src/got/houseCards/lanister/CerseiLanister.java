@@ -9,11 +9,15 @@ import got.gameStates.AbstractGameState;
 import got.gameStates.ActionPhase;
 import got.gameStates.GameState;
 import got.gameStates.StateMachine;
+import got.gameStates.modals.WaitingModal;
 import got.houseCards.ActiveHouseCard;
+import got.interfaces.IClickListener;
 import got.model.Fraction;
 import got.network.Packages;
 
 import static got.server.PlayerManager.getSelf;
+import static got.utils.UI.logAction;
+import static got.utils.UI.logSystem;
 import static sun.misc.PostVMInitHook.run;
 
 /**
@@ -34,37 +38,54 @@ public class CerseiLanister extends ActiveHouseCard {
     @Override
     public void onWin() {
         super.onWin();
-        if (placerFraction == getSelf().getFraction()){
-            GameClient.instance().setTooltipText("Выберите, какой приказ убрать");
-            (new ModalState(new RemoveActionState(), true, true)).run();
-        }else{
-            GameClient.instance().setTooltipText("Серцея выбирает какой приказ убрать");
-        }
-
+        (new ModalState(new RemoveActionState(placerFraction, enemyFraction), true, true)).run();
         //todo: убрать приказ врага на выбор
     }
 
-    private class RemoveActionState extends ActionPhase{
+    private class RemoveActionState extends WaitingModal implements IClickListener{
+        private Fraction placerFraction;
+        private Fraction enemyFraction;
+
+        public RemoveActionState(Fraction placerFraction, Fraction enemyFraction) {
+            this.placerFraction = placerFraction;
+            this.enemyFraction = enemyFraction;
+        }
+
         @Override
         public void enter(StateMachine stm) {
             super.enter(stm);
-            enableRegionsWithActions(enemyFraction);
+            if (placerFraction == getSelf().getFraction()) {
+                GameClient.instance().setTooltipText("Выберите, какой приказ убрать");
+                enableRegionsWithActions(enemyFraction);
+            } else {
+                GameClient.instance().setTooltipText("Серцея выбирает какой приказ убрать");
+                GameClient.shared.gameMap.disableAllRegions();
+            }
         }
-
         private void enableRegionsWithActions(Fraction fraction) {
-            GameClient.shared.gameMap.setEnabledByCondition(reg->
+            if (GameClient.shared.gameMap.setEnabledByCondition(reg->
                 reg.getFraction() == fraction && reg.getAction() != null
-            );
+            ) == 0){
+                logAction("Нет приказов, которые можно убрать");
+                resume();
+            }
         }
 
         @Override
         public void click(InputManager.ClickEvent event) {
-            super.click(event);
             if (event.getTarget() instanceof MapPartObject) {
                 MapPartObject region = (MapPartObject) event.getTarget();
                 GameClient.instance().send(new Packages.SetAction(region.getID(), null));
-                GameClient.instance().closeModal();
+                GameClient.shared.gameMap.disableAllRegions();
+                resume();
             }
+        }
+
+
+
+        @Override
+        protected void onResume() {
+            logSystem("Waiting modal state resumed");
         }
     }
 }
