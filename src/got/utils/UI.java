@@ -23,4 +23,8 @@ public class UI {
 	public static void logAction(String message){
 		Log.info("[Action]:" + message);
 	}
+
+	public static void logSystem(String message){
+		Log.info("[System]:" + message);
+	}
 }

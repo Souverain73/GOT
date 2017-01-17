@@ -1,5 +1,6 @@
 package got.gameObjects.battleDeck;
 
+import got.GameClient;
 import got.gameObjects.*;
 import got.graphics.DrawSpace;
 import got.houseCards.HouseCard;
@@ -170,6 +171,7 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
             defenderCard.onPlace(defenderPlayer.getFraction());
             attackerCard.onPlace(attackerPlayer.getFraction());
             updateState(false);
+            GameClient.instance().sendReady(true);
         }
     }
 
@@ -195,6 +197,14 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
 
     public Player getDefenderPlayer() {
         return defenderPlayer;
+    }
+
+    public HouseCard getAttackerCard() {
+        return attackerCard;
+    }
+
+    public HouseCard getDefenderCard() {
+        return defenderCard;
     }
 
     public boolean isBattleMember(Fraction fraction){

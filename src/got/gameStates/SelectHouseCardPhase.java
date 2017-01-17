@@ -38,11 +38,8 @@ public class SelectHouseCardPhase extends ActionPhase {
         super.enter(stm);
         if (GameClient.shared.battleDeck.isBattleMember(PlayerManager.getSelf().getFraction())){
             HouseCard selectedCard = showSelectHouseCardDialog();
-            //todo: послать пакет, о том, что игрок сыграл карту.
+
             GameClient.instance().send(new Packages.SelectHouseCard(selectedCard.getID()));
-            GameClient.instance().sendReady(true);
-        }else{
-            GameClient.instance().sendReady(true);
         }
     }
 
@@ -54,8 +51,9 @@ public class SelectHouseCardPhase extends ActionPhase {
                 Packages.PlayerSelectHouseCard msg = (Packages.PlayerSelectHouseCard) pkg;
                 Player player = PlayerManager.instance().getPlayer(msg.player);
                 HouseCard card = HouseCardsLoader.instance().getCardById(msg.card);
+                player.getDeck().useCard(card);
                 GameClient.shared.battleDeck.placeCard(card, player);
-                logAction("Player " + player.getNickname() + "place house card " + card.getTitle());
+                logAction("Игрок " + player.getNickname() + " выбрал карту дома " + card.getTitle());
             });
         }
     }

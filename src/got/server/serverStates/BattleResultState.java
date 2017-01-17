@@ -12,7 +12,7 @@ import static com.esotericsoftware.minlog.Log.debug;
 /**
  * Created by Souverain73 on 05.12.2016.
  */
-public class BattleResultState implements ServerState{
+public class BattleResultState extends ParallelState{
     private enum Winner { ATTACKER, DEFENDER}
 
     private String name = "BattleRresult state";
@@ -91,11 +91,17 @@ public class BattleResultState implements ServerState{
             if (winner == Winner.ATTACKER){
                 GameServer.getServer().sendToAllTCP(new Packages.MoveAttackerToAttackRegion());
             }
-            stm.changeState(new MovePhaseState(), StateMachine.ChangeAction.REMOVE);
-
         }else if (pkg instanceof Packages.KillAllUnitsAtRegion) {
             Packages.KillAllUnitsAtRegion msg = (Packages.KillAllUnitsAtRegion) pkg;
             GameServer.getServer().sendToAllTCP(new Packages.PlayerKillAllUnitsAtRegion(player.id, msg.regionID));
+        }else if (pkg instanceof Packages.SetAction) {
+            Packages.SetAction msg = (Packages.SetAction) pkg;
+            GameServer.getServer().sendToAllTCP(new Packages.PlayerSetAction(msg.region, msg.action));
         }
+    }
+
+    @Override
+    protected void onReadyToChangeState() {
+        stm.changeState(new MovePhaseState(), StateMachine.ChangeAction.REMOVE);
     }
 }

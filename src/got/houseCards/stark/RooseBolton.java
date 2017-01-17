@@ -12,6 +12,6 @@ public class RooseBolton extends ActiveHouseCard{
     public void onLoose() {
         super.onLoose();
         owner().getDeck().rewindAll();
-        logAction("Player "+ owner().getNickname() +" rewind all her cards");
+        logAction("Игрок "+ owner().getNickname() +" возвращает все свои карты");
     }
 }

@@ -61,4 +61,15 @@ public class MovePhaseState extends StepByStepState {
             GameServer.getServer().sendToAllTCP(new Packages.PlayerPlacePowerToken(player.id, msg.regionId));
         }
     }
+
+    @Override
+    public void pause() {
+        super.pause();
+    }
+
+    @Override
+    public void resume() {
+        super.resume();
+        nextTurn();
+    }
 }

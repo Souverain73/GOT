@@ -93,7 +93,7 @@ public abstract class StepByStepState implements ServerState, IPauseable{
         return true;
     }
 
-    private void nextTurn(){
+    protected void nextTurn(){
         do {
             currentPlayer = PlayerManager.instance().getPlayerByFraction(
                     Game.instance().getThroneTrack().getNext(currentPlayer.getFraction()));
@@ -112,6 +112,5 @@ public abstract class StepByStepState implements ServerState, IPauseable{
 
     @Override
     public void resume() {
-        nextTurn();
     }
 }

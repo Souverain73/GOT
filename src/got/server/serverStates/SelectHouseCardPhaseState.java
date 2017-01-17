@@ -13,8 +13,6 @@ import got.server.PlayerManager;
  */
 public class SelectHouseCardPhaseState implements ServerState{
     private StateMachine stm;
-    private boolean attackerReady = false;
-    private boolean defenderReady = false;
     public SelectHouseCardPhaseState(){
 
     }
@@ -32,7 +30,10 @@ public class SelectHouseCardPhaseState implements ServerState{
     @Override
     public void enter(StateMachine stm) {
        this.stm = stm;
-
+        //Сбрасываем готовность игроков.
+        for (Player pl : PlayerManager.instance().getPlayersList()){
+            pl.setReady(false);
+        }
     }
 
     @Override
@@ -49,10 +50,10 @@ public class SelectHouseCardPhaseState implements ServerState{
             GameServer.getServer().sendToAllTCP(new Packages.PlayerSelectHouseCard(player.id, msg.card));
         }
         if (pkg instanceof Packages.Ready) {
-            Packages.Ready ready = (Packages.Ready) pkg;
-            if (player.id == GameServer.shared.attackerID) attackerReady = true;
-            if (player.id == GameServer.shared.defenderID) defenderReady = true;
-            if (defenderReady && attackerReady){
+            Packages.Ready msg = (Packages.Ready) pkg;
+            player.setReady(msg.ready);
+            //Все игроки будут готовы после выполнения метода onPlace для выбранных карт домов.
+            if (PlayerManager.instance().isAllPlayersReady()){
                 stm.changeState(new BattleResultState(), StateMachine.ChangeAction.SET);
             }
         }

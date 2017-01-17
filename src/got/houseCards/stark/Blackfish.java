@@ -10,6 +10,12 @@ public class Blackfish extends ActiveHouseCard {
     @Override
     public void onLoose() {
         super.onLoose();
-        //todo: Реализовать защиту от потерь
+    }
+
+    @Override
+    public void onPlace(Fraction fraction) {
+        //защита от потерь
+        //todo: рассмотреть другие варианты реализации
+        bonusTowers = 100;
     }
 }

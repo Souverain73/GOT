@@ -9,6 +9,7 @@ import got.gameStates.modals.SelectUnitsDialogState;
 import got.model.*;
 import got.network.Packages;
 import got.server.PlayerManager;
+import sun.misc.GC;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,7 +34,9 @@ public class BattleResultState extends ActionPhase{
     @Override
     public void recieve(Connection connection, Object pkg) {
         if (pkg instanceof Packages.BattleResult) {
-            onBattleResult((Packages.BattleResult) pkg);
+            GameClient.instance().registerTask(()->
+                onBattleResult((Packages.BattleResult) pkg)
+            );
         }else if (pkg instanceof Packages.PlayerChangeUnits) {
             Packages.PlayerChangeUnits changeUnits = (Packages.PlayerChangeUnits) pkg;
             GameClient.instance().registerTask(()->
@@ -43,6 +46,7 @@ public class BattleResultState extends ActionPhase{
             Packages.PlayerMove msg = (Packages.PlayerMove) pkg;
             GameClient.instance().registerTask(()->{
                 moveAllUnits(msg.from, msg.to);
+                logAction("Игрок " + PlayerManager.instance().getPlayer(msg.player) + " перемещает войска в регион" + GameClient.shared.gameMap.getRegionByID(msg.to));
             });
         }else if (pkg instanceof Packages.GetBattleResult) {
             if (GameClient.shared.battleDeck.isBattleMember(PlayerManager.getSelf().getFraction())) {
@@ -55,9 +59,20 @@ public class BattleResultState extends ActionPhase{
             Packages.PlayerKillAllUnitsAtRegion msg = (Packages.PlayerKillAllUnitsAtRegion) pkg;
             GameClient.shared.gameMap.getRegionByID(msg.regionID).removeAllUnits();
         }else if (pkg instanceof Packages.MoveAttackerToAttackRegion) {
-            GameClient.instance().registerTask(()->
-                moveAllUnits(GameClient.shared.battleDeck.getAttackerRegion(), GameClient.shared.battleDeck.getDefenderRegion())
+            GameClient.instance().registerTask(()->{
+                    moveAllUnits(GameClient.shared.battleDeck.getAttackerRegion(), GameClient.shared.battleDeck.getDefenderRegion());
+                    logAction("Победивший игрок занимает регион" + GameClient.shared.battleDeck.getDefenderRegion());
+                }
             );
+        }else if (pkg instanceof Packages.PlayerSetAction) {
+            Packages.PlayerSetAction msg = (Packages.PlayerSetAction) pkg;
+            GameClient.instance().registerTask(()->{
+                MapPartObject region = GameClient.shared.gameMap.getRegionByID(msg.region);
+                if (msg.action == null) {
+                    logAction("Игрок убирает приказ с региона ");
+                    region.setAction(null);
+                }
+            });
         }
     }
 
@@ -77,7 +92,6 @@ public class BattleResultState extends ActionPhase{
         if (!regionFrom.havePowerToket()){
             regionFrom.setFraction(Fraction.NONE);
         }
-        logAction("Игрок перемещает юнитов из " + regionFrom.getName() + " в " + regionTo.getName());
     }
 
     private void onBattleResult(Packages.BattleResult battleResult) {
@@ -87,8 +101,17 @@ public class BattleResultState extends ActionPhase{
         //Убираем приказы
         GameClient.shared.battleDeck.getAttackerRegion().setAction(null);
         if (GameClient.shared.battleDeck.isAttacker(PlayerManager.instance().getPlayer(battleResult.winnerID).getFraction())){
+            //победил атакующий
             GameClient.shared.battleDeck.getDefenderRegion().setAction(null);
+            GameClient.shared.battleDeck.getAttackerCard().onWin();
+            GameClient.shared.battleDeck.getDefenderCard().onLoose();
+        }else{
+            //победил защищавшийся
+            GameClient.shared.battleDeck.getDefenderCard().onWin();
+            GameClient.shared.battleDeck.getAttackerCard().onWin();
         }
+
+
         GameClient.shared.gameMap.getRegionByID(battleResult.looserRegionID).killUnits();
         if (battleResult.looserID == PlayerManager.getSelf().id){
             //Если ты проигравший
@@ -106,7 +129,10 @@ public class BattleResultState extends ActionPhase{
                 enableRegionsToRetreatOrKillUnits();
             }else{
                 GameClient.instance().send(new Packages.LooserReady());
+                GameClient.instance().sendReady(true);
             }
+        }else{
+            GameClient.instance().sendReady(true);
         }
     }
 
@@ -139,6 +165,7 @@ public class BattleResultState extends ActionPhase{
             }else{
                 GameClient.instance().send(new Packages.Move(playerRegion.getID(), moveRegion.getID(), playerRegion.getUnits()));
                 GameClient.instance().send(new Packages.LooserReady());
+                GameClient.instance().sendReady(true);
             }
         }
 

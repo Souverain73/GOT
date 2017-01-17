@@ -91,12 +91,6 @@ public class GameClient {
 	private Texture background = null;
 	public static final Shared shared = new Shared();
 	
-	/*
-	 * All information about players must be handled by PlayerManager;
-	 */
-	@Deprecated
-	private Player player;
-	
 	private Client client;
 	private ConcurrentLinkedQueue<Runnable> taskPool = new ConcurrentLinkedQueue<>();
 
@@ -343,7 +337,7 @@ public class GameClient {
 	
 	@Deprecated
 	public void setPlayer(Player player){
-		this.player = player;
+
 	}
 
 	public boolean isDebug() {
