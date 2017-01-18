@@ -18,6 +18,7 @@ public class CommonHouseCard implements HouseCard {
     private Texture texture;
     private String title;
     protected Fraction placerFraction;
+    protected Fraction enemyFraction;
 
     @Override
     public void init(LoaderParams params) {
@@ -28,7 +29,15 @@ public class CommonHouseCard implements HouseCard {
         this.title = (String)params.get("title");
     }
 
-    @Override   public void onPlace(Fraction fraction) {this.placerFraction = fraction;}
+    @Override   public void onPlace(Fraction fraction) {
+        this.placerFraction = fraction;
+
+        if (GameClient.shared.battleDeck.getAttackerPlayer().getFraction() == fraction){
+            enemyFraction = GameClient.shared.battleDeck.getDefenderPlayer().getFraction();
+        }else{
+            enemyFraction = GameClient.shared.battleDeck.getAttackerPlayer().getFraction();
+        }
+    }
     @Override   public void onWin() {   }
     @Override   public void onLoose() {   }
     @Override   public void onBattleEnd() {   }

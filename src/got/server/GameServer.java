@@ -107,8 +107,15 @@ public class GameServer {
 					return;
 				}
 				if (pkg instanceof Packages.WaitForModal) {
-					//todo: обработать паузу
+					//todo: обработать паузу, проверить все ли игроки ждут. Если не все игрока ждут, нельзя посылать пакет Resume
 				}
+				if (pkg instanceof Packages.Confirm) {
+					getServer().sendToAllTCP(new Packages.PlayerConfirm(player.id));
+				}
+				if (pkg instanceof Packages.Cancel) {
+					getServer().sendToAllTCP(new Packages.PlayerCancel(player.id));
+				}
+
 
 				stm.recieve(connection, pkg);
 			}

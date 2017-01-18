@@ -6,6 +6,7 @@ import got.ModalState;
 import got.gameObjects.ContainerObject;
 import got.gameObjects.interfaceControls.ImageButton;
 import got.gameStates.modals.CustomModalState;
+import got.gameStates.modals.Dialogs;
 import got.graphics.DrawSpace;
 import got.houseCards.HouseCard;
 import got.houseCards.HouseCardsLoader;
@@ -59,23 +60,7 @@ public class SelectHouseCardPhase extends ActionPhase {
     }
 
     private HouseCard showSelectHouseCardDialog() {
-        CustomModalState<HouseCard> cms = new CustomModalState<>(null, false);
-        Player player = PlayerManager.getSelf();
-        List<HouseCard> cardsToSelect = player.getDeck().getActiveCards();
-        ContainerObject cnt = new ContainerObject().setSpace(DrawSpace.SCREEN).setPos(new Vector2f(0, 0));
-        int cx = 290; int cy = 200;
-
-        for (HouseCard card : cardsToSelect){
-            ImageButton ib = new ImageButton(card.getTexture(), cx, cy, 100, 200, card).setSpace(DrawSpace.SCREEN);
-            ib.setCallback((sender, param) ->{
-                cms.setResult((HouseCard) param);
-                cms.close();
-            });
-            cnt.addChild(ib);
-            cx+=100;
-        }
-
-        cms.addObject(cnt);
+        CustomModalState<HouseCard> cms = Dialogs.createSelectHouseCardDialog();
 
         (new ModalState(cms)).run();
 

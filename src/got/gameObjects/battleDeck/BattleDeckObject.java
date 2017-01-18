@@ -40,6 +40,9 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
     private HouseCard attackerCard;
     private HouseCard defenderCard;
 
+    private boolean attackersCardUsed = false;
+    private boolean defendersCardUsed = false;
+
     public int attackersPower;
     public int defendersPower;
 
@@ -160,18 +163,46 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
 
     public void placeCard(HouseCard card, Player player){
         if (isAttacker(player.getFraction())){
-            attackerCard = card;
+            if (attackerCard == null) {
+                attackerCard = card;
+            }else{
+                player.getDeck().rewindCard(attackerCard);
+                attackerCard = card;
+                attackersCardUsed = false;
+            }
             attackerHouseCardObject.setTexture(card.getTexture());
         }
         if (isDefender(player.getFraction())){
-            defenderCard = card;
+            if (defenderCard == null) {
+                defenderCard = card;
+            }else{
+                player.getDeck().rewindCard(defenderCard);
+                defenderCard = card;
+                defendersCardUsed = false;
+            }
             defenderHouseCardObject.setTexture(card.getTexture());
         }
         if (attackerCard != null && defenderCard != null){
-            defenderCard.onPlace(defenderPlayer.getFraction());
-            attackerCard.onPlace(attackerPlayer.getFraction());
+            resetCardEffects();
+            if (!defendersCardUsed) {
+                defenderCard.onPlace(defenderPlayer.getFraction());
+                defendersCardUsed = true;
+            }
+            if (!attackersCardUsed) {
+                attackerCard.onPlace(attackerPlayer.getFraction());
+                attackersCardUsed = true;
+            }
             updateState(false);
             GameClient.instance().sendReady(true);
+        }
+    }
+
+    private void resetCardEffects() {
+        for(BattleCardObject card : attackers){
+            card.resetEffect();
+        }
+        for(BattleCardObject card : defenders){
+            card.resetEffect();
         }
     }
 

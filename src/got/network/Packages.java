@@ -74,6 +74,10 @@ public class Packages {
 		kryo.register(WaitForModal.class);
 		kryo.register(ResumeModal.class);
 		kryo.register(PlayerResumeModal.class);
+		kryo.register(Confirm.class);
+		kryo.register(Cancel.class);
+		kryo.register(PlayerConfirm.class);
+		kryo.register(PlayerCancel.class);
 	}
 
 	public static class NetPackage {
@@ -98,6 +102,13 @@ public class Packages {
 		private ServerClientPackage() {
 
 		}
+	}
+
+	/**
+	 * Если пакет должен передаваться в модальные состояния, он должен реализовывать этот интерфейс
+	 */
+	public interface ModalAcceptedPackage{
+
 	}
 
 	
@@ -810,7 +821,7 @@ public class Packages {
 	public static class ResumeModal extends ClientServerPackage {
 	}
 
-	public static class PlayerResumeModal extends BroadcastPackage{
+	public static class PlayerResumeModal extends BroadcastPackage implements ModalAcceptedPackage{
 		public int player;
 
 		public PlayerResumeModal(int player) {
@@ -818,6 +829,33 @@ public class Packages {
 		}
 
 		public PlayerResumeModal() {
+		}
+	}
+
+	public static class Confirm extends ClientServerPackage{
+	}
+
+	public static class PlayerConfirm extends BroadcastPackage implements ModalAcceptedPackage{
+		public int player;
+
+		public PlayerConfirm(int player) {
+			this.player = player;
+		}
+
+		public PlayerConfirm() {
+		}
+	}
+
+	public static class Cancel extends ClientServerPackage{
+	}
+
+	public static class PlayerCancel extends BroadcastPackage implements ModalAcceptedPackage{
+		int player;
+		public PlayerCancel() {
+		}
+
+		public PlayerCancel(int player) {
+			this.player = player;
 		}
 	}
 }

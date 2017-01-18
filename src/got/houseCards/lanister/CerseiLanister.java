@@ -24,22 +24,15 @@ import static sun.misc.PostVMInitHook.run;
  * Created by Souverain73 on 11.01.2017.
  */
 public class CerseiLanister extends ActiveHouseCard {
-    private Fraction enemyFraction;
     @Override
     public void onPlace(Fraction fraction) {
         super.onPlace(fraction);
-        if (GameClient.shared.battleDeck.getAttackerPlayer().getFraction() == fraction){
-            enemyFraction = GameClient.shared.battleDeck.getDefenderPlayer().getFraction();
-        }else{
-            enemyFraction = GameClient.shared.battleDeck.getAttackerPlayer().getFraction();
-        }
     }
 
     @Override
     public void onWin() {
         super.onWin();
         (new ModalState(new RemoveActionState(placerFraction, enemyFraction), true, true)).run();
-        //todo: убрать приказ врага на выбор
     }
 
     private class RemoveActionState extends WaitingModal implements IClickListener{

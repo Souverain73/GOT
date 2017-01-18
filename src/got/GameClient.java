@@ -202,15 +202,18 @@ public class GameClient {
 				if (object instanceof ServerMessage){
 					UI.serverMessage(((ServerMessage)object).message);
 				}
-				if (object instanceof Packages.PlayerResumeModal) {
-					Packages.PlayerResumeModal res = (Packages.PlayerResumeModal) object;
-					Player player = PlayerManager.instance().getPlayer(res.player);
-					logSystem("Player " + player.getNickname() + " just resumed paused modal state");
 
+				if (object instanceof Packages.ModalAcceptedPackage) {
+					if (object instanceof Packages.PlayerResumeModal) {
+						Packages.PlayerResumeModal res = (Packages.PlayerResumeModal) object;
+						Player player = PlayerManager.instance().getPlayer(res.player);
+						logSystem("Player " + player.getNickname() + " just resumed paused modal state");
+					}
 					if (!modalStates.isEmpty()) {
 						modalStates.getLast().getGameState().recieve(c, object);
 					}
 				}
+
 				//handle state specific packages
 				stm.recieve(c, object);
 				

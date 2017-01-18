@@ -135,11 +135,16 @@ public class BattleCardObject extends AbstractGameObject<BattleCardObject>{
         effects.sort((a, b)->a.getPriority() - b.getPriority());
     }
 
+    public void resetEffect() {
+        effects = null;
+    }
+
     public int calcPower(Unit unit){
         int power = unit.getDamage();
         if (effects == null) return power;
         for (UnitEffect effect : effects){
-            power = effect.getAffectedPower(power);
+            if (effect.isAffected(unit))
+                power = effect.getAffectedPower(power);
         }
         return power;
     }
@@ -148,23 +153,5 @@ public class BattleCardObject extends AbstractGameObject<BattleCardObject>{
         int getAffectedPower(int power);
         boolean isAffected(Unit unit);
         int getPriority();
-    }
-
-    public class defaultEffect implements UnitEffect{
-
-        @Override
-        public int getAffectedPower(int power) {
-            return power;
-        }
-
-        @Override
-        public boolean isAffected(Unit unit) {
-            return false;
-        }
-
-        @Override
-        public int getPriority() {
-            return 0;
-        }
     }
 }

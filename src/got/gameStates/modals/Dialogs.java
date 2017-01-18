@@ -1,10 +1,17 @@
 package got.gameStates.modals;
 
+import got.ModalState;
+import got.gameObjects.ContainerObject;
 import got.gameObjects.ImageObject;
 import got.gameObjects.interfaceControls.ImageButton;
 import got.gameStates.GameState;
 import got.graphics.DrawSpace;
+import got.houseCards.HouseCard;
+import got.model.Player;
+import got.server.PlayerManager;
 import org.joml.Vector2f;
+
+import java.util.List;
 
 /**
  * Created by Souverain73 on 24.11.2016.
@@ -47,4 +54,37 @@ public class Dialogs {
         cms.addObject(bg);
         return cms;
     }
+
+    public static DialogResult showConfirmDialog() {
+        return showConfirmDialog(new Vector2f(0,0));
+    }
+
+
+    public static DialogResult showConfirmDialog(Vector2f pos){
+        Dialog dlg = createConfirmDialog(pos);
+        (new ModalState(dlg)).run();
+        return dlg.getResult();
+    }
+
+    public static CustomModalState<HouseCard> createSelectHouseCardDialog(){
+        CustomModalState<HouseCard> cms = new CustomModalState<>(null, false);
+        Player player = PlayerManager.getSelf();
+        List<HouseCard> cardsToSelect = player.getDeck().getActiveCards();
+        ContainerObject cnt = new ContainerObject().setSpace(DrawSpace.SCREEN).setPos(new Vector2f(0, 0));
+        int cx = 290; int cy = 200;
+
+        for (HouseCard card : cardsToSelect){
+            ImageButton ib = new ImageButton(card.getTexture(), cx, cy, 100, 200, card).setSpace(DrawSpace.SCREEN);
+            ib.setCallback((sender, param) ->{
+                cms.setResult((HouseCard) param);
+                cms.close();
+            });
+            cnt.addChild(ib);
+            cx+=100;
+        }
+
+        cms.addObject(cnt);
+        return cms;
+    }
+
 }
