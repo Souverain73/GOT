@@ -13,6 +13,9 @@ import org.joml.Vector2f;
 
 import java.util.List;
 
+import static got.server.PlayerManager.getSelf;
+import static sun.audio.AudioPlayer.player;
+
 /**
  * Created by Souverain73 on 24.11.2016.
  */
@@ -66,10 +69,14 @@ public class Dialogs {
         return dlg.getResult();
     }
 
-    public static CustomModalState<HouseCard> createSelectHouseCardDialog(){
+    public static CustomModalState<HouseCard> createSelectHouseCardDialog() {
+        return createSelectHouseCardDialog(getSelf().getDeck().getActiveCards());
+    }
+
+
+    public static CustomModalState<HouseCard> createSelectHouseCardDialog(List<HouseCard> cards){
         CustomModalState<HouseCard> cms = new CustomModalState<>(null, false);
-        Player player = PlayerManager.getSelf();
-        List<HouseCard> cardsToSelect = player.getDeck().getActiveCards();
+        List<HouseCard> cardsToSelect = cards;
         ContainerObject cnt = new ContainerObject().setSpace(DrawSpace.SCREEN).setPos(new Vector2f(0, 0));
         int cx = 290; int cy = 200;
 

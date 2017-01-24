@@ -133,7 +133,7 @@ class PowerPhase extends ActionPhase {
             if (PlayerManager.getSelf().id == msg.playerID) {
                 GameClient.instance().registerTask(()-> {
                     if (!enableRegionsWithCrown()) {
-                        UI.systemMessage("I can't turn");
+                        UI.systemMessage("Не осталось ходов");
                         //Если не был активирован ни один регион, значит текущий игрок не может совершить ход.
                         //В таком случае необходлимо сообщить об этом серверу пакетом Ready.
                         GameClient.instance().send(new Packages.Ready(false));
@@ -141,18 +141,17 @@ class PowerPhase extends ActionPhase {
                         if (firstTurn) {
                             firstTurn = false;
                             firstTurn();
+                            GameClient.instance().sendReady(true);
                         }
                     }
                 });
             } else {
-                UI.systemMessage("Not my turn :( current player id:" + msg.playerID);
                 //Если чужой ход, отключаем все регионы, так как в чужой ход мы не можем совершать действий.
                 GameClient.shared.gameMap.disableAllRegions();
             }
         }
         if (pkg instanceof Packages.CollectInfluence) {
             //Собираем влияние(деньги)
-            UI.systemMessage("Collect influence recieved");
             Packages.CollectInfluence msg = ((Packages.CollectInfluence) pkg);
             MapPartObject region = GameClient.shared.gameMap.getRegionByID(msg.region);
 
@@ -201,11 +200,8 @@ class PowerPhase extends ActionPhase {
      * В первый ход автоматически играются все приказы для которых не требуется решение игрока.
      */
     private void firstTurn() {
-        UI.systemMessage("Enabled regions");
-        UI.systemMessage(String.valueOf(GameClient.shared.gameMap.getEnabledRegions().size()));
         for (MapPartObject region : GameClient.shared.gameMap.getEnabledRegions()) {
             if (region.getAction() == Action.MONEY) {
-                UI.systemMessage("FT: Collect influence and disable region " + region.getName());
                 sendCollectMoney(region);
                 region.setEnabled(false);
             } else if (region.getAction() == Action.MONEYPLUS

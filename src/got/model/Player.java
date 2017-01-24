@@ -60,6 +60,8 @@ public class Player {
 	public void setFraction(Fraction fraction) {
 		this.fraction = fraction;
 		//При смене фракции игроку надо дать новую колоду карт домов.
+		//И для отладки дать ник в зависимости от фракции
+		this.nickname = fraction.toString();
 		this.deck = new Deck(this);
 	}
 	

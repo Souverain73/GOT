@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static sun.audio.AudioPlayer.player;
+
 /**
  * Created by Souverain73 on 25.11.2016.
  */
@@ -46,12 +48,16 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
     public int attackersPower;
     public int defendersPower;
 
+    public BattleOverrides overrides;
+
     public BattleDeckObject(MapPartObject attackerRegion, MapPartObject defenderRegion) {
         this.attackerRegion = attackerRegion;
         this.defenderRegion = defenderRegion;
 
         this.attackerPlayer = attackerRegion.getOwnerPlayer();
         this.defenderPlayer = defenderRegion.getOwnerPlayer();
+
+        this.overrides = new BattleOverrides();
 
         ImageObject background = new ImageObject("BattleDeckBG.png", new Vector2f(140, 50),
                 1000, 200)
@@ -251,8 +257,16 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
     }
 
     public MapPartObject getPlayerRegion(Player player) {
-        if (player.getFraction() == defenderRegion.getFraction()) return defenderRegion;
-        if (player.getFraction() == attackerRegion.getFraction()) return attackerRegion;
+        return getPlayerRegion(player.getFraction());
+    }
+
+    public MapPartObject getPlayerRegion(Fraction playerFraction){
+        if (playerFraction == defenderRegion.getFraction()) return defenderRegion;
+        if (playerFraction == attackerRegion.getFraction()) return attackerRegion;
         throw new IllegalStateException("Игрок попыталя получить свой регион в бою, но он не был участником боя.");
+    }
+
+    public void setOverrides(BattleOverrides over){
+        overrides = over;
     }
 }

@@ -3,6 +3,7 @@ package got.network;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 
+import got.gameObjects.battleDeck.BattleOverrides;
 import got.houseCards.HouseCard;
 import got.model.Action;
 
@@ -25,6 +26,8 @@ public class Network {
 		kryo.register(got.model.Unit[].class);
 
 		kryo.register(Action.class);
+
+		kryo.register(BattleOverrides.class);
 	}
 	
 	

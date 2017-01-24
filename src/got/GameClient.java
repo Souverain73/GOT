@@ -207,10 +207,11 @@ public class GameClient {
 					if (object instanceof Packages.PlayerResumeModal) {
 						Packages.PlayerResumeModal res = (Packages.PlayerResumeModal) object;
 						Player player = PlayerManager.instance().getPlayer(res.player);
-						logSystem("Player " + player.getNickname() + " just resumed paused modal state");
+						logSystem("Игрок " + player.getNickname() + " продолжает остановленное состояние");
 					}
 					if (!modalStates.isEmpty()) {
-						modalStates.getLast().getGameState().recieve(c, object);
+						//Убеждаемся, что все уже зарегестрированные таски будут выполнены до продолжения
+						registerTask(()->modalStates.getLast().getGameState().recieve(c, object));
 					}
 				}
 

@@ -149,6 +149,10 @@ public class BattleCardObject extends AbstractGameObject<BattleCardObject>{
         return power;
     }
 
+    public Fraction getFraction() {
+        return playerFraction;
+    }
+
     public interface UnitEffect{
         int getAffectedPower(int power);
         boolean isAffected(Unit unit);

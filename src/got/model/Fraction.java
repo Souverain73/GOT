@@ -8,10 +8,10 @@ import org.joml.Vector3f;
 public enum Fraction {
 	STARK	(new Vector3f(3, 3, 3), "StarkBack.png", "StarkCover.png"),
 	LANISTER (new Vector3f(5, 1, 1), "LanisterBack.png", "LanisterCover.png"),
-	BARATHEON(new Vector3f(5,5,0), "back.png", "BaratheonCover.png"),
-	GREYJOY	(new Vector3f(0.6f, 0.6f, 0.6f), "back.png", "GreyjoyCover.png"),
+	BARATHEON(new Vector3f(5,5,0), "BaratheonBack.png", "BaratheonCover.png"),
+	GREYJOY	(new Vector3f(0.6f, 0.6f, 0.6f), "GreyjoyBack.png", "GreyjoyCover.png"),
 	TYRELL	(new Vector3f(1, 4, 1), "TyrellBack.png", "TyrellCover.png"),
-	MARTEL	(new Vector3f(5, 2.5f, 1), "back.png", "MartelCover.png"),
+	MARTEL	(new Vector3f(5, 2.5f, 1), "MartelBack.png", "MartelCover.png"),
 	NONE	(new Vector3f(1, 1, 1), null, null),
 	NEUTRAL_LORD(new Vector3f(1, 1, 1), null, null);
 	

@@ -93,6 +93,12 @@ public class BattleResultState extends ParallelState{
         }else if (pkg instanceof Packages.SetAction) {
             Packages.SetAction msg = (Packages.SetAction) pkg;
             GameServer.getServer().sendToAllTCP(new Packages.PlayerSetAction(msg.region, msg.action));
+        }else if (pkg instanceof Packages.SetOverrides) {
+            Packages.SetOverrides msg = (Packages.SetOverrides) pkg;
+            GameServer.getServer().sendToAllTCP(new Packages.PlayerSetOverrides(msg.overrides, player.id));
+        }else if (pkg instanceof Packages.RemoveHouseCard) {
+            Packages.RemoveHouseCard remove = (Packages.RemoveHouseCard) pkg;
+            GameServer.getServer().sendToAllTCP(new Packages.PlayerRemoveHouseCard(player.id, remove.target, remove.houseCardID));
         }
     }
 

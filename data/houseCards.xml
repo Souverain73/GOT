@@ -2,53 +2,71 @@
 <root>
 	<house fraction="STARK">
 		<card class="got.houseCards.stark.CatelynStark" power="0" title="Catelyn Stark">
-			<texture filename="CatelynStark.png"/>
+			<texture filename="Stark/CatelynStark.png"/>
 		</card>
 		<card class="got.houseCards.stark.Blackfish" power="1" title="The Blackfish">
-			<texture filename="TheBlackfish.png"/>
+			<texture filename="Stark/TheBlackfish.png"/>
 		</card>
 		<card power="1" towers="2" title="Ser Roderick Cassel">
-			<texture filename="SerRoderickCassel.png"/>
+			<texture filename="Stark/SerRoderickCassel.png"/>
 		</card>
 		<card power="1" swords="1" title="Greation Umber">
-			<texture filename="GreationUmber.png"/>
+			<texture filename="Stark/GreationUmber.png"/>
 		</card>
 		<card class="got.houseCards.stark.RooseBolton" power="2" title="Roose Bolton">
-			<texture filename="RooseBolton.png"/>
+			<texture filename="Stark/RooseBolton.png"/>
 		</card>
 		<card class="got.houseCards.stark.RobStark" power="3" title="Rob Stark">
-			<texture filename="RobStark.png"/>
+			<texture filename="Stark/RobStark.png"/>
 		</card>
 		<card power="4" swords="2" title="Eddard Stark">
-			<texture filename="EddardStark.png"/>
+			<texture filename="Stark/EddardStark.png"/>
 		</card>
 	</house>
 	<house fraction="LANISTER">
 		<card class="got.houseCards.lanister.CerseiLanister" power="0" title="Cersei Lanister">
-			<texture filename="CerseiLanister.png"/>
+			<texture filename="Lanister/CerseiLanister.png"/>
 		</card>
 		<card class="got.houseCards.lanister.TyrionLanister" power="1" title="Tyrion Lanister">
-			<texture filename="TyrionLanister.png"/>
+			<texture filename="Lanister/TyrionLanister.png"/>
 		</card>
 		<card class="got.houseCards.lanister.SerKevanLanister" power="1" title="Ser Kevan Lanister">
-			<texture filename="SerKevanLanister.png"/>
+			<texture filename="Lanister/SerKevanLanister.png"/>
 		</card>
 		<card power="2" towers="2" title="The Hound">
-			<texture filename="TheHound.png"/>
+			<texture filename="Lanister/TheHound.png"/>
 		</card>
 		<card power="2" swords="1" title="Ser Jaime Lanister">
-			<texture filename="SerJaimeLanister.png"/>
+			<texture filename="Lanister/SerJaimeLanister.png"/>
 		</card>
 		<card power="3" swords="3" title="Ser Gregor Clegane">
-			<texture filename="SerGregorClegane.png"/>
+			<texture filename="Lanister/SerGregorClegane.png"/>
 		</card>
 		<card class="got.houseCards.lanister.TywinLanister" power="4" title="Tywin Lanister">
-			<texture filename="TywinLanister.png"/>
+			<texture filename="Lanister/TywinLanister.png"/>
 		</card>
 	</house>
 	<house fraction="BARATHEON">
-		<card power="4" title="Stanis Baratheon">
-			<texture filename="homeCard.png"/>
+		<card class="got.houseCards.baratheon.Patchface" power="0" title="Patchface">
+			<texture filename="Baratheon/Patchface.png"/>
+		</card>
+		<card power="1" title="Melisandre">
+			<texture filename="Baratheon/Melisandre.png"/>
+		</card>
+		<card class="got.houseCards.baratheon.SalladhorSaan" power="1" title="Salladhor Saan">
+			<texture filename="Baratheon/SalladhorSaan.png"/>
+		</card>
+		<card power="2" title="Brienne of Tarth">
+			<texture filename="Baratheon/BrienneOfTarth.png"/>
+		</card>
+		<card class="got.houseCards.baratheon.SerDawosSeaworth" power="3" title="Ser Dawos Seaworth">
+			<texture filename="Baratheon/SerDawosSeaworth.png"/>
+		</card>
+		<card class="got.houseCards.baratheon.RenlyBaratheon" power="3" title="Renly Baratheon">
+			<texture filename="Baratheon/RenlyBaratheon.png"/>
+		</card>
+		<card class="got.houseCards.baratheon.StanisBaratheon" power="4" title="Stanis Baratheon">
+			<texture filename="Baratheon/StanisBaratheon.png"/>
 		</card>
 	</house>
 	<house fraction="GREYJOY">

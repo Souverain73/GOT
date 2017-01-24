@@ -164,4 +164,11 @@ public class PlayerManager {
 		
 		return result;
 	}
+
+	@Override
+	public String toString() {
+		return "PlayerManager{" +
+				"players=" + players +
+				'}';
+	}
 }

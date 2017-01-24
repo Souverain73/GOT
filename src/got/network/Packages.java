@@ -2,6 +2,7 @@ package got.network;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
+import got.gameObjects.battleDeck.BattleOverrides;
 import got.model.Action;
 import got.model.Fraction;
 import got.model.Player;
@@ -78,6 +79,8 @@ public class Packages {
 		kryo.register(Cancel.class);
 		kryo.register(PlayerConfirm.class);
 		kryo.register(PlayerCancel.class);
+		kryo.register(SetOverrides.class);
+		kryo.register(PlayerSetOverrides.class);
 	}
 
 	public static class NetPackage {
@@ -856,6 +859,59 @@ public class Packages {
 
 		public PlayerCancel(int player) {
 			this.player = player;
+		}
+	}
+
+
+	public static class SetOverrides extends ClientServerPackage {
+		public BattleOverrides overrides;
+
+		public SetOverrides() {
+		}
+
+		public SetOverrides(BattleOverrides overrides) {
+			this.overrides = overrides;
+		}
+	}
+
+	public static class PlayerSetOverrides extends BroadcastPackage {
+		public BattleOverrides overrides;
+		public int player;
+
+		public PlayerSetOverrides(BattleOverrides overrides, int player) {
+			this.overrides = overrides;
+			this.player = player;
+		}
+
+		public PlayerSetOverrides() {
+		}
+	}
+
+	public static class RemoveHouseCard extends ClientServerPackage{
+		public int target;
+		public int houseCardID;
+
+		public RemoveHouseCard(int target, int houseCardID) {
+			this.target = target;
+			this.houseCardID = houseCardID;
+		}
+
+		public RemoveHouseCard() {
+		}
+	}
+
+	public static class PlayerRemoveHouseCard extends BroadcastPackage {
+		public int source;
+		public int target;
+		public int houseCardID;
+
+		public PlayerRemoveHouseCard(int source, int target, int houseCardID) {
+			this.source = source;
+			this.target = target;
+			this.houseCardID = houseCardID;
+		}
+
+		public PlayerRemoveHouseCard() {
 		}
 	}
 }

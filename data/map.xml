@@ -20,11 +20,10 @@
 			<unit type="KNIGHT"/>
 			<texture filename="Winterfell.png"/>
 		</region>
-		<region name="Widow's Watch" type="GROUND" resources="1" x="939" y="561" w="278" h="219" fraction="STARK">
+		<region name="Widow's Watch" type="GROUND" resources="1" x="939" y="561" w="278" h="219">
 			<actionpos x="48" y="135"/>
 			<unitpos x="90" y="75"/>
 			<texture filename="WidowsWatch.png"/>
-			<unit type="SOLDIER"/>
 		</region>
 		<region name="The Stony Shore" type="GROUND" resources="1" x="153" y="423" w="408" h="426" fraction="LANISTER">
 			<actionpos x="76" y="164"/>
@@ -38,10 +37,9 @@
 		<region name="White Harbor" type="GROUND" building="1" x="746" y="423" w="379" h="511" fraction="LANISTER">
 			<actionpos x="132" y="219"/>
 			<unitpos x="190" y="80"/>
-			<unit type="SOLDIER"/>
-			<unit type="SOLDIER"/>
-			<unit type="SOLDIER"/>
-			<unit type="SOLDIER"/>
+			<unit type="KNIGHT"/>
+			<unit type="KNIGHT"/>
+			<unit type="KNIGHT"/>
 			<texture filename="WhiteHarbor.png"/>
 		</region>
 		<region name="Bay Of Ice" type="SEA" x="0" y="0" w="763" h="960" fraction="STARK">

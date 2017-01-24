@@ -165,6 +165,7 @@ public class GameServer {
 					msg.message = command[1];
 					server.sendToAllTCP(msg);
 				}else if(command[0].equals("dump")){
+					System.out.println(PlayerManager.instance().toString());
 					System.out.println("Current State Dump: " + stm.getCurrentState());
 				}
 			}

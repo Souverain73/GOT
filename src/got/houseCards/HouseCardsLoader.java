@@ -145,4 +145,13 @@ public class HouseCardsLoader {
         loader.load(HOUSE_CARDS_DATA_FILE_PATH);
         loader.getCardsForFractionInternal(Fraction.LANISTER);
     }
+
+    public HouseCard getCardByTitle(String title){
+        for(HouseCard card : allCards){
+            if(title.equals(card.getTitle())){
+                return card;
+            }
+        }
+        return null;
+    }
 }

@@ -113,4 +113,9 @@ public abstract class StepByStepState implements ServerState, IPauseable{
     @Override
     public void resume() {
     }
+
+    @Override
+    public String toString() {
+        return "StepByStepState " + Arrays.toString(playersReady);
+    }
 }

@@ -5,21 +5,28 @@ import got.GameClient;
 import got.InputManager;
 import got.ModalState;
 import got.gameObjects.MapPartObject;
+import got.gameObjects.battleDeck.BattleDeckObject;
+import got.gameObjects.battleDeck.BattleOverrides;
+import got.gameStates.modals.SelectRegionModal;
 import got.gameStates.modals.SelectUnitsDialogState;
+import got.houseCards.HouseCard;
+import got.houseCards.HouseCardsLoader;
 import got.model.*;
 import got.network.Packages;
 import got.server.PlayerManager;
-import sun.misc.GC;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static got.server.PlayerManager.getSelf;
 import static got.utils.UI.logAction;
 
 /**
  * Created by Souverain73 on 15.12.2016.
  */
 public class BattleResultState extends ActionPhase{
+    private BattleDeckObject BDO;
+
     @Override
     public String getName() {
         return "Battle result state";
@@ -49,7 +56,7 @@ public class BattleResultState extends ActionPhase{
                 logAction("Игрок " + PlayerManager.instance().getPlayer(msg.player) + " перемещает войска в регион" + GameClient.shared.gameMap.getRegionByID(msg.to));
             });
         }else if (pkg instanceof Packages.GetBattleResult) {
-            if (GameClient.shared.battleDeck.isBattleMember(PlayerManager.getSelf().getFraction())) {
+            if (GameClient.shared.battleDeck.isBattleMember(getSelf().getFraction())) {
                 GameClient.instance().send(new Packages.PlayerDamage(
                         GameClient.shared.battleDeck.attackersPower,
                         GameClient.shared.battleDeck.defendersPower
@@ -73,6 +80,20 @@ public class BattleResultState extends ActionPhase{
                     region.setAction(null);
                 }
             });
+        }else if (pkg instanceof Packages.PlayerSetOverrides) {
+            Packages.PlayerSetOverrides msg = (Packages.PlayerSetOverrides) pkg;
+            Player pl = PlayerManager.instance().getPlayer(msg.player);
+
+            logAction("Игрок " + pl.getNickname() + " устанавливает особые условия боя");
+            GameClient.shared.battleDeck.setOverrides(msg.overrides);
+        }else if (pkg instanceof Packages.PlayerRemoveHouseCard) {
+            Packages.PlayerRemoveHouseCard msg = (Packages.PlayerRemoveHouseCard) pkg;
+            Player sourcePlayer = PlayerManager.instance().getPlayer(msg.source);
+            Player targetPlayer = PlayerManager.instance().getPlayer(msg.target);
+            HouseCard cardToRemove = HouseCardsLoader.instance().getCardById(msg.houseCardID);
+
+            logAction("Игрок " + sourcePlayer.getNickname() + " убирает из колоды игрока " + targetPlayer.getNickname() + " карту " + cardToRemove);
+            targetPlayer.getDeck().useCard(cardToRemove);
         }
     }
 
@@ -95,85 +116,107 @@ public class BattleResultState extends ActionPhase{
     }
 
     private void onBattleResult(Packages.BattleResult battleResult) {
+        BDO = GameClient.shared.battleDeck;
         Player winner = PlayerManager.instance().getPlayer(battleResult.winnerID);
         Player looser = PlayerManager.instance().getPlayer(battleResult.looserID);
         logAction("Битва закончена игрок " + winner.getNickname() + " победил, игрок " + looser.getNickname() + " проиграл.");
         //Убираем приказы
-        GameClient.shared.battleDeck.getAttackerRegion().setAction(null);
-        if (GameClient.shared.battleDeck.isAttacker(PlayerManager.instance().getPlayer(battleResult.winnerID).getFraction())){
+        BDO.getAttackerRegion().setAction(null);
+
+        int killUnitsCount = 0;
+        if (BDO.isAttacker(PlayerManager.instance().getPlayer(battleResult.winnerID).getFraction())){
             //победил атакующий
-            GameClient.shared.battleDeck.getDefenderRegion().setAction(null);
-            GameClient.shared.battleDeck.getAttackerCard().onWin();
-            GameClient.shared.battleDeck.getDefenderCard().onLoose();
+            BDO.getDefenderRegion().setAction(null);
+            BDO.getAttackerCard().onWin();
+            BDO.getDefenderCard().onLoose();
+            killUnitsCount = BDO.getAttackerCard().getSwords() - BDO.getDefenderCard().getTowers();
         }else{
             //победил защищавшийся
-            GameClient.shared.battleDeck.getDefenderCard().onWin();
-            GameClient.shared.battleDeck.getAttackerCard().onLoose();
+            BDO.getDefenderCard().onWin();
+            BDO.getAttackerCard().onLoose();
+            killUnitsCount = BDO.getDefenderCard().getSwords() - BDO.getAttackerCard().getTowers();
         }
 
+        BattleOverrides overrides = BDO.overrides;
+        if (overrides.customKillCount){
+            killUnitsCount = overrides.unitsToKill;
+        }
 
         GameClient.shared.gameMap.getRegionByID(battleResult.looserRegionID).killUnits();
-        if (battleResult.looserID == PlayerManager.getSelf().id){
+        if (battleResult.looserID == getSelf().id){
             //Если ты проигравший
-            MapPartObject playerRegion = GameClient.shared.battleDeck.getPlayerRegion(PlayerManager.getSelf());
-            if (battleResult.killUnits>0) {
+            MapPartObject playerRegion = BDO.getPlayerRegion(getSelf());
+            if (killUnitsCount>0) {
                 Unit[] unitsToKill = null;
                 while(unitsToKill == null) {
-                    unitsToKill = showKillUnitsDialog(playerRegion.getUnits(), battleResult.killUnits);
+                    unitsToKill = showKillUnitsDialog(playerRegion.getUnits(), killUnitsCount);
                 }
                 playerRegion.removeUnits(unitsToKill);
                 GameClient.instance().send(new Packages.ChangeUnits(playerRegion.getID(), playerRegion.getUnits()));
             }
-            if (GameClient.shared.battleDeck.isDefender(PlayerManager.getSelf().getFraction())){
-                //Если ты оборонялся, ты можешь выбрать куда отступить
-                enableRegionsToRetreatOrKillUnits();
-            }else{
-                GameClient.instance().send(new Packages.LooserReady());
-                GameClient.instance().sendReady(true);
-            }
+
+            //Если ты оборонялся, ты можешь выбрать куда отступить
+            RetreatOrKillUnits();
         }else{
-            GameClient.instance().sendReady(true);
+            endBattle();
         }
     }
 
-    @Override
-    public void click(InputManager.ClickEvent event) {
-        super.click(event);
-        if (event.getTarget() instanceof MapPartObject) {
-            MapPartObject playerRegion = GameClient.shared.battleDeck.getPlayerRegion(PlayerManager.getSelf());
-            MapPartObject moveRegion = (MapPartObject) event.getTarget();
+    private void endBattle() {
+        BDO.getAttackerCard().onBattleEnd();
+        BDO.getDefenderCard().onBattleEnd();
+        GameClient.instance().sendReady(true);
+    }
 
-            //Активным может быть регион не проходящий по снабжению, поэтому проверяем снабжение
-            if (!Game.instance().getSuplyTrack().canMove(playerRegion.getFraction(), playerRegion, moveRegion, playerRegion.getUnitsCount())){
-                //Считаем сколько юнитов надо убить что бы совершить этот ход
-                int i = 0;
-                while(i<4 && Game.instance().getSuplyTrack().canMove(playerRegion.getFraction(), playerRegion, moveRegion, i+1)){
-                    i++;
-                }
-                if (i==0){
-                    throw new IllegalStateException("Активен регион в который пользователь не может совершить ход");
-                }
-                int unitsToKillCount = playerRegion.getUnitsCount() - i;
-                Unit[] unitsToKill = showKillUnitsDialog(playerRegion.getUnits(), unitsToKillCount);
-                if (unitsToKill != null) {
-                    playerRegion.removeUnits(unitsToKill);
-                    GameClient.instance().send(new Packages.ChangeUnits(playerRegion.getID(), playerRegion.getUnits()));
-                    GameClient.instance().send(new Packages.Move(playerRegion.getID(), moveRegion.getID(), playerRegion.getUnits()));
-                    GameClient.instance().send(new Packages.LooserReady());
-                    GameClient.instance().sendReady(true);
-                }
-                //TODO: сказать, что так нельзя. Надо либо выбрать другой регион, либо убивать юнитов.
-            }else{
-                GameClient.instance().send(new Packages.Move(playerRegion.getID(), moveRegion.getID(), playerRegion.getUnits()));
-                GameClient.instance().send(new Packages.LooserReady());
-                GameClient.instance().sendReady(true);
+    private void retreatTo(MapPartObject regionToRetreat) {
+        MapPartObject playerRegion = GameClient.shared.battleDeck.getPlayerRegion(getSelf());
+        MapPartObject moveRegion = regionToRetreat;
+
+        //Активным может быть регион не проходящий по снабжению, поэтому проверяем снабжение
+        if (!Game.instance().getSuplyTrack().canMove(playerRegion.getFraction(), playerRegion, moveRegion, playerRegion.getUnitsCount())){
+            //Считаем сколько юнитов надо убить что бы совершить этот ход
+            int i = 0;
+            while(i<4 && Game.instance().getSuplyTrack().canMove(playerRegion.getFraction(), playerRegion, moveRegion, i+1)){
+                i++;
             }
-        }
+            if (i==0){
+                throw new IllegalStateException("Активен регион в который пользователь не может совершить ход");
+            }
+            int unitsToKillCount = playerRegion.getUnitsCount() - i;
+            Unit[] unitsToKill = null;
+            while (unitsToKill == null) {
+                unitsToKill = showKillUnitsDialog(playerRegion.getUnits(), unitsToKillCount);
+            }
+            playerRegion.removeUnits(unitsToKill);
+            GameClient.instance().send(new Packages.ChangeUnits(playerRegion.getID(), playerRegion.getUnits()));
+            GameClient.instance().send(new Packages.Move(playerRegion.getID(), moveRegion.getID(), playerRegion.getUnits()));
+            GameClient.instance().send(new Packages.LooserReady());
+            endBattle();
 
+        }else{
+            GameClient.instance().send(new Packages.Move(playerRegion.getID(), moveRegion.getID(), playerRegion.getUnits()));
+            GameClient.instance().send(new Packages.LooserReady());
+            endBattle();
+        }
     }
 
-    private void enableRegionsToRetreatOrKillUnits() {
+    private void RetreatOrKillUnits() {
+        if (BDO.isAttacker(getSelf().getFraction()) && !BDO.overrides.customRetreat){
+            //Если ты атаковал по стандартным правилам ты не можешь выбирать регион для отступления и остаешься на месте
+            GameClient.instance().send(new Packages.LooserReady());
+            endBattle();
+            return;
+        }
+
+        //Если ты проиграл или утановлены другие правила отступления надо выбрать регион для отступления.
+        if (BDO.overrides.customRetreat){
+            //если регион отступления переопределен
+            retreatTo(GameClient.shared.gameMap.getRegionByID(BDO.overrides.regionToRetreat));
+            return;
+        }
+        //стандартные правила отступления
         GameClient.shared.gameMap.disableAllRegions();
+        MapPartObject regionToRetreat = null;
         MapPartObject regionFrom = GameClient.shared.battleDeck.getDefenderRegion();
         List<MapPartObject> regionsToMove = regionFrom.getRegionsToMove();
         //Ищем регионы куда можно отступить не нарушая снабжения
@@ -186,8 +229,9 @@ public class BattleResultState extends ActionPhase{
                 }).collect(Collectors.toList());
 
         if (regionsToRetreat.size() > 0){
-            regionsToRetreat.forEach(r->r.setEnabled(true));
             GameClient.instance().setTooltipText("Выберите регион для отступления");
+            regionToRetreat = SelectRegionModal.selectFrom(regionsToRetreat);
+            retreatTo(regionToRetreat);
             return;
         }
 
@@ -201,8 +245,9 @@ public class BattleResultState extends ActionPhase{
                 }).collect(Collectors.toList());
 
         if (regionsToRetreat.size() > 0){
-            regionsToRetreat.forEach(r->r.setEnabled(true));
             GameClient.instance().setTooltipText("Выберите регион для отступления");
+            regionToRetreat = SelectRegionModal.selectFrom(regionsToRetreat);
+            retreatTo(regionToRetreat);
             return;
         }
 
@@ -211,7 +256,7 @@ public class BattleResultState extends ActionPhase{
         GameClient.instance().send(new Packages.KillAllUnitsAtRegion(regionFrom.getID()));
         //Сообщаем, что проигравций закончил отступление.
         GameClient.instance().send(new Packages.LooserReady());
-        GameClient.instance().sendReady(true);
+        endBattle();
     }
 
     private Unit[] showKillUnitsDialog(Unit[] units, int countToKill){
