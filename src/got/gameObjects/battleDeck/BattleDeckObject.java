@@ -68,7 +68,7 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
                 .setDim(new Vector2f(500, 200))
                 .setSpace(DrawSpace.SCREEN);
 
-        BattleCardObject attackerCard = new BattleCardObject(attackerRegion.getFraction(), attackerRegion.getAction(), attackerRegion.getUnits())
+        BattleCardObject attackerCard = new BattleCardObject(attackerRegion.getFraction(), attackerRegion)
                 .setSpace(DrawSpace.SCREEN).setPos(new Vector2f(400, 0));
         attackers.add(attackerCard);
         attackerContainer.addChild(attackerCard);
@@ -78,7 +78,7 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
                 .setDim(new Vector2f(500, 200))
                 .setSpace(DrawSpace.SCREEN);
 
-        BattleCardObject defenderCard = new BattleCardObject(defenderRegion.getFraction(), defenderRegion.getAction(), defenderRegion.getUnits())
+        BattleCardObject defenderCard = new BattleCardObject(defenderRegion.getFraction(), defenderRegion)
                 .setSpace(DrawSpace.SCREEN).setPos(new Vector2f(0, 0));
         defenders.add(defenderCard);
         defenderContainer.addChild(defenderCard);
@@ -116,7 +116,7 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
 
         List<MapPartObject> regionsForHelp = defenderRegion.getRegionsForHelp(player.getFraction());
         for (MapPartObject region : regionsForHelp){
-            BattleCardObject cpc = new BattleCardObject(player.getFraction(), region.getAction(), region.getUnits());
+            BattleCardObject cpc = new BattleCardObject(player.getFraction(), region);
             set.add(cpc);
             container.addChild(cpc);
             updateState(true);

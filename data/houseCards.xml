@@ -50,13 +50,13 @@
 		<card class="got.houseCards.baratheon.Patchface" power="0" title="Patchface">
 			<texture filename="Baratheon/Patchface.png"/>
 		</card>
-		<card power="1" title="Melisandre">
+		<card power="1" swords="1" title="Melisandre" >
 			<texture filename="Baratheon/Melisandre.png"/>
 		</card>
 		<card class="got.houseCards.baratheon.SalladhorSaan" power="1" title="Salladhor Saan">
 			<texture filename="Baratheon/SalladhorSaan.png"/>
 		</card>
-		<card power="2" title="Brienne of Tarth">
+		<card power="2" swords="1" towers="1" title="Brienne of Tarth">
 			<texture filename="Baratheon/BrienneOfTarth.png"/>
 		</card>
 		<card class="got.houseCards.baratheon.SerDawosSeaworth" power="3" title="Ser Dawos Seaworth">
@@ -70,18 +70,72 @@
 		</card>
 	</house>
 	<house fraction="GREYJOY">
-		<card power="4" swords="1" title="Euron Crow's Eye">
-			<texture filename="homeCard.png"/>
+		<card class="got.houseCards.greyjoy.AeronDamphair" power="0" title="Aeron Damphair">
+			<texture filename="Greyjoy/AeronDamphair.png"/>
+		</card>
+		<card class="got.houseCards.greyjoy.AshaGreyjoy" power="1" title="Asha Greyjoy">
+			<texture filename="Greyjoy/AshaGreyjoy.png"/>
+		</card>
+		<card swords="1" towers="1" title="DagmarCleftjaw">
+			<texture filename="Greyjoy/DagmarCleftjaw.png"/>
+		</card>
+		<card class="got.houseCards.greyjoy.BalonGreyjoy" power="2" title="Balon Greyjoy">
+			<texture filename="Greyjoy/BalonGreyjoy.png"/>
+		</card>
+		<card class="got.houseCards.greyjoy.TheonGreyjoy" power="2" title="Theon Greyjoy">
+			<texture filename="Greyjoy/TheonGreyjoy.png"/>
+		</card>
+		<card class="got.houseCards.greyjoy.VictarionGreyjoy" power="3" title="Victarion Greyjoy">
+			<texture filename="Greyjoy/VictarionGreyjoy.png"/>
+		</card>
+		<card power="4" swords="1" title="Euron Crown Eye">
+			<texture filename="Greyjoy/EuronCrownEye.png"/>
 		</card>
 	</house>
 	<house fraction="TYRELL">
-		<card power="4" title="Mace Tyrell">
-			<texture filename="homeCard.png"/>
+		<card class="got.houseCards.tyrell.QueenOfThorns" power="0" title="Queen of Thorns">
+			<texture filename="Tyrell/QueenOfThorns.png"/>
+		</card>
+		<card power="1" towers="1" title="Alester Florent" >
+			<texture filename="Tyrell/AlesterFlorent.png"/>
+		</card>
+		<card power="1" towers="1" title="Margaery Tyrell" >
+			<texture filename="Tyrell/MargaeryTyrell.png"/>
+		</card>
+		<card power="2" swords="1" title="Randyll Tyrell" >
+			<texture filename="Tyrell/RandyllTyrell.png"/>
+		</card>
+		<card power="2" swords="2" title="Ser Garlan Tyrell" >
+			<texture filename="Tyrell/SerGarlanTyrell.png"/>
+		</card>
+		<card class="got.houseCards.tyrell.SerLorasTyrell" power="3" title="Ser Loras Tyrell">
+			<texture filename="Tyrell/SerLorasTyrell.png"/>
+		</card>
+		<card class="got.houseCards.tyrell.MaceTyrell" power="4" title="Mace Tyrell">
+			<texture filename="Tyrell/MaceTyrell.png"/>
 		</card>
 	</house>
 	<house fraction="MARTEL">
-		<card power="4" swords="2" towers="1" title="The Red Viper">
-			<texture filename="homeCard.png"/>
+		<card class="got.houseCards.martell.DoranMartell" power="0" title="Doran Martell">
+			<texture filename="Martell\DoranMartell.png"/>
+		</card>
+		<card class="got.houseCards.martell.ArianneMartell" power="1" title="Arianne Martell">
+			<texture filename="Martell\ArianneMartell.png"/>
+		</card>
+		<card class="got.houseCards.martell.NymeriaSand" power="1" title="Nymeria Sand">
+			<texture filename="Martell\NymeriaSand.png"/>
+		</card>
+		<card power="2" swords="1" title="Darkstar">
+			<texture filename="Martell\Darkstar.png"/>
+		</card>
+		<card power="2" swords="1" title="Obara Sand" >
+			<texture filename="Martell\ObaraSand.png"/>
+		</card>
+		<card power="3" towers="1" title="Areo Hotah" >
+			<texture filename="Martell\AreoHotah.png"/>
+		</card>
+		<card power="4" swords="2" towers="1" title="The Red Viper" >
+			<texture filename="Martell\TheRedViper.png"/>
 		</card>
 	</house>
 </root>

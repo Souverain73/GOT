@@ -29,12 +29,14 @@ public class BattleCardObject extends AbstractGameObject<BattleCardObject>{
     private Unit[] units;
     private UnitObject[] unitObjects;
     private Action regionAction;
+    private MapPartObject region;
     private List<UnitEffect> effects;
 
-    public BattleCardObject(Fraction playerFraction, Action action, Unit[] units){
+    public BattleCardObject(Fraction playerFraction, MapPartObject region){
         this.playerFraction = playerFraction;
-        this.units = units;
-        this.regionAction = action;
+        this.region = region;
+        this.units = region.getUnits();
+        this.regionAction = region.getAction();
         effects = null;
         addChild(view = createView());
         updateUnits();
@@ -157,5 +159,9 @@ public class BattleCardObject extends AbstractGameObject<BattleCardObject>{
         int getAffectedPower(int power);
         boolean isAffected(Unit unit);
         int getPriority();
+    }
+
+    public MapPartObject getRegion() {
+        return region;
     }
 }

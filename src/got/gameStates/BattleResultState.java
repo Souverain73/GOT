@@ -46,9 +46,12 @@ public class BattleResultState extends ActionPhase{
             );
         }else if (pkg instanceof Packages.PlayerChangeUnits) {
             Packages.PlayerChangeUnits changeUnits = (Packages.PlayerChangeUnits) pkg;
-            GameClient.instance().registerTask(()->
-                    GameClient.shared.gameMap.getRegionByID(changeUnits.region).setUnits(changeUnits.units)
-            );
+            MapPartObject region = GameClient.shared.gameMap.getRegionByID(changeUnits.region);
+            Player player = PlayerManager.instance().getPlayer(changeUnits.player);
+            GameClient.instance().registerTask(()-> {
+                        logAction("Игрок " + player.getNickname() + " меняет состав войск в регионе " + region.getName());
+                        region.setUnits(changeUnits.units);
+                    });
         }else if (pkg instanceof Packages.PlayerMove) {
             Packages.PlayerMove msg = (Packages.PlayerMove) pkg;
             GameClient.instance().registerTask(()->{

@@ -78,7 +78,7 @@ public class BattleResultState extends ParallelState{
         }else if (pkg instanceof Packages.ChangeUnits) {
             Packages.ChangeUnits msg = (Packages.ChangeUnits) pkg;
             GameServer.getServer().sendToAllTCP(new Packages.PlayerChangeUnits(player.id, msg.region, msg.units));
-
+            
         }else if (pkg instanceof Packages.Move) {
             Packages.Move msg = (Packages.Move) pkg;
             GameServer.getServer().sendToAllTCP(new Packages.PlayerMove(player.id, msg.from, msg.to, msg.units));
