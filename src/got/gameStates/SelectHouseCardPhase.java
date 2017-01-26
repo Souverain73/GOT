@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 import got.GameClient;
 import got.ModalState;
 import got.gameObjects.ContainerObject;
+import got.gameObjects.MapPartObject;
 import got.gameObjects.interfaceControls.ImageButton;
 import got.gameStates.modals.CustomModalState;
 import got.gameStates.modals.Dialogs;
@@ -55,6 +56,26 @@ public class SelectHouseCardPhase extends ActionPhase {
                 player.getDeck().useCard(card);
                 GameClient.shared.battleDeck.placeCard(card, player);
                 logAction("Игрок " + player.getNickname() + " выбрал карту дома " + card.getTitle());
+            });
+        }
+        if (pkg instanceof Packages.PlayerKillUnit) {
+            Packages.PlayerKillUnit msg = (Packages.PlayerKillUnit) pkg;
+            Player player = PlayerManager.instance().getPlayer(msg.player);
+            MapPartObject region = GameClient.shared.gameMap.getRegionByID(msg.region);
+            logAction("Игрок " + player.getNickname() + " убивает юнита " + msg.unit + " в регионе " + region.getName());
+            region.removeUnit(msg.unit);
+        }
+        if (pkg instanceof Packages.PlayerSetAction) {
+            Packages.PlayerSetAction msg = (Packages.PlayerSetAction) pkg;
+            GameClient.instance().registerTask(()->{
+                MapPartObject region = GameClient.shared.gameMap.getRegionByID(msg.region);
+                if (msg.action == null) {
+                    logAction("Игрок убирает приказ с региона " + region.getName());
+                    region.setAction(null);
+                }else{
+                    logAction("Игрок устанавливает приказ в регионе " + region.getName());
+                    region.setAction(msg.action);
+                }
             });
         }
     }

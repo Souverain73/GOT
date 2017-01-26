@@ -1,6 +1,7 @@
 package got.houseCards;
 
 import got.GameClient;
+import got.gameObjects.battleDeck.BattleDeckObject;
 import got.graphics.Texture;
 import got.model.Fraction;
 import got.model.Player;

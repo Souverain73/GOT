@@ -36,38 +36,41 @@ public class RenlyBaratheon extends ActiveHouseCard {
         @Override
         public void enter(StateMachine stm) {
             super.enter(stm);
-            if (placerFraction == getSelf().getFraction()){
-                //получаем регионы, в которых возможен апргейд
-                List<BattleCardObject> cards;
-                if (BDO.isAttacker(placerFraction)){
-                    cards = BDO.getAttackers();
-                }else{
-                    cards = BDO.getDefenders();
-                }
-                List<MapPartObject> regions = cards.stream().filter(card->{
-                    for (Unit unit : card.getUnits())
-                        if (unit == Unit.SOLDIER) return true;
-                    return false;
-                }).map(BattleCardObject::getRegion).collect(Collectors.toList());
+            if (placerFraction != getSelf().getFraction()) {
+                return;
+            }
 
-                if (!regions.isEmpty()) {
-                    GameClient.instance().setTooltipText("Выберите регион, в котором улучшить пехотинца");
-                    MapPartObject selectedRegion = SelectRegionModal.selectFrom(regions);
+            //получаем регионы, в которых возможен апргейд
+            List<BattleCardObject> cards;
+            if (BDO.isAttacker(placerFraction)){
+                cards = BDO.getAttackers();
+            }else{
+                cards = BDO.getDefenders();
+            }
+            List<MapPartObject> regions = cards.stream().filter(card->{
+                if (card.getFraction() != placerFraction) return false;
+                for (Unit unit : card.getUnits())
+                    if (unit == Unit.SOLDIER) return true;
+                return false;
+            }).map(BattleCardObject::getRegion).collect(Collectors.toList());
 
-                    Unit[] units = selectedRegion.getUnits();
-                    for (int i = 0; i < units.length; i++) {
-                        if (units[i] == Unit.SOLDIER){
-                            units[i] = Unit.KNIGHT;
-                            break;
-                        }
+            if (!regions.isEmpty()) {
+                GameClient.instance().setTooltipText("Выберите регион, в котором улучшить пехотинца");
+                MapPartObject selectedRegion = SelectRegionModal.selectFrom(regions);
+
+                Unit[] units = selectedRegion.getUnits();
+                for (int i = 0; i < units.length; i++) {
+                    if (units[i] == Unit.SOLDIER){
+                        units[i] = Unit.KNIGHT;
+                        break;
                     }
-
-                    GameClient.instance().send(new Packages.ChangeUnits(selectedRegion.getID(), units));
-                    resume();
-                }else{
-                    logAction("Нет регионов, в которых можно улучшить пехотинца");
-                    resume();
                 }
+
+                GameClient.instance().send(new Packages.ChangeUnits(selectedRegion.getID(), units));
+                resume();
+            }else{
+                logAction("Нет регионов, в которых можно улучшить пехотинца");
+                resume();
             }
         }
 

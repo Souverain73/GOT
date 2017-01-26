@@ -81,6 +81,10 @@ public class Packages {
 		kryo.register(PlayerCancel.class);
 		kryo.register(SetOverrides.class);
 		kryo.register(PlayerSetOverrides.class);
+		kryo.register(RemoveHouseCard.class);
+		kryo.register(PlayerRemoveHouseCard.class);
+		kryo.register(KillUnit.class);
+		kryo.register(PlayerKillUnit.class);
 	}
 
 	public static class NetPackage {
@@ -912,6 +916,34 @@ public class Packages {
 		}
 
 		public PlayerRemoveHouseCard() {
+		}
+	}
+
+	public static class KillUnit extends ClientServerPackage{
+		public int region;
+		public Unit unit;
+
+		public KillUnit(int region, Unit unit) {
+			this.region = region;
+			this.unit = unit;
+		}
+
+		public KillUnit() {
+		}
+	}
+
+	public static class PlayerKillUnit extends BroadcastPackage{
+		public int player;
+		public int region;
+		public Unit unit;
+
+		public PlayerKillUnit(int player, int region, Unit unit) {
+			this.player = player;
+			this.region = region;
+			this.unit = unit;
+		}
+
+		public PlayerKillUnit() {
 		}
 	}
 }

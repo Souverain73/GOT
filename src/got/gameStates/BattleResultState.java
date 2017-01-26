@@ -79,8 +79,11 @@ public class BattleResultState extends ActionPhase{
             GameClient.instance().registerTask(()->{
                 MapPartObject region = GameClient.shared.gameMap.getRegionByID(msg.region);
                 if (msg.action == null) {
-                    logAction("Игрок убирает приказ с региона ");
+                    logAction("Игрок убирает приказ с региона " + region.getName());
                     region.setAction(null);
+                }else{
+                    logAction("Игрок устанавливает приказ в регионе " + region.getName());
+                    region.setAction(msg.action);
                 }
             });
         }else if (pkg instanceof Packages.PlayerSetOverrides) {

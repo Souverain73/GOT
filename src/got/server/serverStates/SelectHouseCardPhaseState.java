@@ -57,5 +57,13 @@ public class SelectHouseCardPhaseState implements ServerState{
                 stm.changeState(new BattleResultState(), StateMachine.ChangeAction.SET);
             }
         }
+        if (pkg instanceof Packages.PlayerKillUnit) {
+            Packages.PlayerKillUnit msg = (Packages.PlayerKillUnit) pkg;
+            GameServer.getServer().sendToAllTCP(new Packages.PlayerKillUnit(player.id, msg.region, msg.unit));
+        }
+        if (pkg instanceof Packages.SetAction) {
+            Packages.SetAction msg = (Packages.SetAction) pkg;
+            GameServer.getServer().sendToAllTCP(new Packages.PlayerSetAction(msg.region, msg.action));
+        }
     }
 }
