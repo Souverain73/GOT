@@ -85,6 +85,7 @@ public class Packages {
 		kryo.register(PlayerRemoveHouseCard.class);
 		kryo.register(KillUnit.class);
 		kryo.register(PlayerKillUnit.class);
+		kryo.register(EndBattle.class);
 	}
 
 	public static class NetPackage {
@@ -946,4 +947,8 @@ public class Packages {
 		public PlayerKillUnit() {
 		}
 	}
+
+    public static class EndBattle extends BroadcastPackage{
+
+    }
 }

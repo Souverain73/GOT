@@ -26,7 +26,7 @@ public class Patchface extends ActiveHouseCard {
     public void onBattleEnd() {
         super.onBattleEnd();
         enemyPlayer = PlayerManager.instance().getPlayerByFraction(enemyFraction);
-        (new ModalState(new RemoveEnemyCard())).run();;
+        (new ModalState(new RemoveEnemyCard(), true, true)).run();;
     }
 
     class RemoveEnemyCard extends WaitingModal{
@@ -38,7 +38,6 @@ public class Patchface extends ActiveHouseCard {
                 CustomModalState<HouseCard> shcd = Dialogs.createSelectHouseCardDialog(enemyPlayer.getDeck().getActiveCards());
                 (new ModalState(shcd)).run();
                 HouseCard selectedCard = shcd.getResult();
-                enemyPlayer.getDeck().useCard(selectedCard);
                 GameClient.instance().send(new Packages.RemoveHouseCard(enemyPlayer.id, selectedCard.getID()));
                 resume();
             }

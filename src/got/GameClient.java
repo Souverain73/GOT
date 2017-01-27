@@ -34,7 +34,9 @@ import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 
 import java.awt.font.TextMeasurer;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -47,6 +49,7 @@ import got.server.GameServer;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
@@ -119,6 +122,33 @@ public class GameClient {
 		initWindow();
 		initResources();
 		initNetwork();
+
+		(new Thread(()->{
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			//handles console commands
+			try{
+				while (!GLFW.glfwWindowShouldClose(pWindow)){
+					String line = br.readLine().trim();
+					String [] command = line.split("\\s");
+					if (command.length == 0){
+						continue;
+					}
+					if (command[0].equals("stop")) {
+						System.exit(0);
+
+					}else if(command[0].equals("dump")){
+						System.out.println(PlayerManager.instance().toString());
+						System.out.println("Self: "+PlayerManager.getSelf());
+						System.out.println("Current State Dump: " + getCurrentState());
+
+					}else if(command[0].equals("self")){
+						System.out.println("Self: " + PlayerManager.getSelf());
+					}
+				}
+			}catch(IOException e){
+				e.printStackTrace();
+			}
+		})).start();
 		
 		return pWindow;
 	}

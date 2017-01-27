@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map>
 	<regions>
-		<region name="Castle Black" type="GROUND" influence="1" x="609" y="0" w="475" h="286" fraction="LANISTER">
+		<region name="Castle Black" type="GROUND" influence="1" x="609" y="0" w="475" h="286" fraction="TYRELL">
 			<actionpos x="95" y="191"/>
 			<unitpos x="335" y="50"/>
 			<texture filename="CastleBlack.png"/>
@@ -12,11 +12,11 @@
 			<unitpos x="165" y="215"/>			
 			<texture filename="Karhold.png"/>
 		</region>
-		<region name="Winterfell" type="GROUND" influence="1" resources="1" building="2" x="261" y="170" w="837" h="678" fraction="STARK">
+		<region name="Winterfell" type="GROUND" influence="1" resources="1" building="2" x="261" y="170" w="837" h="678" fraction="BARATHEON">
 			<actionpos x="611" y="152"/>
 			<unitpos x="355" y="520"/>
 			<unit type="KNIGHT"/>
-			<unit type="KNIGHT"/>
+			<unit type="SOLDIER"/>
 			<unit type="KNIGHT"/>
 			<texture filename="Winterfell.png"/>
 		</region>
@@ -25,7 +25,7 @@
 			<unitpos x="90" y="75"/>
 			<texture filename="WidowsWatch.png"/>
 		</region>
-		<region name="The Stony Shore" type="GROUND" resources="1" x="153" y="423" w="408" h="426" fraction="LANISTER">
+		<region name="The Stony Shore" type="GROUND" resources="1" x="153" y="423" w="408" h="426" fraction="TYRELL">
 			<actionpos x="76" y="164"/>
 			<unitpos x="260" y="220"/>
 			<unit type="KNIGHT"/>
@@ -34,7 +34,7 @@
 			<unit type="KNIGHT"/>
 			<texture filename="TheStonyShore.png"/>
 		</region>
-		<region name="White Harbor" type="GROUND" building="1" x="746" y="423" w="379" h="511" fraction="LANISTER">
+		<region name="White Harbor" type="GROUND" building="1" x="746" y="423" w="379" h="511" fraction="TYRELL">
 			<actionpos x="132" y="219"/>
 			<unitpos x="190" y="80"/>
 			<unit type="KNIGHT"/>
@@ -42,7 +42,7 @@
 			<unit type="KNIGHT"/>
 			<texture filename="WhiteHarbor.png"/>
 		</region>
-		<region name="Bay Of Ice" type="SEA" x="0" y="0" w="763" h="960" fraction="STARK">
+		<region name="Bay Of Ice" type="SEA" x="0" y="0" w="763" h="960" fraction="BARATHEON">
 			<actionpos x="292" y="115"/>
 			<unitpos x="90" y="380"/>
 			<unit type="SHIP"/>

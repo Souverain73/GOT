@@ -87,6 +87,7 @@ public class BattleResultState extends ParallelState{
             if (winner == Winner.ATTACKER){
                 GameServer.getServer().sendToAllTCP(new Packages.MoveAttackerToAttackRegion());
             }
+            GameServer.getServer().sendToAllTCP(new Packages.EndBattle());
         }else if (pkg instanceof Packages.KillAllUnitsAtRegion) {
             Packages.KillAllUnitsAtRegion msg = (Packages.KillAllUnitsAtRegion) pkg;
             GameServer.getServer().sendToAllTCP(new Packages.PlayerKillAllUnitsAtRegion(player.id, msg.regionID));

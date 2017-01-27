@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 
 import static got.server.PlayerManager.getSelf;
 import static got.utils.UI.logAction;
+import static got.utils.UI.logSystem;
 
 /**
  * Created by Souverain73 on 15.12.2016.
@@ -43,6 +44,11 @@ public class BattleResultState extends ActionPhase{
         if (pkg instanceof Packages.BattleResult) {
             GameClient.instance().registerTask(()->
                 onBattleResult((Packages.BattleResult) pkg)
+            );
+        }else if (pkg instanceof Packages.EndBattle) {
+            Packages.EndBattle end = (Packages.EndBattle) pkg;
+            GameClient.instance().registerTask(()->
+                    endBattle()
             );
         }else if (pkg instanceof Packages.PlayerChangeUnits) {
             Packages.PlayerChangeUnits changeUnits = (Packages.PlayerChangeUnits) pkg;
@@ -164,11 +170,11 @@ public class BattleResultState extends ActionPhase{
             //Если ты оборонялся, ты можешь выбрать куда отступить
             RetreatOrKillUnits();
         }else{
-            endBattle();
         }
     }
 
     private void endBattle() {
+        logSystem("OnBattleEnd " + getSelf());
         BDO.getAttackerCard().onBattleEnd();
         BDO.getDefenderCard().onBattleEnd();
         GameClient.instance().sendReady(true);
@@ -197,12 +203,10 @@ public class BattleResultState extends ActionPhase{
             GameClient.instance().send(new Packages.ChangeUnits(playerRegion.getID(), playerRegion.getUnits()));
             GameClient.instance().send(new Packages.Move(playerRegion.getID(), moveRegion.getID(), playerRegion.getUnits()));
             GameClient.instance().send(new Packages.LooserReady());
-            endBattle();
 
         }else{
             GameClient.instance().send(new Packages.Move(playerRegion.getID(), moveRegion.getID(), playerRegion.getUnits()));
             GameClient.instance().send(new Packages.LooserReady());
-            endBattle();
         }
     }
 
@@ -210,7 +214,6 @@ public class BattleResultState extends ActionPhase{
         if (BDO.isAttacker(getSelf().getFraction()) && !BDO.overrides.customRetreat){
             //Если ты атаковал по стандартным правилам ты не можешь выбирать регион для отступления и остаешься на месте
             GameClient.instance().send(new Packages.LooserReady());
-            endBattle();
             return;
         }
 
@@ -262,7 +265,6 @@ public class BattleResultState extends ActionPhase{
         GameClient.instance().send(new Packages.KillAllUnitsAtRegion(regionFrom.getID()));
         //Сообщаем, что проигравций закончил отступление.
         GameClient.instance().send(new Packages.LooserReady());
-        endBattle();
     }
 
     private Unit[] showKillUnitsDialog(Unit[] units, int countToKill){

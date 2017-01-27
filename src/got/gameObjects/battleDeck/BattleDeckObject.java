@@ -269,4 +269,35 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
     public void setOverrides(BattleOverrides over){
         overrides = over;
     }
+
+    public void onRegionStateChanged(MapPartObject region){
+        BattleCardObject card = getCardForRegion(region);
+        if (card == null)
+            return;
+
+        if (card != defenders.get(0) && region.getAction() == null){
+            removeCard(card);
+        }else {
+            card.updateState();
+        }
+        updateState(true);
+    }
+
+    private void removeCard(BattleCardObject card) {
+        attackers.remove(card);
+        attackerContainer.removeChild(card);
+        defenders.remove(card);
+        defenderContainer.removeChild(card);
+        card.finish();
+    }
+
+    public BattleCardObject getCardForRegion(MapPartObject region){
+        for (BattleCardObject card : attackers){
+            if (card.getRegion() == region) return card;
+        }
+        for (BattleCardObject card : defenders){
+            if (card.getRegion() == region) return card;
+        }
+        return null;
+    }
 }

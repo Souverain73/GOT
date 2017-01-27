@@ -54,16 +54,19 @@ public class SelectHouseCardPhase extends ActionPhase {
                 Player player = PlayerManager.instance().getPlayer(msg.player);
                 HouseCard card = HouseCardsLoader.instance().getCardById(msg.card);
                 player.getDeck().useCard(card);
-                GameClient.shared.battleDeck.placeCard(card, player);
                 logAction("Игрок " + player.getNickname() + " выбрал карту дома " + card.getTitle());
+                GameClient.shared.battleDeck.placeCard(card, player);
             });
         }
         if (pkg instanceof Packages.PlayerKillUnit) {
             Packages.PlayerKillUnit msg = (Packages.PlayerKillUnit) pkg;
             Player player = PlayerManager.instance().getPlayer(msg.player);
             MapPartObject region = GameClient.shared.gameMap.getRegionByID(msg.region);
-            logAction("Игрок " + player.getNickname() + " убивает юнита " + msg.unit + " в регионе " + region.getName());
-            region.removeUnit(msg.unit);
+            GameClient.instance().registerTask(()->{
+                logAction("Игрок " + player.getNickname() + " убивает юнита " + msg.unit + " в регионе " + region.getName());
+                region.removeUnit(msg.unit);
+                GameClient.shared.battleDeck.onRegionStateChanged(region);
+            });
         }
         if (pkg instanceof Packages.PlayerSetAction) {
             Packages.PlayerSetAction msg = (Packages.PlayerSetAction) pkg;
@@ -72,9 +75,11 @@ public class SelectHouseCardPhase extends ActionPhase {
                 if (msg.action == null) {
                     logAction("Игрок убирает приказ с региона " + region.getName());
                     region.setAction(null);
+                    GameClient.shared.battleDeck.onRegionStateChanged(region);
                 }else{
                     logAction("Игрок устанавливает приказ в регионе " + region.getName());
                     region.setAction(msg.action);
+                    GameClient.shared.battleDeck.onRegionStateChanged(region);
                 }
             });
         }

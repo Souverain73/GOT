@@ -28,7 +28,7 @@ public class QueenOfThorns extends ActiveHouseCard {
     public void onPlace(Fraction fraction) {
         super.onPlace(fraction);
         BDO = GameClient.shared.battleDeck;
-        (new ModalState(new RemoveEnemyActionModal())).run();
+        (new ModalState(new RemoveEnemyActionModal(), true, true)).run();
     }
 
     class RemoveEnemyActionModal extends WaitingModal{

@@ -29,7 +29,7 @@ public class RenlyBaratheon extends ActiveHouseCard {
     public void onWin() {
         super.onWin();
         BDO = GameClient.shared.battleDeck;
-        (new ModalState(new UpgradeSoldierModal())).run();
+        (new ModalState(new UpgradeSoldierModal(), true, true)).run();
     }
 
     class UpgradeSoldierModal extends WaitingModal{

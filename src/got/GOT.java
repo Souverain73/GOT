@@ -25,6 +25,7 @@ public class GOT {
 		}
 
 		GameClient.instance().finish();
+		System.exit(0);
 	}
 
 }

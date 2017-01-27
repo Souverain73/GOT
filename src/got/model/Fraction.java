@@ -6,16 +6,27 @@ import got.graphics.TextureManager;
 import org.joml.Vector3f;
 
 public enum Fraction {
+//	STARK	(new Vector3f(3, 3, 3), "StarkBack.png", "StarkCover.png"),
+//	BARATHEON(new Vector3f(5,5,0), "BaratheonBack.png", "BaratheonCover.png"),
+//	LANISTER (new Vector3f(5, 1, 1), "LanisterBack.png", "LanisterCover.png"),
+//	GREYJOY	(new Vector3f(0.6f, 0.6f, 0.6f), "GreyjoyBack.png", "GreyjoyCover.png"),
+//	TYRELL	(new Vector3f(1, 4, 1), "TyrellBack.png", "TyrellCover.png"),
+//	MARTEL	(new Vector3f(5, 2.5f, 1), "MartelBack.png", "MartelCover.png"),
+//	NONE	(new Vector3f(1, 1, 1), null, null),
+//	NEUTRAL_LORD(new Vector3f(1, 1, 1), null, null);
+
+//Baratheon vs Tyrell
+
+	BARATHEON(new Vector3f(5,5,0), "BaratheonBack.png", "BaratheonCover.png"),
+	TYRELL	(new Vector3f(1, 4, 1), "TyrellBack.png", "TyrellCover.png"),
 	STARK	(new Vector3f(3, 3, 3), "StarkBack.png", "StarkCover.png"),
 	LANISTER (new Vector3f(5, 1, 1), "LanisterBack.png", "LanisterCover.png"),
-	BARATHEON(new Vector3f(5,5,0), "BaratheonBack.png", "BaratheonCover.png"),
 	GREYJOY	(new Vector3f(0.6f, 0.6f, 0.6f), "GreyjoyBack.png", "GreyjoyCover.png"),
-	TYRELL	(new Vector3f(1, 4, 1), "TyrellBack.png", "TyrellCover.png"),
 	MARTEL	(new Vector3f(5, 2.5f, 1), "MartelBack.png", "MartelCover.png"),
 	NONE	(new Vector3f(1, 1, 1), null, null),
 	NEUTRAL_LORD(new Vector3f(1, 1, 1), null, null);
-	
-	
+
+
 	private final Vector3f multiplyColor;
 	private final String backTextureName;
 	private final String coverTextureName;

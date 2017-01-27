@@ -155,6 +155,15 @@ public class BattleCardObject extends AbstractGameObject<BattleCardObject>{
         return playerFraction;
     }
 
+    public void updateState() {
+        units = region.getUnits();
+        regionAction = region.getAction();
+        view.finish();
+        removeChild(view);
+        addChild(view = createView());
+        updateUnits();
+    }
+
     public interface UnitEffect{
         int getAffectedPower(int power);
         boolean isAffected(Unit unit);

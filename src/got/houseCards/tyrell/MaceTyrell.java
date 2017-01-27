@@ -30,7 +30,7 @@ public class MaceTyrell extends ActiveHouseCard {
     public void onPlace(Fraction fraction) {
         super.onPlace(fraction);
         BDO = GameClient.shared.battleDeck;
-        (new ModalState(new KillEnemySoldier())).run();
+        (new ModalState(new KillEnemySoldier(), true, true)).run();
     }
 
     class KillEnemySoldier extends WaitingModal{
