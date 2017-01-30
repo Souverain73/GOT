@@ -18,6 +18,7 @@ public class GOT {
 		pWindow = GameClient.instance().init();
 		
 		while(!GLFW.glfwWindowShouldClose(pWindow)){
+			GameClient.instance().executeWorks();
 			GameClient.instance().updateInput();
 			GameClient.instance().updateLogic();
 			GameClient.instance().updateGraphics();

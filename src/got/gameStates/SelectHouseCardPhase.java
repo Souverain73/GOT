@@ -39,6 +39,7 @@ public class SelectHouseCardPhase extends ActionPhase {
     public void enter(StateMachine stm) {
         super.enter(stm);
         if (GameClient.shared.battleDeck.isBattleMember(PlayerManager.getSelf().getFraction())){
+            GameClient.instance().setTooltipText("selectHouseCard.selectCard");
             HouseCard selectedCard = showSelectHouseCardDialog();
 
             GameClient.instance().send(new Packages.SelectHouseCard(selectedCard.getID()));
@@ -54,7 +55,7 @@ public class SelectHouseCardPhase extends ActionPhase {
                 Player player = PlayerManager.instance().getPlayer(msg.player);
                 HouseCard card = HouseCardsLoader.instance().getCardById(msg.card);
                 player.getDeck().useCard(card);
-                logAction("Игрок " + player.getNickname() + " выбрал карту дома " + card.getTitle());
+                logAction("selectHouseCard.playerSelectCard", player.getNickname(), card.getTitle());
                 GameClient.shared.battleDeck.placeCard(card, player);
             });
         }
@@ -63,7 +64,7 @@ public class SelectHouseCardPhase extends ActionPhase {
             Player player = PlayerManager.instance().getPlayer(msg.player);
             MapPartObject region = GameClient.shared.gameMap.getRegionByID(msg.region);
             GameClient.instance().registerTask(()->{
-                logAction("Игрок " + player.getNickname() + " убивает юнита " + msg.unit + " в регионе " + region.getName());
+                logAction("common.playerKillUnitInRegion", player.getNickname(), msg.unit, region.getName());
                 region.removeUnit(msg.unit);
                 GameClient.shared.battleDeck.onRegionStateChanged(region);
             });
@@ -73,11 +74,11 @@ public class SelectHouseCardPhase extends ActionPhase {
             GameClient.instance().registerTask(()->{
                 MapPartObject region = GameClient.shared.gameMap.getRegionByID(msg.region);
                 if (msg.action == null) {
-                    logAction("Игрок убирает приказ с региона " + region.getName());
+                    logAction("common.playerRemoveAction", region.getName());
                     region.setAction(null);
                     GameClient.shared.battleDeck.onRegionStateChanged(region);
                 }else{
-                    logAction("Игрок устанавливает приказ в регионе " + region.getName());
+                    logAction("common.playerSetAction", region.getName());
                     region.setAction(msg.action);
                     GameClient.shared.battleDeck.onRegionStateChanged(region);
                 }

@@ -15,6 +15,7 @@ import got.server.PlayerManager;
 import org.joml.Vector2f;
 
 import static got.utils.UI.logAction;
+import static got.utils.UI.tooltipWait;
 
 /**
  * Created by Souverain73 on 28.11.2016.
@@ -67,7 +68,7 @@ public class HelpPhase extends ActionPhase {
         GameClient.instance().registerTask(()->{
             if (pkg instanceof Packages.InitBattle) {
                 Packages.InitBattle msg = (Packages.InitBattle) pkg;
-                logAction(String.format("Init battle from %d to %d", msg.from, msg.to));
+                logAction("help.initBattleFromTo", msg.from, msg.to);
                 bdo = new BattleDeckObject(
                         GameClient.shared.gameMap.getRegionByID(msg.from),
                         GameClient.shared.gameMap.getRegionByID(msg.to)
@@ -76,8 +77,8 @@ public class HelpPhase extends ActionPhase {
             }
 
             if (pkg instanceof Packages.PlayerTurn) {
-                logAction("Next turn");
                 Packages.PlayerTurn msg = (Packages.PlayerTurn) pkg;
+                Player player = PlayerManager.instance().getPlayer(msg.playerID);
                 if (PlayerManager.getSelf().id == msg.playerID){
                     if(bdo.getDefenderRegion().canHelp(PlayerManager.getSelf().getFraction())){
                         int battlePointsToHelp = bdo.getDefenderRegion().getBattlePowerForHelpers(
@@ -93,6 +94,7 @@ public class HelpPhase extends ActionPhase {
                             }
                         }else {
                             //TODO: отображать количество очков в диалоге выбора.
+                            GameClient.instance().setTooltipText("help.selectSide");
                             side = showSelectSideDialogAndGetResult();
                         }
 
@@ -100,18 +102,21 @@ public class HelpPhase extends ActionPhase {
                     }else {
                         GameClient.instance().sendReady(false);
                     }
+                }else{
+                    tooltipWait(player);
                 }
             }
             if (pkg instanceof Packages.PlayerHelp) {
                 Packages.PlayerHelp msg = (Packages.PlayerHelp) pkg;
                 Player player = PlayerManager.instance().getPlayer(msg.player);
                 if (msg.side == Packages.Help.SIDE_NONE){
-                    logAction(String.format("Player %s will help nobody.", player.getNickname()));
+                    logAction(String.format("help.playerHelpNobody", player.getNickname()));
                 } else{
-                    logAction(String.format("Player %s will help %s", player.getNickname(), msg.side));
                     if (msg.side == BattleSide.SIDE_ATTACKER.getId()){
+                        logAction(String.format("help.playerHelpAttacker", player.getNickname()));
                         bdo.addAttackerHelper(player);
                     }else if (msg.side == BattleSide.SIDE_DEFENDER.getId()){
+                        logAction(String.format("help.playerHelpDefender", player.getNickname()));
                         bdo.addDefenderHelper(player);
                     }
                 }

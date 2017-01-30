@@ -133,7 +133,6 @@ class PowerPhase extends ActionPhase {
             if (PlayerManager.getSelf().id == msg.playerID) {
                 GameClient.instance().registerTask(()-> {
                     if (!enableRegionsWithCrown()) {
-                        UI.systemMessage("Не осталось ходов");
                         //Если не был активирован ни один регион, значит текущий игрок не может совершить ход.
                         //В таком случае необходлимо сообщить об этом серверу пакетом Ready.
                         GameClient.instance().send(new Packages.Ready(false));

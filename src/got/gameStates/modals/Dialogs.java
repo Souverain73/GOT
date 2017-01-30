@@ -81,7 +81,7 @@ public class Dialogs {
         int cx = 290; int cy = 200;
 
         for (HouseCard card : cardsToSelect){
-            ImageButton ib = new ImageButton(card.getTexture(), cx, cy, 100, 200, card).setSpace(DrawSpace.SCREEN);
+            ImageButton ib = new ImageButton(card.getTexture(), cx, cy, 100, 300, card).setSpace(DrawSpace.SCREEN);
             ib.setCallback((sender, param) ->{
                 cms.setResult((HouseCard) param);
                 cms.close();

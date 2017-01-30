@@ -42,7 +42,7 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 	
 	@Override
 	public void enter(StateMachine stm) {
-		GameClient.instance().setTooltipText("Выберите регион");
+		GameClient.instance().setTooltipText("planning.selectRegion");
 		//готовим игровую карту.
 		//TODO: перенести в фазу вестероса, когда она будет готова
 		GameClient.shared.gameMap.forEachRegion(region->{
@@ -68,8 +68,6 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 		}
 		
 		GameClient.shared.gameMap.enableAllRegions();
-		
-		System.out.println("Entering PlanningPhase");
 		super.enter(stm);
 	}
 
@@ -112,13 +110,10 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 			if (region.getAction() == null && region.getUnitObjects().size()>0) {
 				
 				//create Action selector and wait until user select something
+				GameClient.instance().setTooltipText("planning.selectAction");
 				Action action = createActionSelector(InputManager.instance().getMousePosWorld());
-				
-				/*//place object on client side
-				 * you can do something on client side only after server let you
-					placeAction(region, action);
-				*/
-				
+				GameClient.instance().setTooltipText("planning.selectRegion");
+
 				//player can just close selector without choice anything
 				if (action!=null)
 					//notify server about placed action
@@ -146,7 +141,7 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 				@Override
 				public void run() {
 					if (msg.action==null){
-						logAction("Player remove action from " + region.getName());
+						logAction("common.playerRemoveAction", region.getName());
 						//if it's your action. in this case it must be handled before remove action from map.
 						if (region.getFraction() == PlayerManager.getSelf().getFraction())
 							//do some routine to handle your actions set
@@ -155,7 +150,7 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 						region.setAction(null); 
 					}else{
 						Action act = msg.action;
-						logAction("Player place " + act.toString() + " on region " + region.getName());
+						logAction("common.playerSetAction", region.getName());
 						//add action to region
 						region.setAction(act);
 						//if it's your action
@@ -206,7 +201,6 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 		}
 		
 		private void close(){
-			GameClient.instance().setTooltipText("Выберите регион");
 			GameClient.instance().closeModal();
 		}
 		
@@ -217,7 +211,6 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 
 		@Override
 		public void enter(StateMachine stm) {
-			GameClient.instance().setTooltipText("Выберите приказ");
 		}
 
 		@Override

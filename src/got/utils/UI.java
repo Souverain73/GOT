@@ -1,8 +1,15 @@
 package got.utils;
 
 import com.esotericsoftware.minlog.Log;
+import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
+import com.sun.javafx.binding.StringFormatter;
+import got.GameClient;
+import got.model.Player;
 
 import javax.swing.JOptionPane;
+
+import static got.translation.Translator.tt;
 
 public class UI {
 	
@@ -20,11 +27,16 @@ public class UI {
 		System.out.println("[System]:"+message);
 	}
 
-	public static void logAction(String message){
-		Log.info("[Action]:" + message);
+	public static void logAction(@NotNull String format, @Nullable Object... args){
+		format = tt(format);
+		Log.info("[Action]:" + String.format(format, args));
 	}
 
 	public static void logSystem(String message){
 		Log.info("[System]:" + message);
+	}
+
+	public static void tooltipWait(Player player){
+		GameClient.instance().setTooltipText("common.waitForPlayer", player.getNickname());
 	}
 }

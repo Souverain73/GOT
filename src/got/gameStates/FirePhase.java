@@ -10,6 +10,7 @@ import got.gameObjects.MapPartObject;
 import got.gameObjects.MapPartObject.RegionType;
 import got.model.Action;
 import got.model.Fraction;
+import got.model.Player;
 import got.network.Packages;
 import got.server.PlayerManager;
 import got.utils.UI;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static got.utils.UI.logAction;
+import static got.utils.UI.tooltipWait;
 
 public class FirePhase extends ActionPhase {
 	private enum SubState {
@@ -29,7 +31,7 @@ public class FirePhase extends ActionPhase {
 	
 	private SubState state;
 	
-	private MapPartObject source; //Region with source Fire Action point source
+	private MapPartObject source; //Region with source Fire Action
 	
 	@Override
 	public String getName() {
@@ -53,6 +55,7 @@ public class FirePhase extends ActionPhase {
 				source = region;
 				//change state
 				state = SubState.SELECT_TARGET;
+				GameClient.instance().setTooltipText("fire.selectTarget");
 				enableRegionsAffectedByFire(region);
 
 
@@ -61,6 +64,7 @@ public class FirePhase extends ActionPhase {
 				GameClient.shared.gameMap.disableAllRegions();
 				GameClient.instance().send(new Packages.Ready(true));
 				state = SubState.SELECT_SOURCE;
+				GameClient.instance().setTooltipText("fire.selectRegion");
 				source = null;
 			}
 		}
@@ -102,13 +106,16 @@ public class FirePhase extends ActionPhase {
 	@Override
 	public void recieve(Connection connection, Object pkg) {
 		if (pkg instanceof Packages.PlayerTurn){
-			logAction("Next turn");
 			Packages.PlayerTurn msg = ((Packages.PlayerTurn)pkg);
+			Player player = PlayerManager.instance().getPlayer(msg.playerID);
 			if (PlayerManager.getSelf().id == msg.playerID){
 				if (!enableRegionsWithFire()){
 					GameClient.instance().send(new Packages.Ready(false));
+				}else{
+					GameClient.instance().setTooltipText("fire.selectRegion");
 				}
 			}else{
+				tooltipWait(player);
 				GameClient.shared.gameMap.disableAllRegions();
 			}
 		}
@@ -118,7 +125,7 @@ public class FirePhase extends ActionPhase {
 			MapPartObject source = GameClient.shared.gameMap.getRegionByID(msg.from);
 			MapPartObject target = GameClient.shared.gameMap.getRegionByID(msg.to);
 
-			logAction("Player play action from " + source.getName() + " to " + target.getName());
+			logAction("fire.playerPlayActionFromTo", source.getName(), target.getName());
 
 			//if target action is Money or Moneyplus get 1 money from target and put 1 money to source
 			if (target.getAction() == Action.MONEY || target.getAction() == Action.MONEYPLUS) {

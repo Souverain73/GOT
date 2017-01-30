@@ -14,6 +14,7 @@ import got.server.PlayerManager;
 
 import static got.utils.UI.logAction;
 import static got.utils.UI.logSystem;
+import static got.utils.UI.tooltipWait;
 
 public class MovePhase extends ActionPhase {
 	private static final String name = "MovePhase";
@@ -48,7 +49,9 @@ public class MovePhase extends ActionPhase {
 
 			if (state == SubState.SELECT_SOURCE){
 				SelectUnitsDialogState suds = new SelectUnitsDialogState(region.getUnits(), InputManager.instance().getMousePosWorld());
+				GameClient.instance().setTooltipText("move.selectUnits");
 				(new ModalState(suds)).run();
+				GameClient.instance().setTooltipText("move.selectSource");
 				selectedUnits = suds.getSelectedUnits();
 				if (suds.isOk() && selectedUnits.length!=0){
 					source = region;
@@ -57,7 +60,6 @@ public class MovePhase extends ActionPhase {
 
 					//Включаем регионы, в которые можно пойти.
 					enableRegionsToMove(region);
-
 				}else{
 					endTurn(region);
 				}
@@ -152,13 +154,16 @@ public class MovePhase extends ActionPhase {
 		if (pkg instanceof Packages.PlayerTurn) {
 			logSystem("Следующий ход");
 			Packages.PlayerTurn msg = (Packages.PlayerTurn) pkg;
-
+			Player player = PlayerManager.instance().getPlayer(msg.playerID);
 			if (msg.playerID == PlayerManager.getSelf().id){
 				usedRegion = null;
 				if (!enableRegionsWithMoveAction()){
 					GameClient.instance().sendReady(false);
+				}else{
+					GameClient.instance().setTooltipText("move.selectRegion");
 				}
 			}else{
+				tooltipWait(player);
 				GameClient.shared.gameMap.disableAllRegions();
 			}
 		}
@@ -179,7 +184,7 @@ public class MovePhase extends ActionPhase {
 				if (player.getFraction() != regionTo.getFraction()){
 					regionTo.removePowerToken();
 				}
-				logAction("Игрок " + player.getNickname() + " перемещает юнитов из " + regionFrom.getName() + " в " + regionTo.getName());
+				logAction("common.playerMoveUnits", player.getNickname(), regionFrom.getName(), regionTo.getName());
 				regionTo.addUnits(msg.units);
 				regionTo.setFraction(player.getFraction());
 			});
@@ -190,7 +195,7 @@ public class MovePhase extends ActionPhase {
 		if (pkg instanceof Packages.PlayerPlacePowerToken) {
 			Packages.PlayerPlacePowerToken msg = (Packages.PlayerPlacePowerToken) pkg;
 			MapPartObject region = GameClient.shared.gameMap.getRegionByID(msg.regionId);
-			logAction("Игрок кладет жетон власти в регионе " + region.getName());
+			logAction("common.setToken" + region.getName());
 			PlayerManager.instance().getPlayer(msg.playerId).placePowerTokenAtRegion(region);
 		}
 	}
@@ -214,8 +219,10 @@ public class MovePhase extends ActionPhase {
 	public void changeSubState(SubState newState){
 		state = newState;
 		if (state == SubState.SELECT_TARGET) {
+			GameClient.instance().setTooltipText("move.selectTarget");
 			//enable regions where player can go
 		}else if (state == SubState.SELECT_SOURCE){
+			GameClient.instance().setTooltipText("move.selectRegion");
 			enableRegionsWithMoveAction();
 			source = null;
 			selectedUnits = null;

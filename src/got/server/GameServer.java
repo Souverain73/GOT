@@ -26,6 +26,8 @@ import got.server.serverStates.ChangeState;
 import got.server.serverStates.NetworkRoomState;
 import got.server.serverStates.ServerState;
 import got.server.serverStates.StateMachine;
+import got.translation.Language;
+import got.translation.Translator;
 
 public class GameServer {
 	public static class Shared{
@@ -65,6 +67,7 @@ public class GameServer {
 			}
 			
 		};
+		Translator.init(Language.RUSSIAN);
 		
 		Network.register(server);
 		

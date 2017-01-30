@@ -55,14 +55,17 @@ public class BattleResultState extends ActionPhase{
             MapPartObject region = GameClient.shared.gameMap.getRegionByID(changeUnits.region);
             Player player = PlayerManager.instance().getPlayer(changeUnits.player);
             GameClient.instance().registerTask(()-> {
-                        logAction("Игрок " + player.getNickname() + " меняет состав войск в регионе " + region.getName());
+                        logAction("common.playerChangeUnits", player.getNickname(), region.getName());
                         region.setUnits(changeUnits.units);
                     });
         }else if (pkg instanceof Packages.PlayerMove) {
             Packages.PlayerMove msg = (Packages.PlayerMove) pkg;
             GameClient.instance().registerTask(()->{
                 moveAllUnits(msg.from, msg.to);
-                logAction("Игрок " + PlayerManager.instance().getPlayer(msg.player) + " перемещает войска в регион" + GameClient.shared.gameMap.getRegionByID(msg.to));
+                logAction("common.playerMoveUnits",
+                        PlayerManager.instance().getPlayer(msg.player),
+                        GameClient.shared.gameMap.getRegionByID(msg.from),
+                        GameClient.shared.gameMap.getRegionByID(msg.to));
             });
         }else if (pkg instanceof Packages.GetBattleResult) {
             if (GameClient.shared.battleDeck.isBattleMember(getSelf().getFraction())) {
@@ -77,7 +80,7 @@ public class BattleResultState extends ActionPhase{
         }else if (pkg instanceof Packages.MoveAttackerToAttackRegion) {
             GameClient.instance().registerTask(()->{
                     moveAllUnits(GameClient.shared.battleDeck.getAttackerRegion(), GameClient.shared.battleDeck.getDefenderRegion());
-                    logAction("Победивший игрок занимает регион" + GameClient.shared.battleDeck.getDefenderRegion());
+                    logAction("battle.winnerMove", GameClient.shared.battleDeck.getDefenderRegion());
                 }
             );
         }else if (pkg instanceof Packages.PlayerSetAction) {
@@ -85,10 +88,10 @@ public class BattleResultState extends ActionPhase{
             GameClient.instance().registerTask(()->{
                 MapPartObject region = GameClient.shared.gameMap.getRegionByID(msg.region);
                 if (msg.action == null) {
-                    logAction("Игрок убирает приказ с региона " + region.getName());
+                    logAction("common.playerRemoveAction" + region.getName());
                     region.setAction(null);
                 }else{
-                    logAction("Игрок устанавливает приказ в регионе " + region.getName());
+                    logAction("common.playerSetAction" + region.getName());
                     region.setAction(msg.action);
                 }
             });
@@ -96,7 +99,7 @@ public class BattleResultState extends ActionPhase{
             Packages.PlayerSetOverrides msg = (Packages.PlayerSetOverrides) pkg;
             Player pl = PlayerManager.instance().getPlayer(msg.player);
 
-            logAction("Игрок " + pl.getNickname() + " устанавливает особые условия боя");
+            logAction("battle.playerSetOverrides", pl.getNickname());
             GameClient.shared.battleDeck.setOverrides(msg.overrides);
         }else if (pkg instanceof Packages.PlayerRemoveHouseCard) {
             Packages.PlayerRemoveHouseCard msg = (Packages.PlayerRemoveHouseCard) pkg;
@@ -104,7 +107,7 @@ public class BattleResultState extends ActionPhase{
             Player targetPlayer = PlayerManager.instance().getPlayer(msg.target);
             HouseCard cardToRemove = HouseCardsLoader.instance().getCardById(msg.houseCardID);
 
-            logAction("Игрок " + sourcePlayer.getNickname() + " убирает из колоды игрока " + targetPlayer.getNickname() + " карту " + cardToRemove);
+            logAction("battle.playerRemoveHouseCard", sourcePlayer.getNickname(), targetPlayer.getNickname(), cardToRemove);
             targetPlayer.getDeck().useCard(cardToRemove);
         }
     }
@@ -131,7 +134,7 @@ public class BattleResultState extends ActionPhase{
         BDO = GameClient.shared.battleDeck;
         Player winner = PlayerManager.instance().getPlayer(battleResult.winnerID);
         Player looser = PlayerManager.instance().getPlayer(battleResult.looserID);
-        logAction("Битва закончена игрок " + winner.getNickname() + " победил, игрок " + looser.getNickname() + " проиграл.");
+        logAction("battle.battleEnd", winner.getNickname(), looser.getNickname());
         //Убираем приказы
         BDO.getAttackerRegion().setAction(null);
 
@@ -238,7 +241,7 @@ public class BattleResultState extends ActionPhase{
                 }).collect(Collectors.toList());
 
         if (regionsToRetreat.size() > 0){
-            GameClient.instance().setTooltipText("Выберите регион для отступления");
+            GameClient.instance().setTooltipText("battle.selectRegionToRetreat");
             regionToRetreat = SelectRegionModal.selectFrom(regionsToRetreat);
             retreatTo(regionToRetreat);
             return;
@@ -254,14 +257,14 @@ public class BattleResultState extends ActionPhase{
                 }).collect(Collectors.toList());
 
         if (regionsToRetreat.size() > 0){
-            GameClient.instance().setTooltipText("Выберите регион для отступления");
+            GameClient.instance().setTooltipText("battle.selectRegionToRetreat");
             regionToRetreat = SelectRegionModal.selectFrom(regionsToRetreat);
             retreatTo(regionToRetreat);
             return;
         }
 
         //Если нет регионов куда вообще можно пойти, убиваем всех юнитов.
-        logAction("Некуда отступать, все юниты умирают");
+        logAction("battle.noRegionsToRetreat");
         GameClient.instance().send(new Packages.KillAllUnitsAtRegion(regionFrom.getID()));
         //Сообщаем, что проигравций закончил отступление.
         GameClient.instance().send(new Packages.LooserReady());

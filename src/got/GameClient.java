@@ -1,5 +1,6 @@
 package got;
 
+import static got.translation.Translator.tt;
 import static got.utils.UI.logSystem;
 import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_1;
@@ -40,12 +41,17 @@ import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.RunnableFuture;
 
 import com.esotericsoftware.minlog.Log;
+import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
 import got.gameObjects.GameMapObject;
 import got.gameObjects.battleDeck.BattleDeckObject;
 import got.houseCards.HouseCardsLoader;
 import got.server.GameServer;
+import got.translation.Language;
+import got.translation.Translator;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
@@ -97,6 +103,7 @@ public class GameClient {
 	
 	private Client client;
 	private ConcurrentLinkedQueue<Runnable> taskPool = new ConcurrentLinkedQueue<>();
+	private ConcurrentLinkedQueue<Runnable> workPool = new ConcurrentLinkedQueue<>();
 
 	public static GameClient instance(){
 		if (_instance == null){
@@ -118,7 +125,8 @@ public class GameClient {
 		modalStates = new LinkedList<>();
 	}
 	
-	public long init(){	
+	public long init(){
+		Translator.init(Language.RUSSIAN);
 		initWindow();
 		initResources();
 		initNetwork();
@@ -309,11 +317,32 @@ public class GameClient {
 	public StateMachine getStateMachine(){
 		return stm;
 	}
-	
+
+	/**
+	 * Register task to execute at next main update
+	 * @param task
+	 */
 	public void registerTask(Runnable task){
 		taskPool.add(task);
 	}
-	
+
+	/**
+	 * Register work to execute in main thread at beginning of next frame independently of updates
+	 * @param work
+	 */
+	public void registerWork(Runnable work){
+		workPool.add(work);
+	}
+
+	public void executeWorks(){
+		while(!workPool.isEmpty()){
+			Runnable task = workPool.poll();
+			if (task!=null){
+				task.run();
+			}
+		}
+	}
+
 	public void executeTasks(){
 		while(!taskPool.isEmpty()){
 			Runnable task = taskPool.poll();
@@ -389,12 +418,12 @@ public class GameClient {
 		return debug;
 	}
 
-	public void setTooltipText(String text){
-		registerTask(()->{
+	public void setTooltipText(@NotNull String format, @Nullable Object... args){
+		registerWork(()->{
 			GameState st = stm.getCurrentState();
 			if (st instanceof MainState) {
 				MainState mainState = (MainState) st;
-				mainState.setTooltipText(text);
+				mainState.setTooltipText(String.format(tt(format), args));
 			}
 		});
 	}
