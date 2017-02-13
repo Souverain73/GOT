@@ -1,0 +1,42 @@
+[common]
+playerRemoveAction "Игрок убрал приказ в регионе %s"
+playerSetAction "Игрок установил приказ в регионе %s"
+playerSetToken "Игрок кладет жетон власти в регионе %s"
+playerMoveUnits "Игрок %s перемещает юнитов из региона %s в %s"
+playerKillUnitInRegion "Игрок %s убивает юнита %s в регионе %s"
+playerChangeUnits "Игрок %s меняет состав войск в регионе %s"
+
+waitForPlayer "Ожидание игрока %s"
+
+[planning]
+selectRegion "Выберите регион для установки приказа"
+selectAction "Выберите приказ"
+
+[move]
+selectRegion "Выберите регион, откуда вы хотите совершить ход"
+selectUnits "Выберите юнитов которыми вы хотите походить"
+selectTarget "Выберите куда вы хотите совершить ход"
+
+[fire]
+playerPlayActionFromTo "Игрок играет приказ с %s на %s"
+selectRegion "Выберите приказ, который вы хотите использовать"
+selectTarget "Выберите, с какого региона убрать приказ"
+
+[help]
+initBattleFromTo "%s нападает на %s"
+playerHelpNobody "Игрок %s не помогает никому"
+playerHelpAttacker "Игрок %s помогает атакующим"
+playerHelpDefender "Игрок %s помогает защищающимся"
+selectSide "Выберите, кому вы будете помогать в этом бою"
+
+[selectHouseCard]
+selectCard "Выберите карту дома"
+playerSelectCard "Игрок %s выбрал карту дома %s"
+
+[battle]
+battleEnd "Битва закончена. Игрок %s победил, игрок %s проиграл"
+winnerMove "Победивший игрок занимает регион %s"
+playerSetOverrides "Игрок %s устанавливает особые условия боя"
+playerRemoveHouseCard "Игрок %s убирает из колоды игрока %s карту %s"
+selectRegionToRetreat "Выберите регион для отступления"
+noRegionsToRetreat "Некуда отступать, все юниты умирают"

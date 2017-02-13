@@ -89,6 +89,10 @@
 		<copy todir="${build.data}/fonts">
 			<fileset dir="${data}/fonts"/>
 		</copy>
+		<echo>Copy translations</echo>
+		<copy todir="${build.data}/translations">
+			<fileset dir="${data}/translations"/>
+		</copy>
 	</target>
 
 	<target name="lib">

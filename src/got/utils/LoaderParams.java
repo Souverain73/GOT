@@ -19,9 +19,6 @@ public class LoaderParams extends HashMap<String, Object> {
 	@Override
 	public Object put(String arg0, Object arg1){
 		if (arg1 == null){
-			System.out.println("Can't put null into parameter \""+arg0+"\"");
-			System.out.println("CurrentParams:");
-			System.out.println(this);
 			return null;
 		}
 		return super.put(arg0, arg1);

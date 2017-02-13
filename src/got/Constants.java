@@ -14,8 +14,8 @@ public class Constants {
 	public static final int WINDOW_HEIGHT= 180;
 	
 //CAMERA
-	public static final float MAX_SCALE = 1.3f;
-	public static final float MIN_SCALE = 0.2f;
+	public static final float MAX_SCALE = 10f;
+	public static final float MIN_SCALE = 0f;
 	
 //ACTION SELECTOR	
 	public static final float ACTIONSELECTOR_IMAGE_SCALE = 0.5f;

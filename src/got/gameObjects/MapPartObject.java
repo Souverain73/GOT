@@ -35,7 +35,7 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		return this;
 	}
 
-	private Fraction fraction = Fraction.NONE;
+	protected Fraction fraction = Fraction.NONE;
 
 	private int ID = 0;
 
@@ -48,23 +48,25 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	private int influencePoints;
 	private int buildingLevel;
 
-	private Texture texture;
+	protected Texture texture;
 
 
-	private List<MapPartObject>  neighbors;
+	protected List<MapPartObject>  neighbors;
 
-	private int w, h;
-	private int act_x, act_y;
-	private int unit_x, unit_y;
-	private int token_x, token_y;
-	private Action action;
-	private List<UnitObject> units;
-	private boolean powerToken;
+	protected int w, h;
+	protected int act_x, act_y;
+	protected int unit_x, unit_y;
+	protected int token_x, token_y;
+	protected Action action;
+	protected List<UnitObject> units;
+	protected boolean powerToken;
+
 	public MapPartObject() {
 		super();
 		neighbors = new ArrayList<>();
 		units = new ArrayList<>();
 	}
+
 	@Override
 	public boolean init(LoaderParams params) {
 		name = (String)params.get("name");
@@ -378,8 +380,6 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 
 	@Override
 	protected void click(GameState st) {
-		System.out.println("Click region:"+name+" GameState:"+st.getName());
-		System.out.println("UnitsSize="+units.size());
 		super.click(st);
 	}
 

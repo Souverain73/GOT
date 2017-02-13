@@ -10,6 +10,7 @@ import java.util.function.Predicate;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import got.gameObjects.interfaceControls.DebugMapPart;
 import got.model.Fraction;
 import got.utils.UI;
 import org.w3c.dom.*;
@@ -41,14 +42,19 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 	private static GameMapObject _instance;
 
 	@Deprecated
-
 	public static GameMapObject instance(){
 		return _instance;
 	}
+
+	private boolean debug;
 	
 	public GameMapObject(){
 		map = new HashMap<>();
 		_instance = this;
+	}
+
+	public void Debug(){
+		debug = true;
 	}
 	
 	@Override
@@ -110,7 +116,13 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 				if (regions.item(i).getNodeType() == Node.TEXT_NODE) continue;
 				Node region = regions.item(i);
 				LoaderParams params = new LoaderParams();
-				MapPartObject mapPart = new MapPartObject();
+
+				MapPartObject mapPart;
+				if (debug){
+					mapPart = new DebugMapPart();
+				}else{
+					mapPart = new MapPartObject();
+				}
 				//атрибуты
 				params.put("name", attribValue(region, "name"));
 				params.put("id", counter++);
@@ -120,8 +132,6 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 						
 				params.put("x", Integer.valueOf(attribValue(region, "x")));
 				params.put("y", Integer.valueOf(attribValue(region, "y")));
-				params.put("w", Integer.valueOf(attribValue(region, "w")));
-				params.put("h", Integer.valueOf(attribValue(region, "h")));			
 				params.put("type", attribValue(region, "type"));			
 				params.put("fraction", valueOrDefault(attribValue(region, "fraction"), "NONE"));
 				
@@ -134,6 +144,8 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 						String texName = attribValue(paramNode, "filename");
 						Texture tex = TextureManager.instance().loadTexture(TEXTURE_BASE + texName);
 						params.put("texture", tex);
+						params.put("w", tex.getWidth());
+						params.put("h", tex.getHeight());
 					}
 					if (paramNode.getNodeName().equals("unitpos")){
 						params.put("unit_x", Integer.valueOf(attribValue(paramNode,"x")));
@@ -151,6 +163,14 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 						params.put("action_y", Integer.valueOf(attribValue(paramNode,"y")));
 					}
 				}
+
+				try {
+					params.put("w", Integer.valueOf(attribValue(region, "w")));
+					params.put("h", Integer.valueOf(attribValue(region, "h")));
+				}catch(NumberFormatException e){
+
+				}
+
 				mapPart.init(params);
 				addRegion(mapPart);
 			}
@@ -169,7 +189,14 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 			NodeList neighbors = regions.item(i).getChildNodes();
 			for (int j=0; j<neighbors.getLength(); j++){
 				if (neighbors.item(j).getNodeType() == Node.TEXT_NODE) continue;
-				region.addNeighbor(map.get(attribValue(neighbors.item(j), "name")));
+				String regionName = attribValue(neighbors.item(j), "name");
+				MapPartObject regionToAdd = map.get(regionName);
+				if (regionToAdd == null){
+					System.out.println("Ошибка при чтении соседей. Не найден регион");
+					System.out.println("regionName = " + regionName);
+					continue;
+				}
+				region.addNeighbor(region);
 			}
 		}}catch(Exception e){
 			System.out.println("Error while reading neighbors");

@@ -16,11 +16,17 @@ public class SalladhorSaan extends ActiveHouseCard {
         super.onPlace(fraction);
         SalladhorEffect salladhorEffect = new SalladhorEffect();
         BattleDeckObject BDO = GameClient.shared.battleDeck;
-        if(BDO.getAttackers().size() <= 1 && BDO.getDefenders().size() <= 1){
+        if (!BDO.isSupported(placerFraction)) {
             //поддержки не было, карта не работает
             return;
         }
         BDO.getAttackers().forEach(card->{
+            if (card.getFraction() != placerFraction){
+                card.addEffect(salladhorEffect);
+            }
+        });
+
+        BDO.getDefenders().forEach(card->{
             if (card.getFraction() != placerFraction){
                 card.addEffect(salladhorEffect);
             }

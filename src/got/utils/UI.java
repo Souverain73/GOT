@@ -1,9 +1,6 @@
 package got.utils;
 
 import com.esotericsoftware.minlog.Log;
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
-import com.sun.javafx.binding.StringFormatter;
 import got.GameClient;
 import got.model.Player;
 
@@ -16,7 +13,8 @@ public class UI {
 	public static String getString(String title, String label, String def){
 		String input = (String)JOptionPane.showInputDialog(null, label, title, 
 				JOptionPane.QUESTION_MESSAGE, null, null ,def);
-		return input.trim();
+		if (input != null) input.trim();
+		return input;
 	}
 	
 	public static void serverMessage(String message){
@@ -27,7 +25,7 @@ public class UI {
 		System.out.println("[System]:"+message);
 	}
 
-	public static void logAction(@NotNull String format, @Nullable Object... args){
+	public static void logAction(String format, Object... args){
 		format = tt(format);
 		Log.info("[Action]:" + String.format(format, args));
 	}

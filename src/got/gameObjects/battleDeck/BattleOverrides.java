@@ -10,6 +10,8 @@ public class BattleOverrides {
     public boolean customRetreat;
     public int regionToRetreat;
 
+    public boolean noMoveAttacker;
+
     public static BattleOverrides customKillCount(int count){
         BattleOverrides bo = new BattleOverrides();
         bo.customKillCount = true;
@@ -31,6 +33,12 @@ public class BattleOverrides {
         bo.regionToRetreat = region;
         bo.customKillCount = true;
         bo.unitsToKill = killsCount;
+        return bo;
+    }
+
+    public static BattleOverrides noMoveAttacker(){
+        BattleOverrides bo = new BattleOverrides();
+        bo.noMoveAttacker = true;
         return bo;
     }
 }

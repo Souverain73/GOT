@@ -44,8 +44,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.RunnableFuture;
 
 import com.esotericsoftware.minlog.Log;
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
 import got.gameObjects.GameMapObject;
 import got.gameObjects.battleDeck.BattleDeckObject;
 import got.houseCards.HouseCardsLoader;
@@ -418,7 +416,7 @@ public class GameClient {
 		return debug;
 	}
 
-	public void setTooltipText(@NotNull String format, @Nullable Object... args){
+	public void setTooltipText(String format, Object... args){
 		registerWork(()->{
 			GameState st = stm.getCurrentState();
 			if (st instanceof MainState) {

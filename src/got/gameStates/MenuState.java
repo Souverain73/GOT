@@ -29,7 +29,13 @@ public class MenuState extends AbstractGameState {
 		});
 		btn.setSpace(DrawSpace.SCREEN);
 		addObject(btn);
-		
+
+
+		addObject(new ImageButton("map/winterfell.png", 100, 50, 200, 140, null)
+		.setSpace(DrawSpace.SCREEN)
+		.setCallback((sender, params)->{
+			GameClient.instance().getStateMachine().setState(new MapViewState());
+		}));
 	}
 
 	@Override

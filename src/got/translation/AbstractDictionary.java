@@ -2,9 +2,7 @@ package got.translation;
 
 import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -28,7 +26,9 @@ public class AbstractDictionary implements Dictionary {
         String currentBlock = "";
         Pattern group = Pattern.compile("\\[(.*)\\]");
         Pattern data = Pattern.compile("(.*?)\\s*\"(.*)\"");
-        try(BufferedReader br = new BufferedReader(new FileReader("data/translations/" + fileName))){
+
+
+        try(BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("data/translations/" + fileName), "UTF8"))){//new FileReader("data/translations/" + fileName))){
             String line;
             while ((line = br.readLine()) != null){
                 Matcher match = group.matcher(line);

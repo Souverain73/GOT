@@ -56,6 +56,9 @@ public class NetworkRoomState extends AbstractGameState{
 		addObject(btn);
 		
 		String host = UI.getString("Enter host", "host", "localhost");
+
+		if (host == null) return;
+
 		try{
 			GameClient.instance().connect(host);
 		}catch(IOException e){
@@ -65,7 +68,6 @@ public class NetworkRoomState extends AbstractGameState{
 		}
 		GameClient.instance().send(new Packages.LogIn().Nickname(String.format("%010d", (new Random()).nextLong()%10000)));
 		System.out.println("Connection successful");
-		
 	}
 	
 	

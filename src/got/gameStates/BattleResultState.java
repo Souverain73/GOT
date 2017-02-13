@@ -78,11 +78,13 @@ public class BattleResultState extends ActionPhase{
             Packages.PlayerKillAllUnitsAtRegion msg = (Packages.PlayerKillAllUnitsAtRegion) pkg;
             GameClient.shared.gameMap.getRegionByID(msg.regionID).removeAllUnits();
         }else if (pkg instanceof Packages.MoveAttackerToAttackRegion) {
-            GameClient.instance().registerTask(()->{
-                    moveAllUnits(GameClient.shared.battleDeck.getAttackerRegion(), GameClient.shared.battleDeck.getDefenderRegion());
-                    logAction("battle.winnerMove", GameClient.shared.battleDeck.getDefenderRegion());
-                }
-            );
+            if (!GameClient.shared.battleDeck.overrides.noMoveAttacker) {
+                GameClient.instance().registerTask(() -> {
+                            moveAllUnits(GameClient.shared.battleDeck.getAttackerRegion(), GameClient.shared.battleDeck.getDefenderRegion());
+                            logAction("battle.winnerMove", GameClient.shared.battleDeck.getDefenderRegion());
+                        }
+                );
+            }
         }else if (pkg instanceof Packages.PlayerSetAction) {
             Packages.PlayerSetAction msg = (Packages.PlayerSetAction) pkg;
             GameClient.instance().registerTask(()->{

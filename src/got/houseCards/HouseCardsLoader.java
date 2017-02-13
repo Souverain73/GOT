@@ -143,7 +143,6 @@ public class HouseCardsLoader {
     public static void main(String[] args) {
         HouseCardsLoader loader = new HouseCardsLoader();
         loader.load(HOUSE_CARDS_DATA_FILE_PATH);
-        loader.getCardsForFractionInternal(Fraction.LANISTER);
     }
 
     public HouseCard getCardByTitle(String title){

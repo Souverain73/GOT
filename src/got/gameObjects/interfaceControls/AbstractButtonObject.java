@@ -1,6 +1,7 @@
 package got.gameObjects.interfaceControls;
 
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 import com.esotericsoftware.minlog.Log;
 import got.gameObjects.AbstractGameObject;
@@ -35,7 +36,7 @@ public abstract class AbstractButtonObject<T extends AbstractButtonObject<T>> ex
 	protected State state;
 	protected boolean wasClick;
 	protected boolean mouseIn;
-	
+
 	public AbstractButtonObject() {
 		super();
 		wasClick = false;
@@ -108,7 +109,7 @@ public abstract class AbstractButtonObject<T extends AbstractButtonObject<T>> ex
 	protected void mouseEnter(){
 		state = State.HOVER;
 	}
-	
+
 	protected void mouseOut(){
 		state = State.FREE;
 	}

@@ -16,6 +16,8 @@ import got.network.Packages.ChangeState;
 import got.server.PlayerManager;
 import got.utils.LoaderParams;
 
+import static got.translation.Translator.tt;
+
 public class MainState extends AbstractGameState {
 	private static final String name = "MainState";
 	private static final String MAP_FILE = "data/map.xml";
@@ -39,8 +41,8 @@ public class MainState extends AbstractGameState {
 		background.setSpace(DrawSpace.SCREEN);
 
 		map = new GameMapObject();
-		LoaderParams params = new LoaderParams(new String[]{"filename", MAP_FILE});
-		map.init(params);
+		map.init(new LoaderParams(new String[]{"filename", MAP_FILE}));
+
 		GameClient.shared.gameMap = map;
 		//addObject(map);
 		addObject(new PlayerPanelObject(PlayerManager.getSelf()));

@@ -300,4 +300,13 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
         }
         return null;
     }
+
+    public boolean isSupported(Fraction fraction) {
+        if (isAttacker(fraction)){
+            return attackers.size()>1;
+        }else if (isDefender(fraction)){
+            return defenders.size()>1;
+        }
+        return false;
+    }
 }
