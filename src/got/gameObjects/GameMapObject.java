@@ -196,7 +196,7 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 					System.out.println("regionName = " + regionName);
 					continue;
 				}
-				region.addNeighbor(region);
+				region.addNeighbor(regionToAdd);
 			}
 		}}catch(Exception e){
 			System.out.println("Error while reading neighbors");
