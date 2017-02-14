@@ -104,7 +104,7 @@ public class GameServer {
 				PlayerConnection connection = (PlayerConnection)c;
 				Player player = connection.player;
 				//Handle all common packages
-				//pass state specified package to game state
+				//password state specified package to game state
 				if (pkg instanceof Packages.ResumeModal) {
 					getServer().sendToAllTCP(new Packages.PlayerResumeModal(player.id));
 					return;
