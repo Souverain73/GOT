@@ -18,15 +18,17 @@ public class Packages {
         kryo.register(PlayerInfo.class);
         kryo.register(PlayerInfo[].class);
 
-        kryo.register(GetServerList.class);
+        kryo.register(RequestServerList.class);
         kryo.register(ServerList.class);
+
         kryo.register(UpdateStatus.class);
-        kryo.register(RequestNewServer.class);
         kryo.register(ServerStatus.class);
+
+        kryo.register(RequestNewServer.class);
         kryo.register(RequestAnswer.class);
     }
 
-    public static class GetServerList {
+    public static class RequestServerList {
     }
 
     public static class ServerList {

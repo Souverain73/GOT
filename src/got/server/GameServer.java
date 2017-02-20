@@ -29,6 +29,8 @@ import got.server.serverStates.StateMachine;
 import got.translation.Language;
 import got.translation.Translator;
 
+import static got.network.Network.portTCP;
+
 public class GameServer {
 	public static class Shared{
 		public int attackerRegionID;
@@ -47,18 +49,31 @@ public class GameServer {
 	}
 	
 	public static void main(String[] args) throws IOException {
-		new GameServer(true);
+		int tcpPort;
+		int udpPort;
+
+		if (args.length < 2){
+			new GameServer(portTCP, Network.portUDP, true);
+		}else{
+			tcpPort = Integer.valueOf(args[0]);
+			udpPort = Integer.valueOf(args[1]);
+			new GameServer(tcpPort, udpPort, true);
+		}
 	}
 	
 	public static class PlayerConnection extends Connection{
 		public Player player;
 	}
 
-	public GameServer() throws IOException{
-		this(false);
+	public GameServer() throws  IOException{
+		this(portTCP, Network.portUDP);
+	}
+
+	public GameServer(int tcpPort, int udpPort) throws IOException{
+		this(tcpPort, udpPort, false);
 	}
 	
-	public GameServer(boolean console) throws IOException{
+	public GameServer(int tcpPort, int udpPort, boolean console) throws IOException{
 		if (server!=null) throw new IOException("Server already exist");
 		Server server = new Server(){
 			@Override
@@ -132,13 +147,13 @@ public class GameServer {
 		while (true){
 			retries++;
 			try {
-				server.bind(Network.portTCP, Network.portUDP);
+				server.bind(tcpPort, udpPort);
 				break;
 			} catch (IOException e) {
 				System.out.println("Can't bind server. Trying again");
 				if (retries>=maxRetries){
 					e.printStackTrace();
-					return;
+					System.exit(-10);
 				}
 			}
 		}
@@ -147,7 +162,8 @@ public class GameServer {
 		GameServer.server = server;
 		stm.setState(new NetworkRoomState());
 		
-		System.out.println("Server running on port:"+Network.portTCP+"/"+Network.portUDP);
+		System.out.println("Server running on port:"+tcpPort+"/"+udpPort);
+		System.out.println("[Control]:ServerReady");
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		//main server loop
 		//handles console commands and execute tasks

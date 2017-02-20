@@ -4,6 +4,11 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.NoSuchElementException;
+
 import static com.esotericsoftware.jsonbeans.JsonValue.ValueType.object;
 
 /**
@@ -12,15 +17,32 @@ import static com.esotericsoftware.jsonbeans.JsonValue.ValueType.object;
 public class MasterServer {
     private static ServerManager sm;
     public static void main(String[] args) {
-        sm = new ServerManager(new PortPool(51000, 51999));
-    }
+        sm = new ServerManager(new PortPool(51000, 52000));
 
-    public MasterServer(){
         Server netServer = new Server();
         netServer.addListener(new MasterListener());
+        //todo: bind server and run
+
+        Runtime.getRuntime().addShutdownHook(new Thread(sm::killAllServers));
+
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            while (true) {
+                String line = br.readLine().trim();
+                String[] command = line.split("\\s");
+                if (command.length == 0) {
+                    continue;
+                }
+                if (command[0].equals("stop")) {
+                    System.exit(0);
+                }
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
-    private class MasterListener extends Listener{
+    private static class MasterListener extends Listener{
         @Override
         public void connected(Connection connection) {
             super.connected(connection);
@@ -34,6 +56,21 @@ public class MasterServer {
         @Override
         public void received(Connection connection, Object pkg) {
             super.received(connection, object);
+            if (pkg instanceof Packages.RequestServerList){
+                connection.sendTCP(new Packages.ServerList(sm.getServerList().toArray(new ServerInfo[0])));
+            }
+
+            if (pkg instanceof Packages.UpdateStatus) {
+                Packages.UpdateStatus request = (Packages.UpdateStatus) pkg;
+                ServerInfo si;
+                try{
+                    si = sm.getServerInfo(request.serverName);
+                }catch (NoSuchElementException e){
+                    si = null;
+                }
+                connection.sendTCP(new Packages.ServerStatus(si, null));
+            }
+
             if (pkg instanceof Packages.RequestNewServer) {
                 Packages.RequestNewServer request = (Packages.RequestNewServer) pkg;
                 Packages.RequestAnswer ra = new Packages.RequestAnswer();

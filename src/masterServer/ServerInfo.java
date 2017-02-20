@@ -14,5 +14,17 @@ public class ServerInfo {
         this.tcpPort = tcpPort;
         this.updPort = updPort;
         this.name = name;
+        this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "ServerInfo{" +
+                "tcpPort=" + tcpPort +
+                ", updPort=" + updPort +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", playersCount=" + playersCount +
+                '}';
     }
 }
