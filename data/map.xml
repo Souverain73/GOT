@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map>
 	<regions>
-				<region name="TheArbor" type="GROUND" x="1" y="2497">
+		<region name="TheArbor" type="GROUND" x="1" y="2497">
 			<actionpos x="0" y="0"/>
 			<unitpos x="0" y="0"/>
 			<texture filename="TheArbor.png"/>
@@ -232,6 +232,9 @@
 			<neighbor name="CastleBlack"/>
 			<neighbor name="Winterfell"/>
 			<neighbor name="TheStonyShore"/>
+			<neighbor name="SunsetSea"/>
+			<neighbor name="FlintsFinger"/>
+			<neighbor name="GreywaterWatch"/>
 		</region>
 		<region name="TheShiveringSea">
 			<neighbor name="CastleBlack"/>
@@ -239,18 +242,174 @@
 			<neighbor name="Winterfell"/>
 			<neighbor name="WhiteHarbor"/>
 			<neighbor name="WidowsWatch"/>
+			<neighbor name="TheNarrowSea"/>
 		</region>
 		<region name="Winterfell">
 			<neighbor name="TheStonyShore"/>
 			<neighbor name="WhiteHarbor"/>
 			<neighbor name="Karhold"/>
 			<neighbor name="CastleBlack"/>
+			<neighbor name="MoatCalin"/>
 		</region>
 		<region name="CastleBlack">
 			<neighbor name="Karhold"/>
 		</region>
+		<region name="WhiteHarbor">
+			<neighbor name="WidowsWatch"/>
+			<neighbor name="MoatCalin"/>
+			<neighbor name="TheNarrowSea"/>
+		</region>
 		<region name="WidowsWatch">
-			<neighbor name="WhiteHarbor"/>
+			<neighbor name="TheNarrowSea"/>
+		</region>
+		<region name="SunsetSea">
+			<neighbor name="FlintsFinger"/>
+			<neighbor name="IronmansBay"/>
+			<neighbor name="TheGoldenSound"/>
+			<neighbor name="SearoadMarches"/>
+			<neighbor name="Highgarden"/>
+			<neighbor name="RedwyneStraights"/>
+		</region>
+		<region name="FlintsFinger">
+			<neighbor name="GreywaterWatch"/>
+			<neighbor name="IronmansBay"/>
+		</region>
+		<region name="IronmansBay">
+			<neighbor name="GreywaterWatch"/>
+			<neighbor name="Pyke"/>
+			<neighbor name="Seagard"/>
+			<neighbor name="Riverrun"/>
+			<neighbor name="TheGoldenSound"/>
+		</region>
+		<region name="TheGoldenSound">
+			<neighbor name="Riverrun"/>
+			<neighbor name="Lannisport"/>
+			<neighbor name="SearoadMarches"/>
+		</region>
+		<region name="MoatCalin">
+			<neighbor name="GreywaterWatch"/>
+			<neighbor name="TheNarrowSea"/>
+			<neighbor name="Seagard"/>
+			<neighbor name="TheTwins"/>
+		</region>
+		<region name="GreywaterWatch">
+			<neighbor name="Seagard"/>
+		</region>
+		<region name="TheTwins">
+			<neighbor name="TheFingers"/>
+			<neighbor name="Seagard"/>
+			<neighbor name="TheNarrowSea"/>
+			<neighbor name="TheMountainsOfTheMoon"/>
+		</region>
+		<region name="TheFingers">
+			<neighbor name="TheNarrowSea"/>
+			<neighbor name="TheMountainsOfTheMoon"/>
+		</region>
+		<region name="Seagard">
+			<neighbor name="Riverrun"/>
+		</region>
+		<region name="TheEyrie">
+			<neighbor name="TheNarrowSea"/>
+			<neighbor name="TheMountainsOfTheMoon"/>
+		</region>
+		<region name="TheMountainsOfTheMoon">
+			<neighbor name="TheNarrowSea"/>
+			<neighbor name="CrackclawPoint"/>
+		</region>
+		<region name="TheNarrowSea">
+			<neighbor name="CrackclawPoint"/>
+			<neighbor name="ShipbreakerBay"/>
+		</region>
+		<region name="Riverrun">
+			<neighbor name="Lannisport"/>
+			<neighbor name="Harrenhal"/>
+			<neighbor name="StoneySept"/>
+		</region>
+		<region name="Harrenhal">
+			<neighbor name="StoneySept"/>
+			<neighbor name="CrackclawPoint"/>
+			<neighbor name="Blackwater"/>
+		</region>
+		<region name="Lannisport">
+			<neighbor name="SearoadMarches"/>
+			<neighbor name="StoneySept"/>
+		</region>
+		<region name="RedwyneStraights">
+			<neighbor name="Highgarden"/>
+			<neighbor name="Oldtown"/>
+			<neighbor name="Starfall"/>
+			<neighbor name="Dorn"/>
+			<neighbor name="TheArbor"/>
+			<neighbor name="SummerSea"/>
+		</region>
+		<region name="StoneySept">
+			<neighbor name="Blackwater"/>
+			<neighbor name="SearoadMarches"/>
+		</region>
+		<region name="SearoadMarches">
+			<neighbor name="Highgarden"/>
+			<neighbor name="Blackwater"/>
+			<neighbor name="TheReach"/>
+		</region>
+		<region name="Blackwater">
+			<neighbor name="TheReach"/>
+			<neighbor name="CrackclawPoint"/>
+			<neighbor name="KingsLanding"/>
+		</region>
+		<region name="CrackclawPoint">
+			<neighbor name="KingsLanding"/>
+			<neighbor name="ShipbreakerBay"/>
+			<neighbor name="BlackwaterBay"/>
+		</region>
+		<region name="KingsLanding">
+			<neighbor name="BlackwaterBay"/>
+			<neighbor name="TheReach"/>
+			<neighbor name="Kingswood"/>
+		</region>
+		<region name="BlackwaterBay">
+			<neighbor name="ShipbreakerBay"/>
+			<neighbor name="Kingswood"/>
+		</region>
+		<region name="Highgarden">
+			<neighbor name="TheReach"/>
+			<neighbor name="Oldtown"/>
+			<neighbor name="DornishMarches"/>
+		</region>
+		<region name="TheReach">
+			<neighbor name="DornishMarches"/>
+			<neighbor name="Kingswood"/>
+		</region>
+		<region name="DornishMarches">
+			<neighbor name="Oldtown"/>
+			<neighbor name="Starfall"/>
+			<neighbor name="Dorn"/>
+			<neighbor name="Kingswood"/>
+			<neighbor name="StormsEnd"/>
+			<neighbor name="SeaOfDorn"/>
+		</region>
+		<region name="Dorn">
+			<neighbor name="Starfall"/>
+			<neighbor name="SummerSea"/>
+			<neighbor name="SeaOfDorn"/>
+			<neighbor name="Sunspear"/>
+		</region>
+		<region name="Sunspear">
+			<neighbor name="SummerSea"/>
+			<neighbor name="SeaOfDorn"/>
+		</region>
+		<region name="SummerSea">
+			<neighbor name="SeaOfDorn"/>
+			<neighbor name="ShipbreakerBay"/>
+		</region>
+		<region name="ShipbreakerBay">
+			<neighbor name="SeaOfDorn"/>
+			<neighbor name="StormsEnd"/>
+			<neighbor name="Kingswood"/>
+			<neighbor name="Dragonstone"/>
+		</region>
+		<region name="StormsEnd">
+			<neighbor name="SeaOfDorn"/>
+			<neighbor name="Kingswood"/>
 		</region>
 	</neighbors>
 </map>
