@@ -373,7 +373,15 @@ public class GameClient {
 	}
 	
 	public void connect(String host) throws IOException{
-		client.connect(5000, host, Network.portTCP, Network.portUDP);
+		int portTCP = Network.portTCP;
+		int portUDP = Network.portUDP;
+		String[] hostData = host.split(":");
+		if (hostData.length == 2){
+			host = hostData[0];
+			portTCP = Integer.valueOf(hostData[1]);
+			portUDP = portTCP + 1;
+		}
+		client.connect(5000, host, portTCP, portUDP);
 	}
 	
 	public void disconnect(){
