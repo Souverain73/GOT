@@ -9,25 +9,18 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
-import com.esotericsoftware.minlog.Log.Logger;
 
-import got.gameObjects.MapPartObject;
-import got.model.Fraction;
-import got.model.Game;
 import got.model.Player;
 import got.network.Network;
 import got.network.Packages;
-import got.network.Packages.InitPlayer;
-import got.network.Packages.LogIn;
-import got.network.Packages.PlayerConnected;
 import got.network.Packages.PlayerDisconnected;
 import got.network.Packages.ServerMessage;
-import got.server.serverStates.ChangeState;
 import got.server.serverStates.NetworkRoomState;
-import got.server.serverStates.ServerState;
 import got.server.serverStates.StateMachine;
 import got.translation.Language;
 import got.translation.Translator;
+import org.console.Command;
+import org.console.Console;
 
 import static got.network.Network.portTCP;
 
@@ -165,30 +158,45 @@ public class GameServer {
 		System.out.println("Server running on port:"+tcpPort+"/"+udpPort);
 		System.out.println("[Control]:ServerReady");
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		//main server loop
-		//handles console commands and execute tasks
-		if (console){
-			while (true){
-				executeTasks();
-				
-				String line = br.readLine().trim();
-				String [] command = line.split("\\s");
-				if (command.length == 0){
-					continue;
-				}
-				if (command[0].equals("stop")) {
-					server.close();
-					System.exit(0);
-				}else if(command[0].equals("say")){
-					ServerMessage msg = new ServerMessage();
-					msg.message = command[1];
-					server.sendToAllTCP(msg);
-				}else if(command[0].equals("dump")){
-					System.out.println(PlayerManager.instance().toString());
-					System.out.println("Current State Dump: " + stm.getCurrentState());
-				}
+
+		Console cns = new Console();
+		cns.addCommand(new Command("stop",
+				"Остановка сервера",
+				(a)->{
+			server.close();
+			System.exit(0);
+			return "";
+		}));
+
+		cns.addCommand(new Command("say",
+				"Отправка сообщения игрокам",
+				(input)->{
+			if (input.length<2) return "Не достаточно аргументов для выполнения команды";
+			StringBuilder sb = new StringBuilder();
+			for (int i = 1; i < input.length; i++) {
+				sb.append(input[i] + " ");
 			}
+			ServerMessage msg = new ServerMessage();
+			msg.message = sb.toString();
+			server.sendToAllTCP(msg);
+			return "Message " + msg.message + " sended to clients";
+		}));
+
+		cns.addCommand(new Command("dump",
+				"Вывод на экран текущего состояния сервера",
+				(a)->{
+			StringBuilder sb = new StringBuilder();
+			sb.append(PlayerManager.instance().toString() + "\n");
+			sb.append("Current State Dump: " + stm.getCurrentState());
+			return	sb.toString();
+		}));
+
+		cns.start();
+
+		while (true){
+			executeTasks();
 		}
+
 	}
 	
 	public void registerTask(Runnable task){
