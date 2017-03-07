@@ -54,13 +54,40 @@
 	</target>
 
 	<target name="jarserver" depends="compile" description="Create the jar file">
-		<jar destfile="${build}/GOTSERVER.jar">
+		<jar destfile="${build}/server.jar">
 			<fileset dir="${build.classes}" />
 			<manifest>
 				<attribute name="Main-Class" value="got.server.GameServer"/>
-				<attribute name="Class-Path" value=". lwjgl.jar native.jar kryo-2.23.1.jar jsonbeans-0.5.jar"/>
+				<attribute name="Class-Path" value=". kryo-2.23.1.jar jsonbeans-0.5.jar"/>
 			</manifest>
 		</jar>
+	</target>
+
+	<target name="dist" depends="make" description="Create distributables for server and client">
+		<mkdir dir="${build}\server"/>
+		<move todir="${build}\server">
+			<fileset dir="${build}">
+				<include name="server.jar"/>
+				<include name="runserv.bat"/>
+			</fileset>
+		</move>
+		<copy todir="${build}\server">
+			<fileset dir="${build}">
+				<include name="kryo-2.23.1.jar"/>
+				<include name="jsonbeans-0.5.jar"/>
+			</fileset>
+		</copy>
+		<mkdir dir="${build}\server\data"/>
+		<copy todir="${build}\server\data">
+			<fileset dir="${build.data}">
+				<exclude name="textures/"/>
+				<exclude name="fonts/"/>
+				<exclude name="shaders/"/>
+			</fileset>
+		</copy>
+
+		<mkdir dir="${build}\client"/>
+		<zip basedir="${build}" excludes="server/,client/" destfile="${build}/client/client.zip"/>
 	</target>
 
 
