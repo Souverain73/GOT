@@ -3,11 +3,8 @@ package org.console;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static javafx.scene.input.KeyCode.L;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Maksim on 20.02.2017.
@@ -20,15 +17,29 @@ public class Console {
         String run(String ...args);
     }
 
+    private class State{
+        private String name;
+        private Object param;
+
+        public State(String name, Object param) {
+            this.name = name;
+            this.param = param;
+        }
+    }
+
+
+    Deque<State> states;
     List<ICommand> commands;
 
     public Console() {
         commands = new ArrayList<>();
+        states = new ArrayDeque<>(3);
+        states.push(new State("main", null));
 
         addCommand(new ICommand() {
             @Override
             public String getName() {
-                return "help";
+                return "all.help";
             }
 
             @Override
@@ -45,21 +56,72 @@ public class Console {
             public String run(String... args) {
                 if (args.length == 2){
                     String commandName = args[1];
-                    Optional<ICommand> command =  commands.stream().filter(cmd->cmd.getName().equals(commandName)).findFirst();
+                    ICommand command =  getCommandForCurrentState(commandName);
 
-                    if (command.isPresent()){
-                        return command.get().getDetailedInfo();
+                    if (command != null){
+                        return command.getDetailedInfo();
                     }else{
                         return "Команда " + commandName + " не найдена";
                     }
                 }
                 StringBuilder sb = new StringBuilder();
-                for(ICommand cmd : commands){
-                    sb.append(cmd.getName() + " - " + cmd.getInfo() + "\n");
+                for(ICommand cmd : getCommandsForCurrentState()){
+                    sb.append(formatCommandName(cmd.getName()) + " - " + cmd.getInfo() + "\n");
                 }
                 return sb.toString();
             }
         });
+
+        addCommand(new ICommand() {
+            @Override
+            public String getName() {
+                return "all.exit";
+            }
+
+            @Override
+            public String getInfo() {
+                return "возврат из текущего состояния";
+            }
+
+            @Override
+            public String getDetailedInfo() {
+                return "";
+            }
+
+            @Override
+            public String run(String... args) {
+                popState();
+                return "Выход из текущего состояния\nНовое состояние: " + getCurrentStateName();
+            }
+        });
+
+        addCommand(new ICommand() {
+            @Override
+            public String getName() {
+                return "all.cstate";
+            }
+
+            @Override
+            public String getInfo() {
+                return "Текущее состояние консоли";
+            }
+
+            @Override
+            public String getDetailedInfo() {
+                return "";
+            }
+
+            @Override
+            public String run(String... args) {
+                return getCurrentStateName() + " : " +getCurrentStateString();
+            }
+        });
+    }
+
+    private String formatCommandName(String name) {
+        int dotIndex = name.lastIndexOf(".");
+        dotIndex = dotIndex == -1 ? 0 : dotIndex+1;
+        return name.substring(dotIndex);
     }
 
     public void addCommand(ICommand command) {
@@ -79,14 +141,13 @@ public class Console {
 
                     boolean executed = false;
                     String[] input = line.split("\\s");
-                    for (ICommand cmd : commands) {
-                        if (cmd.getName().equalsIgnoreCase(input[0])) {
-                            executed = true;
-                            try {
-                                System.out.println(cmd.run(input));
-                            } catch (ArrayIndexOutOfBoundsException e) {
-                                System.out.println("Недостаточно аргументов для выполнения команды");
-                            }
+                    ICommand cmd = getCommandForCurrentState(input[0]);
+                    if (cmd!=null){
+                        executed = true;
+                        try {
+                            System.out.println(cmd.run(input));
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            System.out.println("Недостаточно аргументов для выполнения команды");
                         }
                     }
 
@@ -98,5 +159,57 @@ public class Console {
                 e.printStackTrace();
             }
         })).start();
+    }
+
+    private ICommand getCommandForCurrentState(String name){
+        String fullCommandName = getCurrentStateString() + name;
+        String globalCommandName = "all."+name;
+        for(ICommand cmd : commands){
+            if (cmd.getName().equalsIgnoreCase(fullCommandName) || cmd.getName().equalsIgnoreCase(globalCommandName)) return cmd;
+        }
+        return null;
+    }
+
+    private List<ICommand> getCommandsForCurrentState(){
+        List<ICommand> result = new ArrayList<>(commands.size());
+        String statePrefix = getCurrentStateString();
+        String globalCommandPrefix = "all.";
+
+        for (ICommand cmd : commands){
+            if (cmd.getName().startsWith(statePrefix) || cmd.getName().startsWith(globalCommandPrefix)) result.add(cmd);
+        }
+
+        return result;
+    }
+
+    public void pushState(String name, Object param){
+        states.push(new State(name, param));
+    }
+
+    public void popState(){
+        if (!states.peek().name.equals("main"))
+            states.pop();
+    }
+
+    private String getCurrentStateString(){
+        String result = new String();
+        for (State st : states) {
+            result = st.name + "." + result;
+        }
+        return result;
+    }
+
+    private String getCurrentStateName() {
+        if (states.peek() != null)
+            return states.peek().name;
+        else
+            return "";
+    }
+
+    public Object getStateParam(String stateName){
+        for (State st : states.stream().filter(s->stateName.equals(s.name)).collect(Collectors.toList())){
+            return st.param;
+        }
+        return null;
     }
 }

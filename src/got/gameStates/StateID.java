@@ -10,6 +10,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 public class StateID {
 	public static final int MAIN_STATE = 16;
+	public static final int GAME_CONFIG_STATE = 17;
 	public static final int PLANNING_PHASE = 1;
 	public static final int ACTION_PHASE = 2;
 	public static final int FIRE_PHASE = 3;
@@ -20,8 +21,8 @@ public class StateID {
 	public static final int HELP_PHASE = 8;
 	public static final int BATTLE_RESULT_PHASE = 9;
 	public static final int SELECT_HOUSE_CARD_PHASE = 10;
-	
-	public static GameState getGameStateByID(int id){
+
+    public static GameState getGameStateByID(int id){
 		switch(id){
 			case MAIN_STATE: return new MainState();
 			case PLANNING_PHASE: return new PlanningPhase();

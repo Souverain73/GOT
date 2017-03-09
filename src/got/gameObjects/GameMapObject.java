@@ -3,6 +3,7 @@ package got.gameObjects;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -142,10 +143,7 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 					Node paramNode = regionParams.item(j);
 					if (paramNode.getNodeName().equals("texture")){
 						String texName = attribValue(paramNode, "filename");
-						Texture tex = TextureManager.instance().loadTexture(TEXTURE_BASE + texName);
-						params.put("texture", tex);
-						params.put("w", tex.getWidth());
-						params.put("h", tex.getHeight());
+						params.put("texture", TEXTURE_BASE + texName);
 					}
 					if (paramNode.getNodeName().equals("unitpos")){
 						params.put("unit_x", Integer.valueOf(attribValue(paramNode,"x")));
@@ -213,7 +211,22 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 		if (value == null) return def;
 		else return value;
 	}
-	
+
+	public List<MapPartObject> getRegions(){
+		List<MapPartObject> regions = new ArrayList<>(map.values().size());
+		regions.addAll(map.values());
+		return regions;
+	}
+
+	public MapPartObject getRegionByName(String name){
+		Optional<MapPartObject> result = map.values().stream().filter(m->m.getName().equals(name)).findFirst();
+		if (result.isPresent()){
+			return result.get();
+		}else{
+			return null;
+		}
+	}
+
 	public void enableAllRegions(){
 		map.values().forEach(obj->obj.setEnabled(true));
 	}

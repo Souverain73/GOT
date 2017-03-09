@@ -3,22 +3,29 @@ package got.server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import com.esotericsoftware.kryo.serializers.DefaultSerializers;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 
+import got.gameObjects.GameMapObject;
+import got.gameObjects.MapPartObject;
 import got.model.Player;
 import got.network.Network;
 import got.network.Packages;
 import got.network.Packages.PlayerDisconnected;
 import got.network.Packages.ServerMessage;
+import got.server.serverStates.GameConfigState;
 import got.server.serverStates.NetworkRoomState;
+import got.server.serverStates.PlanningPhaseState;
 import got.server.serverStates.StateMachine;
 import got.translation.Language;
 import got.translation.Translator;
+import got.utils.LoaderParams;
 import org.console.Command;
 import org.console.Console;
 
@@ -31,11 +38,16 @@ public class GameServer {
 		public int attackerID;
 		public int defenderID;
 	}
+
+	private static final String MAP_FILE = "data/map.xml";
+
 	public static Shared shared = new Shared();
 	private static StateMachine stm = new StateMachine();
 	private static Server server = null;
 	private ConcurrentLinkedQueue<Runnable> taskPool = new ConcurrentLinkedQueue<>();
-	
+	private GameMapObject map;
+
+
 	public static Server getServer(){
 		Log.set(Log.LEVEL_DEBUG);
 		return server;
@@ -68,6 +80,11 @@ public class GameServer {
 	
 	public GameServer(int tcpPort, int udpPort, boolean console) throws IOException{
 		if (server!=null) throw new IOException("Server already exist");
+
+		Translator.init(Language.RUSSIAN);
+		map = new GameMapObject();
+		map.init(new LoaderParams(new String[]{"filename", MAP_FILE}));
+
 		Server server = new Server(){
 			@Override
 			protected Connection newConnection() {
@@ -75,7 +92,6 @@ public class GameServer {
 			}
 			
 		};
-		Translator.init(Language.RUSSIAN);
 		
 		Network.register(server);
 		
@@ -160,7 +176,7 @@ public class GameServer {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 		Console cns = new Console();
-		cns.addCommand(new Command("stop",
+		cns.addCommand(new Command("main.stop",
 				"Остановка сервера",
 				(a)->{
 			server.close();
@@ -168,7 +184,7 @@ public class GameServer {
 			return "";
 		}));
 
-		cns.addCommand(new Command("say",
+		cns.addCommand(new Command("main.say",
 				"Отправка сообщения игрокам",
 				(input)->{
 			if (input.length<2) return "Не достаточно аргументов для выполнения команды";
@@ -182,7 +198,7 @@ public class GameServer {
 			return "Message " + msg.message + " sended to clients";
 		}));
 
-		cns.addCommand(new Command("dump",
+		cns.addCommand(new Command("main.dump",
 				"Вывод на экран текущего состояния сервера",
 				(a)->{
 			StringBuilder sb = new StringBuilder();
@@ -190,6 +206,50 @@ public class GameServer {
 			sb.append("Current State Dump: " + stm.getCurrentState());
 			return	sb.toString();
 		}));
+
+		cns.addCommand(new Command("main.gc",
+				"Перевод сервера в режим настройки игры.",
+				"Перевод сервера в режим настройки игры. В режиме настройки можно изменять расстановку войск на карте, установленные приказы, положения на треке и т.д.",
+				(a)->{
+//					if (stm.getCurrentState() instanceof PlanningPhaseState) {
+						GameConfigState gcs = new GameConfigState();
+						stm.changeState(gcs, StateMachine.ChangeAction.PUSH);
+						cns.pushState("gc", null);
+						return "Сервер переведен в режим настройки игры.";
+//					}else{
+//						return "Перейти к настройке игры можно только в стадии планирования.";
+//					}
+		}));
+
+		cns.addCommand(new Command("main.gc.region",
+				"настройка региона", "команда используется для настройки региона, формат команды region [regioin name] или region list для списка регионов",
+				(input)->{
+					if (input[1].equals("list")){
+						StringBuilder sb = new StringBuilder();
+						map.getRegions().stream().map(MapPartObject::getName).forEach(value->{sb.append(value + "\n");});
+						return sb.toString();
+					}else{
+						MapPartObject mpo = map.getRegionByName(input[1]);
+						if (mpo == null){
+							return "Регион " + input[1] + " не найден.";
+						}else{
+							cns.pushState("region", mpo);
+							return "Настрйока региона " + mpo.getName();
+						}
+					}
+				}));
+
+		cns.addCommand(new Command("main.gc.region.fraction", "изменение владельца региона",
+				(input)->{
+					MapPartObject mpo = (MapPartObject) cns.getStateParam("region");
+					return mpo.getFraction().toString();
+				}));
+
+		cns.addCommand(new Command("main.gc.region.units", "изменение состава войск в регионе",
+				(input)->{
+					MapPartObject mpo = (MapPartObject) cns.getStateParam("region");
+					return Arrays.toString(mpo.getUnits());
+				}));
 
 		cns.start();
 

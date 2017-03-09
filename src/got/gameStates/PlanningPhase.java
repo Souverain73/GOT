@@ -185,7 +185,7 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 			for (Action action : actions) {
 				float cx = (float)(x+Math.cos(angle)*radius);
 				float cy = (float)(y+Math.sin(angle)*radius);
-				ImageButton button = new ImageButton(action.getTexture(), (int)cx, (int)cy, Constants.ACTIONSELECTOR_IMAGE_SCALE, action);
+				ImageButton button = new ImageButton(action.getTexture(), (int)cx, (int)cy, Constants.ACTION_SELECTOR_IMAGE_SCALE, action);
 				button.setCallback((sender, param)->{
 					result = (Action)param;
 					close();

@@ -573,7 +573,11 @@ public class Packages {
 	 * проставлена автоматически.
 	 */
 	public static class ForceReadyAt extends ServerClientPackage {
-		int seconds;
+		public int seconds;
+
+		public ForceReadyAt(int seconds) {
+			this.seconds = seconds;
+		}
 
 		public ForceReadyAt() {
 		}

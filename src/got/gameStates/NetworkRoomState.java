@@ -3,6 +3,7 @@ package got.gameStates;
 import java.io.IOException;
 import java.util.Random;
 
+import got.Constants;
 import org.joml.Vector2f;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -55,7 +56,7 @@ public class NetworkRoomState extends AbstractGameState{
 				});
 		addObject(btn);
 		
-		String host = UI.getString("Enter host", "host", "localhost");
+		String host = UI.getString("Enter host", "host", Constants.DEFAULT_HOST);
 
 		if (host == null) return;
 

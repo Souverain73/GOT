@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import got.gameObjects.interfaceControls.AbstractButtonObject;
 import got.gameStates.PlanningPhase;
+import got.graphics.TextureManager;
 import got.model.*;
 import got.server.PlayerManager;
 import org.joml.Vector2f;
@@ -27,6 +28,8 @@ import got.utils.Utils;
  */
 public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 
+
+	private String textureName;
 
 	public enum RegionType{	GROUND, SEA, PORT;}
 
@@ -74,11 +77,11 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		resourcesCount = (Integer)params.get("resources");
 		influencePoints = (Integer)params.get("influence");
 		buildingLevel = (Integer)params.get("building");
-		texture = (Texture)params.get("texture");
+		textureName = (String) params.get("texture");
 		pos.x = (Integer)params.get("x");
 		pos.y = (Integer)params.get("y");
-		w = (Integer)params.get("w");
-		h = (Integer)params.get("h");
+//		w = (Integer)params.get("w");
+//		h = (Integer)params.get("h");
 		act_x = (Integer)params.get("action_x");
 		act_y = (Integer)params.get("action_y");
 		unit_x = (Integer)params.get("unit_x");
@@ -103,6 +106,9 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	@Override
 	public void draw(GameState st) {
 		if (!isVisible()) return;
+		if (texture == null){
+			initTexture();
+		}
 		GraphicModule.instance().setDrawSpace(this.space);
 		if (state == State.FREE){
 
@@ -153,6 +159,13 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		GraphicModule.instance().resetEffect();
 		super.draw(st);
 	}
+
+	private void initTexture() {
+		texture = TextureManager.instance().loadTexture(textureName);
+		w = texture.getWidth();
+		h = texture.getHeight();
+	}
+
 	public List<MapPartObject> getNeighbors(){
 		return neighbors;
 	}

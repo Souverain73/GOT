@@ -117,6 +117,7 @@ public class GameClient {
 	private int windowHeight;	
 	
 	private GameClient(){
+		Constants.read(System.getProperty("client.config", Constants.DEFAULT_CONFIG_FILE));
 		Log.set(Log.LEVEL_INFO);
 		graphics = GraphicModule.instance();
 		stm = new StateMachine();
