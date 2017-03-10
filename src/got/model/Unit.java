@@ -85,9 +85,4 @@ public enum Unit {
 	public static Unit[] getUnitsByCondition(Predicate<Unit> condition){
 		return Arrays.stream(Unit.values()).filter(condition).toArray(Unit[]::new);
 	}
-
-	@Override
-	public String toString() {
-		return "Unit{textureName='" + textureName + "\'} ";
-	}
 }

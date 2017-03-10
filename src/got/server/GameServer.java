@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import com.esotericsoftware.kryo.serializers.DefaultSerializers;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
@@ -14,7 +13,9 @@ import com.esotericsoftware.minlog.Log;
 
 import got.gameObjects.GameMapObject;
 import got.gameObjects.MapPartObject;
+import got.model.Fraction;
 import got.model.Player;
+import got.model.Unit;
 import got.network.Network;
 import got.network.Packages;
 import got.network.Packages.PlayerDisconnected;
@@ -28,6 +29,7 @@ import got.translation.Translator;
 import got.utils.LoaderParams;
 import org.console.Command;
 import org.console.Console;
+import org.console.ValueCommand;
 
 import static got.network.Network.portTCP;
 
@@ -49,7 +51,7 @@ public class GameServer {
 
 
 	public static Server getServer(){
-		Log.set(Log.LEVEL_DEBUG);
+		Log.set(Log.LEVEL_NONE);
 		return server;
 	}
 	
@@ -213,8 +215,8 @@ public class GameServer {
 				(a)->{
 //					if (stm.getCurrentState() instanceof PlanningPhaseState) {
 						GameConfigState gcs = new GameConfigState();
-						stm.changeState(gcs, StateMachine.ChangeAction.PUSH);
-						cns.pushState("gc", null);
+						stm.changeState(gcs, StateMachine.ChangeAction.SET);
+						cns.pushState(new Console.State("gc", null, null, ()->stm.changeState(new PlanningPhaseState(), StateMachine.ChangeAction.SET)));
 						return "Сервер переведен в режим настройки игры.";
 //					}else{
 //						return "Перейти к настройке игры можно только в стадии планирования.";
@@ -233,23 +235,76 @@ public class GameServer {
 						if (mpo == null){
 							return "Регион " + input[1] + " не найден.";
 						}else{
-							cns.pushState("region", mpo);
+							cns.pushState(new Console.State("region", mpo));
 							return "Настрйока региона " + mpo.getName();
 						}
 					}
 				}));
 
-		cns.addCommand(new Command("main.gc.region.fraction", "изменение владельца региона",
-				(input)->{
-					MapPartObject mpo = (MapPartObject) cns.getStateParam("region");
-					return mpo.getFraction().toString();
-				}));
+		cns.addCommand(new ValueCommand<Fraction>("main.gc.region.fraction") {
+			@Override
+			protected Fraction get() {
+				MapPartObject mpo = (MapPartObject) cns.getStateParam("region");
+				return mpo.getFraction();
+			}
 
-		cns.addCommand(new Command("main.gc.region.units", "изменение состава войск в регионе",
-				(input)->{
-					MapPartObject mpo = (MapPartObject) cns.getStateParam("region");
-					return Arrays.toString(mpo.getUnits());
-				}));
+			@Override
+			protected String set(Fraction data) {
+				//todo: replace with network package to clients
+				MapPartObject mpo = (MapPartObject) cns.getStateParam("region");
+				mpo.setFraction(data);
+				GameServer.getServer().sendToAllTCP(new Packages.ChangeRegionFraction(mpo.getID(), data));
+				return "Region fraction set to " + format(data);
+			}
+
+			@Override
+			protected Fraction parse(String... data) {
+				try {
+					return Fraction.valueOf(data[1]);
+				}catch (IllegalArgumentException e){
+					return null;
+				}
+			}
+
+			@Override
+			protected String format(Fraction data) {
+				return data.toString();
+			}
+		});
+
+		cns.addCommand(new ValueCommand<Unit[]>("main.gc.region.units") {
+			@Override
+			protected Unit[] get() {
+				MapPartObject mpo = (MapPartObject) cns.getStateParam("region");
+				return mpo.getUnits();
+			}
+
+			@Override
+			protected String set(Unit[] data) {
+				MapPartObject mpo = (MapPartObject) cns.getStateParam("region");
+				mpo.setUnits(data);
+				GameServer.getServer().sendToAllTCP(new Packages.ChangeUnits(mpo.getID(), data));
+				return "Units set to " + format(data);
+			}
+
+			@Override
+			protected Unit[] parse(String... data) {
+				try{
+					Unit[] result = new Unit[data.length - 1];
+					for (int i = 1; i < data.length; i++) {
+						result[i-1] = Unit.valueOf(data[i]);
+					}
+					return result;
+				}catch(IllegalArgumentException e){
+					return null;
+				}
+			}
+
+			@Override
+			protected String format(Unit[] data) {
+				return Arrays.toString(data);
+			}
+		});
 
 		cns.start();
 

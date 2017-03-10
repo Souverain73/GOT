@@ -35,6 +35,6 @@ public class GameConfigState implements ServerState {
     }
 
     public void finish(){
-        stm.changeState(new PlanningPhaseState(), StateMachine.ChangeAction.REMOVE);
+
     }
 }

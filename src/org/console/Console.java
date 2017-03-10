@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -17,13 +18,30 @@ public class Console {
         String run(String ...args);
     }
 
-    private class State{
+    public static class State{
+        private Runnable enter;
+        private Runnable exit;
+
         private String name;
         private Object param;
 
-        public State(String name, Object param) {
+        public State(String name, Object param, Runnable enter, Runnable exit) {
+            this.enter = enter;
+            this.exit = exit;
             this.name = name;
             this.param = param;
+        }
+
+        public State(String name, Object param) {
+            this(name, param, null, null);
+        }
+
+        protected void onEnter(){
+            if (enter != null) enter.run();
+        }
+
+        protected void onExit(){
+            if (exit != null) exit.run();
         }
     }
 
@@ -176,19 +194,23 @@ public class Console {
         String globalCommandPrefix = "all.";
 
         for (ICommand cmd : commands){
-            if (cmd.getName().startsWith(statePrefix) || cmd.getName().startsWith(globalCommandPrefix)) result.add(cmd);
+            if (cmd.getName().substring(0, cmd.getName().lastIndexOf(".")+1).equals(statePrefix)) result.add(cmd);
+            if (cmd.getName().startsWith(globalCommandPrefix)) result.add(cmd);
         }
 
         return result;
     }
 
-    public void pushState(String name, Object param){
-        states.push(new State(name, param));
+    public void pushState(State st){
+        st.onEnter();
+        states.push(st);
     }
 
     public void popState(){
-        if (!states.peek().name.equals("main"))
+        if (!states.peek().name.equals("main")) {
+            states.peek().onExit();
             states.pop();
+        }
     }
 
     private String getCurrentStateString(){

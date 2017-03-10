@@ -86,6 +86,7 @@ public class Packages {
 		kryo.register(KillUnit.class);
 		kryo.register(PlayerKillUnit.class);
 		kryo.register(EndBattle.class);
+		kryo.register(ChangeRegionFraction.class);
 	}
 
 	public static class NetPackage {
@@ -955,4 +956,17 @@ public class Packages {
     public static class EndBattle extends BroadcastPackage{
 
     }
+
+    public static class ChangeRegionFraction extends BroadcastPackage{
+		public int region;
+		public Fraction fraction;
+
+		public ChangeRegionFraction() {
+		}
+
+		public ChangeRegionFraction(int region, Fraction fraction) {
+			this.region = region;
+			this.fraction = fraction;
+		}
+	}
 }

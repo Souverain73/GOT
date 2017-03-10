@@ -14,7 +14,7 @@ import got.server.GameServer;
 import got.server.PlayerManager;
 import got.server.GameServer.PlayerConnection;
 
-public class PlanningPhaseState implements ServerState{
+public class PlanningPhaseState extends ParallelState{
 	private static final String name = "PlanningPhaseState";
 	private Server server;
 	private StateMachine stm;
@@ -45,24 +45,21 @@ public class PlanningPhaseState implements ServerState{
 	
 	@Override
 	public void recieve(Connection c, Object pkg) {
+		super.recieve(c, pkg);
 		PlayerConnection connection = ((PlayerConnection)c);
 		Player player = connection.player;
-		if (pkg instanceof Ready){
-			Ready msg = ((Ready)pkg);
-			player.setReady(msg.ready);
-			server.sendToAllTCP(new PlayerReady(connection.player.id, msg.ready));
-			//if all players is ready change phase to "FIRE PHASE"
-			if (PlayerManager.instance().isAllPlayersReady()){
-				server.sendToAllTCP("Next phase");
-				stm.changeState(new FirePhaseState(), StateMachine.ChangeAction.SET);
-			}
-		}
 		
 		if (pkg instanceof SetAction){
 			SetAction msg = ((SetAction)pkg);
 			//if all is ok notify all clients
 			server.sendToAllTCP(new PlayerSetAction(msg.region, msg.action));
 		}
+	}
+
+	@Override
+	protected void onReadyToChangeState() {
+		server.sendToAllTCP("Next phase");
+		stm.changeState(new FirePhaseState(), StateMachine.ChangeAction.SET);
 	}
 
 }

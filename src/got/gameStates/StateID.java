@@ -35,6 +35,7 @@ public class StateID {
 			case HELP_PHASE: return new HelpPhase();
 			case BATTLE_RESULT_PHASE: return new BattleResultState();
 			case SELECT_HOUSE_CARD_PHASE: return new SelectHouseCardPhase();
+			case GAME_CONFIG_STATE: return new GameConfigState();
 		}
 		return null;
 	}
