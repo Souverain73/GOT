@@ -147,23 +147,23 @@
 			<texture filename="TheNarrowSea.png"/>
 		</region>
 		<region name="WidowsWatch" type="GROUND" x="937" y="552">
-			<actionpos x="0" y="0"/>
-			<unitpos x="0" y="0"/>
+			<actionpos x="48" y="135"/>
+			<unitpos x="90" y="75"/>
 			<texture filename="WidowsWatch.png"/>
 		</region>
 		<region name="TheStonyShore" type="GROUND" x="149" y="415">
-			<actionpos x="0" y="0"/>
-			<unitpos x="0" y="0"/>
+			<actionpos x="76" y="164"/>
+			<unitpos x="260" y="220"/>
 			<texture filename="TheStonyShore.png"/>
 		</region>
 		<region name="WhiteHarbor" type="GROUND" x="745" y="414">
-			<actionpos x="0" y="0"/>
-			<unitpos x="0" y="0"/>
+			<actionpos x="132" y="219"/>
+			<unitpos x="190" y="80"/>
 			<texture filename="WhiteHarbor.png"/>
 		</region>
 		<region name="Winterfell" type="GROUND" x="259" y="161">
-			<actionpos x="0" y="0"/>
-			<unitpos x="0" y="0"/>
+			<actionpos x="611" y="152"/>
+			<unitpos x="355" y="520"/>
 			<texture filename="Winterfell.png"/>
 		</region>
 		<region name="TheShiveringSea" type="GROUND" x="1025" y="0">
@@ -172,13 +172,13 @@
 			<texture filename="TheShiveringSea.png"/>
 		</region>
 		<region name="Karhold" type="GROUND" x="952" y="142">
-			<actionpos x="0" y="0"/>
-			<unitpos x="0" y="0"/>
+			<actionpos x="282" y="116"/>
+			<unitpos x="165" y="215"/>	
 			<texture filename="Karhold.png"/>
 		</region>
 		<region name="CastleBlack" type="GROUND" x="605" y="0">
-			<actionpos x="0" y="0"/>
-			<unitpos x="0" y="0"/>
+			<actionpos x="95" y="191"/>
+			<unitpos x="335" y="50"/>
 			<texture filename="CastleBlack.png"/>
 		</region>
 		<region name="SunsetSea" type="GROUND" x="0" y="827">
@@ -187,8 +187,8 @@
 			<texture filename="SunsetSea.png"/>
 		</region>
 		<region name="BayOfIce" type="GROUND" x="0" y="0">
-			<actionpos x="0" y="0"/>
-			<unitpos x="0" y="0"/>
+			<actionpos x="292" y="115"/>
+			<unitpos x="90" y="380"/>
 			<texture filename="BayOfIce.png"/>
 		</region>
 		<region name="FlintsFinger" type="GROUND" x="161" y="858">

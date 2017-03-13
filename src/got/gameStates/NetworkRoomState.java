@@ -122,7 +122,6 @@ public class NetworkRoomState extends AbstractGameState{
 		if (pkg instanceof SetFractions){
 			SetFractions msg = ((SetFractions)pkg);
 			PlayerManager.instance().initFractions(msg.fractions);
-			Game.init(PlayerManager.instance().getPlayersCount());
 		}
 	}
 }

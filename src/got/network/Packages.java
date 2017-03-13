@@ -236,11 +236,15 @@ public class Packages {
 	 * устанавливает положение игроков на треках.
 	 */
 	public static class SetTrack extends BroadcastPackage {
-		int track;
-		int data[];
+		public int track;
+		public Fraction [] data;
 
 		public SetTrack() {
-			data = new int[7];
+		}
+
+		public SetTrack(int track, Fraction[] data) {
+			this.track = track;
+			this.data = data;
 		}
 	}
 
@@ -967,6 +971,14 @@ public class Packages {
 		public ChangeRegionFraction(int region, Fraction fraction) {
 			this.region = region;
 			this.fraction = fraction;
+		}
+
+		@Override
+		public String toString() {
+			return "ChangeRegionFraction{" +
+					"region=" + region +
+					", fraction=" + fraction +
+					'}';
 		}
 	}
 }

@@ -2,7 +2,9 @@ package got.server;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import got.gameStates.GameConfigState;
 import got.model.Fraction;
+import got.model.Game;
 import got.model.Player;
 import got.utils.Utils;
 
@@ -124,7 +126,7 @@ public class PlayerManager {
 	
 	public void initRandomFractions(){
 		Fraction [] fractions = new Fraction[getPlayersCount()];
-		Fraction [] pool = Fraction.values();
+		Fraction [] pool = Game.instance().getFractionsPool();
 		
 		int count = getPlayersCount();
 		for (int i=0; i<count; i++){

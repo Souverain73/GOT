@@ -1,10 +1,13 @@
 package got.model;
 
+import java.util.Arrays;
+
 public class Track {
 	private String name;
 	private Fraction[] data;
 	
 	public Track(String name, Fraction[] data){
+		this.name = name;
 		this.data = data;
 	}
 	
@@ -48,5 +51,13 @@ public class Track {
 	
 	public Fraction getFirst(){
 		return data[0];
+	}
+
+	@Override
+	public String toString() {
+		return "Track{" +
+				"name='" + name + '\'' +
+				", data=" + Arrays.toString(data) +
+				'}';
 	}
 }

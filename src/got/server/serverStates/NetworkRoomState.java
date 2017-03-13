@@ -77,9 +77,13 @@ public class NetworkRoomState implements ServerState {
 							}
 						}
 						PlayerManager.instance().initRandomFractions();
-						
-						Game.init(PlayerManager.instance().getPlayersCount());
+						Game.instance().initDefaultTracks();
+
 						GameServer.getServer().sendToAllTCP(new Packages.SetFractions(PlayerManager.instance().getFractions()));
+
+						GameServer.getServer().sendToAllTCP(new Packages.SetTrack(Game.THRONE_TRACK, Game.instance().getTrack(Game.THRONE_TRACK).getData()));
+						GameServer.getServer().sendToAllTCP(new Packages.SetTrack(Game.SWORD_TRACK, Game.instance().getTrack(Game.SWORD_TRACK).getData()));
+						GameServer.getServer().sendToAllTCP(new Packages.SetTrack(Game.CROWN_TRACK, Game.instance().getTrack(Game.CROWN_TRACK).getData()));
 						
 						connection.sendTCP(new Packages.ServerMessage("Start!!"));
 						stm.changeState(new MainState(), StateMachine.ChangeAction.SET);

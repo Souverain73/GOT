@@ -17,7 +17,6 @@ import got.server.GameServer.PlayerConnection;
 public class PlanningPhaseState extends ParallelState{
 	private static final String name = "PlanningPhaseState";
 	private Server server;
-	private StateMachine stm;
 	
 	@Override
 	public String getName() {
@@ -26,11 +25,12 @@ public class PlanningPhaseState extends ParallelState{
 
 	@Override
 	public void enter(StateMachine stm) {
+		super.enter(stm);
 		for (Player pl: PlayerManager.instance().getPlayersList()){
 			pl.setReady(false);
 		}
 		server = GameServer.getServer();
-		this.stm = stm;
+		GameServer.instance().execGameConfig();
 	}
 
 	@Override

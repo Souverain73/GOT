@@ -41,7 +41,7 @@ public abstract class StepByStepState implements ServerState, IPauseable{
 
         //get first player on throne track
         currentPlayer = PlayerManager.instance().getPlayerByFraction(
-                Game.instance().getThroneTrack().getFirst());
+                Game.instance().getTrack(Game.THRONE_TRACK).getFirst());
         //Правильно было бы проверить, может ли игрок совершить ход.
         //Но в текущей архитектуе сервер самостоятельно не может этого сделать,
         //поэтому отдадим это на сторону клиента.
@@ -96,7 +96,7 @@ public abstract class StepByStepState implements ServerState, IPauseable{
     protected void nextTurn(){
         do {
             currentPlayer = PlayerManager.instance().getPlayerByFraction(
-                    Game.instance().getThroneTrack().getNext(currentPlayer.getFraction()));
+                    Game.instance().getTrack(Game.THRONE_TRACK).getNext(currentPlayer.getFraction()));
         }while (playersReady[currentPlayer.id]);
         GameServer.getServer().sendToAllTCP(new Packages.PlayerTurn(currentPlayer.id));
     }

@@ -159,24 +159,29 @@ public class Console {
 
                     boolean executed = false;
                     String[] input = line.split("\\s");
-                    ICommand cmd = getCommandForCurrentState(input[0]);
-                    if (cmd!=null){
-                        executed = true;
-                        try {
-                            System.out.println(cmd.run(input));
-                        } catch (ArrayIndexOutOfBoundsException e) {
-                            System.out.println("Недостаточно аргументов для выполнения команды");
-                        }
-                    }
-
-                    if (!executed) {
-                        System.out.println("Команда " + input[0] + " не найдена.");
-                    }
+                    executeCommand(input);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         })).start();
+    }
+
+    public void executeCommand(String[] input){
+        boolean executed = false;
+        ICommand cmd = getCommandForCurrentState(input[0]);
+        if (cmd!=null){
+            executed = true;
+            try {
+                System.out.println(cmd.run(input));
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("Недостаточно аргументов для выполнения команды");
+            }
+        }
+
+        if (!executed) {
+            System.out.println("Команда " + input[0] + " не найдена.");
+        }
     }
 
     private ICommand getCommandForCurrentState(String name){

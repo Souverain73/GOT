@@ -6,14 +6,16 @@ package org.console;
  */
 public abstract class ValueCommand<T> implements Console.ICommand{
     private String name;
+    private String valueName;
 
     protected abstract T get();
     protected abstract String set(T data);
     protected abstract T parse(String... data);
     protected abstract String format(T data);
 
-    public ValueCommand(String name){
+    public ValueCommand(String name, String valueName){
         this.name = name;
+        this.valueName = valueName;
     }
 
     @Override
@@ -23,13 +25,13 @@ public abstract class ValueCommand<T> implements Console.ICommand{
 
     @Override
     public String getInfo() {
-        return "Комманда для установки значения";
+        return "Комманда для установки значения [" + valueName + "]";
     }
 
     @Override
     public String getDetailedInfo() {
-        return "Комманда для утсановки значения. " +
-                "Вызов комманды без агрументов вернет текущее значениею." +
+        return "Комманда для утсановки значения [" + valueName + "]" +
+                "Вызов комманды без агрументов вернет текущее значение." +
                 "Вызов с агрументами установит новое, если это возможно.";
     }
 

@@ -12,7 +12,7 @@ public class StanisBaratheon extends ActiveHouseCard {
     @Override
     public void onPlace(Fraction fraction) {
         super.onPlace(fraction);
-        if (Game.instance().getThroneTrack().compare(placerFraction, enemyFraction) < 0){
+        if (Game.instance().getTrack(Game.THRONE_TRACK).compare(placerFraction, enemyFraction) < 0){
             bonusPower += 1;
         }
     }

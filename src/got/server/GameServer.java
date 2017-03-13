@@ -13,9 +13,7 @@ import com.esotericsoftware.minlog.Log;
 
 import got.gameObjects.GameMapObject;
 import got.gameObjects.MapPartObject;
-import got.model.Fraction;
-import got.model.Player;
-import got.model.Unit;
+import got.model.*;
 import got.network.Network;
 import got.network.Packages;
 import got.network.Packages.PlayerDisconnected;
@@ -34,6 +32,17 @@ import org.console.ValueCommand;
 import static got.network.Network.portTCP;
 
 public class GameServer {
+
+	private static GameServer _instance;
+
+	public static GameServer instance(){
+		return _instance;
+	}
+
+	private Console cns;
+	private boolean gameConfigured;
+	private GamePreset gp;
+
 	public static class Shared{
 		public int attackerRegionID;
 		public int defenderRegionID;
@@ -83,9 +92,13 @@ public class GameServer {
 	public GameServer(int tcpPort, int udpPort, boolean console) throws IOException{
 		if (server!=null) throw new IOException("Server already exist");
 
+		_instance = this;
+
 		Translator.init(Language.RUSSIAN);
 		map = new GameMapObject();
 		map.init(new LoaderParams(new String[]{"filename", MAP_FILE}));
+
+		gp = new GamePreset(System.getProperty("server.gamePreset", Constants.presetFile));
 
 		Server server = new Server(){
 			@Override
@@ -177,7 +190,7 @@ public class GameServer {
 		System.out.println("[Control]:ServerReady");
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-		Console cns = new Console();
+		cns = new Console();
 		cns.addCommand(new Command("main.stop",
 				"Остановка сервера",
 				(a)->{
@@ -241,7 +254,7 @@ public class GameServer {
 					}
 				}));
 
-		cns.addCommand(new ValueCommand<Fraction>("main.gc.region.fraction") {
+		cns.addCommand(new ValueCommand<Fraction>("main.gc.region.fraction", "Фракция (Владелец)") {
 			@Override
 			protected Fraction get() {
 				MapPartObject mpo = (MapPartObject) cns.getStateParam("region");
@@ -272,7 +285,7 @@ public class GameServer {
 			}
 		});
 
-		cns.addCommand(new ValueCommand<Unit[]>("main.gc.region.units") {
+		cns.addCommand(new ValueCommand<Unit[]>("main.gc.region.units", "Войско") {
 			@Override
 			protected Unit[] get() {
 				MapPartObject mpo = (MapPartObject) cns.getStateParam("region");
@@ -306,14 +319,68 @@ public class GameServer {
 			}
 		});
 
+		cns.addCommand(new ValueCommand<Fraction[]>("main.fractions", "Пул фракций") {
+			@Override
+			protected Fraction[] get() {
+				return Game.instance().getFractionsPool();
+			}
+
+			@Override
+			protected String set(Fraction[] data) {
+				Game.instance().setFractionsPool(data);
+				return "Пул фракций изменен";
+			}
+
+			@Override
+			protected Fraction[] parse(String... data) {
+				try{
+					Fraction[] result = new Fraction[data.length - 1];
+					for (int i = 1; i < data.length; i++) {
+						result[i-1] = Fraction.valueOf(data[i]);
+					}
+					return result;
+				}catch(IllegalArgumentException e){
+					return null;
+				}
+			}
+
+			@Override
+			protected String format(Fraction[] data) {
+				return Arrays.toString(data);
+			}
+		});
+
+		cns.addCommand(new Command("main.track", "Просмотр треков",
+				(input)->{
+					if (input.length == 1){
+						return "Возможные варианты: THRONE, SWORD, CROW";
+					}else{
+						switch(input[1].toLowerCase()){
+							case "throne": return Game.instance().getTrack(Game.THRONE_TRACK).toString();
+							case "sword": return Game.instance().getTrack(Game.SWORD_TRACK).toString();
+							case "crow": return Game.instance().getTrack(Game.CROWN_TRACK).toString();
+							default: return "Трек " + input[1] + " не найден. Возможные варианты: THRONE, SWORD, CROW";
+						}
+					}
+				}));
+
 		cns.start();
+
+		gp.executeInit(cns);
 
 		while (true){
 			executeTasks();
 		}
 
 	}
-	
+
+	public void execGameConfig(){
+		if (!gameConfigured){
+			gp.executeConfig(cns);
+			gameConfigured = true;
+		}
+	}
+
 	public void registerTask(Runnable task){
 		taskPool.add(task);
 	}

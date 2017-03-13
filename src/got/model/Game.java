@@ -1,105 +1,77 @@
 package got.model;
 
-import got.model.Track;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Souverain73 This class handles all Game data like tracks, provision,
  *         etc.
  */
+
 public class Game {
 	private static Game _instance = null;
+	private Fraction[] fractionsPool;
+	private Track[] tracks;
+	private SuplyTrack suplyTrack;
+
+	public static final int THRONE_TRACK = 0;
+	public static final int CROWN_TRACK = 1;
+	public static final int SWORD_TRACK = 2;
 
 	private Game() {
-	}
-
-	public static void init(int playersCount){
-		_instance = new Game();
-		_instance.__init(playersCount);
-	}
-	
-	public static Game instance() {
-		if (_instance == null) {
-			throw new IllegalStateException("You must init Game for current players before you can use it. use Game.init(playersCount)");
-		}
-		return _instance;
-	}
-	
-//	private Fraction[][] throneDefault = new Fraction[][] { { Fraction.STARK },
-//			{ Fraction.STARK, Fraction.LANISTER },
-//			{ Fraction.STARK, Fraction.LANISTER, Fraction.BARATHEON },
-//			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY },
-//			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY, Fraction.TYRELL },
-//			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY, Fraction.TYRELL,
-//					Fraction.MARTEL } };
-//
-//	private Fraction[][] swordDefault = new Fraction[][] { { Fraction.STARK },
-//			{ Fraction.STARK, Fraction.LANISTER },
-//			{ Fraction.STARK, Fraction.LANISTER, Fraction.BARATHEON },
-//			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY },
-//			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY, Fraction.TYRELL },
-//			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY, Fraction.TYRELL,
-//					Fraction.MARTEL } };
-//
-//	private Fraction[][] crowDefault = new Fraction[][] { { Fraction.STARK },
-//			{ Fraction.STARK, Fraction.LANISTER },
-//			{ Fraction.STARK, Fraction.LANISTER, Fraction.BARATHEON },
-//			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY },
-//			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY, Fraction.TYRELL },
-//			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY, Fraction.TYRELL,
-//					Fraction.MARTEL } };
-
-//Baratheon vs Tyrell
-	private Fraction[][] throneDefault = new Fraction[][] { { Fraction.BARATHEON },
-			{ Fraction.BARATHEON, Fraction.TYRELL },
-			{ Fraction.STARK, Fraction.LANISTER, Fraction.BARATHEON },
-			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY },
-			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY, Fraction.TYRELL },
-			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY, Fraction.TYRELL,
-					Fraction.MARTEL } };
-
-	private Fraction[][] swordDefault = new Fraction[][] { { Fraction.BARATHEON },
-			{ Fraction.BARATHEON, Fraction.TYRELL },
-			{ Fraction.STARK, Fraction.LANISTER, Fraction.BARATHEON },
-			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY },
-			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY, Fraction.TYRELL },
-			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY, Fraction.TYRELL,
-					Fraction.MARTEL } };
-
-	private Fraction[][] crowDefault = new Fraction[][] { { Fraction.BARATHEON },
-			{ Fraction.BARATHEON, Fraction.TYRELL },
-			{ Fraction.STARK, Fraction.LANISTER, Fraction.BARATHEON },
-			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY },
-			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY, Fraction.TYRELL },
-			{ Fraction.BARATHEON, Fraction.LANISTER, Fraction.STARK, Fraction.GREYJOY, Fraction.TYRELL,
-					Fraction.MARTEL } };
-
-
-	Track throneTrack;
-	Track swordTrack;
-	Track crowTrack;
-	SuplyTrack suplyTrack;
-	// victoryTrack;
-
-	public void __init(int playersCount) {
-		throneTrack = new Track("Throne", throneDefault[playersCount-1]);
-		swordTrack = new Track("Sword", swordDefault[playersCount-1]);
-		crowTrack = new Track("Crow", crowDefault[playersCount-1]);
+		tracks = new Track[3];
+		tracks[THRONE_TRACK] = new Track("THRONE", null);
+		tracks[CROWN_TRACK]  = new Track("CROWN", null);
+		tracks[SWORD_TRACK]  = new Track("SWORD", null);
 		suplyTrack = new SuplyTrack();
 	}
 
-	public Track getThroneTrack() {
-		return throneTrack;
+	public static Game instance() {
+		if (_instance == null) {
+			_instance = new Game();
+		}
+		return _instance;
 	}
 
-	public Track getSwordTrack() {
-		return swordTrack;
+
+	public void initDefaultTracks(){
+		getTrack(THRONE_TRACK).setData(getFractionsPool());
+		getTrack(CROWN_TRACK).setData(getFractionsPool());
+		getTrack(SWORD_TRACK).setData(getFractionsPool());
 	}
 
-	public Track getCrowTrack() {
-		return crowTrack;
+	public Track getTrack(int id){
+		if (id < 0 || id > 2) return null;
+		return tracks[id];
+	}
+
+	public void setTrackData(int id, Fraction[] data){
+		getTrack(id).setData(data);
 	}
 
 	public SuplyTrack getSuplyTrack() {
 		return suplyTrack;
+	}
+
+	public void setFractionsPool(Fraction[] fractionsPool) {
+		if (fractionsPool.length < Fraction.values().length){
+			List<Fraction> fp = new ArrayList<>();
+			fp.addAll(Arrays.asList(fractionsPool));
+			for (Fraction f : Fraction.values()){
+				if (!fp.contains(f))
+					fp.add(f);
+			}
+			fractionsPool = fp.toArray(new Fraction[0]);
+		}
+		this.fractionsPool = fractionsPool;
+	}
+
+	public Fraction[] getFractionsPool() {
+		if (fractionsPool == null){
+			return Fraction.values();
+		}
+
+		return fractionsPool;
 	}
 }
