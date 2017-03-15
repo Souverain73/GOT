@@ -1,11 +1,14 @@
-package got.gameObjects.interfaceControls;
+package got.gameObjects;
 
-import got.gameObjects.MapPartObject;
+import got.Constants;
 import got.gameStates.GameState;
 
+import got.gameStates.PlanningPhase;
 import got.graphics.Effect;
 import got.graphics.GraphicModule;
 
+import got.model.PowerToken;
+import got.server.PlayerManager;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -14,6 +17,9 @@ import org.joml.Vector3f;
  */
 public class DebugMapPart extends MapPartObject {
     public int debugState=0;
+    private boolean showUnits;
+    private boolean showAction;
+    private boolean showToken;
 
     @Override
     protected void mouseEnter() {
@@ -45,6 +51,9 @@ public class DebugMapPart extends MapPartObject {
     @Override
     public void draw(GameState st) {
         if (!isVisible()) return;
+        if (texture == null){
+            super.initTexture();
+        }
         drawed = true;
         GraphicModule.instance().setDrawSpace(this.space);
         if (debugState == 0){
@@ -68,31 +77,38 @@ public class DebugMapPart extends MapPartObject {
         Vector2f cp = getPos();
         texture.draw(cp.x, cp.y, w, h, 0);
         GraphicModule.instance().resetEffect();
-//        float actImgSize = Constants.ACTION_IMAGE_SIZE;
-//        float halfActImgSize = Constants.ACTION_IMAGE_SIZE/2;
-//        float tokenImageSize = Constants.POWER_TOKEN_IMAGE_SIZE;
-//        if (st instanceof PlanningPhase && action != null && fraction != PlayerManager.getSelf().getFraction()) {
-//            //А тут значит задник.
-//            fraction.getBackTexture().draw(cp.x + act_x - halfActImgSize, cp.y + act_y - halfActImgSize,
-//                    actImgSize, actImgSize);
-//        }else{
-//            if (action != null){
-//                action.getTexture().draw(cp.x + act_x - halfActImgSize, cp.y + act_y -halfActImgSize,
-//                        actImgSize, actImgSize);
-//            }
-//        }
-//
-//        GraphicModule.instance().setEffect(
-//                new Effect().Multiply(fraction.getMultiplyColor())
-//        );
-//        if (units != null){
-//            units.forEach(unit->unit.draw(st));
-//        }
-//
-//        if (powerToken){
-//            PowerToken.getTexture().draw(cp.x + token_x, cp.y + token_y,
-//                    tokenImageSize, tokenImageSize);
-//        }
+
+        float actImgSize = Constants.ACTION_IMAGE_SIZE;
+        float halfActImgSize = Constants.ACTION_IMAGE_SIZE/2;
+        float tokenImageSize = Constants.POWER_TOKEN_IMAGE_SIZE;
+        if (action != null && showAction){
+            action.getTexture().draw(cp.x + act_x - halfActImgSize, cp.y + act_y -halfActImgSize,
+                actImgSize, actImgSize);
+        }
+
+        GraphicModule.instance().setEffect(
+                new Effect().Multiply(fraction.getMultiplyColor())
+        );
+        if (units != null && showUnits){
+            units.forEach(unit->unit.draw(st));
+        }
+
+        if (powerToken && showToken){
+            PowerToken.getTexture().draw(cp.x + token_x, cp.y + token_y,
+                    tokenImageSize, tokenImageSize);
+        }
         GraphicModule.instance().resetEffect();
+    }
+
+    public void toggleUnits(){
+        showUnits = !showUnits;
+    }
+
+    public void toggleAction(){
+        showAction = !showAction;
+    }
+
+    public void toggleToken(){
+        showToken = !showToken;
     }
 }

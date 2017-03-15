@@ -1,8 +1,11 @@
 package got.gameStates;
 
 import got.InputManager;
+import got.gameObjects.DebugMapPart;
 import got.gameObjects.GameMapObject;
 import got.gameObjects.MapPartObject;
+import got.gameObjects.interfaceControls.ImageButton;
+import got.graphics.DrawSpace;
 import got.interfaces.IClickListener;
 import got.utils.LoaderParams;
 
@@ -21,6 +24,27 @@ public class MapViewState extends AbstractGameState implements IClickListener{
         map.init(new LoaderParams(new String[]{"filename", MAP_FILE}));
 
         addObject(map);
+
+        addObject(new ImageButton("Power.png", 0, 0, 100, 50, null).setSpace(DrawSpace.SCREEN).setCallback((sender, params)->{
+            map.forEachRegion(region->{
+                DebugMapPart dbr = (DebugMapPart) region;
+                dbr.toggleAction();
+            });
+        }));
+
+        addObject(new ImageButton("Warriors.png", 0, 50, 100, 50, null).setSpace(DrawSpace.SCREEN).setCallback((sender, params)->{
+            map.forEachRegion(region->{
+                DebugMapPart dbr = (DebugMapPart) region;
+                dbr.toggleUnits();
+            });
+        }));
+
+        addObject(new ImageButton("plus.png", 0, 100, 50, 50, null).setSpace(DrawSpace.SCREEN).setCallback((sender, params)->{
+            map.forEachRegion(region->{
+                DebugMapPart dbr = (DebugMapPart) region;
+                dbr.toggleToken();
+            });
+        }));
     }
 
     @Override

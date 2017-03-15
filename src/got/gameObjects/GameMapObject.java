@@ -4,21 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import got.gameObjects.interfaceControls.DebugMapPart;
+import got.model.Action;
 import got.model.Fraction;
-import got.utils.UI;
 import org.w3c.dom.*;
 
 import got.gameStates.GameState;
-import got.graphics.Texture;
-import got.graphics.TextureManager;
 import got.model.Unit;
 import got.utils.LoaderParams;
 
@@ -170,6 +165,12 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 				}
 
 				mapPart.init(params);
+				if (debug){
+					mapPart.setAction(Action.MONEY);
+					mapPart.setUnits(new Unit[]{Unit.KNIGHT, Unit.SOLDIER, Unit.SIEGE, Unit.SHIP});
+					mapPart.setFraction(Fraction.LANISTER);
+					mapPart.placePowerToken();
+				}
 				addRegion(mapPart);
 			}
 		}catch(Exception e){

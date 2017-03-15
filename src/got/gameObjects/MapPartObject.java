@@ -160,7 +160,7 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		super.draw(st);
 	}
 
-	private void initTexture() {
+	protected void initTexture() {
 		texture = TextureManager.instance().loadTexture(textureName);
 		w = texture.getWidth();
 		h = texture.getHeight();
