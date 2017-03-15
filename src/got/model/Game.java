@@ -1,5 +1,8 @@
 package got.model;
 
+import got.network.Packages;
+import got.server.PlayerManager;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,9 +39,10 @@ public class Game {
 
 
 	public void initDefaultTracks(){
-		getTrack(THRONE_TRACK).setData(getFractionsPool());
-		getTrack(CROWN_TRACK).setData(getFractionsPool());
-		getTrack(SWORD_TRACK).setData(getFractionsPool());
+		Fraction[] data = PlayerManager.instance().getFractions();
+		getTrack(THRONE_TRACK).setData(data);
+		getTrack(CROWN_TRACK).setData(data);
+		getTrack(SWORD_TRACK).setData(data);
 	}
 
 	public Track getTrack(int id){

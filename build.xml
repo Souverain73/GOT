@@ -120,6 +120,9 @@
 		<copy todir="${build.data}/translations">
 			<fileset dir="${data}/translations"/>
 		</copy>
+		<copy todir="${build.data}/presets">
+			<fileset dir="${data}/presets"/>
+		</copy>
 	</target>
 
 	<target name="lib">

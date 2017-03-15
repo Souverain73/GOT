@@ -107,7 +107,7 @@ public class HouseCardsLoader {
 
             HouseCard cardObject = null;
             textureName = textureName == null ? defaultTextureName : textureName;
-            lp.put("texture", TextureManager.instance().loadTexture(TEXTURE_BASE + textureName));
+            lp.put("texture", TEXTURE_BASE + textureName);
             try {
                 Class<?> cardClass = Class.forName(className);
                 cardObject = (HouseCard)cardClass.newInstance();

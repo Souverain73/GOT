@@ -1,2 +1,2 @@
 @echo off
-java -jar GOT.jar %*
+java -Dsystem.logLevel=2 -jar GOT.jar %*
