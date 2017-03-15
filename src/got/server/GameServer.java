@@ -30,6 +30,7 @@ import org.console.Console;
 import org.console.ValueCommand;
 
 import static got.network.Network.portTCP;
+import static java.lang.Thread.sleep;
 
 public class GameServer {
 
@@ -60,13 +61,15 @@ public class GameServer {
 
 
 	public static Server getServer(){
-		Log.set(Log.LEVEL_NONE);
 		return server;
 	}
 	
 	public static void main(String[] args) throws IOException {
 		int tcpPort;
 		int udpPort;
+
+		int logLevel = Integer.valueOf(System.getProperty("system.logLevel", "6"));
+		Log.set(logLevel);
 
 		if (args.length < 2){
 			new GameServer(portTCP, Network.portUDP, true);
@@ -227,7 +230,7 @@ public class GameServer {
 				"Перевод сервера в режим настройки игры. В режиме настройки можно изменять расстановку войск на карте, установленные приказы, положения на треке и т.д.",
 				(a)->{
 //					if (stm.getCurrentState() instanceof PlanningPhaseState) {
-						GameConfigState gcs = new GameConfigState();
+						GameConfigState gcs = new GameConfigState(true);
 						stm.changeState(gcs, StateMachine.ChangeAction.SET);
 						cns.pushState(new Console.State("gc", null, null, ()->stm.changeState(new PlanningPhaseState(), StateMachine.ChangeAction.SET)));
 						return "Сервер переведен в режим настройки игры.";
@@ -368,22 +371,24 @@ public class GameServer {
 
 		gp.executeInit(cns);
 
-		while (true){
-			executeTasks();
-		}
+//		while (true){
+//			executeTasks();
+//		}
 
 	}
 
 	public void execGameConfig(){
 		if (!gameConfigured){
+			cns.pushState(new Console.State("gc", null));
 			gp.executeConfig(cns);
+			cns.popState();
 			gameConfigured = true;
 		}
 	}
 
-	public void registerTask(Runnable task){
-		taskPool.add(task);
-	}
+//	public void registerTask(Runnable task){
+//		taskPool.add(task);
+//	}
 	
 	public void executeTasks(){
 		while(!taskPool.isEmpty()){

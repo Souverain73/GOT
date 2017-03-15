@@ -1,13 +1,20 @@
 package got.server.serverStates;
 
 import com.esotericsoftware.kryonet.Connection;
+import got.GameClient;
 import got.gameStates.StateID;
+import got.server.GameServer;
 
 /**
  * Created by Souverain73 on 09.03.2017.
  */
 public class GameConfigState implements ServerState {
     private StateMachine stm;
+    private boolean onDemand;
+
+    public GameConfigState(boolean isOnDemand){
+        onDemand = isOnDemand;
+    }
 
     @Override
     public String getName() {
@@ -21,7 +28,11 @@ public class GameConfigState implements ServerState {
 
     @Override
     public void enter(StateMachine stm) {
-            this.stm = stm;
+        this.stm = stm;
+        if (!onDemand){
+            executePreset();
+            stm.changeState(new PlanningPhaseState(), StateMachine.ChangeAction.SET);
+        }
     }
 
     @Override
@@ -36,5 +47,9 @@ public class GameConfigState implements ServerState {
 
     public void finish(){
 
+    }
+
+    public void executePreset(){
+        GameServer.instance().execGameConfig();
     }
 }

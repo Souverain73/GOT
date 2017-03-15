@@ -20,7 +20,7 @@ public class MainState implements ServerState {
 
 	@Override
 	public void enter(StateMachine stm) {
-		stm.changeState(new PlanningPhaseState(), StateMachine.ChangeAction.SET);
+		stm.changeState(new GameConfigState(false), StateMachine.ChangeAction.SET);
 	}
 
 	@Override

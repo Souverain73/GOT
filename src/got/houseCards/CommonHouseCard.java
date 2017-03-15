@@ -3,6 +3,7 @@ package got.houseCards;
 import got.GameClient;
 import got.gameObjects.battleDeck.BattleDeckObject;
 import got.graphics.Texture;
+import got.graphics.TextureManager;
 import got.model.Fraction;
 import got.model.Player;
 import got.network.Packages;
@@ -16,6 +17,7 @@ public class CommonHouseCard implements HouseCard {
     private int power;
     private int swords;
     private int towers;
+    private String textureName;
     private Texture texture;
     private String title;
     protected Fraction placerFraction;
@@ -26,7 +28,7 @@ public class CommonHouseCard implements HouseCard {
         this.power = (Integer)params.get("power");
         this.swords = (Integer)params.get("swords");
         this.towers = (Integer)params.get("towers");
-        this.texture = (Texture)params.get("texture");
+        this.textureName = (String)params.get("texture");
         this.title = (String)params.get("title");
     }
 
@@ -65,6 +67,9 @@ public class CommonHouseCard implements HouseCard {
 
     @Override
     public Texture getTexture() {
+        if (texture == null){
+            texture = TextureManager.instance().loadTexture(textureName);
+        }
         return texture;
     }
 

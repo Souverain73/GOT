@@ -30,7 +30,6 @@ public class PlanningPhaseState extends ParallelState{
 			pl.setReady(false);
 		}
 		server = GameServer.getServer();
-		GameServer.instance().execGameConfig();
 	}
 
 	@Override

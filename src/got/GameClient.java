@@ -118,7 +118,10 @@ public class GameClient {
 	
 	private GameClient(){
 		Constants.read(System.getProperty("client.config", Constants.DEFAULT_CONFIG_FILE));
-		Log.set(Log.LEVEL_INFO);
+
+		int logLevel = Integer.valueOf(System.getProperty("system.logLevel", "6"));
+		Log.set(logLevel);
+
 		graphics = GraphicModule.instance();
 		stm = new StateMachine();
 		modalStates = new LinkedList<>();
