@@ -75,6 +75,7 @@ public class Constants {
 			case "UNIT_SCALE": UNIT_SCALE = Float.valueOf(value); break;
 			case "UNIT_STEP": UNIT_STEP = Float.valueOf(value); break;
 			case "POWER_TOKEN_IMAGE_SIZE": POWER_TOKEN_IMAGE_SIZE = Float.valueOf(value); break;
+			case "DEFAULT_HOST": DEFAULT_HOST = value; break;
 			default:
 				System.out.println("Can't find parameter " + name);
 		}

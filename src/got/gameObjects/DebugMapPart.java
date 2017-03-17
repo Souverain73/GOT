@@ -3,12 +3,11 @@ package got.gameObjects;
 import got.Constants;
 import got.gameStates.GameState;
 
-import got.gameStates.PlanningPhase;
 import got.graphics.Effect;
 import got.graphics.GraphicModule;
+import got.gameObjects.interfaceControls.AbstractButtonObject;
 
 import got.model.PowerToken;
-import got.server.PlayerManager;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -110,5 +109,11 @@ public class DebugMapPart extends MapPartObject {
 
     public void toggleToken(){
         showToken = !showToken;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("DMP{Name=%s; Building=%s; Resources=%s; Influence=%s;}", getName(),
+                getBuildingLevel(), -1, getInfluencePoints());
     }
 }

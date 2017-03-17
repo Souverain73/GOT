@@ -50,7 +50,8 @@ public class MapViewState extends AbstractGameState implements IClickListener{
     @Override
     public void click(InputManager.ClickEvent event) {
         if (event.getTarget() instanceof MapPartObject) {
-            MapPartObject region = (MapPartObject) event.getTarget();
+            DebugMapPart region = (DebugMapPart) event.getTarget();
+            System.out.println(region.toString());
         }
     }
 }

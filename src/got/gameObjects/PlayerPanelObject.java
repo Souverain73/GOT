@@ -2,11 +2,8 @@ package got.gameObjects;
 
 import got.gameStates.GameState;
 import got.graphics.DrawSpace;
-import got.graphics.Text;
 import got.model.Player;
 import org.joml.Vector2f;
-
-import static sun.audio.AudioPlayer.player;
 
 /**
  * Created by Souverain73 on 24.11.2016.

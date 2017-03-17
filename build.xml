@@ -33,7 +33,7 @@
 	</target>
 
 	<target name="compile" depends="init" description="Compile the source.">
-		<javac destdir="${build.classes}" includeantruntime="false" optimize="on" debug="on" source="${source}" target="${target}" nowarn="on" encoding="UTF-8">
+		<javac destdir="${build.classes}" includeantruntime="false" optimize="on" debug="off" source="${source}" target="${target}" nowarn="on" encoding="UTF-8">
 			<compilerarg value="-Xlint:deprecation"/>
 			<compilerarg value="-Xlint:unchecked"/>
 	        <classpath refid="GOT.classpath"/>
