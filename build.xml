@@ -102,6 +102,7 @@
 			<fileset dir="${data}">
 				<include name="map.xml" />
 				<include name="houseCards.xml" />
+				<include name="client.cfg" />
 			</fileset>
 		</copy>
 		<echo>Copy textures</echo>

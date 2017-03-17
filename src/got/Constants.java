@@ -55,7 +55,6 @@ public class Constants {
 			}
 		}catch (IOException e){
 			System.out.println("Can't read config file");
-			e.printStackTrace();
 		}
 	}
 
