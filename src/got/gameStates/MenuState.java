@@ -36,6 +36,12 @@ public class MenuState extends AbstractGameState {
 		.setCallback((sender, params)->{
 			GameClient.instance().getStateMachine().setState(new MapViewState());
 		}));
+
+		addObject(new ImageButton("plus.png", 100, 200, 100, 100, null)
+		.setSpace(DrawSpace.SCREEN)
+		.setCallback((sender, param)->
+			GameClient.instance().getStateMachine().setState(new TextDebugState())
+		));
 	}
 
 	@Override

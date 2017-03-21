@@ -437,6 +437,16 @@ public class GameClient {
 			}
 		});
 	}
+
+	public void logMessage(String format, Object... args){
+		registerWork(()->{
+			GameState st = stm.getCurrentState();
+			if (st instanceof MainState) {
+				MainState mainState = (MainState) st;
+				mainState.logMessage(String.format(tt(format), args));
+			}
+		});
+	}
 	
 	public Client getClient(){
 		return client;

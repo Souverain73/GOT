@@ -132,7 +132,7 @@ public class Ortho2DCamera implements ICamera{
 	public void updateCamera(){
 		if (debug) System.out.println(this.toString());
 		projection.setOrtho(-w/2, w/2, h/2, -h/2, 1, -1);
-		projection.scale(scale);
+		projection.scale(scale, scale, 1);
 		projection.translate(position);
 		fbProjection.rewind();
 		projection.get(fbProjection);

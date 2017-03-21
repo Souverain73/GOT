@@ -31,6 +31,7 @@ public class MovePhase extends ActionPhase {
 
 	@Override
 	public void enter(StateMachine stm) {
+		GameClient.instance().logMessage("move.enter");
 		changeSubState(SubState.SELECT_SOURCE);
 		super.enter(stm);
 	}

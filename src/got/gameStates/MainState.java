@@ -1,15 +1,12 @@
 package got.gameStates;
 
-import got.gameObjects.PlayerPanelObject;
-import got.gameObjects.TextObject;
+import got.gameObjects.*;
 import org.joml.Vector2f;
 
 import com.esotericsoftware.kryonet.Connection;
 
 import got.Constants;
 import got.GameClient;
-import got.gameObjects.GameMapObject;
-import got.gameObjects.ImageObject;
 import got.graphics.DrawSpace;
 import got.graphics.TextureManager;
 import got.network.Packages.ChangeState;
@@ -25,6 +22,7 @@ public class MainState extends AbstractGameState {
 	private GameMapObject map;
 	private ImageObject background;
 	private TextObject tooltipText;
+	private GameLogObject glo;
 
 	@Override
 	public String getName() {
@@ -47,6 +45,8 @@ public class MainState extends AbstractGameState {
 		//addObject(map);
 		addObject(new PlayerPanelObject(PlayerManager.getSelf()));
 		addObject(tooltipText = new TextObject("Tooltip").setPos(new Vector2f(300,10)).setSpace(DrawSpace.SCREEN));
+
+		addObject(glo = new GameLogObject(300, 100, 32).setPos(new Vector2f(0, Constants.SCREEN_HEIGHT-100)).setSpace(DrawSpace.SCREEN));
 		
 		super.enter(extstm);
 	}
@@ -112,6 +112,10 @@ public class MainState extends AbstractGameState {
 
 	public void setTooltipText(String text){
 		tooltipText.setText(text);
+	}
+
+	public void logMessage(String message){
+		glo.addMessage(message);
 	}
 
 	@Override

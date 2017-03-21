@@ -23,6 +23,7 @@ public class Font{
 	private float colFactor;
 	private Texture map;
 	private int size = 32;
+	private int graphSize;
 	private final int spacing = 0;
 	private final LocaleEncoder encoder;
 	
@@ -42,9 +43,10 @@ public class Font{
 	 * </p>
 	 * @param fontName - name of font to load
 	 */
-	public Font(String fontName, LocaleEncoder encoder){
+	public Font(String fontName, LocaleEncoder encoder, int size){
 		this.name = fontName;
 		this.encoder = encoder;
+		this.size = size;
 		Path dataPath = Paths.get(fontsBase+fontName+".dat");
 		Path texturePath = Paths.get(fontsBase+fontName+".png");
 
@@ -71,7 +73,8 @@ public class Font{
 			rowPitch = mapWidth / cellWidth;
 			rowFactor = cellWidth*1.0f / mapWidth;
 			colFactor = cellHeight*1.0f / mapHeight;
-			size = cellWidth;
+			graphSize = cellWidth;
+
 			//read charset map
 			map = new Texture(texturePath.toString());
 			if (map.getWidth() != mapWidth || map.getHeight()!=mapHeight){
@@ -84,7 +87,11 @@ public class Font{
 	}
 
 	public Font(String name) {
-		this(name, new RussianEncoder());
+		this(name, new RussianEncoder(), 32);
+	}
+
+	public Font(String name, int size){
+		this(name, new RussianEncoder(), size);
 	}
 
 	protected static void init(){
@@ -104,13 +111,21 @@ public class Font{
 			char code = encoder.encode(text.charAt(i));
 			addGplyphUV(code, i, UV);
 			addGlyphPos(x, y, i, pos);
-			x+=charWidths[code] + spacing;
+			x+=charWidths[code] * (float)size/(float)graphSize + spacing;
 		}
 
 		
 		return new Text(pos, UV, length, this);
 	}
-	
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+
 	private void addGplyphUV(char c, int index, float[] UV){
 		int pos = c - startChar;
 		int row = pos / rowPitch;

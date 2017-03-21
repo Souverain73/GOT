@@ -8,7 +8,7 @@ import got.graphics.GraphicModule;
 import got.graphics.Text;
 
 public class TextObject extends AbstractGameObject<TextObject>{
-	Font font = new Font("test");
+	Font font;
 	Text text;
 	String currentText;
 	
@@ -18,9 +18,14 @@ public class TextObject extends AbstractGameObject<TextObject>{
 	}
 
 	
-	public TextObject(String message) {
+	public TextObject(Font font, String message) {
+		this.font = font;
 		text = Text.newInstance(message, font);
 		currentText = message;
+	}
+
+	public TextObject(String message){
+		this(new Font("test"), message);
 	}
 	
 	@Override
@@ -39,5 +44,11 @@ public class TextObject extends AbstractGameObject<TextObject>{
 	public void setText(String newText){
 		if (!currentText.equals(newText))
 			text.changeText(newText);
+	}
+
+	public TextObject setFont(Font font){
+		this.font = font;
+		text = Text.newInstance(currentText, font);
+		return this;
 	}
 }

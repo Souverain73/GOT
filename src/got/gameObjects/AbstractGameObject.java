@@ -52,6 +52,7 @@ public abstract class AbstractGameObject<T extends AbstractGameObject<T>> implem
 	
 	public T setSpace(DrawSpace space){
 		this.space = space;
+		childs.forEach(o->o.setSpace(space));
 		return getThis();
 	}
 	
