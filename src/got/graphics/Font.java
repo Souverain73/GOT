@@ -6,7 +6,8 @@ import java.nio.ByteOrder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.List;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -109,9 +110,9 @@ public class Font{
 		
 		for (int i=0; i<length; i++){
 			char code = encoder.encode(text.charAt(i));
-			addGplyphUV(code, i, UV);
+			addGlyphUV(code, i, UV);
 			addGlyphPos(x, y, i, pos);
-			x+=charWidths[code] * (float)size/(float)graphSize + spacing;
+			x+=getCharWidth(code);
 		}
 
 		
@@ -126,7 +127,7 @@ public class Font{
 		this.size = size;
 	}
 
-	private void addGplyphUV(char c, int index, float[] UV){
+	private void addGlyphUV(char c, int index, float[] UV){
 		int pos = c - startChar;
 		int row = pos / rowPitch;
 		int col = pos - (row*rowPitch);
@@ -173,9 +174,9 @@ public class Font{
 		
 		for (int i=0; i<length; i++){
 			char code = encoder.encode(newText.charAt(i));
-			addGplyphUV(code, i, UV);
+			addGlyphUV(code, i, UV);
 			addGlyphPos(x, y, i, pos);
-			x+=charWidths[code] + spacing;
+			x+= getCharWidth(code);
 		}
 		
 		text.setFont(this);
@@ -183,7 +184,11 @@ public class Font{
 		text.setUVCoords(UV);
 		text.setVertexCoords(pos);
 	}
-	
+
+	private int getCharWidth(int code){
+		return (int)(charWidths[code] * (float)size/(float)graphSize + spacing);
+	}
+
 	public void freeResources(){
 		//TODO delete image data from gpu memory;
 		throw new NotImplementedException();
@@ -192,7 +197,58 @@ public class Font{
 	public int getTextureID(){
 		return map.getID();
 	}
-	
+
+	public int getStringWidth(String string){
+		int result = 0;
+		for (int i=0; i<string.length(); i++){
+			result += charWidths[encoder.encode(string.charAt(i))] * (float)size/(float)graphSize + spacing;
+		}
+		return result;
+	}
+
+
+	public List<String> splitForWidth(String str, int width){
+		List<String> result = new ArrayList<>();
+
+		while(true){
+			int pos = splitPositionByWords(str, width);
+			if (pos == -1) {
+				result.add(str);
+				break;
+			}
+			else{
+				result.add(str.substring(0, pos++));
+				if (pos == str.length()) break;
+				str = str.substring(pos);
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * @param str - string to split
+	 * @param width - needed string width
+	 * @return -1 if given string width < given width or no spaces found
+	 */
+	private int splitPositionByWords(String str, int width){
+		int cw = 0;
+		int lastSpace = 0;
+		int pos = -1;
+		int spaceCode = 32;
+
+		while(pos < str.length()-1) {
+			pos++;
+			int code = encoder.encode(str.charAt(pos));
+			if (code == spaceCode) {
+				lastSpace = pos;
+			}
+			cw += getCharWidth(code);
+			if (cw > width) break;
+		}
+
+		return pos == str.length()-1 || lastSpace == 0 ? -1 : lastSpace;
+	}
+
 	@Override
 	public String toString() {
 		return "Font [name=" + name + ", mapWidth=" + mapWidth + ", mapHeight=" + mapHeight + ", cellWidth=" + cellWidth

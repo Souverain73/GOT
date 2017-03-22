@@ -84,6 +84,7 @@ public abstract class AbstractGameObject<T extends AbstractGameObject<T>> implem
 	@Override
 	public void setParent(AbstractGameObject object) {
 		parent = object;
+		this.setSpace(object.space);
 	}
 	
 	@Override

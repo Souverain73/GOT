@@ -48,17 +48,28 @@ public class GameLogObject extends AbstractGameObject<GameLogObject> {
     }
 
     public void addMessage(String message){
-        log.add(message);
+        if (font.getStringWidth(message) > w){
+            log.addAll(font.splitForWidth(message, (int)w));
+        }else{
+            log.add(message);
+        }
+
         updateContent();
         if (log.size() - currentMessage > linesCount){
-            scroll(1);
+            scrollToLast();
         }
     }
 
-    public void scroll(int offset){
-        currentMessage += offset;
+    public void scrollToLast(){
+        currentMessage = log.size() - linesCount;
         currentMessage = currentMessage < 0 ? 0 : currentMessage;
-        currentMessage = currentMessage >= log.size() ? log.size() : currentMessage;
+        updateContent();
+    }
+
+    private void scroll(int offset){
+        currentMessage += offset;
+        currentMessage = currentMessage + linesCount >= log.size() ? log.size() - linesCount : currentMessage;
+        currentMessage = currentMessage < 0 ? 0 : currentMessage;
         updateContent();
     }
 

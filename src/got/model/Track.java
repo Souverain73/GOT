@@ -53,6 +53,10 @@ public class Track {
 		return data[0];
 	}
 
+	public String getName() {
+		return name;
+	}
+
 	@Override
 	public String toString() {
 		return "Track{" +

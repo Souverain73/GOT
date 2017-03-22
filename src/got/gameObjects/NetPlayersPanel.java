@@ -27,6 +27,7 @@ public class NetPlayersPanel extends AbstractGameObject<NetPlayersPanel> {
 	}
 	
 	public NetPlayersPanel(Player[] list){
+		setSpace(DrawSpace.SCREEN);
 		players = new Player[MAX_PLAYERS];
 		panels = new NetPlayerPanel[MAX_PLAYERS];
 		

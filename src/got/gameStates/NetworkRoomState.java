@@ -123,5 +123,10 @@ public class NetworkRoomState extends AbstractGameState{
 			SetFractions msg = ((SetFractions)pkg);
 			PlayerManager.instance().initFractions(msg.fractions);
 		}
+
+		if (pkg instanceof Packages.SetTrack) {
+			Packages.SetTrack msg = (Packages.SetTrack) pkg;
+			Game.instance().getTrack(msg.track).setData(msg.data);
+		}
 	}
 }
