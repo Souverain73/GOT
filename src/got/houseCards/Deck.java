@@ -1,7 +1,8 @@
-package got.model;
+package got.houseCards;
 
 import got.houseCards.HouseCard;
 import got.houseCards.HouseCardsLoader;
+import got.model.Player;
 
 import java.util.ArrayList;
 import java.util.List;

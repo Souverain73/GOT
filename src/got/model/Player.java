@@ -2,6 +2,7 @@ package got.model;
 
 import got.Constants;
 import got.gameObjects.MapPartObject;
+import got.houseCards.Deck;
 
 /**
  * Class contains all player data

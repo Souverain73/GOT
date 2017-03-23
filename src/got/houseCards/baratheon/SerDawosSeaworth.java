@@ -3,7 +3,7 @@ package got.houseCards.baratheon;
 import got.houseCards.ActiveHouseCard;
 import got.houseCards.HouseCard;
 import got.houseCards.HouseCardsLoader;
-import got.model.Deck;
+import got.houseCards.Deck;
 import got.model.Fraction;
 import got.model.Player;
 import got.server.PlayerManager;

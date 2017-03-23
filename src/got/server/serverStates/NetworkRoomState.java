@@ -17,6 +17,7 @@ import got.network.Packages.PlayerReady;
 import got.server.GameServer;
 import got.server.GameServer.PlayerConnection;
 import got.server.PlayerManager;
+import got.utils.Timers;
 
 public class NetworkRoomState implements ServerState {
 	private String name = "NetworkRoomState";
@@ -38,7 +39,7 @@ public class NetworkRoomState implements ServerState {
 				return;
 			}
 			
-			((GameServer.PlayerConnection)connection).player = pl;
+			connection.player = pl;
 			
 			//send response to player, and init player object;
 			InitPlayer response = new InitPlayer();
@@ -62,34 +63,22 @@ public class NetworkRoomState implements ServerState {
 			
 			if (PlayerManager.instance().isAllPlayersReady()){
 				//Start game start countdown
-				timerThread = new Thread(new Runnable() {
-					@Override
-					public void run() {
-						int time = 1000;
-						int step = 1000;
-						while (time>0){
-							server.sendToAllTCP(new Packages.ServerMessage(String.format("Game start in %d seconds", time/1000)));
-							time-=step;
-							try{
-								Thread.sleep(step);
-							}catch (InterruptedException e){
-								
-							}
-						}
-						PlayerManager.instance().initRandomFractions();
-						Game.instance().initDefaultTracks();
+				Timers.getCounter(1000,
+					(time)->{
+						server.sendToAllTCP(new Packages.ServerMessage(String.format("Game start in %d seconds", time/1000)));
+					}, ()->{
+							PlayerManager.instance().initRandomFractions();
+							Game.instance().initDefaultTracks();
 
-						GameServer.getServer().sendToAllTCP(new Packages.SetFractions(PlayerManager.instance().getFractions()));
+							GameServer.getServer().sendToAllTCP(new Packages.SetFractions(PlayerManager.instance().getFractions()));
 
-						GameServer.getServer().sendToAllTCP(new Packages.SetTrack(Game.THRONE_TRACK, Game.instance().getTrack(Game.THRONE_TRACK).getData()));
-						GameServer.getServer().sendToAllTCP(new Packages.SetTrack(Game.SWORD_TRACK, Game.instance().getTrack(Game.SWORD_TRACK).getData()));
-						GameServer.getServer().sendToAllTCP(new Packages.SetTrack(Game.CROWN_TRACK, Game.instance().getTrack(Game.CROWN_TRACK).getData()));
-						
-						connection.sendTCP(new Packages.ServerMessage("Start!!"));
-						stm.changeState(new MainState(), StateMachine.ChangeAction.SET);
-					}
-				}, "TimerThread");
-				timerThread.start();
+							GameServer.getServer().sendToAllTCP(new Packages.SetTrack(Game.THRONE_TRACK, Game.instance().getTrack(Game.THRONE_TRACK).getData()));
+							GameServer.getServer().sendToAllTCP(new Packages.SetTrack(Game.SWORD_TRACK, Game.instance().getTrack(Game.SWORD_TRACK).getData()));
+							GameServer.getServer().sendToAllTCP(new Packages.SetTrack(Game.CROWN_TRACK, Game.instance().getTrack(Game.CROWN_TRACK).getData()));
+
+							connection.sendTCP(new Packages.ServerMessage("Start!!"));
+							stm.changeState(new MainState(), StateMachine.ChangeAction.SET);
+				}).start(false);
 			}
 		}
 	}
