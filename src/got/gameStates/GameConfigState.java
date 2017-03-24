@@ -2,7 +2,9 @@ package got.gameStates;
 
 import com.esotericsoftware.kryonet.Connection;
 import got.GameClient;
+import got.gameObjects.GUIObject;
 import got.gameObjects.MapPartObject;
+import got.model.Game;
 import got.network.Packages;
 import got.utils.UI;
 
@@ -34,6 +36,12 @@ public class GameConfigState extends AbstractGameState {
             MapPartObject region = GameClient.shared.gameMap.getRegionByID(msg.region);
             region.setFraction(msg.fraction);
             UI.systemMessage("Server change fraction in region " + region.getName());
+        }
+
+        if (pkg instanceof Packages.SetTrack) {
+            Packages.SetTrack msg = (Packages.SetTrack) pkg;
+            Game.instance().setTrackData(msg.track, msg.data);
+            UI.systemMessage("Server change track " + msg.track);
         }
     }
 

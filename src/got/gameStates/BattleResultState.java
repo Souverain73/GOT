@@ -25,7 +25,7 @@ import static got.utils.UI.logSystem;
 /**
  * Created by Souverain73 on 15.12.2016.
  */
-public class BattleResultState extends ActionPhase{
+public class BattleResultState extends AbstractGameState{
     private BattleDeckObject BDO;
 
     @Override

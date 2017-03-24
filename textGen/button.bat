@@ -1,0 +1,1 @@
+convert -background white -fill black -size %1 -font Book-antiqua -gravity center label:%2 -frame 10x10+4+4  buttons/%3.png

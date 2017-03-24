@@ -63,7 +63,7 @@ public class HireMenuState extends  AbstractGameState implements IClickListener{
 		}
 		if (unitsCount<4){
 			int cx = (int)(x+step*3);
-			ImageButton btn = new ImageButton(TextureManager.instance().loadTexture("plus.png"), 
+			ImageButton btn = new ImageButton(TextureManager.instance().loadTexture("buttons/plus.png"),
 					cx, (int)y, 
 					(int)Constants.UNIT_SIZE,
 					(int)Constants.UNIT_SIZE,

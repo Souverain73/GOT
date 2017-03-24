@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
+import got.GameClient;
 import got.InputManager;
 import got.ModalState;
 import got.gameObjects.GameMapObject;
@@ -11,9 +12,10 @@ import got.gameObjects.GameObject;
 import got.gameObjects.MapPartObject;
 import got.gameObjects.MapPartObject.RegionType;
 import got.gameStates.modals.HireMenuState;
+import got.interfaces.IClickListener;
 import got.server.PlayerManager;
 
-public class CollectUnitsPhase extends ActionPhase {
+public class CollectUnitsPhase extends AbstractGameState implements IClickListener {
 	private enum SubState {
 		SELECT_SOURCE, SELECT_TARGET
 	}
@@ -40,7 +42,7 @@ public class CollectUnitsPhase extends ActionPhase {
 				if (hirePoints > 0) {
 					// check if units can be placed in neighboring regions
 					List<MapPartObject> neighbors = region.getNeighbors();
-					GameMapObject.instance().disableAllRegions();
+					GameClient.shared.gameMap.disableAllRegions();
 					neighbors.forEach(obj -> {
 						if ((obj.getType() == RegionType.SEA && obj.getFraction() == PlayerManager.getSelf().getFraction())
 								|| obj.getType() == RegionType.PORT)
@@ -59,7 +61,7 @@ public class CollectUnitsPhase extends ActionPhase {
 				hirePointsCache.put(source.getName(), hms.getHirePoints());
 				region.showUnits();
 				state = SubState.SELECT_SOURCE;
-				GameMapObject.instance().enableAllRegions();
+				GameClient.shared.gameMap.enableAllRegions();
 			}
 		}
 	}
@@ -75,7 +77,7 @@ public class CollectUnitsPhase extends ActionPhase {
 
 	@Override
 	public void exit() {
-		GameMapObject.instance().enableAllRegions();
+		GameClient.shared.gameMap.enableAllRegions();
 		super.exit();
 	}
 	

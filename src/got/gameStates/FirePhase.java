@@ -8,6 +8,7 @@ import got.gameObjects.GameMapObject;
 import got.gameObjects.GameObject;
 import got.gameObjects.MapPartObject;
 import got.gameObjects.MapPartObject.RegionType;
+import got.interfaces.IClickListener;
 import got.model.Action;
 import got.model.Fraction;
 import got.model.Player;
@@ -21,7 +22,7 @@ import java.util.stream.Stream;
 import static got.utils.UI.logAction;
 import static got.utils.UI.tooltipWait;
 
-public class FirePhase extends ActionPhase {
+public class FirePhase extends StepByStepGameState implements IClickListener {
 	private enum SubState {
 		SELECT_SOURCE, SELECT_TARGET
 	}
@@ -62,14 +63,11 @@ public class FirePhase extends ActionPhase {
 			}else if (state == SubState.SELECT_TARGET){
 				GameClient.instance().send(new Packages.Act(source.getID(), region.getID()));
 				GameClient.shared.gameMap.disableAllRegions();
-				GameClient.instance().send(new Packages.Ready(true));
 				state = SubState.SELECT_SOURCE;
-				GameClient.instance().setTooltipText("fire.selectRegion");
 				source = null;
+				endTurn(true);
 			}
 		}
-
-		super.click(event);
 	}
 
 	private void enableRegionsAffectedByFire(MapPartObject regionFrom) {
@@ -104,22 +102,25 @@ public class FirePhase extends ActionPhase {
 	}
 
 	@Override
-	public void recieve(Connection connection, Object pkg) {
-		if (pkg instanceof Packages.PlayerTurn){
-			Packages.PlayerTurn msg = ((Packages.PlayerTurn)pkg);
-			Player player = PlayerManager.instance().getPlayer(msg.playerID);
-			if (PlayerManager.getSelf().id == msg.playerID){
-				if (!enableRegionsWithFire()){
-					GameClient.instance().send(new Packages.Ready(false));
-				}else{
-					GameClient.instance().setTooltipText("fire.selectRegion");
-				}
-			}else{
-				tooltipWait(player);
-				GameClient.shared.gameMap.disableAllRegions();
-			}
+	protected void onSelfTurn() {
+		super.onSelfTurn();
+		if (!enableRegionsWithFire()){
+			endTurn(false);
+		}else{
+			GameClient.instance().setTooltipText("fire.selectRegion");
 		}
-		
+	}
+
+	@Override
+	protected void onEnemyTurn(Player player) {
+		tooltipWait(player);
+		GameClient.shared.gameMap.disableAllRegions();
+	}
+
+	@Override
+	public void recieve(Connection connection, Object pkg) {
+		super.recieve(connection, pkg);
+
 		if (pkg instanceof Packages.PlayerAct){
 			Packages.PlayerAct msg = ((Packages.PlayerAct)pkg);
 			MapPartObject source = GameClient.shared.gameMap.getRegionByID(msg.from);

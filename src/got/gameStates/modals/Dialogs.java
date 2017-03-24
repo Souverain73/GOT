@@ -37,14 +37,14 @@ public class Dialogs {
 
         ImageObject bg = new ImageObject("DialogBackground.png", pos, 200, 100).setSpace(DrawSpace.WORLD);
 
-        bg.addChild(new ImageButton("ButtonOK.png", 0, 50, 100, 50, null)
+        bg.addChild(new ImageButton("buttons/ok.png", 0, 50, 100, 50, null)
                 .setSpace(DrawSpace.WORLD)
                 .setCallback((sender, param)->{
                     cms.setResult(DialogResult.OK);
                     cms.close();
                 }));
         System.out.println();
-        bg.addChild(new ImageButton("ButtonCancel.png", 100, 50, 100, 50, null)
+        bg.addChild(new ImageButton("buttons/cancel.png", 100, 50, 100, 50, null)
                 .setSpace(DrawSpace.WORLD)
                 .setCallback((sender, param)->{
                     cms.setResult(DialogResult.CANCEL);

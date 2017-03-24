@@ -14,7 +14,8 @@ public class PlayerManager {
 	private int playersCount;
 	private int maxPlayers = 6;
 	private Player self;
-	
+	private Player currentPlayer;
+
 	private PlayerManager() {
 		playersCount = 0;
 	}
@@ -172,5 +173,13 @@ public class PlayerManager {
 		return "PlayerManager{" +
 				"players=" + players +
 				'}';
+	}
+
+	public void setCurrentPlayer(Player currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+
+	public Player getCurrentPlayer() {
+		return currentPlayer;
 	}
 }

@@ -24,7 +24,7 @@ import static got.utils.UI.logAction;
 /**
  * Created by Souverain73 on 01.12.2016.
  */
-public class SelectHouseCardPhase extends ActionPhase {
+public class SelectHouseCardPhase extends AbstractGameState {
     @Override
     public int getID() {
         return StateID.SELECT_HOUSE_CARD_PHASE;

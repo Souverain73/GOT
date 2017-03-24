@@ -9,9 +9,11 @@ import got.gameObjects.battleDeck.BattleDeckObject;
 import got.gameObjects.interfaceControls.ImageButton;
 import got.gameStates.modals.CustomModalState;
 import got.graphics.DrawSpace;
+import got.interfaces.IClickListener;
 import got.model.Player;
 import got.network.Packages;
 import got.server.PlayerManager;
+import got.server.serverStates.StepByStepState;
 import org.joml.Vector2f;
 
 import static got.utils.UI.logAction;
@@ -20,7 +22,7 @@ import static got.utils.UI.tooltipWait;
 /**
  * Created by Souverain73 on 28.11.2016.
  */
-public class HelpPhase extends ActionPhase {
+public class HelpPhase extends StepByStepGameState {
 
     private BattleDeckObject bdo;
 
@@ -58,8 +60,36 @@ public class HelpPhase extends ActionPhase {
     }
 
     @Override
-    public void click(InputManager.ClickEvent event) {
-        super.click(event);
+    protected void onSelfTurn() {
+        if(bdo.getDefenderRegion().canHelp(PlayerManager.getSelf().getFraction())){
+            GameClient.instance().registerTask(()->{
+                int battlePointsToHelp = bdo.getDefenderRegion().getBattlePowerForHelpers(
+                        PlayerManager.getSelf().getFraction()
+                );
+
+                BattleSide side;
+                if (bdo.isBattleMember(PlayerManager.getSelf().getFraction())) {
+                    if (bdo.isAttacker(PlayerManager.getSelf().getFraction())){
+                        side = BattleSide.SIDE_ATTACKER;
+                    }else{
+                        side = BattleSide.SIDE_DEFENDER;
+                    }
+                }else {
+                    //TODO: отображать количество очков в диалоге выбора.
+                    GameClient.instance().setTooltipText("help.selectSide");
+                    side = showSelectSideDialogAndGetResult();
+                }
+
+                GameClient.instance().send(new Packages.Help(side.getId()));
+            });
+        }else {
+            endTurn(false);
+        }
+    }
+
+    @Override
+    protected void onEnemyTurn(Player player) {
+        tooltipWait(player);
     }
 
     @Override
@@ -76,36 +106,6 @@ public class HelpPhase extends ActionPhase {
                 GameClient.shared.battleDeck = bdo;
             }
 
-            if (pkg instanceof Packages.PlayerTurn) {
-                Packages.PlayerTurn msg = (Packages.PlayerTurn) pkg;
-                Player player = PlayerManager.instance().getPlayer(msg.playerID);
-                if (PlayerManager.getSelf().id == msg.playerID){
-                    if(bdo.getDefenderRegion().canHelp(PlayerManager.getSelf().getFraction())){
-                        int battlePointsToHelp = bdo.getDefenderRegion().getBattlePowerForHelpers(
-                                PlayerManager.getSelf().getFraction()
-                        );
-
-                        BattleSide side;
-                        if (bdo.isBattleMember(PlayerManager.getSelf().getFraction())) {
-                            if (bdo.isAttacker(PlayerManager.getSelf().getFraction())){
-                                side = BattleSide.SIDE_ATTACKER;
-                            }else{
-                                side = BattleSide.SIDE_DEFENDER;
-                            }
-                        }else {
-                            //TODO: отображать количество очков в диалоге выбора.
-                            GameClient.instance().setTooltipText("help.selectSide");
-                            side = showSelectSideDialogAndGetResult();
-                        }
-
-                        GameClient.instance().send(new Packages.Help(side.getId()));
-                    }else {
-                        GameClient.instance().sendReady(false);
-                    }
-                }else{
-                    tooltipWait(player);
-                }
-            }
             if (pkg instanceof Packages.PlayerHelp) {
                 Packages.PlayerHelp msg = (Packages.PlayerHelp) pkg;
                 Player player = PlayerManager.instance().getPlayer(msg.player);
@@ -130,17 +130,17 @@ public class HelpPhase extends ActionPhase {
         ImageObject bg = new ImageObject("DialogBG.png", new Vector2f(490, 285), 300, 150)
                             .setSpace(DrawSpace.SCREEN);
 
-        bg.addChild(new ImageButton("ButtonAttacker.png", 0,0, 100, 150, null)
+        bg.addChild(new ImageButton("buttons/helpAttacker.png", 0,0, 100, 150, null)
                         .setSpace(DrawSpace.SCREEN)
                         .setCallback((sender, param)->cms.setResultAndClose(BattleSide.SIDE_ATTACKER))
         );
 
-        bg.addChild(new ImageButton("ButtonDefender.png", 100,0, 100, 150, null)
+        bg.addChild(new ImageButton("buttons/helpDefender.png", 100,0, 100, 150, null)
                 .setSpace(DrawSpace.SCREEN)
                 .setCallback((sender, param)->cms.setResultAndClose(BattleSide.SIDE_DEFENDER))
         );
 
-        bg.addChild(new ImageButton("ButtonNone.png", 200,0, 100, 150, null)
+        bg.addChild(new ImageButton("buttons/helpNone.png", 200,0, 100, 150, null)
                 .setSpace(DrawSpace.SCREEN)
                 .setCallback((sender, param)->cms.setResultAndClose(BattleSide.SIDE_NONE))
         );

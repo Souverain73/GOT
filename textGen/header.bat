@@ -1,0 +1,1 @@
+convert -background transparent -fill white -size x64 -font Game-of-Thrones-KG -gravity center label:%1 %1.png

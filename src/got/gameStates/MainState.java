@@ -14,6 +14,7 @@ import got.network.Packages.ChangeState;
 import got.server.PlayerManager;
 import got.utils.LoaderParams;
 
+import static com.sun.javafx.logging.PulseLogger.addMessage;
 import static got.translation.Translator.tt;
 
 public class MainState extends AbstractGameState {
@@ -22,9 +23,9 @@ public class MainState extends AbstractGameState {
 	private StateMachine stm;
 	private GameMapObject map;
 	private ImageObject background;
-	private TextObject tooltipText;
-	private GameLogObject glo;
-	private TrackObject tt;
+
+	private GUIObject gui;
+
 
 	@Override
 	public String getName() {
@@ -44,15 +45,10 @@ public class MainState extends AbstractGameState {
 		map.init(new LoaderParams(new String[]{"filename", MAP_FILE}));
 
 		GameClient.shared.gameMap = map;
-		//addObject(map);
-		addObject(new PlayerPanelObject(PlayerManager.getSelf()));
-		addObject(tooltipText = new TextObject("Tooltip").setPos(new Vector2f(300,10)).setSpace(DrawSpace.SCREEN));
 
-		addObject(glo = new GameLogObject(300, 100, 32).setPos(new Vector2f(0, Constants.SCREEN_HEIGHT-100)).setSpace(DrawSpace.SCREEN));
+		addObject(gui = new GUIObject());
 
-		addObject(tt = new TrackObject(Game.instance().getTrack(Game.THRONE_TRACK))
-				.setPos(new Vector2f(300, Constants.SCREEN_HEIGHT-100))
-				.setSpace(DrawSpace.SCREEN));
+		GameClient.shared.gui = gui;
 
 		super.enter(extstm);
 	}
@@ -69,7 +65,6 @@ public class MainState extends AbstractGameState {
 	public void draw() {
 		background.draw(this);
 		map.draw(stm.getCurrentState());
-		tooltipText.draw(this);
 
 		if (GameClient.shared.battleDeck != null){
 			GameClient.shared.battleDeck.draw(stm.getCurrentState());
@@ -83,7 +78,6 @@ public class MainState extends AbstractGameState {
 	public void update() {
 		background.update(this);
 		map.update(stm.getCurrentState());
-		tooltipText.update(this);
 
 		if (GameClient.shared.battleDeck != null){
 			GameClient.shared.battleDeck.update(stm.getCurrentState());
@@ -96,7 +90,6 @@ public class MainState extends AbstractGameState {
 	public void tick(){
 		background.tick();
 		map.tick();
-		tooltipText.tick();
 
 		if (GameClient.shared.battleDeck != null){
 			GameClient.shared.battleDeck.tick();
@@ -114,14 +107,6 @@ public class MainState extends AbstractGameState {
 			return;
 		}
 		stm.recieve(connection, pkg);
-	}
-
-	public void setTooltipText(String text){
-		tooltipText.setText(text);
-	}
-
-	public void logMessage(String message){
-		glo.addMessage(message);
 	}
 
 	@Override

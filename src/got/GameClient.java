@@ -44,6 +44,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.RunnableFuture;
 
 import com.esotericsoftware.minlog.Log;
+import got.gameObjects.GUIObject;
 import got.gameObjects.GameMapObject;
 import got.gameObjects.battleDeck.BattleDeckObject;
 import got.houseCards.HouseCardsLoader;
@@ -92,7 +93,9 @@ public class GameClient {
 	public static class Shared{
 		public BattleDeckObject battleDeck = null;
 		public GameMapObject gameMap = null;
-	}
+		public GUIObject gui = null;
+    }
+
 	private boolean debug = false;
 	private static GameClient _instance = null;
 	private LinkedList<ModalState> modalStates;
@@ -429,21 +432,23 @@ public class GameClient {
 	}
 
 	public void setTooltipText(String format, Object... args){
+		if (shared.gui == null) return;
 		registerWork(()->{
 			GameState st = stm.getCurrentState();
 			if (st instanceof MainState) {
 				MainState mainState = (MainState) st;
-				mainState.setTooltipText(String.format(tt(format), args));
+				shared.gui.setTooltipText(String.format(tt(format), args));
 			}
 		});
 	}
 
 	public void logMessage(String format, Object... args){
+		if (shared.gui == null) return;
 		registerWork(()->{
 			GameState st = stm.getCurrentState();
 			if (st instanceof MainState) {
 				MainState mainState = (MainState) st;
-				mainState.logMessage(String.format(tt(format), args));
+				shared.gui.logMessage(String.format(tt(format), args));
 			}
 		});
 	}

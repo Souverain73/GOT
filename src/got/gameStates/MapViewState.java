@@ -25,21 +25,21 @@ public class MapViewState extends AbstractGameState implements IClickListener{
 
         addObject(map);
 
-        addObject(new ImageButton("Power.png", 0, 0, 100, 50, null).setSpace(DrawSpace.SCREEN).setCallback((sender, params)->{
+        addObject(new ImageButton("buttons/power.png", 0, 0, 100, 50, null).setSpace(DrawSpace.SCREEN).setCallback((sender, params)->{
             map.forEachRegion(region->{
                 DebugMapPart dbr = (DebugMapPart) region;
                 dbr.toggleAction();
             });
         }));
 
-        addObject(new ImageButton("Warriors.png", 0, 50, 100, 50, null).setSpace(DrawSpace.SCREEN).setCallback((sender, params)->{
+        addObject(new ImageButton("buttons/units.png", 0, 50, 100, 50, null).setSpace(DrawSpace.SCREEN).setCallback((sender, params)->{
             map.forEachRegion(region->{
                 DebugMapPart dbr = (DebugMapPart) region;
                 dbr.toggleUnits();
             });
         }));
 
-        addObject(new ImageButton("plus.png", 0, 100, 50, 50, null).setSpace(DrawSpace.SCREEN).setCallback((sender, params)->{
+        addObject(new ImageButton("buttons/plus.png", 0, 100, 50, 50, null).setSpace(DrawSpace.SCREEN).setCallback((sender, params)->{
             map.forEachRegion(region->{
                 DebugMapPart dbr = (DebugMapPart) region;
                 dbr.toggleToken();

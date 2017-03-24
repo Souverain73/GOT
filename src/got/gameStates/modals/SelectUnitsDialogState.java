@@ -61,14 +61,14 @@ public class SelectUnitsDialogState extends AbstractGameState implements IClickL
         }
 
         //action buttons: OK
-        addObject(new ImageButton("Ok.png", (int)pos.x, (int)pos.y+60, 110, 55, null).setSpace(DrawSpace.WORLD)
+        addObject(new ImageButton("buttons/select.png", (int)pos.x, (int)pos.y+60, 110, 55, null).setSpace(DrawSpace.WORLD)
                 .setCallback((sender, param)->{
                     this.ok = true;
                     this.close();
                 }));
 
         //action buttons: Cancel
-        addObject(new ImageButton("Cancel.png", (int)pos.x + 110, (int)pos.y+60, 110, 55, null).setSpace(DrawSpace.WORLD)
+        addObject(new ImageButton("buttons/cancel.png", (int)pos.x + 110, (int)pos.y+60, 110, 55, null).setSpace(DrawSpace.WORLD)
                 .setCallback((sender, param)->{
                     this.ok = false;
                     this.close();

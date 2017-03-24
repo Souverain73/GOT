@@ -49,6 +49,7 @@ public abstract class ParallelState implements ServerState, IPauseable {
         Player player = c.player;
         if (pkg instanceof Packages.Ready) {
             Packages.Ready msg = (Packages.Ready) pkg;
+            GameServer.getServer().sendToAllTCP(new Packages.PlayerReady(player.id, msg.ready));
             UI.logSystem("player " + player.getNickname() + " set Ready");
             playersReady[player.id] = msg.ready;
             if (isAllPlayersReady()){

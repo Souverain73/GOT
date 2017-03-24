@@ -13,6 +13,7 @@ import got.gameObjects.MapPartObject;
 import got.gameStates.modals.CustomModalState;
 import got.gameStates.modals.HireMenuState;
 import got.graphics.DrawSpace;
+import got.interfaces.IClickListener;
 import got.model.Action;
 import got.model.Fraction;
 import got.model.Player;
@@ -27,7 +28,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-class PowerPhase extends ActionPhase {
+import static got.utils.UI.tooltipWait;
+
+class PowerPhase extends StepByStepGameState implements IClickListener{
     private enum SubState {
         SELECT_SOURCE, SELECT_TARGET
     }
@@ -72,7 +75,7 @@ class PowerPhase extends ActionPhase {
                         sendCollectMoney(region);
                         region.setEnabled(false);
                         if (GameClient.shared.gameMap.getEnabledRegions().isEmpty())
-                            GameClient.instance().send(new Packages.Ready(false));
+                            endTurn(false);
                     } else if (action == 1) {
                         //Если можем нанимать юнитов создаем меню для найма
                         //надо проверить, можем ли мы нанять в море, если да, то предоставить выбор.
@@ -116,7 +119,7 @@ class PowerPhase extends ActionPhase {
                 GameClient.instance().send(new Packages.Act(source.getID(), 0));
                 source.setEnabled(false);
                 if (GameClient.shared.gameMap.getEnabledRegions().isEmpty())
-                    GameClient.instance().send(new Packages.Ready(false));
+                    endTurn(false);
             } else {
                 hirePointsCache.put(source, hms.getHirePoints());
             }
@@ -127,28 +130,32 @@ class PowerPhase extends ActionPhase {
     }
 
     @Override
-    public void recieve(Connection connection, Object pkg) {
-        if (pkg instanceof Packages.PlayerTurn) {
-            Packages.PlayerTurn msg = ((Packages.PlayerTurn) pkg);
-            if (PlayerManager.getSelf().id == msg.playerID) {
-                GameClient.instance().registerTask(()-> {
-                    if (!enableRegionsWithCrown()) {
-                        //Если не был активирован ни один регион, значит текущий игрок не может совершить ход.
-                        //В таком случае необходлимо сообщить об этом серверу пакетом Ready.
-                        GameClient.instance().send(new Packages.Ready(false));
-                    } else {
-                        if (firstTurn) {
-                            firstTurn = false;
-                            firstTurn();
-                            GameClient.instance().sendReady(true);
-                        }
-                    }
-                });
+    protected void onSelfTurn() {
+        GameClient.instance().registerTask(()-> {
+            if (!enableRegionsWithCrown()) {
+                //Если не был активирован ни один регион, значит текущий игрок не может совершить ход.
+                //В таком случае необходлимо сообщить об этом серверу пакетом Ready.
+                GameClient.instance().send(new Packages.Ready(false));
             } else {
-                //Если чужой ход, отключаем все регионы, так как в чужой ход мы не можем совершать действий.
-                GameClient.shared.gameMap.disableAllRegions();
+                if (firstTurn) {
+                    firstTurn = false;
+                    firstTurn();
+                    endTurn(true);
+                }
             }
-        }
+        });
+    }
+
+    @Override
+    protected void onEnemyTurn(Player player) {
+        //Если чужой ход, отключаем все регионы, так как в чужой ход мы не можем совершать действий.
+        GameClient.shared.gameMap.disableAllRegions();
+        tooltipWait(player);
+    }
+
+    @Override
+    public void recieve(Connection connection, Object pkg) {
+        super.recieve(connection, pkg);
         if (pkg instanceof Packages.CollectInfluence) {
             //Собираем влияние(деньги)
             Packages.CollectInfluence msg = ((Packages.CollectInfluence) pkg);
@@ -228,11 +235,11 @@ class PowerPhase extends ActionPhase {
 
         ImageObject background = new ImageObject("selectActionBackground.png",
                 InputManager.instance().getMousePosWorld(), 430, 120).setSpace(DrawSpace.WORLD);
-        background.addChild(new ImageButton("Warriors.png", 10, 10, 200, 100, null).setCallback((sender, param) -> {
+        background.addChild(new ImageButton("buttons/hire.png", 10, 10, 200, 100, null).setCallback((sender, param) -> {
             cms.setResult(1);
             GameClient.instance().closeModal();
         }).setSpace(DrawSpace.WORLD));
-        background.addChild(new ImageButton("Power.png", 220, 10, 200, 100, null).setCallback((sender, param) -> {
+        background.addChild(new ImageButton("buttons/collectPower.png", 220, 10, 200, 100, null).setCallback((sender, param) -> {
             cms.setResult(0);
             GameClient.instance().closeModal();
         }).setSpace(DrawSpace.WORLD));

@@ -8,6 +8,7 @@ import got.gameObjects.GameObject;
 import got.gameObjects.MapPartObject;
 import got.gameStates.modals.Dialogs;
 import got.gameStates.modals.SelectUnitsDialogState;
+import got.interfaces.IClickListener;
 import got.model.*;
 import got.network.Packages;
 import got.server.PlayerManager;
@@ -16,7 +17,7 @@ import static got.utils.UI.logAction;
 import static got.utils.UI.logSystem;
 import static got.utils.UI.tooltipWait;
 
-public class MovePhase extends ActionPhase {
+public class MovePhase extends StepByStepGameState implements IClickListener{
 	private static final String name = "MovePhase";
 	private enum SubState {SELECT_SOURCE, SELECT_TARGET};
 	private SubState state = SubState.SELECT_SOURCE;
@@ -106,8 +107,6 @@ public class MovePhase extends ActionPhase {
 			}
 
 		}
-
-		super.click(event);
 	}
 
 	private void checkIfPowerTokenNeededAndCanBePlaced(MapPartObject region) {
@@ -151,23 +150,24 @@ public class MovePhase extends ActionPhase {
 	}
 
 	@Override
-	public void recieve(Connection c, Object pkg) {
-		if (pkg instanceof Packages.PlayerTurn) {
-			logSystem("Следующий ход");
-			Packages.PlayerTurn msg = (Packages.PlayerTurn) pkg;
-			Player player = PlayerManager.instance().getPlayer(msg.playerID);
-			if (msg.playerID == PlayerManager.getSelf().id){
-				usedRegion = null;
-				if (!enableRegionsWithMoveAction()){
-					GameClient.instance().sendReady(false);
-				}else{
-					GameClient.instance().setTooltipText("move.selectRegion");
-				}
-			}else{
-				tooltipWait(player);
-				GameClient.shared.gameMap.disableAllRegions();
-			}
+	protected void onSelfTurn() {
+		usedRegion = null;
+		if (!enableRegionsWithMoveAction()){
+			endTurn(false);
+		}else{
+			GameClient.instance().setTooltipText("move.selectRegion");
 		}
+	}
+
+	@Override
+	protected void onEnemyTurn(Player player) {
+		tooltipWait(player);
+		GameClient.shared.gameMap.disableAllRegions();
+	}
+
+	@Override
+	public void recieve(Connection c, Object pkg) {
+		super.recieve(c, pkg);
 		if (pkg instanceof Packages.PlayerMove) {
 			Packages.PlayerMove msg = (Packages.PlayerMove) pkg;
 			GameClient.instance().registerTask(()->{

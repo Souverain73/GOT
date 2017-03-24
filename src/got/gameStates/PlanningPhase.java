@@ -5,6 +5,8 @@ import java.util.EnumMap;
 import java.util.List;
 
 import com.esotericsoftware.kryo.io.Input;
+import got.server.serverStates.ParallelState;
+import got.utils.UI;
 import org.joml.Vector2f;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -28,7 +30,7 @@ import got.server.PlayerManager;
 
 import static got.utils.UI.logAction;
 
-public class PlanningPhase extends AbstractGameState implements IClickListener {
+public class PlanningPhase extends ParallelGameState implements IClickListener {
 	private static final String name = "PlanningPhase";
 	private List<Action> actions;
 	private int specials;
@@ -42,6 +44,7 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 	
 	@Override
 	public void enter(StateMachine stm) {
+		super.enter(stm);
 		GameClient.instance().setTooltipText("planning.selectRegion");
 		GameClient.instance().logMessage("planning.enter");
 		//готовим игровую карту.
@@ -59,17 +62,11 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 		ImageButton btn = new ImageButton("buttons/ready.png", 1070, 610, 200, 100, null)
 			.setSpace(DrawSpace.SCREEN)
 			.setCallback((sender, param)->{
-			GameClient.instance().send(new Ready(!PlayerManager.getSelf().isReady()));
+			toggleReady();
 		});
 		addObject(btn);
 		
-		//all players are not ready at beginning of that phase
-		for (Player pl: PlayerManager.instance().getPlayersList()){
-			pl.setReady(false);
-		}
-		
 		GameClient.shared.gameMap.enableAllRegions();
-		super.enter(stm);
 	}
 
 	@Override
@@ -132,9 +129,32 @@ public class PlanningPhase extends AbstractGameState implements IClickListener {
 		if(oldAction.isSpecial()) 
 			specials--;
 	}
-	
+
+	@Override
+	protected void onReady(Player player) {
+		super.onReady(player);
+		if (player.id == PlayerManager.getSelf().id){
+			GameClient.shared.gameMap.disableAllRegions();
+		}
+	}
+
+	@Override
+	protected void onUnready(Player player) {
+		super.onUnready(player);
+		if (player.id == PlayerManager.getSelf().id){
+			GameClient.shared.gameMap.enableAllRegions();
+		}
+	}
+
+	@Override
+	protected void onAllReady() {
+		super.onAllReady();
+		UI.systemMessage("Все игроки готовы");
+	}
+
 	@Override
 	public void recieve(Connection connection, Object pkg) {
+		super.recieve(connection, pkg);
 		if (pkg instanceof PlayerSetAction){
 			PlayerSetAction msg = ((PlayerSetAction)pkg);
 			MapPartObject region = GameClient.shared.gameMap.getRegionByID(msg.region);

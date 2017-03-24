@@ -26,7 +26,6 @@ public class StateID {
 		switch(id){
 			case MAIN_STATE: return new MainState();
 			case PLANNING_PHASE: return new PlanningPhase();
-			case ACTION_PHASE: return new ActionPhase();
 			case FIRE_PHASE: return new FirePhase();
 			case MOVE_PHASE: return new MovePhase();
 			case POWER_PHASE: return new PowerPhase();

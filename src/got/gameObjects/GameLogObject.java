@@ -32,11 +32,11 @@ public class GameLogObject extends AbstractGameObject<GameLogObject> {
             addChild(to);
         });
 
-        addChild(new ImageButton("plus.png", width - 25, 0, 25, 25, null).setSpace(space).setCallback((sender, param)->{
+        addChild(new ImageButton("buttons/minus.png", width - 25, 0, 25, 25, null).setSpace(space).setCallback((sender, param)->{
             scroll(-1);
         }));
 
-        addChild(new ImageButton("plus.png", width - 25, height-25, 25, 25, null).setSpace(space).setCallback((sender, param)->{
+        addChild(new ImageButton("buttons/plus.png", width - 25, height-25, 25, 25, null).setSpace(space).setCallback((sender, param)->{
             scroll(1);
         }));
     }
