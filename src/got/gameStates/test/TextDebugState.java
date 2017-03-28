@@ -1,9 +1,11 @@
-package got.gameStates;
+package got.gameStates.test;
 
 import got.Constants;
 import got.InputManager;
 import got.gameObjects.ImageObject;
 import got.gameObjects.TextObject;
+import got.gameStates.AbstractGameState;
+import got.gameStates.StateMachine;
 import got.graphics.DrawSpace;
 import got.graphics.Font;
 import got.graphics.TextureManager;

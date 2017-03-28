@@ -1,12 +1,14 @@
-package got.gameStates;
+package got.gameStates.test;
 
 import got.gameObjects.FPSCounterObject;
+import got.gameStates.AbstractGameState;
+import got.gameStates.StateMachine;
 import got.graphics.DrawSpace;
 import got.graphics.Font;
 import got.graphics.GraphicModule;
 import got.graphics.Text;
 
-public class TestState extends AbstractGameState{
+public class TestState extends AbstractGameState {
 	private static final String name = "TestState";
 	private Font test;
 	private Text hello;

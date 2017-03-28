@@ -44,6 +44,7 @@ public class ModalState implements Runnable{
 		while(running && GameClient.instance().isRunning()){
 			GameClient.instance().executeWorks();
 			GameClient.instance().updateInput();
+			GameClient.instance().updateAnimations();
 
 			//update logic
 			if (updateMain){

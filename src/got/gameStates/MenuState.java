@@ -2,6 +2,9 @@ package got.gameStates;
 
 import got.GameClient;
 import got.gameObjects.interfaceControls.ImageButton;
+import got.gameStates.test.AnimationTestState;
+import got.gameStates.test.MapViewState;
+import got.gameStates.test.TextDebugState;
 import got.graphics.DrawSpace;
 
 public class MenuState extends AbstractGameState {
@@ -42,6 +45,11 @@ public class MenuState extends AbstractGameState {
 		.setCallback((sender, param)->
 			GameClient.instance().getStateMachine().setState(new TextDebugState())
 		));
+		addObject(new ImageButton("buttons/minus.png", 100, 300, 100, 100, null)
+				.setSpace(DrawSpace.SCREEN)
+				.setCallback((sender, param)->
+						GameClient.instance().getStateMachine().setState(new AnimationTestState())
+				));
 	}
 
 	@Override

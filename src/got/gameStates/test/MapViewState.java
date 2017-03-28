@@ -1,10 +1,12 @@
-package got.gameStates;
+package got.gameStates.test;
 
 import got.InputManager;
 import got.gameObjects.DebugMapPart;
 import got.gameObjects.GameMapObject;
 import got.gameObjects.MapPartObject;
 import got.gameObjects.interfaceControls.ImageButton;
+import got.gameStates.AbstractGameState;
+import got.gameStates.StateMachine;
 import got.graphics.DrawSpace;
 import got.interfaces.IClickListener;
 import got.utils.LoaderParams;

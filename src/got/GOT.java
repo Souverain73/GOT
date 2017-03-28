@@ -20,6 +20,7 @@ public class GOT {
 		while(!GLFW.glfwWindowShouldClose(pWindow)){
 			GameClient.instance().executeWorks();
 			GameClient.instance().updateInput();
+			GameClient.instance().updateAnimations();
 			GameClient.instance().updateLogic();
 			GameClient.instance().updateGraphics();
 			GameClient.instance().tick();

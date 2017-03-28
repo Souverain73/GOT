@@ -44,6 +44,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.RunnableFuture;
 
 import com.esotericsoftware.minlog.Log;
+import got.animations.Animation;
+import got.animations.Animator;
 import got.gameObjects.GUIObject;
 import got.gameObjects.GameMapObject;
 import got.gameObjects.battleDeck.BattleDeckObject;
@@ -309,6 +311,10 @@ public class GameClient {
 		stm.draw();
 
 		glfwSwapBuffers(pWindow);
+	}
+
+	public void updateAnimations(){
+		Animator.update();
 	}
 	
 	public void tick(){
