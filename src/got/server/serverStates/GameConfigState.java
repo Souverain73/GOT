@@ -3,6 +3,7 @@ package got.server.serverStates;
 import com.esotericsoftware.kryonet.Connection;
 import got.gameStates.StateID;
 import got.server.GameServer;
+import got.server.serverStates.base.ServerState;
 
 /**
  * Created by Souverain73 on 09.03.2017.

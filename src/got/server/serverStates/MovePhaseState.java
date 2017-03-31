@@ -1,11 +1,11 @@
 package got.server.serverStates;
 
 import com.esotericsoftware.kryonet.Connection;
-import got.gameStates.GameState;
 import got.gameStates.StateID;
 import got.model.Player;
 import got.network.Packages;
 import got.server.GameServer;
+import got.server.serverStates.base.StepByStepState;
 
 /**
  * Created by Souverain73 on 22.11.2016.

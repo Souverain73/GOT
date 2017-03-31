@@ -156,4 +156,8 @@ public class Timers {
     public static Timer getCounter(int time, Consumer<Integer> onStep){
         return new Counter(time, 1000, onStep, null);
     }
+
+    public static void wait(int time){
+        (new CallbackTimer(time, time, ()->{})).start(false);
+    }
 }

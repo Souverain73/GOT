@@ -1,14 +1,17 @@
 package got.server.serverStates;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import com.esotericsoftware.kryonet.Connection;
 
 import got.interfaces.INetworkListener;
 import got.interfaces.IPauseable;
-import got.server.GameServer.PlayerConnection;
+import got.server.serverStates.base.ServerState;
 
 public class StateMachine implements INetworkListener{
+	public static final String VESTEROS_PHASE_DATA= "vesterosPhaseData";
+    private HashMap<String, Object> params;
 	public enum ChangeAction {
 		SET,
 		PUSH,
@@ -64,5 +67,17 @@ public class StateMachine implements INetworkListener{
 		if (st!=null){
 			st.recieve(connection, pkg);
 		}
+	}
+
+	public void saveParam(String name, Object param){
+		params.put(name, param);
+	}
+
+	public void removeParam(String name){
+		params.remove(name);
+	}
+
+	public Object getParam(String name){
+		return params.get(name);
 	}
 }

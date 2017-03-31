@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 
-import com.esotericsoftware.kryo.io.Input;
-import got.server.serverStates.ParallelState;
 import got.utils.UI;
 import org.joml.Vector2f;
 
@@ -16,15 +14,12 @@ import got.GameClient;
 import got.InputManager;
 import got.ModalState;
 import got.model.Action;
-import got.gameObjects.GameObject;
 import got.gameObjects.interfaceControls.ImageButton;
 import got.gameObjects.MapPartObject;
-import got.gameObjects.GameMapObject;
 import got.graphics.DrawSpace;
 import got.interfaces.IClickListener;
 import got.model.Player;
 import got.network.Packages.PlayerSetAction;
-import got.network.Packages.Ready;
 import got.network.Packages.SetAction;
 import got.server.PlayerManager;
 

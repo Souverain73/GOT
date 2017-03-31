@@ -3,7 +3,7 @@ package got.server.serverStates;
 import com.esotericsoftware.kryonet.Connection;
 
 import got.gameStates.StateID;
-import got.server.GameServer;
+import got.server.serverStates.base.ServerState;
 
 public class MainState implements ServerState {
 	private static String name = "MainState";

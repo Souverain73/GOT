@@ -1,17 +1,17 @@
 package got.server.serverStates;
 
 import com.esotericsoftware.kryonet.Connection;
-import got.gameStates.GameState;
 import got.gameStates.StateID;
 import got.model.Player;
 import got.network.Packages;
 import got.server.GameServer;
 import got.server.PlayerManager;
+import got.server.serverStates.base.ServerState;
 
 /**
  * Created by Souverain73 on 29.11.2016.
  */
-public class SelectHouseCardPhaseState implements ServerState{
+public class SelectHouseCardPhaseState implements ServerState {
     private StateMachine stm;
     public SelectHouseCardPhaseState(){
 

@@ -1,18 +1,15 @@
 package got.server.serverStates;
 
 import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.minlog.Log;
 
-import got.gameStates.PlanningPhase;
 import got.gameStates.StateID;
-import got.model.Game;
 import got.model.Player;
 import got.network.Packages;
 import got.server.GameServer;
-import got.server.PlayerManager;
 import got.server.GameServer.PlayerConnection;
+import got.server.serverStates.base.StepByStepState;
 
-public class PowerPhaseState extends StepByStepState{
+public class PowerPhaseState extends StepByStepState {
 	private static final String name = "PowerPhase";
 
 	public PowerPhaseState(){

@@ -2,18 +2,15 @@ package got.gameStates;
 
 import com.esotericsoftware.kryonet.Connection;
 import got.GameClient;
-import got.InputManager;
 import got.ModalState;
 import got.gameObjects.ImageObject;
 import got.gameObjects.battleDeck.BattleDeckObject;
 import got.gameObjects.interfaceControls.ImageButton;
 import got.gameStates.modals.CustomModalState;
 import got.graphics.DrawSpace;
-import got.interfaces.IClickListener;
 import got.model.Player;
 import got.network.Packages;
 import got.server.PlayerManager;
-import got.server.serverStates.StepByStepState;
 import org.joml.Vector2f;
 
 import static got.utils.UI.logAction;

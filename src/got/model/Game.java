@@ -2,6 +2,8 @@ package got.model;
 
 import got.network.Packages;
 import got.server.PlayerManager;
+import got.vesterosCards.Deck;
+import got.vesterosCards.VesterosCard;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +16,7 @@ import java.util.List;
 
 public class Game {
 	private static Game _instance = null;
+	private Deck[] vesterosDecks;
 	private Fraction[] fractionsPool;
 	private Track[] tracks;
 	private SuplyTrack suplyTrack;
@@ -25,8 +28,9 @@ public class Game {
 	private Game() {
 		tracks = new Track[3];
 		tracks[THRONE_TRACK] = new Track("THRONE", null);
-		tracks[CROWN_TRACK]  = new Track("CROWN", null);
-		tracks[SWORD_TRACK]  = new Track("SWORD", null);
+		tracks[CROWN_TRACK] = new Track("CROWN", null);
+		tracks[SWORD_TRACK] = new Track("SWORD", null);
+		vesterosDecks = new Deck[3];
 		suplyTrack = new SuplyTrack();
 	}
 
@@ -77,5 +81,14 @@ public class Game {
 		}
 
 		return fractionsPool;
+	}
+
+	public void initVesterosDeck(int number, Deck deck){
+		deck.shuffle();
+		vesterosDecks[number] = deck;
+	}
+
+	public Deck getVesterosDeck(int number){
+		return vesterosDecks[number];
 	}
 }

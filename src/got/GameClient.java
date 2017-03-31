@@ -53,6 +53,7 @@ import got.houseCards.HouseCardsLoader;
 import got.server.GameServer;
 import got.translation.Language;
 import got.translation.Translator;
+import got.vesterosCards.VesterosCard;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
@@ -96,6 +97,7 @@ public class GameClient {
 		public BattleDeckObject battleDeck = null;
 		public GameMapObject gameMap = null;
 		public GUIObject gui = null;
+		public VesterosCard currentCard = null;
     }
 
 	private boolean debug = false;

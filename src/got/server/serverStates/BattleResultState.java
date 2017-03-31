@@ -5,6 +5,7 @@ import got.gameStates.StateID;
 import got.model.Player;
 import got.network.Packages;
 import got.server.GameServer;
+import got.server.serverStates.base.ParallelState;
 import got.utils.UI;
 
 import static com.esotericsoftware.minlog.Log.debug;
@@ -12,7 +13,7 @@ import static com.esotericsoftware.minlog.Log.debug;
 /**
  * Created by Souverain73 on 05.12.2016.
  */
-public class BattleResultState extends ParallelState{
+public class BattleResultState extends ParallelState {
     private enum Winner { ATTACKER, DEFENDER}
 
     private String name = "BattleRresult state";

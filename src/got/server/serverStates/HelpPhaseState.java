@@ -1,18 +1,16 @@
 package got.server.serverStates;
 
 import com.esotericsoftware.kryonet.Connection;
-import got.GameClient;
-import got.gameStates.SelectHouseCardPhase;
 import got.gameStates.StateID;
 import got.model.Player;
 import got.network.Packages;
 import got.server.GameServer;
-import static got.server.GameServer.Shared.*;
+import got.server.serverStates.base.StepByStepState;
 
 /**
  * Created by Souverain73 on 28.11.2016.
  */
-public class HelpPhaseState extends StepByStepState{
+public class HelpPhaseState extends StepByStepState {
     private static final String name = "HelpState";
 
     @Override

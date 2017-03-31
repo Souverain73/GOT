@@ -25,6 +25,8 @@ import got.server.serverStates.StateMachine;
 import got.translation.Language;
 import got.translation.Translator;
 import got.utils.LoaderParams;
+import got.vesterosCards.VesterosCard;
+import got.vesterosCards.VesterosCards;
 import org.console.Command;
 import org.console.Console;
 import org.console.ValueCommand;
@@ -98,6 +100,7 @@ public class GameServer {
 		_instance = this;
 
 		Translator.init(Language.RUSSIAN);
+		VesterosCards.init();
 		map = new GameMapObject();
 		map.init(new LoaderParams(new String[]{"filename", MAP_FILE}));
 

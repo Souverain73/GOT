@@ -2,19 +2,17 @@ package got.server.serverStates;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
-import com.esotericsoftware.minlog.Log;
 
 import got.gameStates.StateID;
 import got.model.Player;
-import got.network.Packages.PlayerReady;
 import got.network.Packages.PlayerSetAction;
-import got.network.Packages.Ready;
 import got.network.Packages.SetAction;
 import got.server.GameServer;
 import got.server.PlayerManager;
 import got.server.GameServer.PlayerConnection;
+import got.server.serverStates.base.ParallelState;
 
-public class PlanningPhaseState extends ParallelState{
+public class PlanningPhaseState extends ParallelState {
 	private static final String name = "PlanningPhaseState";
 	private Server server;
 	

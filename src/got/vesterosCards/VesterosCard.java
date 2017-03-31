@@ -9,7 +9,8 @@ public interface VesterosCard {
     /**
      * Событие происходящее при открытии карты
      */
-    void onOpen();
+    void onOpenClient();
+    void onOpenServer();
     String getTitle();
     int getID();
     Texture getTexture();

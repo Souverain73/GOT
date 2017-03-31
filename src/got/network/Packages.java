@@ -360,10 +360,15 @@ public class Packages {
 	 * сообщает игрокам, что открыта карта card из колоды number.
 	 */
 	public static class OpenCard extends BroadcastPackage {
-		int number;
-		int card;
+		public int number;
+		public int card;
 
 		public OpenCard() {
+		}
+
+		public OpenCard(int number, int card) {
+			this.number = number;
+			this.card = card;
 		}
 	}
 

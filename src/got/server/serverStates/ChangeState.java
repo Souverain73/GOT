@@ -3,12 +3,12 @@ package got.server.serverStates;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.minlog.Log;
 
-import got.interfaces.IPauseable;
 import got.model.Player;
 import got.network.Packages;
 import got.server.GameServer;
 import got.server.PlayerManager;
 import got.server.GameServer.PlayerConnection;
+import got.server.serverStates.base.ServerState;
 
 public class ChangeState implements ServerState {
 	private String name = "ChangeGameState";

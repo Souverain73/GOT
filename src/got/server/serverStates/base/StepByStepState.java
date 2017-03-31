@@ -1,4 +1,4 @@
-package got.server.serverStates;
+package got.server.serverStates.base;
 
 import com.esotericsoftware.kryonet.Connection;
 import got.interfaces.IPauseable;
@@ -7,6 +7,7 @@ import got.model.Player;
 import got.network.Packages;
 import got.server.GameServer;
 import got.server.PlayerManager;
+import got.server.serverStates.StateMachine;
 
 import java.util.Arrays;
 
@@ -112,6 +113,7 @@ public abstract class StepByStepState implements ServerState, IPauseable{
 
     @Override
     public void resume() {
+
     }
 
     @Override

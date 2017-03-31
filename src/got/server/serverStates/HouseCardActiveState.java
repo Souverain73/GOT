@@ -1,6 +1,7 @@
 package got.server.serverStates;
 
 import com.esotericsoftware.kryonet.Connection;
+import got.server.serverStates.base.ServerState;
 
 /**
  * Created by Souverain73 on 13.01.2017.

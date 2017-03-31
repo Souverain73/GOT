@@ -17,7 +17,10 @@ import got.network.Packages.PlayerReady;
 import got.server.GameServer;
 import got.server.GameServer.PlayerConnection;
 import got.server.PlayerManager;
+import got.server.serverStates.base.ServerState;
 import got.utils.Timers;
+import got.vesterosCards.Deck;
+import got.vesterosCards.VesterosCards;
 
 public class NetworkRoomState implements ServerState {
 	private String name = "NetworkRoomState";
@@ -71,6 +74,45 @@ public class NetworkRoomState implements ServerState {
 							Game.instance().initDefaultTracks();
 
 							GameServer.getServer().sendToAllTCP(new Packages.SetFractions(PlayerManager.instance().getFractions()));
+
+							Game.instance().initVesterosDeck(0, new Deck(){{
+								addCard(VesterosCards.getCardByName("CollectUnits"));
+								addCard(VesterosCards.getCardByName("CollectUnits"));
+								addCard(VesterosCards.getCardByName("CollectUnits"));
+								addCard(VesterosCards.getCardByName("SummerTime1"));
+								addCard(VesterosCards.getCardByName("WinterTime1"));
+								addCard(VesterosCards.getCardByName("ThroneOfSwords"));
+								addCard(VesterosCards.getCardByName("ThroneOfSwords"));
+								addCard(VesterosCards.getCardByName("Suply"));
+								addCard(VesterosCards.getCardByName("Suply"));
+								addCard(VesterosCards.getCardByName("Suply"));
+							}});
+
+							Game.instance().initVesterosDeck(1, new Deck(){{
+								addCard(VesterosCards.getCardByName("WinterTime2"));
+								addCard(VesterosCards.getCardByName("SummerTime2"));
+								addCard(VesterosCards.getCardByName("BlackWings"));
+								addCard(VesterosCards.getCardByName("BlackWings"));
+								addCard(VesterosCards.getCardByName("BattleOfKings"));
+								addCard(VesterosCards.getCardByName("BattleOfKings"));
+								addCard(VesterosCards.getCardByName("BattleOfKings"));
+								addCard(VesterosCards.getCardByName("GameOfThrones"));
+								addCard(VesterosCards.getCardByName("GameOfThrones"));
+								addCard(VesterosCards.getCardByName("GameOfThrones"));
+							}});
+
+							Game.instance().initVesterosDeck(2, new Deck(){{
+								addCard(VesterosCards.getCardByName("Wildlings"));
+								addCard(VesterosCards.getCardByName("Wildlings"));
+								addCard(VesterosCards.getCardByName("Wildlings"));
+								addCard(VesterosCards.getCardByName("AutumnRains"));
+								addCard(VesterosCards.getCardByName("FeastForCrows"));
+								addCard(VesterosCards.getCardByName("WebOfLie"));
+								addCard(VesterosCards.getCardByName("SeaOfStorms"));
+								addCard(VesterosCards.getCardByName("PutToSword"));
+								addCard(VesterosCards.getCardByName("PutToSword"));
+								addCard(VesterosCards.getCardByName("StormOfSwords"));
+							}});
 
 							GameServer.getServer().sendToAllTCP(new Packages.SetTrack(Game.THRONE_TRACK, Game.instance().getTrack(Game.THRONE_TRACK).getData()));
 							GameServer.getServer().sendToAllTCP(new Packages.SetTrack(Game.SWORD_TRACK, Game.instance().getTrack(Game.SWORD_TRACK).getData()));
