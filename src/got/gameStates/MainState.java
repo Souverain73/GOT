@@ -1,7 +1,7 @@
 package got.gameStates;
 
 import got.gameObjects.*;
-import got.model.Game;
+import got.gameObjects.gui.GUIObject;
 import org.joml.Vector2f;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -11,11 +11,7 @@ import got.GameClient;
 import got.graphics.DrawSpace;
 import got.graphics.TextureManager;
 import got.network.Packages.ChangeState;
-import got.server.PlayerManager;
 import got.utils.LoaderParams;
-
-import static com.sun.javafx.logging.PulseLogger.addMessage;
-import static got.translation.Translator.tt;
 
 public class MainState extends AbstractGameState {
 	private static final String name = "MainState";

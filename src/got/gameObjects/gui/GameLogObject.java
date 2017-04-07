@@ -1,5 +1,8 @@
-package got.gameObjects;
+package got.gameObjects.gui;
 
+import got.gameObjects.AbstractGameObject;
+import got.gameObjects.ImageObject;
+import got.gameObjects.TextObject;
 import got.gameObjects.interfaceControls.ImageButton;
 import got.graphics.Font;
 import org.joml.Vector2f;

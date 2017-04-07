@@ -3,12 +3,6 @@ package got;
 import static got.translation.Translator.tt;
 import static got.utils.UI.logSystem;
 import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_1;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_2;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_3;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_4;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_5;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_6;
 import static org.lwjgl.glfw.GLFW.GLFW_RESIZABLE;
 import static org.lwjgl.glfw.GLFW.GLFW_STICKY_MOUSE_BUTTONS;
 import static org.lwjgl.glfw.GLFW.GLFW_TRUE;
@@ -34,26 +28,22 @@ import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 
-import java.awt.font.TextMeasurer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.RunnableFuture;
 
 import com.esotericsoftware.minlog.Log;
-import got.animations.Animation;
 import got.animations.Animator;
-import got.gameObjects.GUIObject;
+import got.gameObjects.gui.GUIObject;
 import got.gameObjects.GameMapObject;
 import got.gameObjects.battleDeck.BattleDeckObject;
 import got.houseCards.HouseCardsLoader;
-import got.server.GameServer;
 import got.translation.Language;
 import got.translation.Translator;
 import got.vesterosCards.VesterosCard;
+import got.vesterosCards.VesterosCards;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
@@ -74,16 +64,13 @@ import got.graphics.DrawSpace;
 import got.graphics.GraphicModule;
 import got.graphics.Texture;
 import got.graphics.TextureManager;
-import got.model.Fraction;
 import got.model.Player;
 import got.network.Network;
 import got.network.Packages;
 import got.network.Packages.ChangeState;
 import got.network.Packages.ServerMessage;
 import got.server.PlayerManager;
-import got.server.GameServer.PlayerConnection;
 import got.utils.UI;
-import sun.print.BackgroundLookupListener;
 
 import static got.network.Packages.Ready;
 
@@ -124,7 +111,7 @@ public class GameClient {
 	private int windowHeight;	
 	
 	private GameClient(){
-		Constants.read(System.getProperty("client.config", Constants.DEFAULT_CONFIG_FILE));
+		Constants.read("data/" + System.getProperty("client.config", Constants.DEFAULT_CONFIG_FILE));
 
 		int logLevel = Integer.valueOf(System.getProperty("system.logLevel", "6"));
 		Log.set(logLevel);
@@ -214,6 +201,7 @@ public class GameClient {
 		stm.setState(new MenuState());
 		background = TextureManager.instance().loadTexture("background.png");
 		HouseCardsLoader.instance();
+		VesterosCards.init();
 	}
 	
 	public void initNetwork(){

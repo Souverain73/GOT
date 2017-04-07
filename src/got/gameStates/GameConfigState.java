@@ -2,7 +2,6 @@ package got.gameStates;
 
 import com.esotericsoftware.kryonet.Connection;
 import got.GameClient;
-import got.gameObjects.GUIObject;
 import got.gameObjects.MapPartObject;
 import got.model.Game;
 import got.network.Packages;

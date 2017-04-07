@@ -11,7 +11,6 @@ public class StateID {
 	public static final int MAIN_STATE = 16;
 	public static final int GAME_CONFIG_STATE = 17;
 	public static final int PLANNING_PHASE = 1;
-	public static final int ACTION_PHASE = 2;
 	public static final int FIRE_PHASE = 3;
 	public static final int MOVE_PHASE = 4;
 	public static final int POWER_PHASE = 5;
@@ -21,6 +20,7 @@ public class StateID {
 	public static final int BATTLE_RESULT_PHASE = 9;
 	public static final int SELECT_HOUSE_CARD_PHASE = 10;
 	public static final int PLAY_VESTEROS_STATE = 18;
+	public static final int COLLECT_UNITS = 19;
 
     public static GameState getGameStateByID(int id){
 		switch(id){
@@ -36,6 +36,7 @@ public class StateID {
 			case SELECT_HOUSE_CARD_PHASE: return new SelectHouseCardPhase();
 			case GAME_CONFIG_STATE: return new GameConfigState();
 			case PLAY_VESTEROS_STATE: return new PlayVesterosCard();
+			case COLLECT_UNITS: return new CollectUnitsPhase();
 		}
 		return null;
 	}

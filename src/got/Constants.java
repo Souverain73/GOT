@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Constants {
-	public static final String DEFAULT_CONFIG_FILE = "data/client.cfg";
+	public static final String DEFAULT_CONFIG_FILE = "client.cfg";
 
 	//GAME MECHANICS
 	public static int MAX_PLAYERS = 6;
@@ -42,6 +42,7 @@ public class Constants {
 	public static float POWER_TOKEN_IMAGE_SIZE = 50;
 
 	public static String DEFAULT_HOST = "localhost";
+	public static String NICKNAME = "_rnd";
 
 	public static void read(String fileName){
 		try{
@@ -76,6 +77,7 @@ public class Constants {
 			case "UNIT_STEP": UNIT_STEP = Float.valueOf(value); break;
 			case "POWER_TOKEN_IMAGE_SIZE": POWER_TOKEN_IMAGE_SIZE = Float.valueOf(value); break;
 			case "DEFAULT_HOST": DEFAULT_HOST = value; break;
+			case "NICKNAME": NICKNAME = value; break;
 			default:
 				System.out.println("Can't find parameter " + name);
 		}

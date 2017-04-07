@@ -2,7 +2,7 @@ package got.gameStates;
 
 import com.esotericsoftware.kryonet.Connection;
 import got.GameClient;
-import got.gameObjects.ThroneTrackObject;
+import got.gameObjects.gui.ThroneTrackObject;
 import got.model.Game;
 import got.model.Player;
 import got.network.Packages;

@@ -1,6 +1,9 @@
-package got.gameObjects;
+package got.gameObjects.gui;
 
 import got.Constants;
+import got.gameObjects.AbstractGameObject;
+import got.gameObjects.PlayerPanelObject;
+import got.gameObjects.TextObject;
 import got.graphics.DrawSpace;
 import got.model.Game;
 import got.server.PlayerManager;

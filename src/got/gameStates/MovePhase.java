@@ -14,7 +14,6 @@ import got.network.Packages;
 import got.server.PlayerManager;
 
 import static got.utils.UI.logAction;
-import static got.utils.UI.logSystem;
 import static got.utils.UI.tooltipWait;
 
 public class MovePhase extends StepByStepGameState implements IClickListener{
@@ -63,7 +62,7 @@ public class MovePhase extends StepByStepGameState implements IClickListener{
 					//Включаем регионы, в которые можно пойти.
 					enableRegionsToMove(region);
 				}else{
-					endTurn(region);
+					endRegionTurn(region);
 				}
 			}else if (state == SubState.SELECT_TARGET){
 				if (region == source){
@@ -88,7 +87,7 @@ public class MovePhase extends StepByStepGameState implements IClickListener{
 					));
 
 					if (usedRegion.getUnits().length == selectedUnits.length){
-						endTurn(usedRegion);
+						endRegionTurn(usedRegion);
 					}
 				}else{
 					//Жетон власти оставляется до начала боя
@@ -125,11 +124,11 @@ public class MovePhase extends StepByStepGameState implements IClickListener{
         }
 	}
 
-	private void endTurn(MapPartObject regionWithUsedAction) {
+	private void endRegionTurn(MapPartObject regionWithUsedAction) {
 		if (regionWithUsedAction != null){
 			GameClient.instance().send(new Packages.Act(regionWithUsedAction.getID(), 0));
 		}
-		GameClient.instance().sendReady(true);
+		endTurn(true);
 	}
 
 	private void enableRegionsToMove(MapPartObject region) {

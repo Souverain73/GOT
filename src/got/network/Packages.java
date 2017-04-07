@@ -376,9 +376,13 @@ public class Packages {
 	 * сообщает игрокам, что была выбрана позиция select.
 	 */
 	public static class PlayerSelectItem extends BroadcastPackage {
-		int select;
+		public int select;
 
 		public PlayerSelectItem() {
+		}
+
+		public PlayerSelectItem(int select) {
+			this.select = select;
 		}
 	}
 

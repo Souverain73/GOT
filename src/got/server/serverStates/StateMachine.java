@@ -21,9 +21,15 @@ public class StateMachine implements INetworkListener{
 	
 	public StateMachine(){
 		_states = new LinkedList<ServerState>();
+		params = new HashMap<>();
 	}
 
 	public void changeState(ServerState nextState, ChangeAction action){
+		if (action == ChangeAction.REMOVE){
+			ServerState currentState = _states.poll();
+			nextState = _states.peek();
+			_states.push(currentState);
+		}
 		pushState(new ChangeState(nextState, action));
 	}
 

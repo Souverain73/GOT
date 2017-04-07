@@ -39,7 +39,7 @@ class PowerPhase extends StepByStepGameState implements IClickListener{
 
 
     private boolean firstTurn;
-    private Map<MapPartObject, Integer> hirePointsCache;
+    private Map<String, Integer> hirePointsCache;
     private MapPartObject sourceRegion = null;
 
     @Override
@@ -63,8 +63,8 @@ class PowerPhase extends StepByStepGameState implements IClickListener{
                     int action = -1;
                     //Если игрок уже начал нанимать юнитов в регионе, то у него нет выбора.
                     //Пусть набирает дальше
-                    if (hirePointsCache.containsKey(region)
-                            && hirePointsCache.get(region) != region.getHirePoints()) {
+                    if (hirePointsCache.containsKey(region.getName())
+                            && hirePointsCache.get(region.getName()) != region.getHirePoints()) {
                         action = 1;
                     } else {
                         action = showSelectActionDialog();
@@ -121,7 +121,7 @@ class PowerPhase extends StepByStepGameState implements IClickListener{
                 if (GameClient.shared.gameMap.getEnabledRegions().isEmpty())
                     endTurn(false);
             } else {
-                hirePointsCache.put(source, hms.getHirePoints());
+                hirePointsCache.put(source.getName(), hms.getHirePoints());
             }
         }
 
@@ -218,10 +218,10 @@ class PowerPhase extends StepByStepGameState implements IClickListener{
     }
 
     private int getHirePoints(MapPartObject region) {
-        if (hirePointsCache.get(region) == null) {
+        if (hirePointsCache.get(region.getName()) == null) {
             return region.getHirePoints();
         } else {
-            return hirePointsCache.get(region);
+            return hirePointsCache.get(region.getName());
         }
     }
 

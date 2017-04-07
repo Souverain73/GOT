@@ -42,3 +42,23 @@ playerSetOverrides "Игрок %s устанавливает особые усл
 playerRemoveHouseCard "Игрок %s убирает из колоды игрока %s карту %s"
 selectRegionToRetreat "Выберите регион для отступления"
 noRegionsToRetreat "Некуда отступать, все юниты умирают"
+
+[vesteros]
+cardOpen "Из %d колоды открыта карта %s"
+
+[vesterosCard]
+AutumnRains "Дожди осени"
+BattleOfKings "Битва королей"
+BlackWings "Черные крылья, черные слова"
+CollectUnits "Сбор войск"
+FeastForCrows "Пир для ворон"
+GameOfThrones "Игра престолов"
+PutToSword "Преданы мечу"
+SeaOfStorms "Море штормов"
+StormOfSwords "Буря мечей"
+SummerTime "Последние дни лета"
+Suply "Снабжение"
+ThroneOfSwords "Трон из клинков"
+WebOfLie "Паутина лжи"
+Wildlings "Нашествие одичалых"
+WinterTime "Зима близко"

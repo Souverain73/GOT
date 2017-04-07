@@ -68,6 +68,7 @@ public class VesterosPhaseState implements ServerState, IPauseable{
 
     @Override
     public void resume() {
+        UI.systemMessage("Resume vesteros phase");
         if (data.currentCard < 2) {
             playNextCard();
         }else{

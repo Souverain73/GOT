@@ -1,6 +1,7 @@
 package got.vesterosCards;
 
-import org.joml.Vector3f;
+import got.translation.Translator;
+import got.vesterosCards.cards.CollectUnitsCard;
 
 import java.util.HashMap;
 
@@ -12,27 +13,27 @@ public class VesterosCards {
     static HashMap<String, VesterosCard> cardsByTitle = new HashMap<>();
     private static void add(VesterosCard card){
         cards.put(card.getID(), card);
-        cardsByTitle.put(card.getTitle(), card);
+        cardsByTitle.put(card.getInternalName(), card);
     }
 
     public static void init(){
-        add(new CommonVesterosCard("AutumnRains.png", "Autumn Rains"));
-        add(new CommonVesterosCard("BattleOfKings.png", "Battle Of Kings"));
-        add(new CommonVesterosCard("BlackWings.png", "Black Wings"));
-        add(new CommonVesterosCard("CollectUnits.png", "Collect Units"));
-        add(new CommonVesterosCard("FeastForCrows.png", "Feast For Crows"));
-        add(new CommonVesterosCard("GameOfThrones.png", "Game Of Thrones"));
-        add(new CommonVesterosCard("PutToSword.png", "Put To Sword"));
-        add(new CommonVesterosCard("SeaOfStorms.png", "Sea Of Storms"));
-        add(new CommonVesterosCard("StormOfSwords.png", "Storm Of Swords"));
-        add(new CommonVesterosCard("SummerTime1.png", "Summer Time 1"));
-        add(new CommonVesterosCard("SummerTime2.png", "Summer Time 2"));
-        add(new CommonVesterosCard("Suply.png", "Suply"));
-        add(new CommonVesterosCard("ThroneOfSwords.png", "Throne Of Swords"));
-        add(new CommonVesterosCard("WebOfLie.png", "Web Of Lie"));
-        add(new CommonVesterosCard("Wildlings.png", "Wildlings"));
-        add(new CommonVesterosCard("WinterTime1.png", "Winter Time 1"));
-        add(new CommonVesterosCard("WinterTime2.png", "Winter Time 2"));
+        add(new CommonVesterosCard("AutumnRains.png",   "AutumnRains",    Translator.tt("vesterosCard.AutumnRains")));
+        add(new CommonVesterosCard("BattleOfKings.png", "BattleOfKings",  Translator.tt("vesterosCard.BattleOfKings")));
+        add(new CommonVesterosCard("BlackWings.png",    "BlackWings",     Translator.tt("vesterosCard.BlackWings")));
+        add(new CollectUnitsCard(  "CollectUnits.png",  "CollectUnits",   Translator.tt("vesterosCard.CollectUnits")));
+        add(new CommonVesterosCard("FeastForCrows.png", "FeastForCrows",  Translator.tt("vesterosCard.FeastForCrows")));
+        add(new CommonVesterosCard("GameOfThrones.png", "GameOfThrones",  Translator.tt("vesterosCard.GameOfThrones")));
+        add(new CommonVesterosCard("PutToSword.png",    "PutToSword",     Translator.tt("vesterosCard.PutToSword")));
+        add(new CommonVesterosCard("SeaOfStorms.png",   "SeaOfStorms",    Translator.tt("vesterosCard.SeaOfStorms")));
+        add(new CommonVesterosCard("StormOfSwords.png", "StormOfSwords",  Translator.tt("vesterosCard.StormOfSwords")));
+        add(new CommonVesterosCard("SummerTime1.png",   "SummerTime1",    Translator.tt("vesterosCard.SummerTime")));
+        add(new CommonVesterosCard("SummerTime2.png",   "SummerTime2",    Translator.tt("vesterosCard.SummerTime")));
+        add(new CommonVesterosCard("Suply.png",         "Suply",          Translator.tt("vesterosCard.Suply")));
+        add(new CommonVesterosCard("ThroneOfSwords.png","ThroneOfSwords", Translator.tt("vesterosCard.ThroneOfSwords")));
+        add(new CommonVesterosCard("WebOfLie.png",      "WebOfLie",       Translator.tt("vesterosCard.WebOfLie")));
+        add(new CommonVesterosCard("Wildlings.png",     "Wildlings",      Translator.tt("vesterosCard.Wildlings")));
+        add(new CommonVesterosCard("WinterTime1.png",   "WinterTime1",    Translator.tt("vesterosCard.WinterTime")));
+        add(new CommonVesterosCard("WinterTime2.png",   "WinterTime2",    Translator.tt("vesterosCard.WinterTime")));
     }
 
     public static VesterosCard getCard(int id){

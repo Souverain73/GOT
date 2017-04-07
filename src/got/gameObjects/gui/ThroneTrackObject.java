@@ -1,5 +1,6 @@
-package got.gameObjects;
+package got.gameObjects.gui;
 
+import got.gameObjects.TrackObject;
 import got.graphics.Effect;
 import got.graphics.GraphicModule;
 import got.model.Fraction;

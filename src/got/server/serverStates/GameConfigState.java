@@ -31,7 +31,7 @@ public class GameConfigState implements ServerState {
         this.stm = stm;
         if (!onDemand){
             executePreset();
-            stm.changeState(new PlanningPhaseState(), StateMachine.ChangeAction.SET);
+            stm.changeState(new VesterosPhaseState(), StateMachine.ChangeAction.SET);
         }
     }
 

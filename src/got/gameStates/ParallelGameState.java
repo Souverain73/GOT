@@ -2,7 +2,7 @@ package got.gameStates;
 
 import com.esotericsoftware.kryonet.Connection;
 import got.GameClient;
-import got.gameObjects.ThroneTrackObject;
+import got.gameObjects.gui.ThroneTrackObject;
 import got.model.Player;
 import got.network.Packages;
 import got.server.PlayerManager;
@@ -22,10 +22,19 @@ public class ParallelGameState extends AbstractGameState {
         GameClient.shared.gui.getThroneTrack().setHighlightMode(ThroneTrackObject.HighlightMode.HIGHLIGHT_READY);
     }
 
+    @Override
+    public void exit() {
+        super.exit();
+        GameClient.shared.gui.getThroneTrack().setHighlightMode(ThroneTrackObject.HighlightMode.NO_HIGHLIGHT);
+    }
+
     protected void toggleReady(){
         GameClient.instance().sendReady(!PlayerManager.getSelf().isReady());
     }
-
+    protected void setReady(boolean ready){
+        if (PlayerManager.getSelf().isReady() == ready) return;
+        toggleReady();
+    }
     protected void onReady(Player player){}
     protected void onUnready(Player player){}
     protected void onAllReady(){}

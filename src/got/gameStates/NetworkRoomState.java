@@ -67,7 +67,13 @@ public class NetworkRoomState extends AbstractGameState{
 			GameClient.instance().getStateMachine().setState(new MenuState());
 			return;
 		}
-		GameClient.instance().send(new Packages.LogIn().Nickname(String.format("%010d", (new Random()).nextLong()%10000)));
+
+		String nickname = Constants.NICKNAME;
+		if (nickname.equals("_rnd")){
+			nickname = String.format("%010d", (new Random()).nextLong()%10000);
+		}
+
+		GameClient.instance().send(new Packages.LogIn().Nickname(nickname));
 		System.out.println("Connection successful");
 	}
 	
