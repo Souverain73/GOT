@@ -16,8 +16,10 @@ public abstract class AbstractAnimation<T> implements Animation<T> {
     private boolean enabled;
     private boolean finished;
     private T currentValue;
+    private Easing easing;
+    private Runnable after;
 
-    AbstractAnimation(T startValue, T endValue, long time, Consumer<T> setter){
+    AbstractAnimation(T startValue, T endValue, long time, Easing easing, Consumer<T> setter){
         this.startValue = startValue;
         this.endValue = endValue;
         this.time = time;
@@ -25,23 +27,23 @@ public abstract class AbstractAnimation<T> implements Animation<T> {
         this.startingTime = getCurrentTime();
         this.enabled = true;
         this.finished = false;
+        this.easing = easing;
+    }
+
+    AbstractAnimation(T startValue, T endValue, long time, Consumer<T> setter){
+        this(startValue, endValue, time, Easings.IN_OUT_SINE, setter);
     }
 
     @Override
-    public void pause() {
-        enabled = false;
+    public Animation setEasing(Easing easing) {
+        this.easing = easing;
+        return this;
     }
 
     @Override
-    public void resume() {
-        enabled = true;
-    }
-
-    @Override
-    public void restart() {
-        enabled = true;
-        finished = false;
-        startingTime = getCurrentTime();
+    public Animation after(Runnable callback) {
+        this.after = callback;
+        return this;
     }
 
     @Override
@@ -65,8 +67,11 @@ public abstract class AbstractAnimation<T> implements Animation<T> {
             enabled = false;
             finished = true;
         }
-        currentValue = updateValue(startValue, endValue, (float)timeLast/time);
+        currentValue = updateValue(startValue, endValue, easing.ease((float)timeLast/time));
         setter.accept(currentValue);
+        if (finished && after != null){
+            after.run();
+        }
     }
 
     protected abstract T updateValue(T from, T to, float percent);

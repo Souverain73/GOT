@@ -1,9 +1,7 @@
 package got.gameObjects.gui;
 
 import got.Constants;
-import got.gameObjects.AbstractGameObject;
-import got.gameObjects.PlayerPanelObject;
-import got.gameObjects.TextObject;
+import got.gameObjects.*;
 import got.graphics.DrawSpace;
 import got.model.Game;
 import got.server.PlayerManager;
@@ -19,10 +17,12 @@ public class GUIObject extends AbstractGameObject<GUIObject> {
 
     private TextObject tooltipText;
     private GameLogObject glo;
-    private ThroneTrackObject throneTrack;
+    private ThronesPanel tp;
+
+    private ContainerObject upperRight;
 
     public GUIObject(){
-        setSpace(DrawSpace.SCREEN);
+        upperRight = new ContainerObject().setPos(new Vector2f(Constants.SCREEN_WIDTH, 0));
 
         addChild(new PlayerPanelObject(PlayerManager.getSelf()));
 
@@ -30,14 +30,14 @@ public class GUIObject extends AbstractGameObject<GUIObject> {
 
         addChild(glo = new GameLogObject(300, 100, 32).setPos(new Vector2f(0, Constants.SCREEN_HEIGHT-100)));
 
-        throneTrack = new ThroneTrackObject(Game.instance().getTrack(THRONE_TRACK));
-        throneTrack.setPos(new Vector2f(300, Constants.SCREEN_HEIGHT-100));
+        upperRight.addChild(tp = new ThronesPanel().setPos(new Vector2f(-70, 0)));
+        addChild(upperRight);
 
-        addChild(throneTrack);
+        setSpace(DrawSpace.SCREEN);
     }
 
     public ThroneTrackObject getThroneTrack() {
-        return throneTrack;
+        return tp.getThroneTrack();
     }
 
     public void setTooltipText(String text){

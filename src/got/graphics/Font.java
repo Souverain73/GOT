@@ -201,7 +201,7 @@ public class Font{
 	public int getStringWidth(String string){
 		int result = 0;
 		for (int i=0; i<string.length(); i++){
-			result += charWidths[encoder.encode(string.charAt(i))] * (float)size/(float)graphSize + spacing;
+			result += getCharWidth(encoder.encode(string.charAt(i)));
 		}
 		return result;
 	}

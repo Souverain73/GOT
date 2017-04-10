@@ -5,9 +5,8 @@ package got.animations;
  */
 public interface Animation<T> {
     boolean isFinished();
-    void pause();
-    void resume();
-    void restart();
     T getCurrentValue();
     void update();
+    Animation setEasing(Easing easing);
+    Animation after(Runnable callback);
 }

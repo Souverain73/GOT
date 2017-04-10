@@ -20,7 +20,7 @@ public class GameLogObject extends AbstractGameObject<GameLogObject> {
     private int currentMessage = 0;
     private int linesCount;
     private List<TextObject> textObjects = new ArrayList<>();
-    private Font font = new Font("test");
+    private Font font = new Font("test", 32);
 
     public GameLogObject(int width, int height, int fontSize) {
         this.w = width;

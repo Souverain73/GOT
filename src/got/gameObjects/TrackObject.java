@@ -1,10 +1,7 @@
 package got.gameObjects;
 
 import got.gameStates.GameState;
-import got.graphics.DrawSpace;
-import got.graphics.GraphicModule;
-import got.graphics.Texture;
-import got.graphics.TextureManager;
+import got.graphics.*;
 import got.model.Fraction;
 import got.model.Track;
 import org.joml.Vector2f;
@@ -22,15 +19,15 @@ public class TrackObject extends AbstractGameObject<TrackObject>{
 
     public TrackObject(Track track){
         blankTexture = TextureManager.instance().loadTexture("fractions/back.png");
-        this.w = 500;
-        this.h = 100;
+        this.w = 70;
+        this.h = 500;
         this.track = track;
         setSpace(DrawSpace.SCREEN);
 
         ImageObject bg = new ImageObject("thronebg.png", new Vector2f(0,0), (int)w, (int)h);
         addChild(bg);
 
-        AbstractGameObject<?> throneIcon = new TextObject(track.getName()).setPos(new Vector2f(10, 30));
+        AbstractGameObject<?> throneIcon = new TextObject(track.getName()).setPos(new Vector2f(10, 30)).setFont(new Font("bolyar", 16));
         addChild(throneIcon);
 
 
@@ -53,6 +50,6 @@ public class TrackObject extends AbstractGameObject<TrackObject>{
     }
 
     protected void drawFraction(Vector2f cp, int position, Fraction fraction){
-        fraction.getBackTexture().draw(cp.x + 100 +position * 70, cp.y + 25, 50, 50);
+        fraction.getBackTexture().draw(cp.x + 10 , cp.y + 70 + position * 70, 50, 50);
     }
 }
