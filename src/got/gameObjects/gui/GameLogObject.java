@@ -20,17 +20,18 @@ public class GameLogObject extends AbstractGameObject<GameLogObject> {
     private int currentMessage = 0;
     private int linesCount;
     private List<TextObject> textObjects = new ArrayList<>();
-    private Font font = new Font("test", 32);
+    private Font font;
 
     public GameLogObject(int width, int height, int fontSize) {
         this.w = width;
         this.h = height;
+        this.font =  new Font("test", 16);
 
         addChild(new ImageObject("PlayerPanel.png", new Vector2f(0, 0), width, height).setSpace(space));
 
         linesCount = height / fontSize;
         IntStream.range(0, linesCount).forEach((i)->{
-            TextObject to = new TextObject("").setSpace(space).setPos(new Vector2f(0, i * fontSize));
+            TextObject to = new TextObject("").setSpace(space).setPos(new Vector2f(0, i * fontSize)).setFont(font);
             textObjects.add(to);
             addChild(to);
         });
@@ -42,12 +43,6 @@ public class GameLogObject extends AbstractGameObject<GameLogObject> {
         addChild(new ImageButton("buttons/plus.png", width - 25, height-25, 25, 25, null).setSpace(space).setCallback((sender, param)->{
             scroll(1);
         }));
-    }
-
-    public GameLogObject setFont(Font font){
-        this.font = font;
-        textObjects.stream().forEach(to->to.setFont(font));
-        return this;
     }
 
     public void addMessage(String message){

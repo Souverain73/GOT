@@ -19,20 +19,16 @@ public class TrackObject extends AbstractGameObject<TrackObject>{
 
     public TrackObject(Track track){
         blankTexture = TextureManager.instance().loadTexture("fractions/back.png");
-        this.w = 70;
-        this.h = 500;
+        this.w = 65;
+        this.h = 480;
         this.track = track;
         setSpace(DrawSpace.SCREEN);
 
-        ImageObject bg = new ImageObject("thronebg.png", new Vector2f(0,0), (int)w, (int)h);
+        ImageObject bg = new ImageObject("tracks/" + track.getName() + "_BG.png", new Vector2f(0,60), 65, 420);
         addChild(bg);
 
-        AbstractGameObject<?> throneIcon = new TextObject(track.getName()).setPos(new Vector2f(10, 30)).setFont(new Font("bolyar", 16));
-        addChild(throneIcon);
-
-
-//            slots[i] = new ImageObject(blankTexture, new Vector2f(100 + i * 70, 25), 50, 50);
-
+        AbstractGameObject<?> trackIcon = new ImageObject("tracks/" + track.getName() + "_ICON.png", new Vector2f(0,0), 65, 60);
+        addChild(trackIcon);
     }
 
 
@@ -50,6 +46,6 @@ public class TrackObject extends AbstractGameObject<TrackObject>{
     }
 
     protected void drawFraction(Vector2f cp, int position, Fraction fraction){
-        fraction.getBackTexture().draw(cp.x + 10 , cp.y + 70 + position * 70, 50, 50);
+        fraction.getBackTexture().draw(cp.x + 12 , cp.y + 82 + position * 70, 45, 45);
     }
 }

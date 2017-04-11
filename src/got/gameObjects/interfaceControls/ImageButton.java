@@ -91,22 +91,8 @@ public class ImageButton extends AbstractButtonObject<ImageButton> {
 		GraphicModule.instance().getEffect().Overlay(overlay);
 	}
 
-
-	@Override
-	protected void mouseEnter() {
-		super.mouseEnter();
-	}
-
-
-	@Override
-	protected void mouseOut() {
-		super.mouseOut();
-	}
-
-
 	@Override
 	protected void click(GameState st) {
-		System.out.println("Click button; CurrentState:"+st.getName());
 		if (callback != null){
 			callback.accept(this, param);
 		}

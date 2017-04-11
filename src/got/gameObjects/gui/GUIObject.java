@@ -28,7 +28,7 @@ public class GUIObject extends AbstractGameObject<GUIObject> {
 
         addChild(tooltipText = new TextObject("Tooltip").setPos(new Vector2f(300,10)));
 
-        addChild(glo = new GameLogObject(300, 100, 32).setPos(new Vector2f(0, Constants.SCREEN_HEIGHT-100)));
+        addChild(glo = new GameLogObject(300, 100, 16).setPos(new Vector2f(0, Constants.SCREEN_HEIGHT-100)));
 
         upperRight.addChild(tp = new ThronesPanel().setPos(new Vector2f(-70, 0)));
         addChild(upperRight);
