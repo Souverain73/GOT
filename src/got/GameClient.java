@@ -32,6 +32,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.esotericsoftware.minlog.Log;
@@ -40,6 +41,7 @@ import got.gameObjects.gui.GUIObject;
 import got.gameObjects.GameMapObject;
 import got.gameObjects.battleDeck.BattleDeckObject;
 import got.houseCards.HouseCardsLoader;
+import got.model.Action;
 import got.translation.Language;
 import got.translation.Translator;
 import got.vesterosCards.VesterosCard;
@@ -85,6 +87,7 @@ public class GameClient {
 		public GameMapObject gameMap = null;
 		public GUIObject gui = null;
 		public VesterosCard currentCard = null;
+		public List<Action> restrictedActions;
     }
 
 	private boolean debug = false;

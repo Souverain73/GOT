@@ -4,12 +4,9 @@ import com.esotericsoftware.kryonet.Connection;
 import got.GameClient;
 import got.InputManager;
 import got.ModalState;
-import got.gameObjects.GameMapObject;
 import got.gameObjects.GameObject;
-import got.gameObjects.ImageObject;
 import got.gameObjects.MapPartObject;
 import got.gameObjects.interfaceControls.ImageButton;
-import got.gameStates.ParallelGameState;
 import got.gameStates.StateID;
 import got.gameStates.StateMachine;
 import got.gameStates.StepByStepGameState;
@@ -22,9 +19,7 @@ import got.model.Unit;
 import got.network.Packages;
 import got.server.GameServer;
 import got.server.PlayerManager;
-import got.server.serverStates.base.ParallelState;
 import got.server.serverStates.base.StepByStepState;
-
 import java.util.HashMap;
 import java.util.List;
 

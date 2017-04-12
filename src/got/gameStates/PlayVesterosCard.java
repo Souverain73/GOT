@@ -12,6 +12,8 @@ import got.vesterosCards.VesterosCard;
 import got.vesterosCards.VesterosCards;
 import org.joml.Vector2f;
 
+import java.util.Arrays;
+
 /**
  * Created by Souverain73 on 31.03.2017.
  */
@@ -50,5 +52,10 @@ public class PlayVesterosCard extends AbstractGameState {
 
         }
 
+        if (pkg instanceof Packages.SetRestrictedActions) {
+            Packages.SetRestrictedActions msg = (Packages.SetRestrictedActions) pkg;
+            GameClient.shared.restrictedActions = Arrays.asList(msg.actions);
+            GameClient.instance().logMessage("common.setRestrictedActions");
+        }
     }
 }

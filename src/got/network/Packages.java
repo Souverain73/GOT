@@ -89,6 +89,7 @@ public class Packages {
 		kryo.register(ChangeRegionFraction.class);
 		kryo.register(ChangeSuply.class);
 		kryo.register(PlayerChangeSuply.class);
+		kryo.register(SetRestrictedActions.class);
 	}
 
 	public static class NetPackage {
@@ -1028,6 +1029,17 @@ public class Packages {
 
 		public ChangeSuply(int level) {
 			this.level = level;
+		}
+	}
+
+	public static class SetRestrictedActions extends BroadcastPackage{
+		public Action[] actions;
+
+		public SetRestrictedActions() {
+		}
+
+		public SetRestrictedActions(Action[] actions) {
+			this.actions = actions;
 		}
 	}
 }

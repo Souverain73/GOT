@@ -26,6 +26,7 @@ public class Network {
 		kryo.register(got.model.Unit[].class);
 
 		kryo.register(Action.class);
+		kryo.register(Action[].class);
 
 		kryo.register(BattleOverrides.class);
 	}
