@@ -6,6 +6,7 @@ playerMoveUnits "Игрок %s перемещает юнитов из регио
 playerKillUnitInRegion "Игрок %s убивает юнита %s в регионе %s"
 playerChangeUnits "Игрок %s меняет состав войск в регионе %s"
 collectInfluence "Вы получаете %d жетонов влияния"
+playerCollectInfluence "Игрок %s получает %d жетонов влияния"
 
 waitForPlayer "Ожидание игрока %s"
 

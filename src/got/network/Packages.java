@@ -49,11 +49,11 @@ public class Packages {
 		kryo.register(PlayerChangeUnits.class);
 		kryo.register(ChangeUnits.class);
 		kryo.register(CollectInfluence.class);
+		kryo.register(PlayerCollectInfluence.class);
 		kryo.register(SelectItem.class);
 		kryo.register(Bet.class);
 		kryo.register(GetGlobalState.class);
 		kryo.register(ForceReadyAt.class);
-		kryo.register(AddInfluence.class);
 		kryo.register(SetGlobalState.class);
 		kryo.register(Attack.class);
 		kryo.register(PlayerAttack.class);
@@ -87,6 +87,8 @@ public class Packages {
 		kryo.register(PlayerKillUnit.class);
 		kryo.register(EndBattle.class);
 		kryo.register(ChangeRegionFraction.class);
+		kryo.register(ChangeSuply.class);
+		kryo.register(PlayerChangeSuply.class);
 	}
 
 	public static class NetPackage {
@@ -544,6 +546,7 @@ public class Packages {
 	 */
 	public static class CollectInfluence extends ClientServerPackage {
 		public int region;
+		public int count;
 
 		public CollectInfluence() {
 		}
@@ -551,15 +554,39 @@ public class Packages {
 		public CollectInfluence(int region) {
 			this.region = region;
 		}
+
+		public CollectInfluence(int region, int count) {
+			this.region = region;
+			this.count = count;
+		}
+	}
+
+	public static class PlayerCollectInfluence extends BroadcastPackage {
+		public int region;
+		public int count;
+		public int player;
+
+		public PlayerCollectInfluence() {
+		}
+
+		public PlayerCollectInfluence(int region, int count, int player) {
+			this.region = region;
+			this.count = count;
+			this.player = player;
+		}
 	}
 
 	/**
 	* 
 	*/
 	public static class SelectItem extends ClientServerPackage {
-		int select;
+		public int select;
 
 		public SelectItem() {
+		}
+
+		public SelectItem(int select) {
+			this.select = select;
 		}
 	}
 
@@ -594,17 +621,6 @@ public class Packages {
 		}
 
 		public ForceReadyAt() {
-		}
-	}
-
-	/**
-	 * добавляет игроку очки влияния в количестве value. Value может быть
-	 * отрицательным.
-	 */
-	public static class AddInfluence extends ServerClientPackage {
-		int value;
-
-		public AddInfluence() {
 		}
 	}
 
@@ -988,6 +1004,30 @@ public class Packages {
 					"region=" + region +
 					", fraction=" + fraction +
 					'}';
+		}
+	}
+
+    public static class PlayerChangeSuply extends BroadcastPackage{
+		public Fraction fraction;
+		public int level;
+
+		public PlayerChangeSuply() {
+		}
+
+		public PlayerChangeSuply(Fraction fraction, int level) {
+			this.fraction = fraction;
+			this.level = level;
+		}
+	}
+
+	public static class ChangeSuply extends ClientServerPackage{
+		public int level;
+
+		public ChangeSuply() {
+		}
+
+		public ChangeSuply(int level) {
+			this.level = level;
 		}
 	}
 }

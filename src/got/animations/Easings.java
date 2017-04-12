@@ -4,7 +4,7 @@ package got.animations;
  * Created by Souverain73 on 10.04.2017.
  */
 public class Easings {
-    private static int BEZIER_STEPS = 1000;
+    private static int BEZIER_STEPS = 10000;
     private static boolean INTERPOLATED = false;
     public static Easing LINEAR = (v)->v;
     public static Easing IN_OUT_CUBIC;

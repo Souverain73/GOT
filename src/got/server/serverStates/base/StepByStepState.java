@@ -74,17 +74,26 @@ public abstract class StepByStepState implements ServerState, IPauseable{
         }
         //проверяем, если все игроки готовы, значит никто больше не может совершить ход, значит можно переходить к следующей фазе.
         if (isAllPlayersReady()){
-            try {
-                stm.changeState(nextStateClass.newInstance(), StateMachine.ChangeAction.SET);
-                return;
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("Can't instantiate next State from CLASS object");
-                System.exit(0);
-            }
+            onReadyToChangeState();
+            return;
         }
         //передаем управление следующему игроку.
         nextTurn();
+    }
+
+    protected void onReadyToChangeState(){
+        if (nextStateClass == null){
+            stm.changeState(null, StateMachine.ChangeAction.REMOVE);
+            return;
+        }
+
+        try {
+            stm.changeState(nextStateClass.newInstance(), StateMachine.ChangeAction.SET);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Can't instantiate next State from CLASS object");
+            System.exit(0);
+        }
     }
 
     private boolean isAllPlayersReady() {

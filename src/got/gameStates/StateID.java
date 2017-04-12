@@ -1,6 +1,8 @@
 package got.gameStates;
 
 import got.server.serverStates.base.ServerState;
+import got.vesterosCards.States.CollectInfluence;
+import got.vesterosCards.States.CollectUnits;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -21,6 +23,7 @@ public class StateID {
 	public static final int SELECT_HOUSE_CARD_PHASE = 10;
 	public static final int PLAY_VESTEROS_STATE = 18;
 	public static final int COLLECT_UNITS = 19;
+	public static final int COLLECT_INFLUENCE = 20;
 
     public static GameState getGameStateByID(int id){
 		switch(id){
@@ -36,7 +39,8 @@ public class StateID {
 			case SELECT_HOUSE_CARD_PHASE: return new SelectHouseCardPhase();
 			case GAME_CONFIG_STATE: return new GameConfigState();
 			case PLAY_VESTEROS_STATE: return new PlayVesterosCard();
-			case COLLECT_UNITS: return new CollectUnitsPhase();
+			case COLLECT_UNITS: return new CollectUnits.ClientState();
+			case COLLECT_INFLUENCE: return new CollectInfluence.ClientState();
 		}
 		return null;
 	}

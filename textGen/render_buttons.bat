@@ -16,3 +16,6 @@
 @call button.bat 180x80 Žª ok
 @call button.bat 80x80 "+" plus
 @call button.bat 80x80 "-" minus
+@call button.bat 80x80 "1" 1
+@call button.bat 80x80 "2" 2
+@call button.bat 80x80 "3" 3

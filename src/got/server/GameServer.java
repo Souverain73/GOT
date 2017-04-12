@@ -269,7 +269,6 @@ public class GameServer {
 
 			@Override
 			protected String set(Fraction data) {
-				//todo: replace with network package to clients
 				MapPartObject mpo = (MapPartObject) cns.getStateParam("region");
 				mpo.setFraction(data);
 				GameServer.getServer().sendToAllTCP(new Packages.ChangeRegionFraction(mpo.getID(), data));

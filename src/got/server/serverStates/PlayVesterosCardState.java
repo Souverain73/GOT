@@ -17,7 +17,7 @@ import javax.imageio.IIOParamController;
  */
 public class PlayVesterosCardState extends ParallelState{
     private VesterosCard currentCard;
-    private VesterosCard.openParams params;
+    private VesterosCard.openParams params = new VesterosCard.openParams();
     private VesterosPhaseState.VesterosPhaseData data;
 
     @Override
@@ -41,9 +41,10 @@ public class PlayVesterosCardState extends ParallelState{
     @Override
     public void recieve(Connection connection, Object pkg) {
         super.recieve(connection, pkg);
-        if (pkg instanceof Packages.PlayerSelectItem) {
-            Packages.PlayerSelectItem msg = (Packages.PlayerSelectItem) pkg;
+        if (pkg instanceof Packages.SelectItem) {
+            Packages.SelectItem msg = (Packages.SelectItem) pkg;
             params.selection = msg.select;
+            GameServer.getServer().sendToAllTCP(new Packages.PlayerSelectItem(msg.select));
         }
     }
 

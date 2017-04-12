@@ -80,8 +80,6 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		textureName = (String) params.get("texture");
 		pos.x = (Integer)params.get("x");
 		pos.y = (Integer)params.get("y");
-//		w = (Integer)params.get("w");
-//		h = (Integer)params.get("h");
 		act_x = (Integer)params.get("action_x");
 		act_y = (Integer)params.get("action_y");
 		unit_x = (Integer)params.get("unit_x");
@@ -427,6 +425,10 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 
 	public int getInfluencePoints() {
 		return influencePoints;
+	}
+
+	public int getResourcesCount() {
+		return resourcesCount;
 	}
 
 	public int getUnitsCount(){

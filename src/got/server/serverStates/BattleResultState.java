@@ -63,7 +63,7 @@ public class BattleResultState extends ParallelState {
                     UI.systemMessage("Bad battle result data. Continue with defender's data");
                 }
                 Packages.BattleResult battleResult;
-                //TODO: get home cards effects, calculate units killed and send it to players
+
                 if (defenderResult.defenderDamage >= defenderResult.attackerDamage){
                     battleResult = new Packages.BattleResult(GameServer.shared.defenderID, GameServer.shared.attackerID,
                             GameServer.shared.defenderRegionID, GameServer.shared.attackerRegionID, 0);
