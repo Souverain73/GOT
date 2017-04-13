@@ -3,6 +3,7 @@ package got.server.serverStates;
 import com.esotericsoftware.kryonet.Connection;
 
 import got.gameStates.StateID;
+import got.gameStates.VesterosPhase;
 import got.model.Player;
 import got.network.Packages;
 import got.server.GameServer;
@@ -13,7 +14,7 @@ public class PowerPhaseState extends StepByStepState {
 	private static final String name = "PowerPhase";
 
 	public PowerPhaseState(){
-		super.setNextState(PlanningPhaseState.class);
+		super.setNextState(VesterosPhaseState.class);
 	}
 
 	@Override

@@ -308,5 +308,10 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 	public void forEachRegion(Consumer<? super MapPartObject> func){
 		map.values().forEach(func);
 	}
-	
+
+	public int getSuply(Fraction f) {
+		return map.values().stream().filter(r->
+			r.getFraction() == f
+		).mapToInt(MapPartObject::getResourcesCount).sum();
+	}
 }

@@ -8,6 +8,7 @@ import got.gameObjects.ImageObject;
 import got.graphics.DrawSpace;
 import got.network.Packages;
 import got.utils.Timers;
+import got.utils.UI;
 import got.vesterosCards.VesterosCard;
 import got.vesterosCards.VesterosCards;
 import org.joml.Vector2f;
@@ -26,7 +27,7 @@ public class PlayVesterosCard extends AbstractGameState {
 
     @Override
     public void exit() {
-
+        UI.systemMessage("Exit play vesteros");
         super.exit();
     }
 
@@ -56,6 +57,7 @@ public class PlayVesterosCard extends AbstractGameState {
             Packages.SetRestrictedActions msg = (Packages.SetRestrictedActions) pkg;
             GameClient.shared.restrictedActions = Arrays.asList(msg.actions);
             GameClient.instance().logMessage("common.setRestrictedActions");
+            UI.systemMessage("Changed restrictedActions: " + Arrays.toString(msg.actions));
         }
     }
 }

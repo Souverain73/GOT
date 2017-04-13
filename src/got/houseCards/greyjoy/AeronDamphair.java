@@ -32,7 +32,7 @@ public class AeronDamphair extends ActiveHouseCard {
                 GameClient.instance().send(new Packages.SelectHouseCard(selectedCard.getID()));
             }
 
-            resume();
+            resumeModal();
         }
 
         @Override

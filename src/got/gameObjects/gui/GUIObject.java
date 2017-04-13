@@ -7,8 +7,6 @@ import got.model.Game;
 import got.server.PlayerManager;
 import org.joml.Vector2f;
 
-import static got.model.Game.THRONE_TRACK;
-
 /**
  * Created by Souverain73 on 24.03.2017.
  */
@@ -18,7 +16,7 @@ public class GUIObject extends AbstractGameObject<GUIObject> {
     private TextObject tooltipText;
     private GameLogObject glo;
     private ThronesPanel tp;
-
+    private SuplyTrackObject sto;
     private ContainerObject upperRight;
 
     public GUIObject(){
@@ -30,8 +28,11 @@ public class GUIObject extends AbstractGameObject<GUIObject> {
 
         addChild(glo = new GameLogObject(300, 100, 16).setPos(new Vector2f(0, Constants.SCREEN_HEIGHT-100)));
 
-        upperRight.addChild(tp = new ThronesPanel().setPos(new Vector2f(-70, 0)));
+        upperRight.addChild(tp = new ThronesPanel().setPos(new Vector2f(-65, 0)));
+        upperRight.addChild(sto = new SuplyTrackObject(Game.instance().getSuplyTrack()).setPos(new Vector2f(-65, 480)));
+
         addChild(upperRight);
+        addChild(new FPSCounterObject().setPos(new Vector2f(0, 200)));
 
         setSpace(DrawSpace.SCREEN);
     }

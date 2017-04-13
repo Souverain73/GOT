@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 
 import got.gameStates.StateID;
+import got.model.ChangeAction;
 import got.model.Player;
 import got.network.Packages.PlayerSetAction;
 import got.network.Packages.SetAction;
@@ -56,7 +57,7 @@ public class PlanningPhaseState extends ParallelState {
 	@Override
 	protected void onReadyToChangeState() {
 		server.sendToAllTCP("Next phase");
-		stm.changeState(new FirePhaseState(), StateMachine.ChangeAction.SET);
+		stm.changeState(new FirePhaseState(), ChangeAction.SET);
 	}
 
 }

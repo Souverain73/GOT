@@ -7,16 +7,13 @@ import com.esotericsoftware.kryonet.Connection;
 
 import got.interfaces.INetworkListener;
 import got.interfaces.IPauseable;
+import got.model.ChangeAction;
 import got.server.serverStates.base.ServerState;
 
 public class StateMachine implements INetworkListener{
 	public static final String VESTEROS_PHASE_DATA= "vesterosPhaseData";
     private HashMap<String, Object> params;
-	public enum ChangeAction {
-		SET,
-		PUSH,
-		REMOVE
-	}
+
 	private LinkedList<ServerState> _states;
 	
 	public StateMachine(){

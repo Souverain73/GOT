@@ -7,6 +7,7 @@ playerKillUnitInRegion "Игрок %s убивает юнита %s в регио
 playerChangeUnits "Игрок %s меняет состав войск в регионе %s"
 collectInfluence "Вы получаете %d жетонов влияния"
 playerCollectInfluence "Игрок %s получает %d жетонов влияния"
+setRestrictedActions "Установлены ограничения приказов"
 
 waitForPlayer "Ожидание игрока %s"
 
@@ -20,6 +21,7 @@ enter "Фаза походов"
 selectRegion "Выберите регион, откуда вы хотите совершить ход"
 selectUnits "Выберите юнитов которыми вы хотите походить"
 selectTarget "Выберите куда вы хотите совершить ход"
+selectSource "Выберите регион, откуда вы хотите совршить ход"
 
 [fire]
 playerPlayActionFromTo "Игрок играет приказ с %s на %s"

@@ -2,15 +2,12 @@ package got.server.serverStates;
 
 import com.esotericsoftware.kryonet.Connection;
 import got.gameStates.StateID;
-import got.interfaces.IPauseable;
+import got.model.ChangeAction;
 import got.network.Packages;
 import got.server.GameServer;
 import got.server.serverStates.base.ParallelState;
-import got.server.serverStates.base.ServerState;
 import got.utils.UI;
 import got.vesterosCards.VesterosCard;
-
-import javax.imageio.IIOParamController;
 
 /**
  * Created by Souverain73 on 31.03.2017.
@@ -56,6 +53,6 @@ public class PlayVesterosCardState extends ParallelState{
     @Override
     public void resume() {
         UI.systemMessage("Unpause Play vesteros");
-        stm.changeState(null, StateMachine.ChangeAction.REMOVE);
+        stm.changeState(null, ChangeAction.REMOVE);
     }
 }

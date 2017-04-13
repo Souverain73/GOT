@@ -9,6 +9,7 @@ import com.esotericsoftware.kryonet.Connection;
 import got.GameClient;
 import got.gameObjects.AbstractGameObject;
 import got.gameObjects.GameObject;
+import got.interfaces.IPauseable;
 import got.network.Packages;
 import got.utils.UI;
 import static got.network.Packages.Ready;
@@ -17,7 +18,7 @@ import static got.network.Packages.Ready;
  * @author Souverain73
  *	This class implements base for all GameStates
  */
-public abstract class AbstractGameState implements GameState {
+public abstract class AbstractGameState implements GameState, IPauseable {
 	protected List<AbstractGameObject> gameObjects = new ArrayList<>();
 	protected StateMachine stm;
 	/* 
@@ -71,5 +72,15 @@ public abstract class AbstractGameState implements GameState {
 	@Override
 	public void tick(){
 		gameObjects.forEach(obj->obj.tick());
+	}
+
+	@Override
+	public void pause() {
+
+	}
+
+	@Override
+	public void resume() {
+		GameClient.instance().send(new Packages.StateReady());
 	}
 }

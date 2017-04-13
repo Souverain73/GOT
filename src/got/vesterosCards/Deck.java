@@ -27,8 +27,10 @@ public class Deck {
     }
 
     public VesterosCard getTopCard(){
-        VesterosCard result = cards.get(deckSize - 1);
-        cards.remove(deckSize - 1);
+        deckSize--;
+        VesterosCard result = cards.get(deckSize);
+        cards.remove(deckSize);
+        addCard(result);
         return  result;
     }
 }

@@ -2,6 +2,7 @@ package got.server.serverStates;
 
 import com.esotericsoftware.kryonet.Connection;
 import got.gameStates.StateID;
+import got.model.ChangeAction;
 import got.server.GameServer;
 import got.server.serverStates.base.ServerState;
 
@@ -31,7 +32,7 @@ public class GameConfigState implements ServerState {
         this.stm = stm;
         if (!onDemand){
             executePreset();
-            stm.changeState(new VesterosPhaseState(), StateMachine.ChangeAction.SET);
+            stm.changeState(new PlanningPhaseState(), ChangeAction.SET);
         }
     }
 

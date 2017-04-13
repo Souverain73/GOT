@@ -3,14 +3,15 @@ package got.vesterosCards.States;
 import com.esotericsoftware.kryonet.Connection;
 import got.GameClient;
 import got.gameObjects.MapPartObject;
+import got.gameStates.StateID;
 import got.gameStates.StepByStepGameState;
+import got.model.ChangeAction;
 import got.model.Fraction;
 import got.model.Game;
 import got.model.Player;
 import got.network.Packages;
 import got.server.GameServer;
 import got.server.PlayerManager;
-import got.server.serverStates.StateMachine;
 import got.server.serverStates.base.StepByStepState;
 import got.utils.UI;
 
@@ -23,9 +24,7 @@ public class CollectSuply {
         @Override
         protected void onSelfTurn() {
             super.onSelfTurn();
-            int suply = GameClient.shared.gameMap.getRegions().stream().filter(r->
-                    r.getFraction() == PlayerManager.getSelf().getFraction()
-            ).mapToInt(MapPartObject::getResourcesCount).sum();
+            int suply = GameClient.shared.gameMap.getSuply(PlayerManager.getSelf().getFraction());
             GameClient.instance().send(new Packages.ChangeSuply(suply));
         }
 
@@ -68,7 +67,12 @@ public class CollectSuply {
 
         @Override
         protected void onReadyToChangeState() {
-            stm.changeState(null, StateMachine.ChangeAction.REMOVE);
+            stm.changeState(null, ChangeAction.REMOVE);
+        }
+
+        @Override
+        public int getID() {
+            return StateID.COLLECT_SUPLY;
         }
     }
 

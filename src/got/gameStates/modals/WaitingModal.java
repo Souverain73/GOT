@@ -38,7 +38,8 @@ public abstract class WaitingModal extends AbstractGameState {
             GameClient.instance().closeModal();
         }
     }
-    protected void resume(){
+
+    public void resumeModal(){
         GameClient.instance().send(new Packages.ResumeModal());
     }
 }

@@ -1,5 +1,6 @@
 package got.vesterosCards.cards;
 
+import got.model.ChangeAction;
 import got.server.serverStates.StateMachine;
 import got.vesterosCards.CommonVesterosCard;
 import got.vesterosCards.States.CollectUnits;
@@ -14,6 +15,6 @@ public class CollectUnitsCard extends CommonVesterosCard {
 
     @Override
     public void onOpenServer(StateMachine stm, openParams param) {
-        stm.changeState(new CollectUnits.ServerState(), StateMachine.ChangeAction.SET);
+        stm.changeState(new CollectUnits.ServerState(), ChangeAction.SET);
     }
 }

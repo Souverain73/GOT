@@ -1,7 +1,6 @@
 package got.houseCards.stark;
 
 import got.GameClient;
-import got.InputManager;
 import got.ModalState;
 import got.gameObjects.MapPartObject;
 import got.gameObjects.battleDeck.BattleOverrides;
@@ -9,7 +8,6 @@ import got.gameStates.StateMachine;
 import got.gameStates.modals.SelectRegionModal;
 import got.gameStates.modals.WaitingModal;
 import got.houseCards.ActiveHouseCard;
-import got.interfaces.IClickListener;
 import got.model.Fraction;
 import got.model.Game;
 import got.network.Packages;
@@ -40,13 +38,13 @@ public class RobStark extends ActiveHouseCard {
                 List<MapPartObject> regionsToRetreat = getRegionsToRetreat();
                 if (regionsToRetreat.size() == 0){
                     logAction("Противнику некуда отступать, все его войска будут убиты");
-                    resume();
+                    resumeModal();
                 }
 
                 MapPartObject region = SelectRegionModal.selectFrom(regionsToRetreat);
 
                 GameClient.instance().send(new Packages.SetOverrides(BattleOverrides.customRetreatRegionWithKills(region.getID(), unitsToKill)));
-                resume();
+                resumeModal();
             }
         }
 

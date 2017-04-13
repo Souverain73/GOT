@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 
+import got.model.ChangeAction;
 import got.model.Game;
 import got.model.Player;
 import got.network.Packages;
@@ -119,7 +120,7 @@ public class NetworkRoomState implements ServerState {
 							GameServer.getServer().sendToAllTCP(new Packages.SetTrack(Game.CROWN_TRACK, Game.instance().getTrack(Game.CROWN_TRACK).getData()));
 
 							connection.sendTCP(new Packages.ServerMessage("Start!!"));
-							stm.changeState(new MainState(), StateMachine.ChangeAction.SET);
+							stm.changeState(new MainState(), ChangeAction.SET);
 				}).start(false);
 			}
 		}

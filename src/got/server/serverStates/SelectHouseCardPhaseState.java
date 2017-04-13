@@ -2,6 +2,7 @@ package got.server.serverStates;
 
 import com.esotericsoftware.kryonet.Connection;
 import got.gameStates.StateID;
+import got.model.ChangeAction;
 import got.model.Player;
 import got.network.Packages;
 import got.server.GameServer;
@@ -54,7 +55,7 @@ public class SelectHouseCardPhaseState implements ServerState {
             player.setReady(msg.ready);
             //Все игроки будут готовы после выполнения метода onPlace для выбранных карт домов.
             if (PlayerManager.instance().isAllPlayersReady()){
-                stm.changeState(new BattleResultState(), StateMachine.ChangeAction.SET);
+                stm.changeState(new BattleResultState(), ChangeAction.SET);
             }
         }
         if (pkg instanceof Packages.KillUnit) {

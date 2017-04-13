@@ -15,9 +15,6 @@ import org.joml.Vector2f;
 
 import static got.gameStates.modals.Dialogs.createConfirmDialog;
 import static got.server.PlayerManager.getSelf;
-import static got.server.PlayerManager.instance;
-import static got.utils.UI.logAction;
-import static sun.misc.PostVMInitHook.run;
 
 /**
  * Created by Souverain73 on 11.01.2017.
@@ -52,7 +49,7 @@ public class TyrionLanister extends ActiveHouseCard {
                     //todo: убрать карту противника и дать ему перевыбрать
                     GameClient.instance().send(new Packages.Confirm());
                 }else{
-                    resume();
+                    resumeModal();
                 }
             }else{
                 GameClient.instance().setTooltipText("Тирион решает что делать");
@@ -70,7 +67,7 @@ public class TyrionLanister extends ActiveHouseCard {
                         (new ModalState(cms)).run();
                         HouseCard selectedCard = cms.getResult();
                         GameClient.instance().send(new Packages.SelectHouseCard(selectedCard.getID()));
-                        resume();
+                        resumeModal();
                     });
                 }
             }

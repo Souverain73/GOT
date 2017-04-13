@@ -26,6 +26,12 @@ public class StepByStepGameState extends AbstractGameState {
     }
 
     @Override
+    public void exit() {
+        super.exit();
+        GameClient.shared.gui.getThroneTrack().setHighlightMode(ThroneTrackObject.HighlightMode.NO_HIGHLIGHT);
+    }
+
+    @Override
     public void recieve(Connection connection, Object pkg) {
         super.recieve(connection, pkg);
         if (pkg instanceof Packages.PlayerTurn) {
