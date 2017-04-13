@@ -47,6 +47,7 @@ public class Game {
 		getTrack(THRONE_TRACK).setData(data);
 		getTrack(CROWN_TRACK).setData(data);
 		getTrack(SWORD_TRACK).setData(data);
+		suplyTrack.addFractions(data);
 	}
 
 	public Track getTrack(int id){

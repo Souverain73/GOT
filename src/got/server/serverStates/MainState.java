@@ -3,6 +3,7 @@ package got.server.serverStates;
 import com.esotericsoftware.kryonet.Connection;
 
 import got.gameStates.StateID;
+import got.model.ChangeAction;
 import got.server.serverStates.base.ServerState;
 
 public class MainState implements ServerState {
@@ -20,7 +21,7 @@ public class MainState implements ServerState {
 
 	@Override
 	public void enter(StateMachine stm) {
-		stm.changeState(new GameConfigState(false), StateMachine.ChangeAction.SET);
+		stm.changeState(new GameConfigState(false), ChangeAction.SET);
 	}
 
 	@Override

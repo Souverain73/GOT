@@ -227,9 +227,9 @@ public class GameClient {
 			public void received(Connection c, Object object) {
 				//Небольшой костыль.
 				if (object instanceof ChangeState){
-					int stateID = ((ChangeState) object).state;
-					if (stateID == StateID.MAIN_STATE)
-						GameClient.instance().registerTask(() -> stm.setState(StateID.getGameStateByID(stateID)));
+					Packages.ChangeState msg = (ChangeState) object;
+					if (msg.state == StateID.MAIN_STATE)
+						GameClient.instance().registerTask(() -> stm.changeState(msg.state, msg.action));
 				}
 				//handle common packages	
 				if (object instanceof Packages.InitPlayer){

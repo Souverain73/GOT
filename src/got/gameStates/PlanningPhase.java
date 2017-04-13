@@ -42,12 +42,6 @@ public class PlanningPhase extends ParallelGameState implements IClickListener {
 		super.enter(stm);
 		GameClient.instance().setTooltipText("planning.selectRegion");
 		GameClient.instance().logMessage("planning.enter");
-		//готовим игровую карту.
-		//TODO: перенести в фазу вестероса, когда она будет готова
-		GameClient.shared.gameMap.forEachRegion(region->{
-			region.setAction(null);
-			region.resurectUnits();
-		});
 
 		placed = new EnumMap<>(Action.class);
 		actions = Arrays.asList(Action.values());
@@ -206,6 +200,11 @@ public class PlanningPhase extends ParallelGameState implements IClickListener {
 					result = (Action)param;
 					close();
 				});
+
+				if (GameClient.shared.restrictedActions != null && GameClient.shared.restrictedActions.contains(action)){
+					button.setEnabled(false);
+				}
+
 				if ((action.isSpecial() && specials>=PlayerManager.getSelf().getSpecials())
 						||	placed.containsKey(action)){
 					button.setEnabled(false);

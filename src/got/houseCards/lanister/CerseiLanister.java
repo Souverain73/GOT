@@ -55,7 +55,7 @@ public class CerseiLanister extends ActiveHouseCard {
                 reg.getFraction() == fraction && reg.getAction() != null
             ) == 0){
                 logAction("Нет приказов, которые можно убрать");
-                resume();
+                resumeModal();
             }
         }
 
@@ -65,7 +65,7 @@ public class CerseiLanister extends ActiveHouseCard {
                 MapPartObject region = (MapPartObject) event.getTarget();
                 GameClient.instance().send(new Packages.SetAction(region.getID(), null));
                 GameClient.shared.gameMap.disableAllRegions();
-                resume();
+                resumeModal();
             }
         }
 

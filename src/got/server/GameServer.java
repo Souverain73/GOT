@@ -25,7 +25,6 @@ import got.server.serverStates.StateMachine;
 import got.translation.Language;
 import got.translation.Translator;
 import got.utils.LoaderParams;
-import got.vesterosCards.VesterosCard;
 import got.vesterosCards.VesterosCards;
 import org.console.Command;
 import org.console.Console;
@@ -234,8 +233,8 @@ public class GameServer {
 				(a)->{
 //					if (stm.getCurrentState() instanceof PlanningPhaseState) {
 						GameConfigState gcs = new GameConfigState(true);
-						stm.changeState(gcs, StateMachine.ChangeAction.SET);
-						cns.pushState(new Console.State("gc", null, null, ()->stm.changeState(new PlanningPhaseState(), StateMachine.ChangeAction.SET)));
+						stm.changeState(gcs, ChangeAction.SET);
+						cns.pushState(new Console.State("gc", null, null, ()->stm.changeState(new PlanningPhaseState(), ChangeAction.SET)));
 						return "Сервер переведен в режим настройки игры.";
 //					}else{
 //						return "Перейти к настройке игры можно только в стадии планирования.";

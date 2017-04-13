@@ -1,7 +1,6 @@
 package got.vesterosCards.States;
 
 import got.Constants;
-import got.GameClient;
 import got.gameObjects.ContainerObject;
 import got.gameObjects.GameObject;
 import got.gameObjects.interfaceControls.ImageButton;
@@ -45,7 +44,7 @@ public class OptionSelectorState extends WaitingModal {
 
     public void setResultAndClose(int result){
         this.result = result;
-        resume();
+        resumeModal();
     }
 
     public int getResult() {

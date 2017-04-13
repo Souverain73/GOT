@@ -5,11 +5,11 @@ import got.GameClient;
 import got.gameObjects.MapPartObject;
 import got.gameStates.StateID;
 import got.gameStates.StepByStepGameState;
+import got.model.ChangeAction;
 import got.model.Player;
 import got.network.Packages;
 import got.server.GameServer;
 import got.server.PlayerManager;
-import got.server.serverStates.StateMachine;
 import got.server.serverStates.base.StepByStepState;
 
 /**
@@ -24,7 +24,7 @@ public class CollectInfluence {
 
         @Override
         protected void onReadyToChangeState() {
-            stm.changeState(null, StateMachine.ChangeAction.REMOVE);
+            stm.changeState(null, ChangeAction.REMOVE);
         }
 
         @Override

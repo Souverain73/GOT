@@ -58,10 +58,10 @@ public class MaceTyrell extends ActiveHouseCard {
                 GameClient.instance().setTooltipText("Выберите регион, в котором убить пехотинца");
                 MapPartObject selectedRegion = SelectRegionModal.selectFrom(regions);
                 GameClient.instance().send(new Packages.KillUnit(selectedRegion.getID(), Unit.SOLDIER));
-                resume();
+                resumeModal();
             }else{
                 logAction("Нет пехотинцев, некого убивать");
-                resume();
+                resumeModal();
             }
         }
 

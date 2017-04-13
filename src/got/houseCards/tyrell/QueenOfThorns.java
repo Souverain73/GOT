@@ -47,10 +47,10 @@ public class QueenOfThorns extends ActiveHouseCard {
                 GameClient.instance().setTooltipText("Выберите какой приказ убрать");
                 MapPartObject selectedRegion = SelectRegionModal.selectFrom(regions);
                 GameClient.instance().send(new Packages.SetAction(selectedRegion.getID(), null));
-                resume();
+                resumeModal();
             }else{
                 logAction("Нет приказов, которые можно убрать");
-                resume();
+                resumeModal();
             }
         }
 

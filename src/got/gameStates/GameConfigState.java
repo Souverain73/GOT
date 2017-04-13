@@ -3,6 +3,7 @@ package got.gameStates;
 import com.esotericsoftware.kryonet.Connection;
 import got.GameClient;
 import got.gameObjects.MapPartObject;
+import got.model.Fraction;
 import got.model.Game;
 import got.network.Packages;
 import got.utils.UI;
@@ -17,6 +18,14 @@ public class GameConfigState extends AbstractGameState {
         GameClient.shared.gameMap.forEachRegion(region->{
             region.setAction(null);
         });
+    }
+
+    @Override
+    public void exit() {
+        super.exit();
+        for (Fraction f : Game.instance().getTrack(Game.THRONE_TRACK).getData()){
+            Game.instance().getSuplyTrack().setPos(f, GameClient.shared.gameMap.getSuply(f));
+        }
     }
 
     @Override

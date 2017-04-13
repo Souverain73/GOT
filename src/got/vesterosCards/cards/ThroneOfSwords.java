@@ -2,11 +2,13 @@ package got.vesterosCards.cards;
 
 import got.GameClient;
 import got.ModalState;
+import got.model.ChangeAction;
 import got.model.Game;
 import got.network.Packages;
 import got.server.PlayerManager;
 import got.server.serverStates.StateMachine;
 import got.vesterosCards.CommonVesterosCard;
+import got.vesterosCards.States.CollectSuply;
 import got.vesterosCards.States.OptionSelectorState;
 import got.vesterosCards.States.CollectInfluence;
 import got.vesterosCards.States.CollectUnits;
@@ -33,9 +35,9 @@ public class ThroneOfSwords extends CommonVesterosCard {
         if (param.selection == 3) {
             super.onOpenServer(stm, param);
         }else if (param.selection == 1){
-            stm.changeState(new CollectInfluence.ServerState(), StateMachine.ChangeAction.SET);
+            stm.changeState(new CollectSuply.ServerState(), ChangeAction.SET);
         }else if (param.selection == 2){
-            stm.changeState(new CollectUnits.ServerState(), StateMachine.ChangeAction.SET);
+            stm.changeState(new CollectUnits.ServerState(), ChangeAction.SET);
         }
     }
 

@@ -3,6 +3,7 @@ package got.server.serverStates;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.minlog.Log;
 
+import got.model.ChangeAction;
 import got.model.Player;
 import got.network.Packages;
 import got.server.GameServer;
@@ -14,9 +15,9 @@ public class ChangeState implements ServerState {
 	private String name = "ChangeGameState";
 	private StateMachine stm;
 	private ServerState nextState;
-	private StateMachine.ChangeAction method;
+	private ChangeAction method;
 
-	public ChangeState(ServerState nextState, StateMachine.ChangeAction method){
+	public ChangeState(ServerState nextState, ChangeAction method){
 		this.nextState = nextState;
 		this.method = method;
 		this.name = "ChangeStateTo:"+nextState.getName();
@@ -33,9 +34,9 @@ public class ChangeState implements ServerState {
 			//if all clients load state on client side server can run this state too
 			if (PlayerManager.instance().isAllPlayersReady()){
 				stm.removeState(); //remove ChangeState
-				if (method == StateMachine.ChangeAction.SET){
+				if (method == ChangeAction.SET){
 					stm.setState(nextState);
-				}else if(method == StateMachine.ChangeAction.PUSH){
+				}else if(method == ChangeAction.PUSH){
 					stm.pushState(nextState);
 				}else{
 					stm.removeStateAndResume();
@@ -57,7 +58,7 @@ public class ChangeState implements ServerState {
 			pl.setReady(false);
 		}
 		//send ChangeState package to all clients
-		GameServer.getServer().sendToAllTCP(new Packages.ChangeState(nextState.getID()));
+		GameServer.getServer().sendToAllTCP(new Packages.ChangeState(nextState.getID(), method));
 	}
 
 	@Override

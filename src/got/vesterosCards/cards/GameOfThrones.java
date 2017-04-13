@@ -1,8 +1,6 @@
 package got.vesterosCards.cards;
 
-import got.GameClient;
-import got.gameObjects.MapPartObject;
-import got.server.PlayerManager;
+import got.model.ChangeAction;
 import got.server.serverStates.StateMachine;
 import got.vesterosCards.CommonVesterosCard;
 import got.vesterosCards.States.CollectInfluence;
@@ -22,6 +20,6 @@ public class GameOfThrones extends CommonVesterosCard {
 
     @Override
     public void onOpenServer(StateMachine stm, openParams param) {
-        stm.changeState(new CollectInfluence.ServerState(), StateMachine.ChangeAction.SET);
+        stm.changeState(new CollectInfluence.ServerState(), ChangeAction.SET);
     }
 }

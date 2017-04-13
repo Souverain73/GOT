@@ -2,6 +2,7 @@ package got.server.serverStates.base;
 
 import com.esotericsoftware.kryonet.Connection;
 import got.interfaces.IPauseable;
+import got.model.ChangeAction;
 import got.model.Game;
 import got.model.Player;
 import got.network.Packages;
@@ -83,12 +84,12 @@ public abstract class StepByStepState implements ServerState, IPauseable{
 
     protected void onReadyToChangeState(){
         if (nextStateClass == null){
-            stm.changeState(null, StateMachine.ChangeAction.REMOVE);
+            stm.changeState(null, ChangeAction.REMOVE);
             return;
         }
 
         try {
-            stm.changeState(nextStateClass.newInstance(), StateMachine.ChangeAction.SET);
+            stm.changeState(nextStateClass.newInstance(), ChangeAction.SET);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Can't instantiate next State from CLASS object");

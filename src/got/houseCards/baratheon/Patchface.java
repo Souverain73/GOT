@@ -39,7 +39,7 @@ public class Patchface extends ActiveHouseCard {
                 (new ModalState(shcd)).run();
                 HouseCard selectedCard = shcd.getResult();
                 GameClient.instance().send(new Packages.RemoveHouseCard(enemyPlayer.id, selectedCard.getID()));
-                resume();
+                resumeModal();
             }
         }
 

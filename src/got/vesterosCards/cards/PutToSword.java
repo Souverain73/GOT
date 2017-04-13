@@ -32,10 +32,12 @@ public class PutToSword extends CommonVesterosCard {
     public void onOpenServer(StateMachine stm, openParams param) {
         if (param.selection == 3) {
             super.onOpenServer(stm, param);
+            return;
         }else if (param.selection == 1){
             GameServer.getServer().sendToAllTCP(new Packages.SetRestrictedActions(new Action[]{Action.DEFEND, Action.DEFENDPLUS}));
         }else if (param.selection == 2){
             GameServer.getServer().sendToAllTCP(new Packages.SetRestrictedActions(new Action[]{Action.MOVEPLUS}));
         }
+        super.onOpenServer(stm, param);
     }
 }

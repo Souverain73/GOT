@@ -2,6 +2,7 @@ package got.vesterosCards;
 
 import got.graphics.Texture;
 import got.graphics.TextureManager;
+import got.model.ChangeAction;
 import got.server.serverStates.StateMachine;
 
 /**
@@ -26,7 +27,7 @@ public class CommonVesterosCard implements VesterosCard {
 
     @Override
     public void onOpenServer(StateMachine stm, openParams param) {
-        stm.changeState(null, StateMachine.ChangeAction.REMOVE);
+        stm.changeState(null, ChangeAction.REMOVE);
     }
 
     public String getInternalName() {

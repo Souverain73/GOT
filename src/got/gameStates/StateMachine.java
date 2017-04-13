@@ -4,17 +4,36 @@ import java.util.LinkedList;
 
 import com.esotericsoftware.kryonet.Connection;
 
-import got.GameClient;
-import got.gameObjects.DebugPanel;
 import got.interfaces.INetworkListener;
+import got.interfaces.IPauseable;
+import got.model.ChangeAction;
+import got.server.GameServer;
 
 public class StateMachine implements INetworkListener {
 	private LinkedList<GameState> _states;
 	
 	public StateMachine(){
-		_states = new LinkedList<GameState>();
+		_states = new LinkedList<>();
 	}
-	
+
+	public void changeState(int stateID, ChangeAction method){
+		if (method == ChangeAction.REMOVE){
+			removeState();
+			GameState st = getCurrentState();
+			if (st instanceof IPauseable) {
+				((IPauseable) st).resume();
+			}
+		}else if (method == ChangeAction.SET){
+			setState(StateID.getGameStateByID(stateID));
+		}else {
+			GameState st = getCurrentState();
+			if (st instanceof IPauseable) {
+				((IPauseable) st).pause();
+			}
+			pushState(StateID.getGameStateByID(stateID));
+		}
+	}
+
 	public void setState(GameState state){
 		if (!_states.isEmpty()){
 			_states.poll().exit();

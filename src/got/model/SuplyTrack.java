@@ -3,11 +3,15 @@ package got.model;
 import got.GameClient;
 import got.gameObjects.MapPartObject;
 import got.utils.Utils;
+import got.vesterosCards.cards.Suply;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.stream.IntStream;
+
+import static javax.swing.UIManager.get;
 
 /**
  * Created by Souverain73
@@ -26,26 +30,39 @@ public class SuplyTrack {
     private static final int MAX_LEVEL = 6;
     private static final int MIN_LEVEL = 0;
 
-    //init it with default values;
-    private EnumMap<Fraction, Integer> fractionPos = new EnumMap<Fraction, Integer>(Fraction.class){{
-        put(Fraction.BARATHEON, 6);
-        put(Fraction.GREYJOY, 6);
-        put(Fraction.LANISTER, 6);
-        put(Fraction.MARTEL, 6);
-        put(Fraction.STARK, 6);
-        put(Fraction.TYRELL, 6);
-    }};
+    private List<List<Fraction>> data = new ArrayList<>(7);
+
+    public SuplyTrack(){
+        IntStream.range(0,7).forEach((i)->
+            data.add(new ArrayList<>(6))
+        );
+    }
+
+    private void addFraction(Fraction fraction, int pos){
+        Utils.limitInt(pos, MIN_LEVEL, MAX_LEVEL);
+        data.get(pos).add(fraction);
+    }
 
     public int getPos(Fraction fract){
-        return fractionPos.get(fract);
+        int i = 0;
+        for (List<Fraction> ls : data){
+            if (ls.contains(fract)){
+                return i;
+            }
+            i++;
+        }
+        return 0;
     }
 
     public void setPos(Fraction fract, int pos) {
-        fractionPos.put(fract, Utils.limitInt(pos, MIN_LEVEL, MAX_LEVEL));
+        Utils.limitInt(pos, MIN_LEVEL, MAX_LEVEL);
+        int old_pos = getPos(fract);
+        data.get(old_pos).remove(fract);
+        data.get(pos).add(fract);
     }
 
     public int[] getMaxArmiesValues(Fraction fraction){
-        return LEVELS[fractionPos.get(fraction)];
+        return LEVELS[getPos(fraction)];
     }
 
     public boolean canHaveArmies(Fraction fraction, int [] armySizes){
@@ -116,6 +133,10 @@ public class SuplyTrack {
         return canHaveArmies(fraction, newArmySizesInt);
     }
 
+    public List<List<Fraction>> getData(){
+        return data;
+    }
+
     public static void main(String[] args) {
         //testCanHaveArmy canHaveArmies;
         //max is  {4, 3, 2, 2, 2}
@@ -154,5 +175,11 @@ public class SuplyTrack {
 
         System.out.println(result == expectedResult ? "Passed":"Failed");
 
+    }
+
+    public void addFractions(Fraction[] data) {
+        for (Fraction f : data){
+            setPos(f,0);
+        }
     }
 }

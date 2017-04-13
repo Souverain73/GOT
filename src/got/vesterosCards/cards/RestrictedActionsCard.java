@@ -1,4 +1,4 @@
-package got.vesterosCards.States;
+package got.vesterosCards.cards;
 
 import got.model.Action;
 import got.network.Packages;

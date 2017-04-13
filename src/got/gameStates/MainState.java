@@ -2,6 +2,7 @@ package got.gameStates;
 
 import got.gameObjects.*;
 import got.gameObjects.gui.GUIObject;
+import got.network.Packages;
 import org.joml.Vector2f;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -98,8 +99,8 @@ public class MainState extends AbstractGameState {
 	@Override
 	public void recieve(Connection connection, Object pkg) {
 		if (pkg instanceof ChangeState){
-			int stateID = ((ChangeState) pkg).state;
-			GameClient.instance().registerTask(() -> stm.setState(StateID.getGameStateByID(stateID)));
+			Packages.ChangeState msg = (ChangeState) pkg;
+			GameClient.instance().registerTask(() -> stm.changeState(msg.state, msg.action));
 			return;
 		}
 		stm.recieve(connection, pkg);

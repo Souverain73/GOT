@@ -67,10 +67,10 @@ public class RenlyBaratheon extends ActiveHouseCard {
                 }
 
                 GameClient.instance().send(new Packages.ChangeUnits(selectedRegion.getID(), units));
-                resume();
+                resumeModal();
             }else{
                 logAction("Нет регионов, в которых можно улучшить пехотинца");
-                resume();
+                resumeModal();
             }
         }
 

@@ -1,18 +1,18 @@
-package got.gameObjects;
+package got.gameObjects.gui;
 
+import got.gameObjects.AbstractGameObject;
+import got.gameObjects.ImageObject;
 import got.gameStates.GameState;
 import got.graphics.*;
 import got.model.Fraction;
 import got.model.Track;
 import org.joml.Vector2f;
 
-import java.util.stream.IntStream;
-
 
 /**
  * Created by Souverain73 on 22.03.2017.
  */
-public class TrackObject extends AbstractGameObject<TrackObject>{
+public class TrackObject extends AbstractGameObject<TrackObject> {
     @Override protected TrackObject getThis() { return this;}
     private Track track;
     private Texture blankTexture;
@@ -46,6 +46,6 @@ public class TrackObject extends AbstractGameObject<TrackObject>{
     }
 
     protected void drawFraction(Vector2f cp, int position, Fraction fraction){
-        fraction.getBackTexture().draw(cp.x + 12 , cp.y + 82 + position * 70, 45, 45);
+        fraction.getBackTexture().draw(cp.x + 13 , cp.y + 82 + position * 65, 45, 45);
     }
 }

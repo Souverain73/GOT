@@ -1,10 +1,8 @@
 package got.gameObjects.gui;
 
-import got.gameObjects.TrackObject;
 import got.graphics.Effect;
 import got.graphics.GraphicModule;
 import got.model.Fraction;
-import got.model.Player;
 import got.model.Track;
 import got.server.PlayerManager;
 import org.joml.Vector2f;

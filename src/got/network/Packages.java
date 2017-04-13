@@ -3,10 +3,7 @@ package got.network;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 import got.gameObjects.battleDeck.BattleOverrides;
-import got.model.Action;
-import got.model.Fraction;
-import got.model.Player;
-import got.model.Unit;
+import got.model.*;
 
 import java.util.Arrays;
 
@@ -405,9 +402,12 @@ public class Packages {
 	 */
 	public static class ChangeState extends BroadcastPackage {
 		public int state;
+		public ChangeAction action;
+
 		public ChangeState() {}
-		public ChangeState(int state) {
+		public ChangeState(int state, ChangeAction action) {
 			this.state = state;
+			this.action = action;
 		}
 
 		@Override

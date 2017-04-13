@@ -4,7 +4,6 @@ import got.animations.Animator;
 import got.animations.Easings;
 import got.gameObjects.AbstractGameObject;
 import got.gameObjects.ImageObject;
-import got.gameObjects.TrackObject;
 import got.gameObjects.interfaceControls.TransparentButton;
 import got.graphics.DrawSpace;
 import got.model.Game;
@@ -28,29 +27,21 @@ public class ThronesPanel extends AbstractGameObject<ThronesPanel> {
         addChild(tt);
         addChild(ct = new TrackObject(Game.instance().getTrack(Game.SWORD_TRACK))
                 .setPos(new Vector2f(TRACK_WIDTH, 0)));
-        ct.setVisible(false);
         addChild(st = new TrackObject(Game.instance().getTrack(Game.CROWN_TRACK))
                 .setPos(new Vector2f(TRACK_WIDTH*2, 0)));
-        st.setVisible(false);
         addChild(new TransparentButton(0, 0, 65, 60, null)
         .setCallback((gameObject, o) -> toggle()));
     }
 
     private void toggle(){
         if (!expanded){
-            ct.setVisible(true);
-            st.setVisible(true);
             Animator.animateVector2f(this.pos, new Vector2f(-TRACK_WIDTH*3, 0), 1000, this::setPos)
                     .setEasing(Easings.OUT_CUBIC);
             expanded = true;
         }else{
 
             Animator.animateVector2f(this.pos, new Vector2f(-TRACK_WIDTH, 0), 1000, this::setPos)
-                    .setEasing(Easings.OUT_CUBIC)
-                    .after(()->{
-                        ct.setVisible(false);
-                        st.setVisible(false);
-                    });
+                    .setEasing(Easings.OUT_CUBIC);
             expanded = false;
         }
     }

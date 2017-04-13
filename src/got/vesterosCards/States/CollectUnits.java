@@ -13,6 +13,7 @@ import got.gameStates.StepByStepGameState;
 import got.gameStates.modals.HireMenuState;
 import got.graphics.DrawSpace;
 import got.interfaces.IClickListener;
+import got.model.ChangeAction;
 import got.model.Fraction;
 import got.model.Player;
 import got.model.Unit;
@@ -160,7 +161,7 @@ public class CollectUnits {
 
         @Override
         protected void onReadyToChangeState() {
-            stm.changeState(null, got.server.serverStates.StateMachine.ChangeAction.REMOVE);
+            stm.changeState(null, ChangeAction.REMOVE);
         }
 
         @Override

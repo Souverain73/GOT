@@ -3,6 +3,7 @@ package got.server.serverStates;
 import com.esotericsoftware.kryonet.Connection;
 import got.gameStates.StateID;
 import got.interfaces.IPauseable;
+import got.model.ChangeAction;
 import got.model.Game;
 import got.network.Packages;
 import got.server.GameServer;
@@ -72,12 +73,12 @@ public class VesterosPhaseState implements ServerState, IPauseable{
         if (data.currentCard < 2) {
             playNextCard();
         }else{
-            stm.changeState(new PlanningPhaseState(), StateMachine.ChangeAction.SET);
+            stm.changeState(new PlanningPhaseState(), ChangeAction.SET);
         }
     }
 
     private void playNextCard(){
         data.currentCard++;
-        stm.changeState(new PlayVesterosCardState(), StateMachine.ChangeAction.PUSH);
+        stm.changeState(new PlayVesterosCardState(), ChangeAction.PUSH);
     }
 }

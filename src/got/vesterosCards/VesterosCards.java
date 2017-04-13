@@ -2,7 +2,7 @@ package got.vesterosCards;
 
 import got.model.Action;
 import got.translation.Translator;
-import got.vesterosCards.States.RestrictedActionsCard;
+import got.vesterosCards.cards.RestrictedActionsCard;
 import got.vesterosCards.cards.CollectUnitsCard;
 import got.vesterosCards.cards.GameOfThrones;
 import got.vesterosCards.cards.PutToSword;

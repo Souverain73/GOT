@@ -2,6 +2,7 @@ package got.server.serverStates;
 
 import com.esotericsoftware.kryonet.Connection;
 import got.gameStates.StateID;
+import got.model.ChangeAction;
 import got.model.Player;
 import got.network.Packages;
 import got.server.GameServer;
@@ -106,6 +107,6 @@ public class BattleResultState extends ParallelState {
 
     @Override
     protected void onReadyToChangeState() {
-        stm.changeState(new MovePhaseState(), StateMachine.ChangeAction.REMOVE);
+        stm.changeState(new MovePhaseState(), ChangeAction.REMOVE);
     }
 }
