@@ -1,5 +1,8 @@
-package got.gameObjects;
+package got.gameObjects.gui;
 
+import got.gameObjects.AbstractGameObject;
+import got.gameObjects.ImageObject;
+import got.gameObjects.TextObject;
 import got.gameStates.GameState;
 import got.graphics.DrawSpace;
 import got.model.Player;
@@ -8,7 +11,7 @@ import org.joml.Vector2f;
 /**
  * Created by Souverain73 on 24.11.2016.
  */
-public class PlayerPanelObject extends AbstractGameObject<PlayerPanelObject>{
+public class PlayerPanelObject extends AbstractGameObject<PlayerPanelObject> {
     @Override protected PlayerPanelObject getThis() {return this;}
 
     TextObject fraction;
@@ -17,7 +20,7 @@ public class PlayerPanelObject extends AbstractGameObject<PlayerPanelObject>{
 
     public PlayerPanelObject(Player player ){
         this.player = player;
-        ImageObject bg = new ImageObject("PlayerPanel.png", new Vector2f(0,0), 100, 60)
+        ImageObject bg = new ImageObject("Player Panel/bg.png", new Vector2f(0,0), 350, 200)
                 .setSpace(DrawSpace.SCREEN);
         addChild(bg);
 

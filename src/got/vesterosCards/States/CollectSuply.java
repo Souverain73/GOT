@@ -2,25 +2,27 @@ package got.vesterosCards.States;
 
 import com.esotericsoftware.kryonet.Connection;
 import got.GameClient;
+import got.InputManager;
+import got.ModalState;
 import got.gameObjects.MapPartObject;
 import got.gameStates.StateID;
 import got.gameStates.StepByStepGameState;
-import got.model.ChangeAction;
-import got.model.Fraction;
-import got.model.Game;
-import got.model.Player;
+import got.gameStates.modals.SelectUnitsDialogState;
+import got.interfaces.IClickListener;
+import got.model.*;
 import got.network.Packages;
 import got.server.GameServer;
 import got.server.PlayerManager;
 import got.server.serverStates.base.StepByStepState;
-import got.utils.UI;
+import got.utils.Utils;
+import org.joml.Vector2f;
 
 /**
  * Created by Souverain73 on 12.04.2017.
  */
 public class CollectSuply {
 
-    public static class ClientState extends StepByStepGameState {
+    public static class ClientState extends StepByStepGameState implements IClickListener {
         @Override
         protected void onSelfTurn() {
             super.onSelfTurn();
@@ -36,17 +38,43 @@ public class CollectSuply {
 
                 Game.instance().getSuplyTrack().setPos(msg.fraction, msg.level);
                 if (msg.fraction == PlayerManager.getSelf().getFraction()){
-                    checkArmyLimit();
-                    endTurn(false);
+                    if (!checkArmyLimit()) {
+                        GameClient.instance().setTooltipText("collectUnits.needKill");
+                        GameClient.shared.gameMap.setEnabledByCondition (r->r.getFraction() == PlayerManager.getSelf().getFraction() && r.getUnitsCount() > 1);
+                        addObject(Utils.getReadyButton(null).setCallback((gameObject, o) -> {
+                            if (checkArmyLimit()) {
+                                endTurn(false);
+                            }
+                        }));
+                    }else {
+                        endTurn(false);
+                    }
                 }
+            }
+            if (pkg instanceof Packages.PlayerChangeUnits) {
+                Packages.PlayerChangeUnits msg = (Packages.PlayerChangeUnits) pkg;
+                MapPartObject region = GameClient.shared.gameMap.getRegionByID(msg.region);
+                region.setUnits(msg.units);
             }
         }
 
-        public void checkArmyLimit(){
+        private boolean checkArmyLimit(){
             Fraction playerFraction = PlayerManager.getSelf().getFraction();
-            if (!Game.instance().getSuplyTrack().canHaveArmies(playerFraction,
-                    GameClient.shared.gameMap.getArmySizesForFraction(playerFraction))){
-                UI.systemMessage("Need kill units");
+            return (Game.instance().getSuplyTrack().canHaveArmies(playerFraction,
+                    GameClient.shared.gameMap.getArmySizesForFraction(playerFraction)));
+        }
+
+        @Override
+        public void click(InputManager.ClickEvent event) {
+            if (event.getTarget() instanceof MapPartObject) {
+                MapPartObject region = (MapPartObject) event.getTarget();
+                SelectUnitsDialogState suds = new SelectUnitsDialogState(region.getUnits(), new Vector2f(InputManager.instance().getMousePosWorld()));
+                (new ModalState(suds)).run();
+                Unit[] unitsToKill = suds.getSelectedUnits();
+                if (unitsToKill.length > 0) {
+                    region.removeUnits(unitsToKill);
+                    GameClient.instance().send(new Packages.ChangeUnits(region.getID(), region.getUnits()));
+                }
             }
         }
     }
@@ -62,6 +90,11 @@ public class CollectSuply {
                 Packages.ChangeSuply msg = (Packages.ChangeSuply) pkg;
                 Game.instance().getSuplyTrack().setPos(player.getFraction(), msg.level);
                 GameServer.getServer().sendToAllTCP(new Packages.PlayerChangeSuply(player.getFraction(), msg.level));
+            }
+
+            if (pkg instanceof Packages.ChangeUnits) {
+                Packages.ChangeUnits msg = (Packages.ChangeUnits) pkg;
+                GameServer.getServer().sendToAllTCP(new Packages.PlayerChangeUnits(player.id, msg.region, msg.units));
             }
         }
 

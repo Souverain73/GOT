@@ -1,4 +1,4 @@
-package got.graphics;
+package got.graphics.text;
 
 import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
@@ -28,6 +28,7 @@ import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
+import got.graphics.GraphicModule;
 import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
 
@@ -56,7 +57,7 @@ public class Text {
 	private Font font;
 	
 	public static Text newInstance(String text, Font font){
-		return font.newTextObject(text);
+		return font.newText(text);
 	}
 	
 	public void changeText(String newText){
@@ -81,7 +82,7 @@ public class Text {
 		vertexUVBuffer = GraphicModule.setBufferData(vertexUVBuffer, UVCoords);
 	}
 	
-	protected static void init(){
+	public static void init(){
 		//init buffers
 		  glEnable(GL_TEXTURE_2D);
 		//init program
@@ -97,10 +98,6 @@ public class Text {
 	
 	public Font getFont() {
 		return font;
-	}
-
-	protected void setFont(Font font) {
-		this.font = font;
 	}
 
 	public String getText() {

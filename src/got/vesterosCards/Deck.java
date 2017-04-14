@@ -8,10 +8,10 @@ import java.util.concurrent.ThreadLocalRandom;
  * Created by Souverain73 on 23.03.2017.
  */
 public class Deck {
-    int deckSize = 0;
-    List<VesterosCard> cards = new ArrayList<>();
+    private int deckSize = 0;
+    private List<VesterosCard> cards = new ArrayList<>();
 
-    public void addCard(VesterosCard card){
+    protected void addCard(VesterosCard card){
         cards.add(0, card);
         deckSize++;
     }

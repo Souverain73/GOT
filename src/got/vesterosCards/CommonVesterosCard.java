@@ -10,10 +10,10 @@ import got.server.serverStates.StateMachine;
  */
 public class CommonVesterosCard implements VesterosCard {
     private static String TEXTURE_BASE = "Vesteros Cards/";
-    Texture texture = null;
-    String textureName;
-    String internalName;
-    String title;
+    private Texture texture = null;
+    private String textureName;
+    private String internalName;
+    private String title;
 
     public CommonVesterosCard(String textureName, String internalName, String title) {
         this.textureName = textureName;

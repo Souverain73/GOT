@@ -10,7 +10,7 @@ import got.vesterosCards.CommonVesterosCard;
  * Created by Souverain73 on 12.04.2017.
  */
 public class RestrictedActionsCard extends CommonVesterosCard{
-    protected Action[] restrictedActions;
+    private Action[] restrictedActions;
 
     public RestrictedActionsCard(String textureName, String internalName, String title, Action[] restrictedActions) {
         super(textureName, internalName, title);

@@ -13,7 +13,7 @@ public class UI {
 	public static String getString(String title, String label, String def){
 		String input = (String)JOptionPane.showInputDialog(null, label, title, 
 				JOptionPane.QUESTION_MESSAGE, null, null ,def);
-		if (input != null) input.trim();
+		if (input != null) input = input.trim();
 		return input;
 	}
 	

@@ -2,9 +2,9 @@ package got.gameObjects;
 
 import got.gameStates.GameState;
 import got.graphics.DrawSpace;
-import got.graphics.Font;
+import got.graphics.text.FontBitmap;
 import got.graphics.GraphicModule;
-import got.graphics.Text;
+import got.graphics.text.Text;
 import org.joml.Vector2f;
 
 public class FPSCounterObject extends AbstractGameObject<FPSCounterObject>{
@@ -19,7 +19,7 @@ public class FPSCounterObject extends AbstractGameObject<FPSCounterObject>{
 	private long lastUpdate;
 	
 	public FPSCounterObject() {
-		tFPS = Text.newInstance("0", new Font("test"));
+		tFPS = Text.newInstance("0", new FontBitmap("test"));
 		lastUpdate = System.currentTimeMillis();
 	}
 	

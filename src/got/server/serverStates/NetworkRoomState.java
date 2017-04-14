@@ -84,9 +84,9 @@ public class NetworkRoomState implements ServerState {
 //								addCard(VesterosCards.getCardByName("WinterTime1"));
 								addCard(VesterosCards.getCardByName("ThroneOfSwords"));
 								addCard(VesterosCards.getCardByName("ThroneOfSwords"));
-//								addCard(VesterosCards.getCardByName("Suply"));
-//								addCard(VesterosCards.getCardByName("Suply"));
-//								addCard(VesterosCards.getCardByName("Suply"));
+//								addCard(VesterosCards.getCardByName("SuplyCard"));
+//								addCard(VesterosCards.getCardByName("SuplyCard"));
+//								addCard(VesterosCards.getCardByName("SuplyCard"));
 							}});
 
 							Game.instance().initVesterosDeck(1, new Deck(){{

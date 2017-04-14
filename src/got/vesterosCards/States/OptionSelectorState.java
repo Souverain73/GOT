@@ -42,7 +42,7 @@ public class OptionSelectorState extends WaitingModal {
         addObject(cnt);
     }
 
-    public void setResultAndClose(int result){
+    private void setResultAndClose(int result){
         this.result = result;
         resumeModal();
     }

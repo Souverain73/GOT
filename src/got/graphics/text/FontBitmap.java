@@ -1,4 +1,4 @@
-package got.graphics;
+package got.graphics.text;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -9,9 +9,10 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import got.graphics.Texture;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-public class Font{
+public class FontBitmap implements Font{
 	
 	private static final String fontsBase = "data/fonts/";
 	private String name;
@@ -32,7 +33,7 @@ public class Font{
 	 * Load font data, like size, characters width, etc<br>
 	 * For each font must exist <b>fontName.bmp</b> file with image data
 	 * and <b>fontName.dat</b> with font data.<br>
-	 * Font data format:<br>
+	 * FontBitmap data format:<br>
 	 * <p>
 	 * Offset Size(Bytes) Description<br> 
 	 * 0 	4 - Map Width<br>
@@ -44,7 +45,7 @@ public class Font{
 	 * </p>
 	 * @param fontName - name of font to load
 	 */
-	public Font(String fontName, LocaleEncoder encoder, int size){
+	public FontBitmap(String fontName, LocaleEncoder encoder, int size){
 		this.name = fontName;
 		this.encoder = encoder;
 		this.size = size;
@@ -87,19 +88,15 @@ public class Font{
 		}
 	}
 
-	public Font(String name) {
+	public FontBitmap(String name) {
 		this(name, new RussianEncoder(), 32);
 	}
 
-	public Font(String name, int size){
+	public FontBitmap(String name, int size){
 		this(name, new RussianEncoder(), size);
 	}
-
-	protected static void init(){
-		
-	}
 	
-	protected Text newTextObject(String text){
+	public Text newText(String text){
 		float x = 0;
 		float y = 0;
 		int length = text.length();
@@ -163,7 +160,7 @@ public class Font{
 		pos[i++] = right;	pos[i++] = bottom;	pos[i++] = 0;
 	}
 	
-	protected void changeText(Text text, String newText){
+	public void changeText(Text text, String newText){
 		float x = 0;
 		float y = 0;
 		int length = newText.length();
@@ -178,8 +175,7 @@ public class Font{
 			addGlyphPos(x, y, i, pos);
 			x+= getCharWidth(code);
 		}
-		
-		text.setFont(this);
+
 		text.setGlyphs(length);
 		text.setUVCoords(UV);
 		text.setVertexCoords(pos);
@@ -251,7 +247,7 @@ public class Font{
 
 	@Override
 	public String toString() {
-		return "Font [name=" + name + ", mapWidth=" + mapWidth + ", mapHeight=" + mapHeight + ", cellWidth=" + cellWidth
+		return "FontBitmap [name=" + name + ", mapWidth=" + mapWidth + ", mapHeight=" + mapHeight + ", cellWidth=" + cellWidth
 				+ ", cellHeight=" + cellHeight + ", startChar=" + startChar + ", size=" + size + ", spacing=" + spacing
 				+ "]";
 	}

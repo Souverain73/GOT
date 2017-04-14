@@ -1,16 +1,13 @@
 package got.gameObjects;
 
+import got.graphics.*;
+import got.graphics.text.Text;
 import org.joml.Vector2f;
 
 import static got.Constants.*;
 
 import got.gameStates.GameState;
-import got.graphics.DrawSpace;
-import got.graphics.Font;
-import got.graphics.GraphicModule;
-import got.graphics.Text;
-import got.graphics.Texture;
-import got.graphics.TextureManager;
+import got.graphics.text.FontBitmap;
 import got.model.Player;
 
 public class NetPlayersPanel extends AbstractGameObject<NetPlayersPanel> {
@@ -80,7 +77,7 @@ public class NetPlayersPanel extends AbstractGameObject<NetPlayersPanel> {
 	}
 	
 	public class NetPlayerPanel extends AbstractGameObject<NetPlayerPanel> {
-		Font font = new Font("test");
+		FontBitmap font = new FontBitmap("test");
 		Text nick;
 		Texture readyGemTex, notReadyGemTex;
 		ImageObject readyImg;

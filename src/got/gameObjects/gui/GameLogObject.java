@@ -4,7 +4,9 @@ import got.gameObjects.AbstractGameObject;
 import got.gameObjects.ImageObject;
 import got.gameObjects.TextObject;
 import got.gameObjects.interfaceControls.ImageButton;
-import got.graphics.Font;
+import got.graphics.text.Font;
+import got.graphics.text.FontBitmap;
+import got.graphics.text.FontTrueType;
 import org.joml.Vector2f;
 
 import java.util.ArrayList;
@@ -25,13 +27,13 @@ public class GameLogObject extends AbstractGameObject<GameLogObject> {
     public GameLogObject(int width, int height, int fontSize) {
         this.w = width;
         this.h = height;
-        this.font =  new Font("test", 16);
+        this.font =  new FontTrueType("Trajan", 16);
 
         addChild(new ImageObject("PlayerPanel.png", new Vector2f(0, 0), width, height).setSpace(space));
 
         linesCount = height / fontSize;
         IntStream.range(0, linesCount).forEach((i)->{
-            TextObject to = new TextObject("").setSpace(space).setPos(new Vector2f(0, i * fontSize)).setFont(font);
+            TextObject to = new TextObject(font, "").setSpace(space).setPos(new Vector2f(0, i * fontSize));
             textObjects.add(to);
             addChild(to);
         });

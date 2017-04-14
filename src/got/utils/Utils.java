@@ -1,24 +1,17 @@
 package got.utils;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CharsetEncoder;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.DecimalFormat;
 import java.util.Random;
 
+import got.gameObjects.interfaceControls.ImageButton;
+import got.graphics.DrawSpace;
 import org.joml.Vector2f;
 
 
 public class Utils {
-	private static Charset charset = Charset.forName("windows-1251");
-	private	static CharsetEncoder encoder = charset.newEncoder();
-	private static CharsetDecoder decoder = charset.newDecoder();
 	private static Random rand = new Random();
 	
 	
@@ -40,12 +33,8 @@ public class Utils {
 	 * @param rectPos - top left corner of rectangle
 	 * @param rectDim - width and height of rectangle
 	 */
-	static public boolean pointInRect(Vector2f point, Vector2f rectPos, Vector2f rectDim){
-		if (point.x < rectPos.x) return false;
-		if (point.x >= rectPos.x+rectDim.x) return false;
-		if (point.y < rectPos.y) return false;
-		if (point.y >= rectPos.y+rectDim.y) return false;
-		return true;
+	static public boolean pointInRect(Vector2f point, Vector2f rectPos, Vector2f rectDim) {
+		return point.x >= rectPos.x && point.x < rectPos.x + rectDim.x && point.y >= rectPos.y && point.y < rectPos.y + rectDim.y;
 	}
 	
 	
@@ -75,5 +64,9 @@ public class Utils {
 		if (value > max) value = max;
 
 		return value;
+	}
+
+	static public ImageButton getReadyButton(Object param){
+		return new ImageButton("buttons/ready.png", 1070, 610, 200, 100, param).setSpace(DrawSpace.SCREEN);
 	}
 }

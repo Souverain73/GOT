@@ -5,6 +5,7 @@ import java.util.EnumMap;
 import java.util.List;
 
 import got.utils.UI;
+import got.utils.Utils;
 import org.joml.Vector2f;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -48,8 +49,7 @@ public class PlanningPhase extends ParallelGameState implements IClickListener {
 		specials = 0;
 		
 		//Add ready button
-		ImageButton btn = new ImageButton("buttons/ready.png", 1070, 610, 200, 100, null)
-			.setSpace(DrawSpace.SCREEN)
+		ImageButton btn = Utils.getReadyButton(null)
 			.setCallback((sender, param)->{
 			toggleReady();
 		});

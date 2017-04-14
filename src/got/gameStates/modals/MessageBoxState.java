@@ -5,14 +5,14 @@ import got.InputManager;
 import got.gameObjects.GameObject;
 import got.gameStates.AbstractGameState;
 import got.graphics.DrawSpace;
-import got.graphics.Font;
+import got.graphics.text.FontBitmap;
 import got.graphics.GraphicModule;
-import got.graphics.Text;
+import got.graphics.text.Text;
 import got.interfaces.IClickListener;
 
 public class MessageBoxState extends AbstractGameState implements IClickListener{
 	//TODO create BG and Buttons.
-	private static Font msgFont = new Font("test");
+	private static FontBitmap msgFont = new FontBitmap("test");
 	private Text text;
 
 	private float x, y;
