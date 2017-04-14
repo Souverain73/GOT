@@ -47,6 +47,9 @@ playerRemoveHouseCard "Игрок %s убирает из колоды игрок
 selectRegionToRetreat "Выберите регион для отступления"
 noRegionsToRetreat "Некуда отступать, все юниты умирают"
 
+[collectUnits]
+needKill "Превышен предел снабжения. Необходимо распустить лишние войска"
+
 [vesteros]
 cardOpen "Из %d колоды открыта карта %s"
 
@@ -59,8 +62,8 @@ FeastForCrows "Пир для ворон"
 GameOfThrones "Игра престолов"
 PutToSword "Преданы мечу"
 SeaOfStorms "Море штормов"
-StormOfSwords "Буря мечей"
-SummerTime "Последние дни лета"
+StormOfSwords "Буря мечей
+"SummerTime "Последние дни лета"
 Suply "Снабжение"
 ThroneOfSwords "Трон из клинков"
 WebOfLie "Паутина лжи"

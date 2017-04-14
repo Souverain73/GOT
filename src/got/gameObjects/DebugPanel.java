@@ -3,10 +3,10 @@ package got.gameObjects;
 import got.GameClient;
 import got.gameStates.GameState;
 import got.graphics.DrawSpace;
-import got.graphics.Font;
+import got.graphics.text.FontBitmap;
 import got.graphics.GraphicModule;
-import got.graphics.Text;
-import got.model.Player;
+import got.graphics.text.Text;
+import got.server.PlayerManager;
 
 public class DebugPanel extends AbstractGameObject<DebugPanel>{
 	private static DebugPanel _instance = null;
@@ -19,7 +19,7 @@ public class DebugPanel extends AbstractGameObject<DebugPanel>{
 		}
 		return _instance;
 	}
-	private Font dbgFont = new Font("test");
+	private FontBitmap dbgFont = new FontBitmap("test");
 	private String statePrefix = "State:";
 	private String fractionPrefix = "Fraction";
 	private Text tCurState;
@@ -39,7 +39,7 @@ public class DebugPanel extends AbstractGameObject<DebugPanel>{
 			tCurState.changeText(statePrefix + GameClient.instance().getStateMachine().getCurrentState().getName());
 		else
 			tCurState.changeText(statePrefix + state.getName());
-		tCurFraction.changeText(GameClient.instance().getPlayer().getFraction().toString());
+		tCurFraction.changeText(PlayerManager.getSelf().getFraction().toString());
 		updated = true;
 	}
 	

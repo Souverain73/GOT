@@ -1,11 +1,12 @@
 package got.gameObjects;
 
+import got.graphics.text.Font;
+import got.graphics.text.FontBitmap;
 import org.joml.Vector2f;
 
 import got.gameStates.GameState;
-import got.graphics.Font;
 import got.graphics.GraphicModule;
-import got.graphics.Text;
+import got.graphics.text.Text;
 
 public class TextObject extends AbstractGameObject<TextObject>{
 	Font font;
@@ -25,7 +26,7 @@ public class TextObject extends AbstractGameObject<TextObject>{
 	}
 
 	public TextObject(String message){
-		this(new Font("test"), message);
+		this(new FontBitmap("test"), message);
 	}
 	
 	@Override
@@ -44,11 +45,5 @@ public class TextObject extends AbstractGameObject<TextObject>{
 	public void setText(String newText){
 		if (!currentText.equals(newText))
 			text.changeText(newText);
-	}
-
-	public TextObject setFont(Font font){
-		this.font = font;
-		text = Text.newInstance(currentText, font);
-		return this;
 	}
 }

@@ -27,9 +27,7 @@ public class LoaderParams extends HashMap<String, Object> {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		this.keySet().forEach((key)->{
-			sb.append(key+":"+this.get(key));
-		});
+		this.keySet().forEach((key)-> sb.append(key).append(":").append(this.get(key)));
 		return sb.toString();
 	}
 	

@@ -6,12 +6,10 @@ import got.InputManager;
 import got.ModalState;
 import got.gameObjects.GameObject;
 import got.gameObjects.MapPartObject;
-import got.gameObjects.interfaceControls.ImageButton;
 import got.gameStates.StateID;
 import got.gameStates.StateMachine;
 import got.gameStates.StepByStepGameState;
 import got.gameStates.modals.HireMenuState;
-import got.graphics.DrawSpace;
 import got.interfaces.IClickListener;
 import got.model.ChangeAction;
 import got.model.Fraction;
@@ -21,6 +19,8 @@ import got.network.Packages;
 import got.server.GameServer;
 import got.server.PlayerManager;
 import got.server.serverStates.base.StepByStepState;
+import got.utils.Utils;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -45,18 +45,17 @@ public class CollectUnits {
             hirePointsCache = new HashMap<>();
 
             GameClient.shared.gameMap.disableAllRegions();
-            addObject(new ImageButton("buttons/ready.png", 1070, 610, 200, 100, null)
-                    .setSpace(DrawSpace.SCREEN)
-                    .setCallback((sender, param)->{
-                        endTurn(false);
-                    }));
+            addObject(Utils.getReadyButton(null)
+                    .setCallback((sender, param)->
+                        endTurn(false)
+                    ));
         }
 
         @Override
         protected void onSelfTurn() {
             super.onSelfTurn();
             enableRegionsToHire();
-            if (GameClient.instance().shared.gameMap.getEnabledRegions().isEmpty()){
+            if (GameClient.shared.gameMap.getEnabledRegions().isEmpty()){
                 endTurn(false);
             }
         }
@@ -122,7 +121,7 @@ public class CollectUnits {
             });
         }
 
-        public int getHirePoints(MapPartObject region) {
+        private int getHirePoints(MapPartObject region) {
             return hirePointsCache.getOrDefault(region.getName(), region.getHirePoints());
         }
 

@@ -2,11 +2,7 @@ package got.vesterosCards;
 
 import got.model.Action;
 import got.translation.Translator;
-import got.vesterosCards.cards.RestrictedActionsCard;
-import got.vesterosCards.cards.CollectUnitsCard;
-import got.vesterosCards.cards.GameOfThrones;
-import got.vesterosCards.cards.PutToSword;
-import got.vesterosCards.cards.ThroneOfSwords;
+import got.vesterosCards.cards.*;
 
 import java.util.HashMap;
 
@@ -33,7 +29,7 @@ public class VesterosCards {
         add(new RestrictedActionsCard("StormOfSwords.png", "StormOfSwords",  Translator.tt("vesterosCard.StormOfSwords"), new Action[]{Action.DEFEND, Action.DEFENDPLUS}));
         add(new CommonVesterosCard("SummerTime1.png",   "SummerTime1",    Translator.tt("vesterosCard.SummerTime")));
         add(new CommonVesterosCard("SummerTime2.png",   "SummerTime2",    Translator.tt("vesterosCard.SummerTime")));
-        add(new CommonVesterosCard("Suply.png",         "Suply",          Translator.tt("vesterosCard.Suply")));
+        add(new SuplyCard("SuplyCard.png",         "SuplyCard",          Translator.tt("vesterosCard.SuplyCard")));
         add(new ThroneOfSwords("ThroneOfSwords.png","ThroneOfSwords", Translator.tt("vesterosCard.ThroneOfSwords")));
         add(new RestrictedActionsCard("WebOfLie.png",      "WebOfLie",       Translator.tt("vesterosCard.WebOfLie"), new Action[]{Action.HELP, Action.HELPPLUS}));
         add(new CommonVesterosCard("Wildlings.png",     "Wildlings",      Translator.tt("vesterosCard.Wildlings")));

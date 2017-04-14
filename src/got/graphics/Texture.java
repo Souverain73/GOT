@@ -198,7 +198,56 @@ public class Texture {
 		
 		glDisable(GL_BLEND);
 	}
-	
+	public void drawTestureById(float x, float y, float w, float h, int textureID){
+		FloatBuffer mvFB = BufferUtils.createFloatBuffer(16);
+		FloatBuffer pm;
+		mv.identity().translate(x, y, 0).scale(w,h,1).get(mvFB);
+		pm = GraphicModule.instance().getProjectionAsFloatBuffer();
+
+		glUseProgram(drawProgram);
+
+		//apply effects;
+		if (GraphicModule.instance().getEffect()!=null){
+			Effect ce = GraphicModule.instance().getEffect();
+			if (ce.overlay!=null)
+				glUniform4f(overlayLocation, ce.overlay.x, ce.overlay.y,  ce.overlay.z, 0);
+			else
+				glUniform4f(overlayLocation, 0, 0,  0, 0);
+			if (ce.multiply!=null)
+				glUniform4f(multiplyLocation, ce.multiply.x, ce.multiply.y, ce.multiply.z, 1);
+			else
+				glUniform4f(multiplyLocation, 1, 1, 1, 1);
+		}else{
+			glUniform4f(overlayLocation, 0, 0,  0, 0);
+			glUniform4f(multiplyLocation, 1, 1, 1, 1);
+		}
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureID);
+
+		glUniform1i(textureSampler, 0);
+		glUniformMatrix4fv(mvLocation, false, mvFB);
+		glUniformMatrix4fv(projectionLocation, false, pm);
+
+		glEnableVertexAttribArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, vertexCoordsBuffer);
+		glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
+
+		glEnableVertexAttribArray(1);
+		glBindBuffer(GL_ARRAY_BUFFER, vertexUVBuffer);
+		glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, 0);
+
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+
+		glDisable(GL_BLEND);
+	}
+
 	@Override
 	public String toString() {
 		return "Texture [filename=" + filename + ", width=" + width + ", height=" + height + ", textureID=" + textureID

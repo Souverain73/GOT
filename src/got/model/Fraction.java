@@ -1,6 +1,5 @@
 package got.model;
 
-import got.graphics.Text;
 import got.graphics.Texture;
 import got.graphics.TextureManager;
 import org.joml.Vector3f;

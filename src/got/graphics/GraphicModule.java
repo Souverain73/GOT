@@ -33,6 +33,8 @@ import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
+import got.graphics.text.FontBitmap;
+import got.graphics.text.Text;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
@@ -105,7 +107,6 @@ public class GraphicModule {
 	public void initOpenGl(){
 		Texture.init();
 		Text.init();
-		Font.init();
 	    vao = glGenVertexArrays();
 	    glBindVertexArray(vao);
 	    glClearColor(0.5f, 0.5f, 0f, 1.0f);

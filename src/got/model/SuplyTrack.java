@@ -3,15 +3,11 @@ package got.model;
 import got.GameClient;
 import got.gameObjects.MapPartObject;
 import got.utils.Utils;
-import got.vesterosCards.cards.Suply;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EnumMap;
 import java.util.List;
 import java.util.stream.IntStream;
-
-import static javax.swing.UIManager.get;
 
 /**
  * Created by Souverain73
@@ -36,11 +32,6 @@ public class SuplyTrack {
         IntStream.range(0,7).forEach((i)->
             data.add(new ArrayList<>(6))
         );
-    }
-
-    private void addFraction(Fraction fraction, int pos){
-        Utils.limitInt(pos, MIN_LEVEL, MAX_LEVEL);
-        data.get(pos).add(fraction);
     }
 
     public int getPos(Fraction fract){
