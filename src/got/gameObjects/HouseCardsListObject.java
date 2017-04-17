@@ -10,8 +10,6 @@ import org.joml.Vector2f;
 
 import java.util.List;
 
-import static org.lwjgl.opengl.GL11.*;
-
 /**
  * Created by Souverain73 on 17.04.2017.
  */

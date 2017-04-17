@@ -3,6 +3,7 @@ package got.gameObjects.gui;
 import got.Constants;
 import got.InputManager;
 import got.ModalState;
+import got.gameObjects.AbstractGameObject;
 import got.gameObjects.GameObject;
 import got.gameObjects.HouseCardsListObject;
 import got.gameObjects.interfaceControls.ImageButton;
@@ -75,7 +76,7 @@ public class ThroneTrackObject extends TrackObject {
         CustomModalState<HouseCard> cms = new CustomModalState<HouseCard>(null, true){
             @Override
             public void click(InputManager.ClickEvent event) {
-                if (!(event.getTarget() instanceof ImageButton)){
+                if (event.getTarget() == null || !(((AbstractGameObject)event.getTarget()).getParent() instanceof HouseCardsListObject)){
                     close();
                 }
             }
