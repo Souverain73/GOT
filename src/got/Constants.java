@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 public class Constants {
 	public static final String DEFAULT_CONFIG_FILE = "client.cfg";
 
-	//GAME MECHANICS
+//GAME MECHANICS
 	public static int MAX_PLAYERS = 6;
 	public static int MAX_MONEY = 21;
 

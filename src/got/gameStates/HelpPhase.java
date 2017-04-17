@@ -91,8 +91,8 @@ public class HelpPhase extends StepByStepGameState {
 
     @Override
     public void recieve(Connection connection, Object pkg) {
-        super.recieve(connection, pkg);
         GameClient.instance().registerTask(()->{
+            super.recieve(connection, pkg);
             if (pkg instanceof Packages.InitBattle) {
                 Packages.InitBattle msg = (Packages.InitBattle) pkg;
                 logAction("help.initBattleFromTo", msg.from, msg.to);

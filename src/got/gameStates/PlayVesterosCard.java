@@ -39,13 +39,13 @@ public class PlayVesterosCard extends AbstractGameState {
             VesterosCard card = VesterosCards.getCard(msg.card);
             GameClient.instance().registerTask(()->{
                 addObject(cardImage = new ImageObject(card.getTexture(), new Vector2f(Constants.SCREEN_WIDTH, 50), 200, 100).setSpace(DrawSpace.SCREEN));
-                Animator.animateVector2f(cardImage.getPos(), new Vector2f(Constants.SCREEN_WIDTH/2-100, 50), 1000, cardImage::setPos);
+                Animator.animateVector2f(cardImage.getAbsolutePos(), new Vector2f(Constants.SCREEN_WIDTH/2-100, 50), 1000, cardImage::setPos);
             });
             Timers.getTimer(1000, ()->{
                 GameClient.instance().registerTask(()->{
                     card.onOpenClient();
                     Timers.getTimer(1000, ()->{
-                        Animator.animateVector2f(cardImage.getPos(), new Vector2f(-200, 50), 1000, cardImage::setPos);
+                        Animator.animateVector2f(cardImage.getAbsolutePos(), new Vector2f(-200, 50), 1000, cardImage::setPos);
                         Timers.getTimer(1000, ()->GameClient.instance().sendReady(true)).start(true);
                     }).start(true);
                 });

@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import got.graphics.Colors;
 import got.graphics.Texture;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -113,7 +114,7 @@ public class FontBitmap implements Font{
 		}
 
 		
-		return new Text(pos, UV, length, this);
+		return new Text(pos, UV, length, this, Colors.WHITE.asVector3());
 	}
 
 	public int getSize() {

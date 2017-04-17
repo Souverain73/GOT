@@ -65,7 +65,7 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	protected boolean powerToken;
 
 	public MapPartObject() {
-		super();
+		super(0);
 		neighbors = new ArrayList<>();
 		units = new ArrayList<>();
 	}
@@ -126,7 +126,7 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 			);
 		}
 
-		Vector2f cp = getPos();
+		Vector2f cp = getAbsolutePos();
 		texture.draw(cp.x, cp.y, w, h, 0);
 		GraphicModule.instance().resetEffect();
 		float actImgSize = Constants.ACTION_IMAGE_SIZE;
@@ -271,7 +271,7 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	}
 
 	private void placeUnits(){
-		Vector2f cp = getPos();
+		Vector2f cp = getAbsolutePos();
 		float x = cp.x+unit_x;
 		float y = cp.y+unit_y;
 		float angle = 0;
@@ -304,20 +304,15 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 
 	@Override
 	public boolean ifMouseIn(Vector2f mousePos) {
-		if (Utils.pointInRect(InputManager.instance().getMousePosWorld(), getPos(), new Vector2f(w,h))){
+		if (Utils.pointInRect(InputManager.instance().getMousePosWorld(), getAbsolutePos(), new Vector2f(w,h))){
 			Vector2f worldPos = InputManager.instance().getMousePosWorld();
-			Vector2f cp = getPos();
+			Vector2f cp = getAbsolutePos();
 			Vector2f modPos = new Vector2f(worldPos.x-cp.x, worldPos.y-cp.y);
 			if (texture.getAlfa(modPos.x/w, modPos.y/h) != 0){
 				return true;
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public int getPriority() {
-		return 0;
 	}
 
 	public int getHirePoints(){

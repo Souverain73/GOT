@@ -1,9 +1,10 @@
 package got.gameObjects;
 
 import got.gameStates.GameState;
+import got.graphics.Colors;
 import got.graphics.DrawSpace;
-import got.graphics.text.FontBitmap;
 import got.graphics.GraphicModule;
+import got.graphics.text.FontTrueType;
 import got.graphics.text.Text;
 import org.joml.Vector2f;
 
@@ -19,7 +20,7 @@ public class FPSCounterObject extends AbstractGameObject<FPSCounterObject>{
 	private long lastUpdate;
 	
 	public FPSCounterObject() {
-		tFPS = Text.newInstance("0", new FontBitmap("test"));
+		tFPS = Text.newInstance("0", new FontTrueType("calibri", 20));
 		lastUpdate = System.currentTimeMillis();
 	}
 	
@@ -38,7 +39,7 @@ public class FPSCounterObject extends AbstractGameObject<FPSCounterObject>{
 	public void draw(GameState state) {
 		super.draw(state);
 		if (!isVisible()) return;
-		Vector2f cp = getPos();
+		Vector2f cp = getAbsolutePos();
 		GraphicModule.instance().setDrawSpace(DrawSpace.SCREEN);
 		tFPS.draw(cp.x+10, cp.y+0, 1, 1);
 	}

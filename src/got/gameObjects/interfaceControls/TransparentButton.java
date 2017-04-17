@@ -16,7 +16,7 @@ public class TransparentButton extends AbstractButtonObject<TransparentButton> {
     }
 
     public TransparentButton(int x, int y, int w, int h, Object param){
-        super();
+        super(2);
         pos.x = x;
         pos.y = y;
         this.w = w;
@@ -26,7 +26,7 @@ public class TransparentButton extends AbstractButtonObject<TransparentButton> {
 
     @Override
     public boolean ifMouseIn(Vector2f mousePos) {
-        return  (Utils.pointInRect(mousePos, getPos(), new Vector2f(w, h)));
+        return  (Utils.pointInRect(mousePos, getAbsolutePos(), getDim()));
     }
 
     @Override
@@ -34,10 +34,5 @@ public class TransparentButton extends AbstractButtonObject<TransparentButton> {
         if (callback != null){
             callback.accept(this, param);
         }
-    }
-
-    @Override
-    public int getPriority() {
-        return 2;
     }
 }

@@ -43,6 +43,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 
+import got.Constants;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
@@ -144,12 +145,8 @@ public class Texture {
 	public void draw(float x, float y, float w, float h){
 		draw(x, y, w, h, 0);
 	}
-	
+
 	public void draw(float x, float y, float w, float h, float z){
-		draw(x, y, w, h, z, DrawSpace.WORLD);
-	}
-	
-	public void draw(float x, float y, float w, float h, float z, DrawSpace space){ 
 		FloatBuffer mvFB = BufferUtils.createFloatBuffer(16);
 		FloatBuffer pm;
 		mv.identity().translate(x, y, -z).scale(w,h,1).get(mvFB);
@@ -198,7 +195,7 @@ public class Texture {
 		
 		glDisable(GL_BLEND);
 	}
-	public void drawTestureById(float x, float y, float w, float h, int textureID){
+	public void drawTextureById(float x, float y, float w, float h, int textureID){
 		FloatBuffer mvFB = BufferUtils.createFloatBuffer(16);
 		FloatBuffer pm;
 		mv.identity().translate(x, y, 0).scale(w,h,1).get(mvFB);

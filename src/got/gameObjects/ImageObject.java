@@ -14,7 +14,7 @@ import got.graphics.TextureManager;
  */
 public class ImageObject extends AbstractGameObject<ImageObject>{
 	private Texture tex;
-	
+
 	@Override
 	protected ImageObject getThis() {
 		return this;
@@ -37,8 +37,9 @@ public class ImageObject extends AbstractGameObject<ImageObject>{
 	public void draw(GameState state) {
 		if (!isVisible()) return;
 		GraphicModule.instance().setDrawSpace(this.space);
-		Vector2f cp = getPos();
-		tex.draw(cp.x, cp.y, w, h, 0);
+		Vector2f cp = getAbsolutePos();
+		float scale = getAbsoluteScale();
+		tex.draw(cp.x, cp.y, w*scale, h*scale);
 		super.draw(state);
 	}
 	

@@ -220,6 +220,10 @@ public class InputManager {
 		clickables.remove(clickable);
 	}
 
+	public void updatePriority() {
+		Collections.sort(clickables, (c1, c2)-> c2.getPriority() - c1.getPriority());
+	}
+
 	public static class ClickEvent {
 		int buttonIndex;
 		GameObject target;

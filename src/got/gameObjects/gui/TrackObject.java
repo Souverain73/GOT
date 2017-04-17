@@ -14,8 +14,8 @@ import org.joml.Vector2f;
  */
 public class TrackObject extends AbstractGameObject<TrackObject> {
     @Override protected TrackObject getThis() { return this;}
-    private Track track;
-    private Texture blankTexture;
+    protected Track track;
+    protected Texture blankTexture;
 
     public TrackObject(Track track){
         blankTexture = TextureManager.instance().loadTexture("fractions/back.png");
@@ -37,7 +37,7 @@ public class TrackObject extends AbstractGameObject<TrackObject> {
         if (!isVisible()) return;
         super.draw(state);
         GraphicModule.instance().setDrawSpace(this.space);
-        Vector2f cp = getPos();
+        Vector2f cp = getAbsolutePos();
         Fraction[] data = track.getData();
 
         for (int i = 0; i < data.length; i++) {

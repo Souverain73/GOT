@@ -3,7 +3,7 @@ package got.gameObjects;
 import java.util.ArrayList;
 import java.util.List;
 
-import got.gameObjects.interfaceControls.AbstractButtonObject;
+import got.Constants;
 import org.joml.Vector2f;
 
 import got.gameStates.GameState;
@@ -22,22 +22,27 @@ public abstract class AbstractGameObject<T extends AbstractGameObject<T>> implem
 	protected AbstractGameObject parent;
 	protected Vector2f pos;
 	protected float w, h;
+	protected float scale;
 	protected boolean visible;
 	protected DrawSpace space = DrawSpace.WORLD;
 	protected boolean updated, drawed, used;
 	
 	protected abstract T getThis();
 	
-//	public Vector2f getPos() {
-//		return (parent == null) ? pos : new Vector2f(parent.getPos()).add(pos);
+//	public Vector2f getAbsolutePos() {
+//		return (parent == null) ? pos : new Vector2f(parent.getAbsolutePos()).add(pos);
 //	}
 
-	public Vector2f getPos(){
+	public Vector2f getAbsolutePos(){
 		if (parent == null){
 			return pos;
 		}else{
-			return new Vector2f(parent.getPos()).add(pos);
+			return new Vector2f(parent.getAbsolutePos()).add(new Vector2f(pos).mul(parent.getAbsoluteScale()));
 		}
+	}
+
+	public Vector2f getPos() {
+		return pos;
 	}
 
 	protected AbstractGameObject() {
@@ -47,7 +52,8 @@ public abstract class AbstractGameObject<T extends AbstractGameObject<T>> implem
 		drawed = true;
 		used = true;
 		pos = new Vector2f();
-		childs = new ArrayList<AbstractGameObject>();
+		scale = 1.0f;
+		childs = new ArrayList<>();
 	}
 	
 	public T setSpace(DrawSpace space){
@@ -84,7 +90,8 @@ public abstract class AbstractGameObject<T extends AbstractGameObject<T>> implem
 	@Override
 	public void setParent(AbstractGameObject object) {
 		parent = object;
-		this.setSpace(object.space);
+		if (parent!=null)
+			this.setSpace(object.space);
 	}
 	
 	@Override
@@ -123,7 +130,23 @@ public abstract class AbstractGameObject<T extends AbstractGameObject<T>> implem
 		this.h = h;
 		return getThis();
 	}
-	
+
+	public float getAbsoluteScale() {
+		if (parent == null){
+			return scale;
+		}else{
+			return parent.getAbsoluteScale() * scale;
+		}
+	}
+
+	public float getScale() {
+		return scale;
+	}
+
+	public void setScale(float scale) {
+		this.scale = scale;
+	}
+
 	public T setDim(Vector2f dim){
 		this.w = dim.x;
 		this.h = dim.y;

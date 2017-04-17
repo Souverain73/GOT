@@ -15,21 +15,16 @@ import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.glBindBuffer;
-import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
-import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
-import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glGetUniformLocation;
-import static org.lwjgl.opengl.GL20.glUniform1i;
-import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
-import static org.lwjgl.opengl.GL20.glUseProgram;
-import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
+import static org.lwjgl.opengl.GL20.*;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
+import got.graphics.Colors;
 import got.graphics.GraphicModule;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 
 public class Text {
@@ -45,17 +40,18 @@ public class Text {
 	private static int mvLocation;
 	private static Matrix4f mv;
 	private static int projectionLocation;
-	
+	private static int colorLocation;
+	private Vector3f color;
+
 	private static final String vertexShaderFileName = "data/shaders/text.vertexshader";
-	private static final String fragmentShaderFileName = "data/shaders/text.fragmentshader"; 
-			
-	
+	private static final String fragmentShaderFileName = "data/shaders/text.fragmentshader";
+
 	private FloatBuffer mvFB;
+
 	private FloatBuffer pm;
-	
 	private String text;
 	private Font font;
-	
+
 	public static Text newInstance(String text, Font font){
 		return font.newText(text);
 	}
@@ -65,37 +61,43 @@ public class Text {
 		text = newText;
 	}
 	
-	protected Text(){
+	private Text(){
 		mvFB = BufferUtils.createFloatBuffer(16);
 		vertexCoordsBuffer = GraphicModule.createEmptyBuffer();
 		vertexUVBuffer = GraphicModule.createEmptyBuffer();
 		glyphs = 0;
 	}
 	
-	protected Text(float[] vertexCoords, float[] UVCoords, int glyphs, Font font){
+	protected Text(float[] vertexCoords, float[] UVCoords, int glyphs, Font font, Vector3f color){
 		this();
 		this.vertexCoords = vertexCoords;
 		this.UVCoords = UVCoords;
 		this.glyphs = glyphs;
 		this.font = font;
+		this.color = color;
 		vertexCoordsBuffer = GraphicModule.setBufferData(vertexCoordsBuffer, vertexCoords);
 		vertexUVBuffer = GraphicModule.setBufferData(vertexUVBuffer, UVCoords);
 	}
 	
 	public static void init(){
 		//init buffers
-		  glEnable(GL_TEXTURE_2D);
+		glEnable(GL_TEXTURE_2D);
 		//init program
-		  ArrayList<Integer> shaders = new ArrayList<Integer>();
-		  shaders.add(GraphicModule.createShader(GL_VERTEX_SHADER, vertexShaderFileName));
-		  shaders.add(GraphicModule.createShader(GL_FRAGMENT_SHADER, fragmentShaderFileName));
-		  drawProgram = GraphicModule.createProgram(shaders);
-		  textureSampler = glGetUniformLocation(drawProgram, "myTextureSampler");
-		  mvLocation = glGetUniformLocation(drawProgram, "MV");
-		  projectionLocation = glGetUniformLocation(drawProgram, "Proj");
-		  mv = new Matrix4f().identity();
+		ArrayList<Integer> shaders = new ArrayList<>();
+		shaders.add(GraphicModule.createShader(GL_VERTEX_SHADER, vertexShaderFileName));
+		shaders.add(GraphicModule.createShader(GL_FRAGMENT_SHADER, fragmentShaderFileName));
+		drawProgram = GraphicModule.createProgram(shaders);
+		textureSampler = glGetUniformLocation(drawProgram, "myTextureSampler");
+		mvLocation = glGetUniformLocation(drawProgram, "MV");
+		projectionLocation = glGetUniformLocation(drawProgram, "Proj");
+		colorLocation = glGetUniformLocation(drawProgram, "overlay");
+		mv = new Matrix4f().identity();
 	}
-	
+
+	public void setColor(Vector3f color) {
+		this.color = color;
+	}
+
 	public Font getFont() {
 		return font;
 	}
@@ -147,6 +149,7 @@ public class Text {
 		glUniform1i(textureSampler, 0);
 		glUniformMatrix4fv(mvLocation, false, mvFB);
 		glUniformMatrix4fv(projectionLocation, false, pm);
+		glUniform4f(colorLocation, color.x, color.y,  color.z, 0);
 		
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexCoordsBuffer);

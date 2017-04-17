@@ -1,17 +1,20 @@
 package got.graphics.text;
 
+import got.graphics.Colors;
 import got.utils.UI;
+import org.joml.Vector3f;
 import org.lwjgl.stb.STBTTAlignedQuad;
 import org.lwjgl.stb.STBTTPackContext;
 import org.lwjgl.stb.STBTTPackedchar;
 
+import java.awt.*;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.IOUtil.ioResourceToByteBuffer;
+import static got.utils.IOUtil.ioResourceToByteBuffer;
 import static org.lwjgl.BufferUtils.createByteBuffer;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.stb.STBTruetype.*;
@@ -27,6 +30,7 @@ public class FontTrueType implements Font{
     private int font_tex;
     private int BITMAP_W;
     private int BITMAP_H;
+    private Vector3f color;
     private static final int oversamples = 2;
 
     private final STBTTAlignedQuad q  = STBTTAlignedQuad.malloc();
@@ -35,13 +39,22 @@ public class FontTrueType implements Font{
 
     private LocaleEncoder encoder;
 
+    public FontTrueType(String fontFile){
+        this(fontFile, 20);
+    }
+
     public FontTrueType(String fontFile, float scale){
+        this(fontFile, scale, Colors.WHITE.asVector3());
+    }
+
+    public FontTrueType(String fontFile, float scale, Vector3f color){
         this.scale = scale;
         this.BITMAP_W = (int)(scale * 16 * oversamples);
         this.BITMAP_H = (int)(scale * 16 * oversamples);
         this.encoder = new RussianEncoder();
         this.xb.rewind();
         this.yb.rewind();
+        this.color = color;
         loadFont(fontsBase+fontFile+".ttf");
     }
 
@@ -94,7 +107,7 @@ public class FontTrueType implements Font{
             addGlyphPos(q, i, pos);
         }
 
-        return new Text(pos, UV, length, this);
+        return new Text(pos, UV, length, this, color);
     }
 
     private void addGlyphUV(STBTTAlignedQuad q, int index, float[] UV){

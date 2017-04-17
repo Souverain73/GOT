@@ -3,6 +3,7 @@ package got.gameObjects.gui;
 import got.Constants;
 import got.gameObjects.*;
 import got.graphics.DrawSpace;
+import got.graphics.text.FontTrueType;
 import got.model.Game;
 import got.server.PlayerManager;
 import org.joml.Vector2f;
@@ -24,7 +25,7 @@ public class GUIObject extends AbstractGameObject<GUIObject> {
 
         addChild(new PlayerPanelObject(PlayerManager.getSelf()));
 
-        addChild(tooltipText = new TextObject("Tooltip").setPos(new Vector2f(300,10)));
+        addChild(tooltipText = new TextObject(new FontTrueType("BKANT", 20),"Tooltip").setPos(new Vector2f(300,10)));
 
         addChild(glo = new GameLogObject(300, 100, 16).setPos(new Vector2f(0, Constants.SCREEN_HEIGHT-100)));
 

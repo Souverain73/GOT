@@ -5,7 +5,6 @@ import got.gameStates.GameState;
 
 import got.graphics.Effect;
 import got.graphics.GraphicModule;
-import got.gameObjects.interfaceControls.AbstractButtonObject;
 
 import got.model.PowerToken;
 import org.joml.Vector2f;
@@ -73,7 +72,7 @@ public class DebugMapPart extends MapPartObject {
             );
         }
 
-        Vector2f cp = getPos();
+        Vector2f cp = getAbsolutePos();
         texture.draw(cp.x, cp.y, w, h, 0);
         GraphicModule.instance().resetEffect();
 

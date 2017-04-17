@@ -29,7 +29,7 @@ public class TrueTypeTestState extends AbstractGameState{
     @Override
     public void draw() {
         GraphicModule.instance().setDrawSpace(DrawSpace.SCREEN);
-        t.drawTestureById(0,100, 512, 512, font.getTextureID());
+        t.drawTextureById(0,100, 512, 512, font.getTextureID());
         super.draw();
     }
 }

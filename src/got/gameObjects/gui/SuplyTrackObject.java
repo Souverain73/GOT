@@ -71,7 +71,7 @@ public class SuplyTrackObject extends AbstractGameObject<SuplyTrackObject> {
     }
 
     private void drawSlot(int num, List<Fraction> data) {
-        Vector2f cp = getPos();
+        Vector2f cp = getAbsolutePos();
         int x = (int) (token_start.x + 46 * num);
         int y = (int) token_start.y;
         for (Fraction f : data){

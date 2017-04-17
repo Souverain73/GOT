@@ -19,7 +19,7 @@ public class StepByStepGameState extends AbstractGameState {
 
         PlayerManager.instance().setCurrentPlayer(
                 PlayerManager.instance().getPlayerByFraction(
-                        Game.instance().getTrack(Game.THRONE_TRACK).getData()[0])
+                        Game.instance().getTrack(Game.THRONE_TRACK).getFirst())
         );
 
         GameClient.shared.gui.getThroneTrack().setHighlightMode(ThroneTrackObject.HighlightMode.HIGHLIGHT_CURRENT_PLAYER);

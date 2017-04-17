@@ -4,7 +4,6 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import got.gameStates.GameState;
-import got.graphics.Effect;
 import got.graphics.GraphicModule;
 import got.graphics.Texture;
 import got.graphics.TextureManager;
@@ -13,7 +12,6 @@ import got.utils.Utils;
 /**
  * Extends {@link AbstractButtonObject} with image.<br>
  * For usage look {@link AbstractButtonObject}.
- * @author ���������
  *
  */
 public class ImageButton extends AbstractButtonObject<ImageButton> {
@@ -27,7 +25,7 @@ public class ImageButton extends AbstractButtonObject<ImageButton> {
 
 	
 	private ImageButton(int x, int y, int w, int h, Object param){
-		super();
+		super(2);
 		pos.x = x;
 		pos.y = y;
 		this.w = w;
@@ -65,7 +63,7 @@ public class ImageButton extends AbstractButtonObject<ImageButton> {
 			setOverlay(new Vector3f(-0.5f, -0.5f, -0.5f));
 		}
 		
-		texture.draw(getPos().x, getPos().y, w, h, 1);
+		texture.draw(getAbsolutePos().x, getAbsolutePos().y, w* getAbsoluteScale(), h* getAbsoluteScale());
 		super.draw(st);
 		
 		GraphicModule.instance().resetEffect();
@@ -74,17 +72,12 @@ public class ImageButton extends AbstractButtonObject<ImageButton> {
 	@Override
 	public boolean ifMouseIn(Vector2f mousePos) {
 		if (Utils.pointInRect(mousePos,
-				getPos(),
-				new Vector2f(w, h))
+				getAbsolutePos(),
+				new Vector2f(w* getAbsoluteScale(), h* getAbsoluteScale()))
 		){
-			if (texture.getAlfa((mousePos.x - getPos().x)/w, (mousePos.y - getPos().y)/h)!=0) return true; 
+			if (texture.getAlfa((mousePos.x - getAbsolutePos().x)/w* getAbsoluteScale(), (mousePos.y - getAbsolutePos().y)/h* getAbsoluteScale())!=0) return true;
 		}
 		return false;
-	}
-	
-	@Override
-	public int getPriority() {
-		return 2;
 	}
 
 	private void setOverlay(Vector3f overlay){
@@ -105,9 +98,4 @@ public class ImageButton extends AbstractButtonObject<ImageButton> {
 	public void setTexture(Texture texture) {
 		this.texture = texture;
 	}
-	
-	
-	
-	
-	
 }

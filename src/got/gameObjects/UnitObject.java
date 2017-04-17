@@ -23,7 +23,7 @@ public class UnitObject extends AbstractGameObject<UnitObject>{
 	public void draw(GameState state) {
 		if (isVisible()){
 			super.draw(state);
-			Vector2f cp = getPos();
+			Vector2f cp = getAbsolutePos();
 			
 			type.getTexture().draw(cp.x, cp.y, getW(), getH());
 		}

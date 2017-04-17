@@ -1,8 +1,6 @@
 package got.gameObjects.interfaceControls;
 
-import got.gameObjects.AbstractGameObject;
 import got.gameStates.GameState;
-import got.graphics.Effect;
 import got.graphics.GraphicModule;
 import got.graphics.Texture;
 import org.joml.Vector3f;

@@ -1,7 +1,7 @@
 package got.gameObjects;
 
 import got.graphics.text.Font;
-import got.graphics.text.FontBitmap;
+import got.graphics.text.FontTrueType;
 import org.joml.Vector2f;
 
 import got.gameStates.GameState;
@@ -26,7 +26,7 @@ public class TextObject extends AbstractGameObject<TextObject>{
 	}
 
 	public TextObject(String message){
-		this(new FontBitmap("test"), message);
+		this(new FontTrueType("BKANT", 20), message);
 	}
 	
 	@Override
@@ -37,7 +37,7 @@ public class TextObject extends AbstractGameObject<TextObject>{
 	@Override
 	public void draw(GameState state) {
 		super.draw(state);
-		Vector2f cp = getPos();
+		Vector2f cp = getAbsolutePos();
 		GraphicModule.instance().setDrawSpace(getSpace());
 		text.draw(cp.x, cp.y, 1, 1);
 	}

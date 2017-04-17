@@ -4,6 +4,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import com.esotericsoftware.minlog.Log;
+import got.GameClient;
 import got.gameObjects.AbstractGameObject;
 import got.gameObjects.GameObject;
 import got.utils.UI;
@@ -36,13 +37,15 @@ public abstract class AbstractButtonObject<T extends AbstractButtonObject<T>> ex
 	protected State state;
 	protected boolean wasClick;
 	protected boolean mouseIn;
+	protected int priority;
 
-	public AbstractButtonObject() {
+	public AbstractButtonObject(int priority) {
 		super();
 		wasClick = false;
 		state = State.FREE;
-		InputManager.instance().registerClickable(this);
 		callback = null;
+		this.priority = priority;
+		InputManager.instance().registerClickable(this);
 	}
 	
 	@Override
@@ -135,7 +138,13 @@ public abstract class AbstractButtonObject<T extends AbstractButtonObject<T>> ex
 
 	@Override
 	public int getPriority() {
-		return 0;
+		return priority;
+	}
+
+	public T setPriority(int priority) {
+		this.priority = priority;
+		InputManager.instance().updatePriority();
+		return getThis();
 	}
 
 	@Override
@@ -158,5 +167,7 @@ public abstract class AbstractButtonObject<T extends AbstractButtonObject<T>> ex
 			InputManager.instance().removeClickable(this);
 		}
 	}
+
+
 
 }

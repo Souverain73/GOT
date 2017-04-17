@@ -110,7 +110,7 @@ public class NetPlayersPanel extends AbstractGameObject<NetPlayersPanel> {
 		public void draw(GameState state) {
 			GraphicModule.instance().setDrawSpace(DrawSpace.SCREEN);
 			super.draw(state);
-			Vector2f cp = getPos();
+			Vector2f cp = getAbsolutePos();
 			nick.draw(cp.x, cp.y+5, 1.0f, 1.0f);
 		}
 		

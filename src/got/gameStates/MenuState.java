@@ -8,6 +8,7 @@ import got.gameStates.test.AnimationTestState;
 import got.gameStates.test.MapViewState;
 import got.gameStates.test.TextDebugState;
 import got.gameStates.test.TrueTypeTestState;
+import got.graphics.Colors;
 import got.graphics.DrawSpace;
 import got.graphics.text.FontTrueType;
 import org.joml.Vector2f;
@@ -29,7 +30,7 @@ public class MenuState extends AbstractGameState {
 			GameClient.instance().getStateMachine().setState(new NetworkRoomState());
 		});
 		btn.setSpace(DrawSpace.SCREEN);
-		addObject(btn);;
+		addObject(btn);
 		//button exit
 		btn = new ImageButton("buttons/exit.png", 540, 380, 200, 100, null);
 		btn.setCallback((sender, params)->{
@@ -39,7 +40,7 @@ public class MenuState extends AbstractGameState {
 		addObject(btn);
 
 
-		FontTrueType titleFont = new FontTrueType("gotKG", 64);
+		FontTrueType titleFont = new FontTrueType("gotKG", 64, Colors.BLACK.asVector3());
 		int titleWidth = titleFont.getStringWidth("Game Of Thrones");
 		addObject(new TextObject(titleFont, "Game Of Thrones")
 				.setSpace(DrawSpace.SCREEN)
