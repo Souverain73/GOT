@@ -101,6 +101,7 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
         addChild(background);
         background.addChild(attackerContainer);
         background.addChild(defenderContainer);
+        setSpace(DrawSpace.SCREEN);
         updateState(true);
     }
 

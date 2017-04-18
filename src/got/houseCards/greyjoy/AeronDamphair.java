@@ -26,7 +26,7 @@ public class AeronDamphair extends ActiveHouseCard {
             Dialogs.Dialog cd = Dialogs.createConfirmDialog();
             (new ModalState(cd)).run();
             if (cd.getResult() == Dialogs.DialogResult.OK){
-                CustomModalState<HouseCard> shcd = Dialogs.createSelectHouseCardDialog();
+                CustomModalState<HouseCard> shcd = Dialogs.createSelectHouseCardDialog(PlayerManager.getSelf().getDeck());
                 (new ModalState(shcd)).run();
                 HouseCard selectedCard = shcd.getResult();
                 GameClient.instance().send(new Packages.SelectHouseCard(selectedCard.getID()));

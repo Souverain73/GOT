@@ -11,6 +11,7 @@ import got.houseCards.ActiveHouseCard;
 import got.houseCards.HouseCard;
 import got.model.Fraction;
 import got.network.Packages;
+import got.server.PlayerManager;
 import org.joml.Vector2f;
 
 import static got.gameStates.modals.Dialogs.createConfirmDialog;
@@ -63,7 +64,7 @@ public class TyrionLanister extends ActiveHouseCard {
                 if (getSelf().getFraction() == enemyFraction) {
 
                     GameClient.instance().registerTask(()->{
-                        CustomModalState<HouseCard> cms = Dialogs.createSelectHouseCardDialog();
+                        CustomModalState<HouseCard> cms = Dialogs.createSelectHouseCardDialog(PlayerManager.getSelf().getDeck());
                         (new ModalState(cms)).run();
                         HouseCard selectedCard = cms.getResult();
                         GameClient.instance().send(new Packages.SelectHouseCard(selectedCard.getID()));

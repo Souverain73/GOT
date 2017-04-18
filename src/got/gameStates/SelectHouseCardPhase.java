@@ -87,7 +87,7 @@ public class SelectHouseCardPhase extends AbstractGameState {
     }
 
     private HouseCard showSelectHouseCardDialog() {
-        CustomModalState<HouseCard> cms = Dialogs.createSelectHouseCardDialog();
+        CustomModalState<HouseCard> cms = Dialogs.createSelectHouseCardDialog(PlayerManager.getSelf().getDeck());
 
         (new ModalState(cms)).run();
 

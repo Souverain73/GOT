@@ -18,6 +18,7 @@ public class HouseCardsListObject extends AbstractGameObject<HouseCardsListObjec
     ImageButton[] cardButtons;
     int currentScaled = -1;
     private float newScale;
+    private final List<HouseCard> cards;
 
     @Override
     protected HouseCardsListObject getThis() {
@@ -27,7 +28,7 @@ public class HouseCardsListObject extends AbstractGameObject<HouseCardsListObjec
     public HouseCardsListObject(Deck deck){
         super();
         this.deck = deck;
-        List<HouseCard> cards = deck.getActiveCards();
+        cards = deck.getActiveCards();
         cardButtons = new ImageButton[cards.size()];
         int i=0;
         for(HouseCard card : cards){
@@ -36,7 +37,7 @@ public class HouseCardsListObject extends AbstractGameObject<HouseCardsListObjec
             addChild(cardButton);
             i++;
         }
-        this.w = (i-1)*100;
+        this.w = i*100;
         this.h = 160;
     }
 
@@ -45,14 +46,20 @@ public class HouseCardsListObject extends AbstractGameObject<HouseCardsListObjec
         if (index == currentScaled) {
             zoomOut(index);
             currentScaled = -1;
+            onUnSelect();
         } else {
             if (currentScaled != -1) {
                 zoomOut(currentScaled);
             }
             zoomIn(index);
             currentScaled = index;
+            onSelect();
         }
     }
+
+    protected void onSelect(){}
+
+    protected void onUnSelect(){}
 
     @Override
     public void draw(GameState state) {
@@ -69,13 +76,20 @@ public class HouseCardsListObject extends AbstractGameObject<HouseCardsListObjec
         ImageButton card = cardButtons[index];
         AnimatedObject ao = new AnimatedObject(card);
         card.setPriority(3);
-        GameClient.instance().registerTask(()->{
+        GameClient.instance().registerWork(()->{
             removeChild(card);
             addChild(card);
         });
-        newScale = 3.0f;
+        newScale = 2.0f;
         ao.scale(newScale, 1000);
-        ao.move(new Vector2f((this.w - 100*newScale/2) / 2, this.h/2 - 100), 1000);
+        ao.move(new Vector2f((this.w - 100*newScale) / 2, this.h/2 - 100), 1000);
     }
 
+    public HouseCard getSelectedCard(){
+        if (currentScaled != -1){
+            return cards.get(currentScaled);
+        }else{
+            return null;
+        }
+    }
 }

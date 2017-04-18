@@ -1,10 +1,14 @@
 package got.gameStates.modals;
 
+import got.Constants;
 import got.ModalState;
 import got.gameObjects.ContainerObject;
+import got.gameObjects.HouseCardsListObject;
 import got.gameObjects.ImageObject;
 import got.gameObjects.interfaceControls.ImageButton;
+import got.gameStates.StateMachine;
 import got.graphics.DrawSpace;
+import got.houseCards.Deck;
 import got.houseCards.HouseCard;
 
 import org.joml.Vector2f;
@@ -66,8 +70,33 @@ public class Dialogs {
         return dlg.getResult();
     }
 
-    public static CustomModalState<HouseCard> createSelectHouseCardDialog() {
-        return createSelectHouseCardDialog(getSelf().getDeck().getActiveCards());
+    public static CustomModalState<HouseCard> createSelectHouseCardDialog(Deck deck){
+        CustomModalState<HouseCard> cms = new CustomModalState<>(null, false);
+        ImageButton selectButton = new ImageButton("buttons/select.png", 0,0,200,100,null);
+        selectButton.setVisible(false);
+
+        HouseCardsListObject hclo = new HouseCardsListObject(deck){
+            @Override
+            protected void onSelect() {
+                selectButton.setVisible(true);
+            }
+
+            @Override
+            protected void onUnSelect() {
+                selectButton.setVisible(false);
+            }
+        }.setSpace(DrawSpace.SCREEN);
+
+        hclo.setPos(
+                new Vector2f((Constants.SCREEN_WIDTH - hclo.getW())/2, 200)
+        );
+
+        selectButton.setPos(new Vector2f((hclo.getW()-200) / 2, 160*2+10))
+                .setCallback((sender, param)->cms.setResultAndClose(hclo.getSelectedCard()));
+
+        cms.addObject(hclo);
+        hclo.addChild(selectButton);
+        return cms;
     }
 
 

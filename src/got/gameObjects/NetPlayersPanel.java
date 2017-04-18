@@ -1,6 +1,8 @@
 package got.gameObjects;
 
 import got.graphics.*;
+import got.graphics.text.Font;
+import got.graphics.text.FontTrueType;
 import got.graphics.text.Text;
 import org.joml.Vector2f;
 
@@ -77,7 +79,7 @@ public class NetPlayersPanel extends AbstractGameObject<NetPlayersPanel> {
 	}
 	
 	public class NetPlayerPanel extends AbstractGameObject<NetPlayerPanel> {
-		FontBitmap font = new FontBitmap("test");
+		Font font = new FontTrueType("BKANT");
 		Text nick;
 		Texture readyGemTex, notReadyGemTex;
 		ImageObject readyImg;
