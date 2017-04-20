@@ -6,6 +6,7 @@ import got.gameObjects.AbstractGameObject;
 import got.gameObjects.AnimatedObject;
 import got.gameObjects.ContainerObject;
 import got.gameObjects.ImageObject;
+import got.gameObjects.gui.NumberSelectorObject;
 import got.gameObjects.interfaceControls.ImageButton;
 import got.gameStates.AbstractGameState;
 import got.gameStates.StateMachine;
@@ -36,6 +37,6 @@ public class AnimationTestState extends AbstractGameState {
             .setCallback((sender, params)->{
                 ao.scale(1.0f, 1000);
             }));
-
+        addObject(new NumberSelectorObject(0, 15, 5).setPos(300,300).setSpace(DrawSpace.SCREEN));
     }
 }
