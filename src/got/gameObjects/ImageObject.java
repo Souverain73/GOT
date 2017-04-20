@@ -20,17 +20,16 @@ public class ImageObject extends AbstractGameObject<ImageObject>{
 		return this;
 	}
 	
-	public ImageObject(Texture tex, Vector2f pos, int w, int h) {
+	public ImageObject(Texture tex, int w, int h) {
 		super();
-		this.pos = pos;
 		this.w = w;
 		this.h = h;
 		this.tex = tex;
 	}
 	
-	public ImageObject(String textureName, Vector2f pos, int w, int h){
+	public ImageObject(String textureName, int w, int h){
 		this(TextureManager.instance().loadTexture(textureName),
-				pos, w, h);
+				w, h);
 	}
 		
 	@Override

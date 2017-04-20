@@ -40,7 +40,7 @@ public class HireMenuState extends  AbstractGameState implements IClickListener{
 		float y = pos.y;
 		
 		ImageObject bg = new ImageObject(TextureManager.instance().loadTexture("unitsMenuBg.png"),
-			new Vector2f(x,y), 220, 60);
+			220, 60).setPos((int)x, (int)y);
 		addObject(bg);
 			
 		x = pos.x + 6;

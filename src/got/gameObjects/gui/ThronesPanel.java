@@ -21,7 +21,7 @@ public class ThronesPanel extends AbstractGameObject<ThronesPanel> {
     private boolean expanded = false;
 
     public ThronesPanel(){
-        addChild(new ImageObject("tracks/PANEL_BG.png", new Vector2f(0,0), TRACK_WIDTH*3, 480));
+        addChild(new ImageObject("tracks/PANEL_BG.png", TRACK_WIDTH*3, 480));
         tt = new ThroneTrackObject(Game.instance().getTrack(Game.THRONE_TRACK));
         tt.setSpace(DrawSpace.SCREEN).setPos(new Vector2f(0,0));
         addChild(tt);

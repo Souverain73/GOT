@@ -38,7 +38,7 @@ public class SelectUnitsDialogState extends AbstractGameState implements IClickL
         this.units = unitsToSelect;
         //background
         ImageObject bg = new ImageObject(TextureManager.instance().loadTexture("unitsMenuBg.png"),
-                new Vector2f(x,y), 220, 60).setSpace(DrawSpace.WORLD);
+                220, 60).setPos(new Vector2f(x,y)).setSpace(DrawSpace.WORLD);
         addObject(bg);
 
         x = pos.x + 6;

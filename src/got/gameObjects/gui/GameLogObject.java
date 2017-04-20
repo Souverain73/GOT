@@ -29,7 +29,7 @@ public class GameLogObject extends AbstractGameObject<GameLogObject> {
         this.h = height;
         this.font =  new FontTrueType("Trajan", 16);
 
-        addChild(new ImageObject("PlayerPanel.png", new Vector2f(0, 0), width, height).setSpace(space));
+        addChild(new ImageObject("PlayerPanel.png", width, height).setSpace(space));
 
         linesCount = height / fontSize;
         IntStream.range(0, linesCount).forEach((i)->{

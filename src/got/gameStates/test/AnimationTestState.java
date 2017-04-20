@@ -23,8 +23,8 @@ public class AnimationTestState extends AbstractGameState {
         super.enter(stm);
         AbstractGameObject<?> obj;
         ContainerObject cnt = new ContainerObject(){{
-            addChild(new ImageObject("buttons/plus.png", new Vector2f(), 100, 100).setSpace(DrawSpace.SCREEN));
-            addChild(new ImageObject("buttons/plus.png", new Vector2f(100,0), 100, 100).setSpace(DrawSpace.SCREEN));
+            addChild(new ImageObject("buttons/plus.png", 100, 100).setSpace(DrawSpace.SCREEN));
+            addChild(new ImageObject("buttons/plus.png", 100, 100).setSpace(DrawSpace.SCREEN).setPos(100,0));
         }}.setPos(new Vector2f(0,200)).setSpace(DrawSpace.SCREEN);
         addObject(cnt);
         AnimatedObject ao = new AnimatedObject(cnt);

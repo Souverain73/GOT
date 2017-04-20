@@ -35,7 +35,7 @@ public class NetPlayersPanel extends AbstractGameObject<NetPlayersPanel> {
 			addPlayers(list);
 		
 		addChild(new ImageObject(TextureManager.instance().loadTexture("nrs/panel.png"),
-				new Vector2f(0,0), 200, 320).setSpace(DrawSpace.SCREEN));
+				200, 320).setSpace(DrawSpace.SCREEN));
 	}
 	
 	public void addPlayers(Player[] list){
@@ -95,12 +95,12 @@ public class NetPlayersPanel extends AbstractGameObject<NetPlayersPanel> {
 			readyGemTex = TextureManager.instance().loadTexture("nrs/ready_gem.png");
 			notReadyGemTex = TextureManager.instance().loadTexture("nrs/notready_gem.png");
 			//create bakground image
-			bgImg = new ImageObject(TextureManager.instance().loadTexture("nrs/panel.png"), new Vector2f(0,0), 200, 50)
+			bgImg = new ImageObject(TextureManager.instance().loadTexture("nrs/panel.png"), 200, 50)
 					.setSpace(DrawSpace.SCREEN);
 			bgImg.setSpace(DrawSpace.SCREEN);
 			addChild(bgImg);
 			//create ready gem image
-			readyImg = new ImageObject(notReadyGemTex, new Vector2f(150, 0), 50, 50)
+			readyImg = new ImageObject(notReadyGemTex, 50, 50).setPos(150, 0)
 					.setSpace(DrawSpace.SCREEN);
 			addChild(readyImg);
 			

@@ -39,7 +39,7 @@ public class Dialogs {
     public static Dialog createConfirmDialog(Vector2f pos){
         Dialog cms = new Dialog(DialogResult.CANCEL);
 
-        ImageObject bg = new ImageObject("DialogBackground.png", pos, 200, 100).setSpace(DrawSpace.WORLD);
+        ImageObject bg = new ImageObject("DialogBackground.png", 200, 100).setPos(pos).setSpace(DrawSpace.WORLD);
 
         bg.addChild(new ImageButton("buttons/ok.png", 0, 50, 100, 50, null)
                 .setSpace(DrawSpace.WORLD)

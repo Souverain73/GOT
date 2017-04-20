@@ -59,8 +59,8 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
 
         this.overrides = new BattleOverrides();
 
-        ImageObject background = new ImageObject("BattleDeckBG.png", new Vector2f(140, 50),
-                1000, 200)
+        ImageObject background = new ImageObject("BattleDeckBG.png",
+                1000, 200).setPos(140, 50)
                 .setSpace(DrawSpace.SCREEN);
 
         attackerContainer = new ContainerObject()
@@ -85,9 +85,9 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
 
         //House cards
         attackerHouseCardObject = new ImageObject(attackerPlayer.getFraction().getCoverTexture(),
-                new Vector2f(20, 50), 100, 200).setSpace(DrawSpace.SCREEN);
+                 100, 200).setPos(20,50).setSpace(DrawSpace.SCREEN);
         defenderHouseCardObject = new ImageObject(defenderPlayer.getFraction().getCoverTexture(),
-                new Vector2f(1160, 50), 100, 200).setSpace(DrawSpace.SCREEN);
+                 100, 200).setPos(1160, 50).setSpace(DrawSpace.SCREEN);
 
         addChild(attackerHouseCardObject);
         addChild(defenderHouseCardObject);

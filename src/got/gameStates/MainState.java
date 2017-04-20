@@ -35,7 +35,7 @@ public class MainState extends AbstractGameState {
 		System.out.println("Entering "+name);
 
 		background = new ImageObject(TextureManager.instance().loadTexture("backgroundMain.png"),
-				new Vector2f(0,0), Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+				Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 		background.setSpace(DrawSpace.SCREEN);
 
 		map = new GameMapObject();

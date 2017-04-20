@@ -45,13 +45,13 @@ public class BattleCardObject extends AbstractGameObject<BattleCardObject>{
     private ContainerObject createView() {
         ContainerObject result = new ContainerObject();
         ///BG
-        result.addChild(new ImageObject("PlayerCardBG.png", new Vector2f(0, 0), 100, 200)
+        result.addChild(new ImageObject("PlayerCardBG.png", 100, 200)
                 .setSpace(DrawSpace.SCREEN));
         //Fraction icon
-        result.addChild(new ImageObject(playerFraction.getBackTexture(), new Vector2f(10,10), 80, 80)
+        result.addChild(new ImageObject(playerFraction.getBackTexture(), 80, 80).setPos(10, 10)
                 .setSpace(DrawSpace.SCREEN));
         if (regionAction!=null) {
-            result.addChild(new ImageObject(regionAction.getTexture(), new Vector2f(50, 50), 40, 40)
+            result.addChild(new ImageObject(regionAction.getTexture(), 40, 40).setPos(50,50)
                     .setSpace(DrawSpace.SCREEN));
         }
 

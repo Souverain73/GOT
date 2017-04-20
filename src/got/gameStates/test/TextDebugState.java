@@ -21,7 +21,7 @@ public class TextDebugState extends AbstractGameState implements IClickListener{
         super.enter(stm);
         TextObject to;
         addObject(new ImageObject(TextureManager.instance().loadTexture("backgroundMain.png"),
-                new Vector2f(0,0), Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT).setSpace(DrawSpace.SCREEN));
+               Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT).setSpace(DrawSpace.SCREEN));
 
         addObject(new TextObject(new FontBitmap("bolyar",  64), "bolyar  64: Hello world!! Привет Мир!!!").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 100)));
         addObject(new TextObject(new FontBitmap("trojan",  64), "trojan  64: Hello world!! Привет Мир!!!").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 170)));

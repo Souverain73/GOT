@@ -124,7 +124,7 @@ public class HelpPhase extends StepByStepGameState {
     private BattleSide showSelectSideDialogAndGetResult(){
         CustomModalState<BattleSide> cms = new CustomModalState<>(BattleSide.SIDE_NONE);
 
-        ImageObject bg = new ImageObject("DialogBG.png", new Vector2f(490, 285), 300, 150)
+        ImageObject bg = new ImageObject("DialogBG.png",  300, 150).setPos(490, 285)
                             .setSpace(DrawSpace.SCREEN);
 
         bg.addChild(new ImageButton("buttons/helpAttacker.png", 0,0, 100, 150, null)

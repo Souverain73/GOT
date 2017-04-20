@@ -24,10 +24,10 @@ public class TrackObject extends AbstractGameObject<TrackObject> {
         this.track = track;
         setSpace(DrawSpace.SCREEN);
 
-        ImageObject bg = new ImageObject("tracks/" + track.getName() + "_BG.png", new Vector2f(0,60), 65, 420);
+        ImageObject bg = new ImageObject("tracks/" + track.getName() + "_BG.png", 65, 420).setPos(0, 60);
         addChild(bg);
 
-        AbstractGameObject<?> trackIcon = new ImageObject("tracks/" + track.getName() + "_ICON.png", new Vector2f(0,0), 65, 60);
+        AbstractGameObject<?> trackIcon = new ImageObject("tracks/" + track.getName() + "_ICON.png", 65, 60);
         addChild(trackIcon);
     }
 

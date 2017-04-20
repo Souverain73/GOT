@@ -36,7 +36,7 @@ public class SuplyTrackObject extends AbstractGameObject<SuplyTrackObject> {
         this.h = 240;
         this.w = 420;
 
-        addChild(bg = new ImageObject("tracks/SUPLY_BG.png", new Vector2f(0,0) , (int)w, (int)h));
+        addChild(bg = new ImageObject("tracks/SUPLY_BG.png", (int)w, (int)h));
         addChild(new TransparentButton(0,0,65, (int)h, null).setCallback((gameObject, o) -> toggle()));
 
         iconTexture = TextureManager.instance().loadTexture("tracks/SUPLY_ICON.png");

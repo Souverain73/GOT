@@ -24,7 +24,7 @@ public class SelectUnitDialogState extends AbstractGameState implements IClickLi
 		float x = pos.x;
 		float y = pos.y;
 			ImageObject bg = new ImageObject(TextureManager.instance().loadTexture("unitsMenuBg.png"),
-				new Vector2f(x,y), 220, 60).setSpace(DrawSpace.WORLD);
+				220, 60).setPos(new Vector2f(x,y)).setSpace(DrawSpace.WORLD);
 			addObject(bg);
 		x = pos.x + 6;
 		y = pos.y + 5;

@@ -234,7 +234,7 @@ class PowerPhase extends StepByStepGameState implements IClickListener{
         CustomModalState<Integer> cms = new CustomModalState<>(-1);
 
         ImageObject background = new ImageObject("selectActionBackground.png",
-                InputManager.instance().getMousePosWorld(), 430, 120).setSpace(DrawSpace.WORLD);
+                430, 120).setPos(InputManager.instance().getMousePosWorld()).setSpace(DrawSpace.WORLD);
         background.addChild(new ImageButton("buttons/hire.png", 10, 10, 200, 100, null).setCallback((sender, param) -> {
             cms.setResult(1);
             GameClient.instance().closeModal();
