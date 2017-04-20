@@ -595,9 +595,13 @@ public class Packages {
 	 * сообщает серверу, что игрок ставит value очков влияния.
 	 */
 	public static class Bet extends ClientServerPackage {
-		int value;
+		public int value;
 
 		public Bet() {
+		}
+
+		public Bet(int value) {
+			this.value = value;
 		}
 	}
 
