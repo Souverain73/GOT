@@ -16,6 +16,7 @@ import java.util.List;
 
 public class Game {
 	private static Game _instance = null;
+	private int turn;
 	private Deck[] vesterosDecks;
 	private Fraction[] fractionsPool;
 	private Track[] tracks;
@@ -91,5 +92,13 @@ public class Game {
 
 	public Deck getVesterosDeck(int number){
 		return vesterosDecks[number];
+	}
+
+	public int getTurn(){
+		return turn;
+	}
+
+	public void nextTurn(){
+		turn += 1;
 	}
 }

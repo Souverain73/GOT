@@ -172,6 +172,11 @@ public abstract class AbstractGameObject<T extends AbstractGameObject<T>> implem
 		return getThis();
 	}
 
+	public T setPos(int x, int y){
+		this.pos = new Vector2f(x, y);
+		return getThis();
+	}
+
 	@Override
 	public void update(GameState state) {
 		updated = true;

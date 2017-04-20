@@ -5,6 +5,7 @@ import got.gameObjects.ImageObject;
 import got.gameObjects.TextObject;
 import got.gameStates.GameState;
 import got.graphics.DrawSpace;
+import got.model.Game;
 import got.model.Player;
 import org.joml.Vector2f;
 
@@ -16,23 +17,27 @@ public class PlayerPanelObject extends AbstractGameObject<PlayerPanelObject> {
 
     TextObject fraction;
     TextObject money;
+    TextObject tTurn;
     Player player;
+    int currentTurn;
 
     public PlayerPanelObject(Player player ){
         this.player = player;
-        ImageObject bg = new ImageObject("Player Panel/bg.png", new Vector2f(0,0), 350, 200)
-                .setSpace(DrawSpace.SCREEN);
+        this.currentTurn = Game.instance().getTurn();
+        ImageObject bg = new ImageObject("Player Panel/bg.png", new Vector2f(0,0), 350, 200);
         addChild(bg);
 
         fraction = new TextObject(player.getFraction().toString())
-                .setSpace(DrawSpace.SCREEN)
                 .setPos(new Vector2f(10,10));
         addChild(fraction);
 
-        money = new TextObject(String.valueOf(player.getMoney()))
-                .setSpace(DrawSpace.SCREEN)
-                .setPos(new Vector2f(10, 30));
-        addChild(money);
+        addChild(money = new TextObject(String.valueOf(player.getMoney()))
+                .setPos(new Vector2f(10, 30))
+        );
+
+        addChild(tTurn = new TextObject(String.valueOf(currentTurn))
+                .setPos(new Vector2f(100, 10))
+        );
     }
 
     @Override
@@ -40,5 +45,8 @@ public class PlayerPanelObject extends AbstractGameObject<PlayerPanelObject> {
         super.update(state);
         fraction.setText(player.getFraction().toString());
         money.setText(String.valueOf(player.getMoney()));
+        if (Game.instance().getTurn() != currentTurn){
+            tTurn.setText(String.valueOf(Game.instance().getTurn()));
+        }
     }
 }

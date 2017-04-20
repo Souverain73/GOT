@@ -7,6 +7,7 @@ import got.GameClient;
 import got.gameObjects.AbstractGameObject;
 import got.gameObjects.ImageObject;
 import got.graphics.DrawSpace;
+import got.model.Game;
 import got.network.Packages;
 import got.vesterosCards.VesterosCard;
 import got.vesterosCards.VesterosCards;
@@ -28,6 +29,7 @@ public class VesterosPhase extends AbstractGameState {
 	@Override
 	public void enter(StateMachine stm) {
 		super.enter(stm);
+		Game.instance().nextTurn();
 		GameClient.shared.restrictedActions = new ArrayList<>();
 		GameClient.shared.gameMap.forEachRegion(region->{
 			region.setAction(null);

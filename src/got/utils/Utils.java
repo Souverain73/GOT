@@ -4,10 +4,14 @@ import java.io.IOException;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import got.gameObjects.interfaceControls.ImageButton;
 import got.graphics.DrawSpace;
+import got.vesterosCards.VesterosCard;
 import org.joml.Vector2f;
 
 
@@ -68,5 +72,16 @@ public class Utils {
 
 	static public ImageButton getReadyButton(Object param){
 		return new ImageButton("buttons/ready.png", 1070, 610, 200, 100, param).setSpace(DrawSpace.SCREEN);
+	}
+
+	public static List shuffle(List input){
+		int size = input.size();
+		List result  = new ArrayList<>(size);
+		for (int i=size; i>0; i--){
+			int num = ThreadLocalRandom.current().nextInt(i);
+			result.add(input.get(num));
+			input.remove(num);
+		}
+		return result;
 	}
 }

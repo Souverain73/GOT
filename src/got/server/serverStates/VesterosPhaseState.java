@@ -39,6 +39,7 @@ public class VesterosPhaseState implements ServerState, IPauseable{
     @Override
     public void enter(StateMachine stm) {
         this.stm = stm;
+        Game.instance().nextTurn();
         UI.systemMessage("Entering Vesteros Phase");
         IntStream.range(0, 3).forEach(i->data.cards[i] = Game.instance().getVesterosDeck(i).getTopCard());
 
