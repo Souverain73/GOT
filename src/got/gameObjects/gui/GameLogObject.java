@@ -4,6 +4,7 @@ import got.gameObjects.AbstractGameObject;
 import got.gameObjects.ImageObject;
 import got.gameObjects.TextObject;
 import got.gameObjects.interfaceControls.ImageButton;
+import got.gameObjects.interfaceControls.TransparentButton;
 import got.graphics.text.Font;
 import got.graphics.text.FontBitmap;
 import got.graphics.text.FontTrueType;
@@ -38,11 +39,11 @@ public class GameLogObject extends AbstractGameObject<GameLogObject> {
             addChild(to);
         });
 
-        addChild(new ImageButton("buttons/minus.png", width - 25, 0, 25, 25, null).setSpace(space).setCallback((sender, param)->{
+        addChild(new TransparentButton(0, 0, width, height/2, null).setSpace(space).setCallback((sender, param)->{
             scroll(-1);
         }));
 
-        addChild(new ImageButton("buttons/plus.png", width - 25, height-25, 25, 25, null).setSpace(space).setCallback((sender, param)->{
+        addChild(new TransparentButton(0, height/2, width, height/2, null).setSpace(space).setCallback((sender, param)->{
             scroll(1);
         }));
     }
