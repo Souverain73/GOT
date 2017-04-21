@@ -32,6 +32,8 @@ public class Network {
 		kryo.register(BattleOverrides.class);
 
 		kryo.register(ChangeAction.class);
+
+		kryo.register(int[].class);
 	}
 	
 	

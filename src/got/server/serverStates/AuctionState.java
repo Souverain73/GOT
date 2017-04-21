@@ -1,6 +1,7 @@
 package got.server.serverStates;
 
 import com.esotericsoftware.kryonet.Connection;
+import got.gameStates.StateID;
 import got.model.Player;
 import got.network.Packages;
 import got.server.GameServer;
@@ -14,15 +15,22 @@ public class AuctionState extends ParallelState {
     private int playersCount;
     private int[] bets;
 
+
+    @Override
+    public int getID() {
+        return StateID.AUCTION_STATE;
+    }
+
     @Override
     public void enter(StateMachine stm) {
+        super.enter(stm);
         playersCount = PlayerManager.instance().getPlayersCount();
         bets = new int[playersCount];
     }
 
     @Override
     protected void onReadyToChangeState() {
-
+        GameServer.instance().getServer().sendToAllTCP(new Packages.BetsList(bets));
     }
 
     @Override
@@ -36,5 +44,12 @@ public class AuctionState extends ParallelState {
             bets[player.id] = msg.value;
             onReady(player, true);
         }
+
+        if (pkg instanceof Packages.ResolvePosition) {
+            Packages.ResolvePosition msg = (Packages.ResolvePosition) pkg;
+            GameServer.getServer().sendToAllTCP(new Packages.PlayerResolvePosition(player.id, msg.position, msg.fraction));
+        }
+
+
     }
 }

@@ -26,6 +26,7 @@ public class StateID {
 	public static final int COLLECT_UNITS = 19;
 	public static final int COLLECT_INFLUENCE = 20;
 	public static final int COLLECT_SUPLY = 21;
+	public static final int AUCTION_STATE = 22;
 
     public static GameState getGameStateByID(int id){
 		switch(id){
@@ -44,6 +45,7 @@ public class StateID {
 			case COLLECT_UNITS: return new CollectUnits.ClientState();
 			case COLLECT_INFLUENCE: return new CollectInfluence.ClientState();
 			case COLLECT_SUPLY: return new CollectSuply.ClientState();
+			case AUCTION_STATE: return new AuctionGameState();
 		}
 		return null;
 	}

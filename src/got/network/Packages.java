@@ -49,6 +49,9 @@ public class Packages {
 		kryo.register(PlayerCollectInfluence.class);
 		kryo.register(SelectItem.class);
 		kryo.register(Bet.class);
+		kryo.register(BetsList.class);
+		kryo.register(ResolvePosition.class);
+		kryo.register(PlayerResolvePosition.class);
 		kryo.register(GetGlobalState.class);
 		kryo.register(ForceReadyAt.class);
 		kryo.register(SetGlobalState.class);
@@ -605,6 +608,17 @@ public class Packages {
 		}
 	}
 
+	public static class BetsList extends BroadcastPackage {
+		public int[] bets;
+
+		public BetsList() {
+		}
+
+		public BetsList(int[] bets) {
+			this.bets = bets;
+		}
+	}
+
 	/**
 	 * запрашивает у сервера информацию о текущем состоянии. Используется для
 	 * восстановления при сбоях.
@@ -1044,6 +1058,34 @@ public class Packages {
 
 		public SetRestrictedActions(Action[] actions) {
 			this.actions = actions;
+		}
+	}
+
+	public static class ResolvePosition extends ClientServerPackage{
+		public int position;
+		public Fraction fraction;
+
+		public ResolvePosition() {
+		}
+
+		public ResolvePosition(int position, Fraction fraction) {
+			this.position = position;
+			this.fraction = fraction;
+		}
+	}
+
+	public static class PlayerResolvePosition extends BroadcastPackage{
+		public int player;
+		public int position;
+		public Fraction fraction;
+
+		public PlayerResolvePosition() {
+		}
+
+		public PlayerResolvePosition(int player, int position, Fraction fraction) {
+			this.player = player;
+			this.position = position;
+			this.fraction = fraction;
 		}
 	}
 }
