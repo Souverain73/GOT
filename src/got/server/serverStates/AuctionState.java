@@ -2,23 +2,32 @@ package got.server.serverStates;
 
 import com.esotericsoftware.kryonet.Connection;
 import got.gameStates.StateID;
+import got.model.ChangeAction;
+import got.model.Fraction;
 import got.model.Player;
 import got.network.Packages;
 import got.server.GameServer;
 import got.server.PlayerManager;
 import got.server.serverStates.base.ParallelState;
+import got.server.serverStates.base.ServerState;
 
 /**
  * Created by Souverain73 on 20.04.2017.
  */
 public class AuctionState extends ParallelState {
+    private static String AUCTION_RESULTS_PARAM = "AUCTION_RESULTS";
     private int playersCount;
     private int[] bets;
-
+    private Fraction[] results;
+    private ServerState nextState;
 
     @Override
     public int getID() {
         return StateID.AUCTION_STATE;
+    }
+
+    public AuctionState(ServerState nextState){
+        this.nextState = nextState;
     }
 
     @Override
@@ -26,6 +35,7 @@ public class AuctionState extends ParallelState {
         super.enter(stm);
         playersCount = PlayerManager.instance().getPlayersCount();
         bets = new int[playersCount];
+        results = new Fraction[playersCount];
     }
 
     @Override
@@ -50,6 +60,10 @@ public class AuctionState extends ParallelState {
             GameServer.getServer().sendToAllTCP(new Packages.PlayerResolvePosition(player.id, msg.position, msg.fraction));
         }
 
-
+        if (pkg instanceof Packages.AuctionResult) {
+            Packages.AuctionResult msg = (Packages.AuctionResult) pkg;
+            stm.saveParam(AUCTION_RESULTS_PARAM, msg.result);
+            stm.changeState(nextState, ChangeAction.SET);
+        }
     }
 }

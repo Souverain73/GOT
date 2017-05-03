@@ -77,8 +77,11 @@ public class AuctionGameState extends ParallelGameState{
                 auctionResultObject = createAuctionResultObject(bets);
                 addObject(auctionResultObject);
                 addObject(createBetsListObject(bets));
-                if (PlayerManager.getSelf().getFraction() == Game.instance().getTrack(Game.THRONE_TRACK).getFirst())
+                if (PlayerManager.getSelf().getFraction() == Game.instance().getTrack(Game.THRONE_TRACK).getFirst()){
                     auctionResultObject.resolvePositions();
+                    GameClient.instance().send(new Packages.AuctionResult(auctionResultObject.getResult()));
+                }
+
             });
         }
 
@@ -90,7 +93,7 @@ public class AuctionGameState extends ParallelGameState{
     }
 
     private AuctionResultObject createAuctionResultObject(Bet[] _bets){
-        return new AuctionResultObject(bets).setSpace(DrawSpace.SCREEN).setPos(400,200);
+        return new AuctionResultObject(_bets).setSpace(DrawSpace.SCREEN).setPos(400,200);
     }
 
     private AbstractGameObject createBetsListObject(Bet[] bets){
@@ -202,6 +205,10 @@ public class AuctionGameState extends ParallelGameState{
 
             (new ModalState(cms)).run();
             return cms.getResult();
+        }
+
+        public Fraction[] getResult(){
+            return positions.stream().map(Position::getFraction).toArray(Fraction[]::new);
         }
     }
 }

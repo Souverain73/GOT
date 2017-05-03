@@ -90,6 +90,7 @@ public class Packages {
 		kryo.register(ChangeSuply.class);
 		kryo.register(PlayerChangeSuply.class);
 		kryo.register(SetRestrictedActions.class);
+		kryo.register(AuctionResult.class);
 	}
 
 	public static class NetPackage {
@@ -1086,6 +1087,17 @@ public class Packages {
 			this.player = player;
 			this.position = position;
 			this.fraction = fraction;
+		}
+	}
+
+    public static class AuctionResult extends ClientServerPackage {
+		public Fraction[] result;
+
+		public AuctionResult() {
+		}
+
+		public AuctionResult(Fraction[] result) {
+			this.result = result;
 		}
 	}
 }

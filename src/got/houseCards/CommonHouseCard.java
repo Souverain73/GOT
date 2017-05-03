@@ -10,6 +10,8 @@ import got.network.Packages;
 import got.server.PlayerManager;
 import got.utils.LoaderParams;
 
+import static got.translation.Translator.tt;
+
 /**
  * Created by Souverain73 on 09.01.2017.
  */
@@ -29,7 +31,7 @@ public class CommonHouseCard implements HouseCard {
         this.swords = (Integer)params.get("swords");
         this.towers = (Integer)params.get("towers");
         this.textureName = (String)params.get("texture");
-        this.title = (String)params.get("title");
+        this.title = tt("houseCards." + params.get("title"));
     }
 
     @Override   public void onPlace(Fraction fraction) {
