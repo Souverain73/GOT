@@ -19,8 +19,8 @@ public class VesterosCards {
 
     public static void init(){
         add(new RestrictedActionsCard("AutumnRains.png",   "AutumnRains",    Translator.tt("vesterosCard.AutumnRains"), new Action[]{Action.MOVEPLUS}));
-        add(new CommonVesterosCard("BattleOfKings.png", "BattleOfKings",  Translator.tt("vesterosCard.BattleOfKings")));
-        add(new CommonVesterosCard("BlackWings.png",    "BlackWings",     Translator.tt("vesterosCard.BlackWings")));
+        add(new BattleOfKingsCard("BattleOfKings.png", "BattleOfKings",  Translator.tt("vesterosCard.BattleOfKings")));
+        add(new BlackWings("BlackWings.png",    "BlackWings",     Translator.tt("vesterosCard.BlackWings")));
         add(new CollectUnitsCard(  "CollectUnits.png",  "CollectUnits",   Translator.tt("vesterosCard.CollectUnits")));
         add(new RestrictedActionsCard("FeastForCrows.png", "FeastForCrows",  Translator.tt("vesterosCard.FeastForCrows"), new Action[]{Action.MONEY, Action.MONEYPLUS}));
         add(new GameOfThrones("GameOfThrones.png", "GameOfThrones",  Translator.tt("vesterosCard.GameOfThrones")));

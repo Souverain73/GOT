@@ -23,14 +23,14 @@ public class Game {
 	private SuplyTrack suplyTrack;
 
 	public static final int THRONE_TRACK = 0;
-	public static final int CROWN_TRACK = 1;
-	public static final int SWORD_TRACK = 2;
+	public static final int SWORD_TRACK = 1;
+	public static final int CROWN_TRACK = 2;
 
 	private Game() {
 		tracks = new Track[3];
-		tracks[THRONE_TRACK] = new Track("THRONE", null);
-		tracks[CROWN_TRACK] = new Track("CROWN", null);
-		tracks[SWORD_TRACK] = new Track("SWORD", null);
+		tracks[THRONE_TRACK] = new Track(THRONE_TRACK, "THRONE", null);
+		tracks[CROWN_TRACK] = new Track(CROWN_TRACK, "CROWN", null);
+		tracks[SWORD_TRACK] = new Track(SWORD_TRACK, "SWORD", null);
 		vesterosDecks = new Deck[3];
 		suplyTrack = new SuplyTrack();
 	}

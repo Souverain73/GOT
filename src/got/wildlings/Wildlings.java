@@ -2,6 +2,7 @@ package got.wildlings;
 
 import got.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class Wildlings {
 
     private HashMap<Integer, WildlingsCard> cards = new HashMap<>();
     private HashMap<String, WildlingsCard> cardsByTitle = new HashMap<>();
-    private List<WildlingsCard> deck;
+    private List<WildlingsCard> deck = new ArrayList<>();
 
     private void add(WildlingsCard card){
         cards.put(card.getID(), card);

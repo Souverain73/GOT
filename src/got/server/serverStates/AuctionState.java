@@ -15,7 +15,7 @@ import got.server.serverStates.base.ServerState;
  * Created by Souverain73 on 20.04.2017.
  */
 public class AuctionState extends ParallelState {
-    private static String AUCTION_RESULTS_PARAM = "AUCTION_RESULTS";
+    public static String AUCTION_RESULTS_PARAM = "AUCTION_RESULTS";
     private int playersCount;
     private int[] bets;
     private Fraction[] results;

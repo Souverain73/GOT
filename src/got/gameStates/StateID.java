@@ -1,6 +1,7 @@
 package got.gameStates;
 
 import got.server.serverStates.base.ServerState;
+import got.vesterosCards.States.BattleOfKings;
 import got.vesterosCards.States.CollectInfluence;
 import got.vesterosCards.States.CollectSuply;
 import got.vesterosCards.States.CollectUnits;
@@ -27,6 +28,8 @@ public class StateID {
 	public static final int COLLECT_INFLUENCE = 20;
 	public static final int COLLECT_SUPLY = 21;
 	public static final int AUCTION_STATE = 22;
+	public static final int BATTLE_OF_KINGS = 23;
+	public static final int CHANGE_TRACK = 24;
 
     public static GameState getGameStateByID(int id){
 		switch(id){
@@ -46,6 +49,8 @@ public class StateID {
 			case COLLECT_INFLUENCE: return new CollectInfluence.ClientState();
 			case COLLECT_SUPLY: return new CollectSuply.ClientState();
 			case AUCTION_STATE: return new AuctionGameState();
+			case BATTLE_OF_KINGS: return new BattleOfKings.ClientState();
+			case CHANGE_TRACK: return new ChangeTrackState();
 		}
 		return null;
 	}

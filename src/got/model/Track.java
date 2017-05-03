@@ -3,10 +3,12 @@ package got.model;
 import java.util.Arrays;
 
 public class Track {
+	private int id;
 	private String name;
 	private Fraction[] data;
 	
-	public Track(String name, Fraction[] data){
+	public Track(int id, String name, Fraction[] data){
+		this.id = id;
 		this.name = name;
 		this.data = data;
 	}
@@ -55,6 +57,10 @@ public class Track {
 
 	public String getName() {
 		return name;
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	@Override

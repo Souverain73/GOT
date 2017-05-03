@@ -90,16 +90,16 @@ public class NetworkRoomState implements ServerState {
 							}});
 
 							Game.instance().initVesterosDeck(1, new Deck(){{
-								addCard(VesterosCards.getCardByName("WinterTime2"));
-								addCard(VesterosCards.getCardByName("SummerTime2"));
+//								addCard(VesterosCards.getCardByName("WinterTime2"));
+//								addCard(VesterosCards.getCardByName("SummerTime2"));
 								addCard(VesterosCards.getCardByName("BlackWings"));
 								addCard(VesterosCards.getCardByName("BlackWings"));
-								addCard(VesterosCards.getCardByName("BattleOfKings"));
-								addCard(VesterosCards.getCardByName("BattleOfKings"));
-								addCard(VesterosCards.getCardByName("BattleOfKings"));
-								addCard(VesterosCards.getCardByName("GameOfThrones"));
-								addCard(VesterosCards.getCardByName("GameOfThrones"));
-								addCard(VesterosCards.getCardByName("GameOfThrones"));
+//								addCard(VesterosCards.getCardByName("BattleOfKings"));
+//								addCard(VesterosCards.getCardByName("BattleOfKings"));
+//								addCard(VesterosCards.getCardByName("BattleOfKings"));
+//								addCard(VesterosCards.getCardByName("GameOfThrones"));
+//								addCard(VesterosCards.getCardByName("GameOfThrones"));
+//								addCard(VesterosCards.getCardByName("GameOfThrones"));
 							}});
 
 							Game.instance().initVesterosDeck(2, new Deck(){{
