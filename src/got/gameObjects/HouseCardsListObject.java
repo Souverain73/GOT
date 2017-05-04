@@ -32,7 +32,7 @@ public class HouseCardsListObject extends AbstractGameObject<HouseCardsListObjec
         cardButtons = new ImageButton[cards.size()];
         int i=0;
         for(HouseCard card : cards){
-            ImageButton cardButton = new ImageButton(card.getTexture(), i*100, 0, 100, 160, i).setCallback(this::clickCallback);
+            ImageButton cardButton = new ImageButton(card.getTexture(), i*100, 0, 100, 155, i).setCallback(this::clickCallback);
             cardButtons[i] = cardButton;
             addChild(cardButton);
             i++;

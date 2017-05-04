@@ -75,7 +75,7 @@ public class ImageButton extends AbstractButtonObject<ImageButton> {
 				getAbsolutePos(),
 				new Vector2f(w* getAbsoluteScale(), h* getAbsoluteScale()))
 		){
-			if (texture.getAlfa((mousePos.x - getAbsolutePos().x)/w* getAbsoluteScale(), (mousePos.y - getAbsolutePos().y)/h* getAbsoluteScale())!=0) return true;
+			if (texture.getAlfa((mousePos.x - getAbsolutePos().x)/(w*getAbsoluteScale()), (mousePos.y - getAbsolutePos().y)/(h*getAbsoluteScale()))!=0) return true;
 		}
 		return false;
 	}
