@@ -34,7 +34,7 @@ import static com.esotericsoftware.minlog.Log.*;
 public class Listener {
 	/** Called when the remote end has been connected. This will be invoked before any objects are received by
 	 * {@link #received(Connection, Object)}. This will be invoked on the same thread as {@link Client#update(int)} and
-	 * {@link Server#update(int)}. This method should not block for long periods as other network activity will not be processed
+	 * {@link Server#update(int)}. This method should not block for long periods as defaultBet network activity will not be processed
 	 * until it returns. */
 	public void connected (Connection connection) {
 	}
@@ -44,7 +44,7 @@ public class Listener {
 	}
 
 	/** Called when an object has been received from the remote end of the connection. This will be invoked on the same thread as
-	 * {@link Client#update(int)} and {@link Server#update(int)}. This method should not block for long periods as other network
+	 * {@link Client#update(int)} and {@link Server#update(int)}. This method should not block for long periods as defaultBet network
 	 * activity will not be processed until it returns. */
 	public void received (Connection connection, Object object) {
 	}
@@ -157,7 +157,7 @@ public class Listener {
 
 	/** Delays the notification of the wrapped listener to simulate lag on incoming objects. Notification events are processed on a
 	 * separate thread after a delay. Note that only incoming objects are delayed. To delay outgoing objects, use a LagListener at
-	 * the other end of the connection. */
+	 * the defaultBet end of the connection. */
 	static public class LagListener extends QueuedListener {
 		private final ScheduledExecutorService threadPool;
 		private final int lagMillisMin, lagMillisMax;

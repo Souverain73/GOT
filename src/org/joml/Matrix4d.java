@@ -196,7 +196,7 @@ public class Matrix4d implements Externalizable {
 
     /**
      * Create a new {@link Matrix4d} and set its upper 4x3 submatrix to the given matrix <code>mat</code>
-     * and all other elements to identity.
+     * and all defaultBet elements to identity.
      * 
      * @param mat
      *          the {@link Matrix4x3d} to copy the values from
@@ -784,7 +784,7 @@ public class Matrix4d implements Externalizable {
 
     /**
      * Store the values of the given matrix <code>m</code> into <code>this</code> matrix
-     * and set the other matrix elements to identity.
+     * and set the defaultBet matrix elements to identity.
      * 
      * @see #Matrix4d(Matrix4x3d)
      * 
@@ -846,7 +846,7 @@ public class Matrix4d implements Externalizable {
 
     /**
      * Set the upper left 3x3 submatrix of this {@link Matrix4d} to that of the given {@link Matrix4d} 
-     * and don't change the other elements.
+     * and don't change the defaultBet elements.
      * 
      * @param mat
      *          the {@link Matrix4d}
@@ -868,7 +868,7 @@ public class Matrix4d implements Externalizable {
 
     /**
      * Set the upper 4x3 submatrix of this {@link Matrix4d} to the given {@link Matrix4x3d} 
-     * and don't change the other elements.
+     * and don't change the defaultBet elements.
      * 
      * @see Matrix4x3d#get(Matrix4d)
      * 
@@ -895,7 +895,7 @@ public class Matrix4d implements Externalizable {
 
     /**
      * Set the upper 4x3 submatrix of this {@link Matrix4d} to the upper 4x3 submatrix of the given {@link Matrix4d} 
-     * and don't change the other elements.
+     * and don't change the defaultBet elements.
      * 
      * @param mat
      *          the {@link Matrix4d}
@@ -1679,16 +1679,16 @@ public class Matrix4d implements Externalizable {
     }
 
     /**
-     * Component-wise add the upper 4x3 submatrices of <code>this</code> and <code>other</code>
-     * by first multiplying each component of <code>other</code>'s 4x3 submatrix by <code>otherFactor</code> and
+     * Component-wise add the upper 4x3 submatrices of <code>this</code> and <code>defaultBet</code>
+     * by first multiplying each component of <code>defaultBet</code>'s 4x3 submatrix by <code>otherFactor</code> and
      * adding that result to <code>this</code>.
      * <p>
-     * The matrix <code>other</code> will not be changed.
+     * The matrix <code>defaultBet</code> will not be changed.
      * 
      * @param other
-     *          the other matrix
+     *          the defaultBet matrix
      * @param otherFactor
-     *          the factor to multiply each of the other matrix's 4x3 components
+     *          the factor to multiply each of the defaultBet matrix's 4x3 components
      * @return this
      */
     public Matrix4d fma4x3(Matrix4d other, double otherFactor) {
@@ -1696,18 +1696,18 @@ public class Matrix4d implements Externalizable {
     }
 
     /**
-     * Component-wise add the upper 4x3 submatrices of <code>this</code> and <code>other</code>
-     * by first multiplying each component of <code>other</code>'s 4x3 submatrix by <code>otherFactor</code>,
+     * Component-wise add the upper 4x3 submatrices of <code>this</code> and <code>defaultBet</code>
+     * by first multiplying each component of <code>defaultBet</code>'s 4x3 submatrix by <code>otherFactor</code>,
      * adding that to <code>this</code> and storing the final result in <code>dest</code>.
      * <p>
-     * The other components of <code>dest</code> will be set to the ones of <code>this</code>.
+     * The defaultBet components of <code>dest</code> will be set to the ones of <code>this</code>.
      * <p>
-     * The matrices <code>this</code> and <code>other</code> will not be changed.
+     * The matrices <code>this</code> and <code>defaultBet</code> will not be changed.
      * 
      * @param other
-     *          the other matrix
+     *          the defaultBet matrix
      * @param otherFactor
-     *          the factor to multiply each of the other matrix's 4x3 components
+     *          the factor to multiply each of the defaultBet matrix's 4x3 components
      * @param dest
      *          will hold the result
      * @return dest
@@ -1734,10 +1734,10 @@ public class Matrix4d implements Externalizable {
     }
 
     /**
-     * Component-wise add <code>this</code> and <code>other</code>.
+     * Component-wise add <code>this</code> and <code>defaultBet</code>.
      * 
      * @param other
-     *          the other addend
+     *          the defaultBet addend
      * @return this
      */
     public Matrix4d add(Matrix4d other) {
@@ -1745,10 +1745,10 @@ public class Matrix4d implements Externalizable {
     }
 
     /**
-     * Component-wise add <code>this</code> and <code>other</code> and store the result in <code>dest</code>.
+     * Component-wise add <code>this</code> and <code>defaultBet</code> and store the result in <code>dest</code>.
      * 
      * @param other
-     *          the other addend
+     *          the defaultBet addend
      * @param dest
      *          will hold the result
      * @return dest
@@ -1816,10 +1816,10 @@ public class Matrix4d implements Externalizable {
     }
 
     /**
-     * Component-wise multiply <code>this</code> by <code>other</code>.
+     * Component-wise multiply <code>this</code> by <code>defaultBet</code>.
      * 
      * @param other
-     *          the other matrix
+     *          the defaultBet matrix
      * @return this
      */
     public Matrix4d mulComponentWise(Matrix4d other) {
@@ -1827,10 +1827,10 @@ public class Matrix4d implements Externalizable {
     }
 
     /**
-     * Component-wise multiply <code>this</code> by <code>other</code> and store the result in <code>dest</code>.
+     * Component-wise multiply <code>this</code> by <code>defaultBet</code> and store the result in <code>dest</code>.
      * 
      * @param other
-     *          the other matrix
+     *          the defaultBet matrix
      * @param dest
      *          will hold the result
      * @return dest
@@ -1857,10 +1857,10 @@ public class Matrix4d implements Externalizable {
     }
 
     /**
-     * Component-wise add the upper 4x3 submatrices of <code>this</code> and <code>other</code>.
+     * Component-wise add the upper 4x3 submatrices of <code>this</code> and <code>defaultBet</code>.
      * 
      * @param other
-     *          the other addend
+     *          the defaultBet addend
      * @return this
      */
     public Matrix4d add4x3(Matrix4d other) {
@@ -1868,13 +1868,13 @@ public class Matrix4d implements Externalizable {
     }
 
     /**
-     * Component-wise add the upper 4x3 submatrices of <code>this</code> and <code>other</code>
+     * Component-wise add the upper 4x3 submatrices of <code>this</code> and <code>defaultBet</code>
      * and store the result in <code>dest</code>.
      * <p>
-     * The other components of <code>dest</code> will be set to the ones of <code>this</code>.
+     * The defaultBet components of <code>dest</code> will be set to the ones of <code>this</code>.
      * 
      * @param other
-     *          the other addend
+     *          the defaultBet addend
      * @param dest
      *          will hold the result
      * @return dest
@@ -1915,7 +1915,7 @@ public class Matrix4d implements Externalizable {
      * Component-wise subtract the upper 4x3 submatrices of <code>subtrahend</code> from <code>this</code>
      * and store the result in <code>dest</code>.
      * <p>
-     * The other components of <code>dest</code> will be set to the ones of <code>this</code>.
+     * The defaultBet components of <code>dest</code> will be set to the ones of <code>this</code>.
      * 
      * @param subtrahend
      *          the subtrahend
@@ -1945,10 +1945,10 @@ public class Matrix4d implements Externalizable {
     }
 
     /**
-     * Component-wise multiply the upper 4x3 submatrices of <code>this</code> by <code>other</code>.
+     * Component-wise multiply the upper 4x3 submatrices of <code>this</code> by <code>defaultBet</code>.
      * 
      * @param other
-     *          the other matrix
+     *          the defaultBet matrix
      * @return this
      */
     public Matrix4d mul4x3ComponentWise(Matrix4d other) {
@@ -1956,13 +1956,13 @@ public class Matrix4d implements Externalizable {
     }
 
     /**
-     * Component-wise multiply the upper 4x3 submatrices of <code>this</code> by <code>other</code>
+     * Component-wise multiply the upper 4x3 submatrices of <code>this</code> by <code>defaultBet</code>
      * and store the result in <code>dest</code>.
      * <p>
-     * The other components of <code>dest</code> will be set to the ones of <code>this</code>.
+     * The defaultBet components of <code>dest</code> will be set to the ones of <code>this</code>.
      * 
      * @param other
-     *          the other matrix
+     *          the defaultBet matrix
      * @param dest
      *          will hold the result
      * @return dest
@@ -2500,7 +2500,7 @@ public class Matrix4d implements Externalizable {
      * <p>
      * This method can be used to quickly obtain the inverse of the combination of the view and projection matrices, when both were obtained
      * via the common methods {@link #perspective(double, double, double, double) perspective()} and {@link #lookAt(double, double, double, double, double, double, double, double, double) lookAt()} or
-     * other methods, that build affine matrices, such as {@link #translate(double, double, double) translate} and {@link #rotate(double, double, double, double)}, except for {@link #scale(double, double, double) scale()}.
+     * defaultBet methods, that build affine matrices, such as {@link #translate(double, double, double) translate} and {@link #rotate(double, double, double, double)}, except for {@link #scale(double, double, double) scale()}.
      * <p>
      * For the special cases of the matrices <code>this</code> and <code>view</code> mentioned above this method, this method is equivalent to the following code:
      * <pre>
@@ -2741,7 +2741,7 @@ public class Matrix4d implements Externalizable {
     /**
      * Transpose only the upper left 3x3 submatrix of this matrix.
      * <p>
-     * All other matrix elements are left unchanged.
+     * All defaultBet matrix elements are left unchanged.
      * 
      * @return this
      */
@@ -2752,7 +2752,7 @@ public class Matrix4d implements Externalizable {
     /**
      * Transpose only the upper left 3x3 submatrix of this matrix and store the result in <code>dest</code>.
      * <p>
-     * All other matrix elements are left unchanged.
+     * All defaultBet matrix elements are left unchanged.
      * 
      * @param dest
      *             will hold the result
@@ -4470,7 +4470,7 @@ public class Matrix4d implements Externalizable {
     }
 
     /**
-     * Set the upper left 3x3 submatrix of this {@link Matrix4d} to the given {@link Matrix3d} and don't change the other elements.
+     * Set the upper left 3x3 submatrix of this {@link Matrix4d} to the given {@link Matrix3d} and don't change the defaultBet elements.
      * 
      * @param mat
      *          the 3x3 matrix
@@ -5149,7 +5149,7 @@ public class Matrix4d implements Externalizable {
         dest.m20 = rm20;
         dest.m21 = rm21;
         dest.m22 = rm22;
-        // set other values
+        // set defaultBet values
         dest.m00 = nm00;
         dest.m01 = nm01;
         dest.m02 = nm02;
@@ -5231,7 +5231,7 @@ public class Matrix4d implements Externalizable {
         dest.m21 = m01 * rm20 + m11 * rm21 + m21 * rm22;
         dest.m22 = m02 * rm20 + m12 * rm21 + m22 * rm22;
         dest.m23 = 0.0;
-        // set other values
+        // set defaultBet values
         dest.m00 = nm00;
         dest.m01 = nm01;
         dest.m02 = nm02;
@@ -6070,7 +6070,7 @@ public class Matrix4d implements Externalizable {
         dest.m21 = m11 * rm21 + m21 * rm22;
         dest.m22 = m12 * rm21 + m22 * rm22;
         dest.m23 = m13 * rm21 + m23 * rm22;
-        // set other values
+        // set defaultBet values
         dest.m10 = nm10;
         dest.m11 = nm11;
         dest.m12 = nm12;
@@ -6151,7 +6151,7 @@ public class Matrix4d implements Externalizable {
         dest.m21 = m01 * rm20 + m21 * rm22;
         dest.m22 = m02 * rm20 + m22 * rm22;
         dest.m23 = m03 * rm20 + m23 * rm22;
-        // set other values
+        // set defaultBet values
         dest.m00 = nm00;
         dest.m01 = nm01;
         dest.m02 = nm02;
@@ -6232,7 +6232,7 @@ public class Matrix4d implements Externalizable {
         dest.m11 = m01 * rm10 + m11 * rm11;
         dest.m12 = m02 * rm10 + m12 * rm11;
         dest.m13 = m03 * rm10 + m13 * rm11;
-        // set other values
+        // set defaultBet values
         dest.m00 = nm00;
         dest.m01 = nm01;
         dest.m02 = nm02;
@@ -8814,7 +8814,7 @@ public class Matrix4d implements Externalizable {
     /**
      * Compute a normal matrix from the upper left 3x3 submatrix of <code>this</code>
      * and store it into the upper left 3x3 submatrix of <code>this</code>.
-     * All other values of <code>this</code> will be set to {@link #identity() identity}.
+     * All defaultBet values of <code>this</code> will be set to {@link #identity() identity}.
      * <p>
      * The normal matrix of <tt>m</tt> is the transpose of the inverse of <tt>m</tt>.
      * <p>
@@ -8834,7 +8834,7 @@ public class Matrix4d implements Externalizable {
     /**
      * Compute a normal matrix from the upper left 3x3 submatrix of <code>this</code>
      * and store it into the upper left 3x3 submatrix of <code>dest</code>.
-     * All other values of <code>dest</code> will be set to {@link #identity() identity}.
+     * All defaultBet values of <code>dest</code> will be set to {@link #identity() identity}.
      * <p>
      * The normal matrix of <tt>m</tt> is the transpose of the inverse of <tt>m</tt>.
      * <p>
@@ -9980,7 +9980,7 @@ public class Matrix4d implements Externalizable {
         double rm32 = (zZeroToOne ? zNear : (zFar + zNear)) / (zNear - zFar);
 
         // perform optimized multiplication
-        // compute the last column first, because other columns do not depend on it
+        // compute the last column first, because defaultBet columns do not depend on it
         dest.m30 = m00 * rm30 + m10 * rm31 + m20 * rm32 + m30;
         dest.m31 = m01 * rm30 + m11 * rm31 + m21 * rm32 + m31;
         dest.m32 = m02 * rm30 + m12 * rm31 + m22 * rm32 + m32;
@@ -10223,7 +10223,7 @@ public class Matrix4d implements Externalizable {
         double rm32 = (zZeroToOne ? zNear : (zFar + zNear)) / (zNear - zFar);
 
         // perform optimized multiplication
-        // compute the last column first, because other columns do not depend on it
+        // compute the last column first, because defaultBet columns do not depend on it
         dest.m30 = m20 * rm32 + m30;
         dest.m31 = m21 * rm32 + m31;
         dest.m32 = m22 * rm32 + m32;
@@ -10459,7 +10459,7 @@ public class Matrix4d implements Externalizable {
         double rm31 = -(top + bottom) / (top - bottom);
 
         // perform optimized multiplication
-        // compute the last column first, because other columns do not depend on it
+        // compute the last column first, because defaultBet columns do not depend on it
         dest.m30 = m00 * rm30 + m10 * rm31 + m30;
         dest.m31 = m01 * rm30 + m11 * rm31 + m31;
         dest.m32 = m02 * rm30 + m12 * rm31 + m32;
@@ -14021,10 +14021,10 @@ public class Matrix4d implements Externalizable {
     }
 
     /**
-     * Exchange the values of <code>this</code> matrix with the given <code>other</code> matrix.
+     * Exchange the values of <code>this</code> matrix with the given <code>defaultBet</code> matrix.
      * 
      * @param other
-     *          the other matrix to exchange the values with
+     *          the defaultBet matrix to exchange the values with
      * @return this
      */
     public Matrix4d swap(Matrix4d other) {

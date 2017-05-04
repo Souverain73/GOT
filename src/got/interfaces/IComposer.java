@@ -2,7 +2,7 @@ package got.interfaces;
 
 
 /**
- * Interface for composer template. Used for store elements in to other elements.
+ * Interface for composer template. Used for store elements in to defaultBet elements.
  * @param <T> Type of elements to store.
  * 
  * @author Souverain73

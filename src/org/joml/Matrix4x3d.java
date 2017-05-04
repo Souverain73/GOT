@@ -538,7 +538,7 @@ public class Matrix4x3d implements Externalizable {
     /**
      * Get the current values of <code>this</code> matrix and store them into the upper 4x3 submatrix of <code>dest</code>.
      * <p>
-     * The other elements of <code>dest</code> will not be modified.
+     * The defaultBet elements of <code>dest</code> will not be modified.
      * 
      * @see Matrix4d#set4x3(Matrix4x3d)
      * 
@@ -579,7 +579,7 @@ public class Matrix4x3d implements Externalizable {
 
     /**
      * Set the left 3x3 submatrix of this {@link Matrix4x3d} to that of the given {@link Matrix4x3d} 
-     * and don't change the other elements.
+     * and don't change the defaultBet elements.
      * 
      * @param mat
      *          the {@link Matrix4x3d}
@@ -929,16 +929,16 @@ public class Matrix4x3d implements Externalizable {
     }
 
     /**
-     * Component-wise add <code>this</code> and <code>other</code>
-     * by first multiplying each component of <code>other</code> by <code>otherFactor</code> and
+     * Component-wise add <code>this</code> and <code>defaultBet</code>
+     * by first multiplying each component of <code>defaultBet</code> by <code>otherFactor</code> and
      * adding that result to <code>this</code>.
      * <p>
-     * The matrix <code>other</code> will not be changed.
+     * The matrix <code>defaultBet</code> will not be changed.
      * 
      * @param other
-     *          the other matrix 
+     *          the defaultBet matrix
      * @param otherFactor
-     *          the factor to multiply each of the other matrix's components
+     *          the factor to multiply each of the defaultBet matrix's components
      * @return this
      */
     public Matrix4x3d fma(Matrix4x3d other, double otherFactor) {
@@ -946,18 +946,18 @@ public class Matrix4x3d implements Externalizable {
     }
 
     /**
-     * Component-wise add <code>this</code> and <code>other</code>
-     * by first multiplying each component of <code>other</code> by <code>otherFactor</code>,
+     * Component-wise add <code>this</code> and <code>defaultBet</code>
+     * by first multiplying each component of <code>defaultBet</code> by <code>otherFactor</code>,
      * adding that to <code>this</code> and storing the final result in <code>dest</code>.
      * <p>
-     * The other components of <code>dest</code> will be set to the ones of <code>this</code>.
+     * The defaultBet components of <code>dest</code> will be set to the ones of <code>this</code>.
      * <p>
-     * The matrices <code>this</code> and <code>other</code> will not be changed.
+     * The matrices <code>this</code> and <code>defaultBet</code> will not be changed.
      * 
      * @param other
-     *          the other matrix 
+     *          the defaultBet matrix
      * @param otherFactor
-     *          the factor to multiply each of the other matrix's components
+     *          the factor to multiply each of the defaultBet matrix's components
      * @param dest
      *          will hold the result
      * @return dest
@@ -980,10 +980,10 @@ public class Matrix4x3d implements Externalizable {
     }
 
     /**
-     * Component-wise add <code>this</code> and <code>other</code>.
+     * Component-wise add <code>this</code> and <code>defaultBet</code>.
      * 
      * @param other
-     *          the other addend
+     *          the defaultBet addend
      * @return this
      */
     public Matrix4x3d add(Matrix4x3d other) {
@@ -991,10 +991,10 @@ public class Matrix4x3d implements Externalizable {
     }
 
     /**
-     * Component-wise add <code>this</code> and <code>other</code> and store the result in <code>dest</code>.
+     * Component-wise add <code>this</code> and <code>defaultBet</code> and store the result in <code>dest</code>.
      * 
      * @param other
-     *          the other addend
+     *          the defaultBet addend
      * @param dest
      *          will hold the result
      * @return dest
@@ -1054,10 +1054,10 @@ public class Matrix4x3d implements Externalizable {
     }
 
     /**
-     * Component-wise multiply <code>this</code> by <code>other</code>.
+     * Component-wise multiply <code>this</code> by <code>defaultBet</code>.
      * 
      * @param other
-     *          the other matrix
+     *          the defaultBet matrix
      * @return this
      */
     public Matrix4x3d mulComponentWise(Matrix4x3d other) {
@@ -1065,10 +1065,10 @@ public class Matrix4x3d implements Externalizable {
     }
 
     /**
-     * Component-wise multiply <code>this</code> by <code>other</code> and store the result in <code>dest</code>.
+     * Component-wise multiply <code>this</code> by <code>defaultBet</code> and store the result in <code>dest</code>.
      * 
      * @param other
-     *          the other matrix
+     *          the defaultBet matrix
      * @param dest
      *          will hold the result
      * @return dest
@@ -1479,7 +1479,7 @@ public class Matrix4x3d implements Externalizable {
     /**
      * Transpose only the left 3x3 submatrix of this matrix and store the result in <code>dest</code>.
      * <p>
-     * All other matrix elements are left unchanged.
+     * All defaultBet matrix elements are left unchanged.
      * 
      * @param dest
      *             will hold the result
@@ -2949,7 +2949,7 @@ public class Matrix4x3d implements Externalizable {
     }
 
     /**
-     * Set the left 3x3 submatrix of this {@link Matrix4x3d} to the given {@link Matrix3d} and don't change the other elements.
+     * Set the left 3x3 submatrix of this {@link Matrix4x3d} to the given {@link Matrix3d} and don't change the defaultBet elements.
      * 
      * @param mat
      *          the 3x3 matrix
@@ -2970,7 +2970,7 @@ public class Matrix4x3d implements Externalizable {
     }
 
     /**
-     * Set the left 3x3 submatrix of this {@link Matrix4x3d} to the given {@link Matrix3f} and don't change the other elements.
+     * Set the left 3x3 submatrix of this {@link Matrix4x3d} to the given {@link Matrix3f} and don't change the defaultBet elements.
      * 
      * @param mat
      *          the 3x3 matrix
@@ -3258,7 +3258,7 @@ public class Matrix4x3d implements Externalizable {
         dest.m20 = m00 * rm20 + m10 * rm21 + m20 * rm22;
         dest.m21 = m01 * rm20 + m11 * rm21 + m21 * rm22;
         dest.m22 = m02 * rm20 + m12 * rm21 + m22 * rm22;
-        // set other values
+        // set defaultBet values
         dest.m00 = nm00;
         dest.m01 = nm01;
         dest.m02 = nm02;
@@ -3366,7 +3366,7 @@ public class Matrix4x3d implements Externalizable {
         dest.m20 = rm20;
         dest.m21 = rm21;
         dest.m22 = rm22;
-        // set other values
+        // set defaultBet values
         dest.m00 = nm00;
         dest.m01 = nm01;
         dest.m02 = nm02;
@@ -3908,7 +3908,7 @@ public class Matrix4x3d implements Externalizable {
         dest.m20 = m10 * rm21 + m20 * rm22;
         dest.m21 = m11 * rm21 + m21 * rm22;
         dest.m22 = m12 * rm21 + m22 * rm22;
-        // set other values
+        // set defaultBet values
         dest.m10 = nm10;
         dest.m11 = nm11;
         dest.m12 = nm12;
@@ -3996,7 +3996,7 @@ public class Matrix4x3d implements Externalizable {
         dest.m20 = m00 * rm20 + m20 * rm22;
         dest.m21 = m01 * rm20 + m21 * rm22;
         dest.m22 = m02 * rm20 + m22 * rm22;
-        // set other values
+        // set defaultBet values
         dest.m00 = nm00;
         dest.m01 = nm01;
         dest.m02 = nm02;
@@ -4084,7 +4084,7 @@ public class Matrix4x3d implements Externalizable {
         dest.m10 = m00 * rm10 + m10 * rm11;
         dest.m11 = m01 * rm10 + m11 * rm11;
         dest.m12 = m02 * rm10 + m12 * rm11;
-        // set other values
+        // set defaultBet values
         dest.m00 = nm00;
         dest.m01 = nm01;
         dest.m02 = nm02;
@@ -5747,7 +5747,7 @@ public class Matrix4x3d implements Externalizable {
     /**
      * Compute a normal matrix from the left 3x3 submatrix of <code>this</code>
      * and store it into the left 3x3 submatrix of <code>this</code>.
-     * All other values of <code>this</code> will be set to {@link #identity() identity}.
+     * All defaultBet values of <code>this</code> will be set to {@link #identity() identity}.
      * <p>
      * The normal matrix of <tt>m</tt> is the transpose of the inverse of <tt>m</tt>.
      * <p>
@@ -5767,7 +5767,7 @@ public class Matrix4x3d implements Externalizable {
     /**
      * Compute a normal matrix from the left 3x3 submatrix of <code>this</code>
      * and store it into the left 3x3 submatrix of <code>dest</code>.
-     * All other values of <code>dest</code> will be set to {@link #identity() identity}.
+     * All defaultBet values of <code>dest</code> will be set to {@link #identity() identity}.
      * <p>
      * The normal matrix of <tt>m</tt> is the transpose of the inverse of <tt>m</tt>.
      * <p>
@@ -6286,7 +6286,7 @@ public class Matrix4x3d implements Externalizable {
         double rm32 = (zZeroToOne ? zNear : (zFar + zNear)) / (zNear - zFar);
 
         // perform optimized multiplication
-        // compute the last column first, because other columns do not depend on it
+        // compute the last column first, because defaultBet columns do not depend on it
         dest.m30 = m00 * rm30 + m10 * rm31 + m20 * rm32 + m30;
         dest.m31 = m01 * rm30 + m11 * rm31 + m21 * rm32 + m31;
         dest.m32 = m02 * rm30 + m12 * rm31 + m22 * rm32 + m32;
@@ -6521,7 +6521,7 @@ public class Matrix4x3d implements Externalizable {
         double rm32 = (zZeroToOne ? zNear : (zFar + zNear)) / (zNear - zFar);
 
         // perform optimized multiplication
-        // compute the last column first, because other columns do not depend on it
+        // compute the last column first, because defaultBet columns do not depend on it
         dest.m30 = m20 * rm32 + m30;
         dest.m31 = m21 * rm32 + m31;
         dest.m32 = m22 * rm32 + m32;
@@ -6749,7 +6749,7 @@ public class Matrix4x3d implements Externalizable {
         double rm31 = -(top + bottom) / (top - bottom);
 
         // perform optimized multiplication
-        // compute the last column first, because other columns do not depend on it
+        // compute the last column first, because defaultBet columns do not depend on it
         dest.m30 = m00 * rm30 + m10 * rm31 + m30;
         dest.m31 = m01 * rm30 + m11 * rm31 + m31;
         dest.m32 = m02 * rm30 + m12 * rm31 + m32;
@@ -8526,10 +8526,10 @@ public class Matrix4x3d implements Externalizable {
     }
 
     /**
-     * Exchange the values of <code>this</code> matrix with the given <code>other</code> matrix.
+     * Exchange the values of <code>this</code> matrix with the given <code>defaultBet</code> matrix.
      * 
      * @param other
-     *          the other matrix to exchange the values with
+     *          the defaultBet matrix to exchange the values with
      * @return this
      */
     public Matrix4x3d swap(Matrix4x3d other) {

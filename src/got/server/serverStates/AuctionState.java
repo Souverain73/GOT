@@ -10,12 +10,14 @@ import got.server.GameServer;
 import got.server.PlayerManager;
 import got.server.serverStates.base.ParallelState;
 import got.server.serverStates.base.ServerState;
+import got.utils.Timers;
 
 /**
  * Created by Souverain73 on 20.04.2017.
  */
 public class AuctionState extends ParallelState {
     public static String AUCTION_RESULTS_PARAM = "AUCTION_RESULTS";
+    public static String AUCTION_BETS_PARAM = "AUCTION_BETS";
     private int playersCount;
     private int[] bets;
     private Fraction[] results;
@@ -63,6 +65,8 @@ public class AuctionState extends ParallelState {
         if (pkg instanceof Packages.AuctionResult) {
             Packages.AuctionResult msg = (Packages.AuctionResult) pkg;
             stm.saveParam(AUCTION_RESULTS_PARAM, msg.result);
+            stm.saveParam(AUCTION_BETS_PARAM, bets);
+            Timers.wait(2000);
             stm.changeState(nextState, ChangeAction.SET);
         }
     }

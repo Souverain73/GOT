@@ -1243,7 +1243,7 @@ public class Vector4d implements Externalizable {
      * Return the distance between <code>this</code> vector and <code>v</code>.
      * 
      * @param v
-     *          the other vector
+     *          the defaultBet vector
      * @return the euclidean distance
      */
     public double distance(Vector4d v) {
@@ -1258,13 +1258,13 @@ public class Vector4d implements Externalizable {
      * Return the distance between <code>this</code> vector and <tt>(x, y, z, w)</tt>.
      * 
      * @param x
-     *          the x component of the other vector
+     *          the x component of the defaultBet vector
      * @param y
-     *          the y component of the other vector
+     *          the y component of the defaultBet vector
      * @param z
-     *          the z component of the other vector
+     *          the z component of the defaultBet vector
      * @param w
-     *          the w component of the other vector
+     *          the w component of the defaultBet vector
      * @return the euclidean distance
      */
     public double distance(double x, double y, double z, double w) {
@@ -1279,7 +1279,7 @@ public class Vector4d implements Externalizable {
      * Compute the dot product (inner product) of this vector and <code>v</code>.
      * 
      * @param v
-     *          the other vector
+     *          the defaultBet vector
      * @return the dot product
      */
     public double dot(Vector4d v) {
@@ -1290,13 +1290,13 @@ public class Vector4d implements Externalizable {
      * Compute the dot product (inner product) of this vector and <tt>(x, y, z, w)</tt>.
      * 
      * @param x
-     *          the x component of the other vector
+     *          the x component of the defaultBet vector
      * @param y
-     *          the y component of the other vector
+     *          the y component of the defaultBet vector
      * @param z
-     *          the z component of the other vector
+     *          the z component of the defaultBet vector
      * @param w
-     *          the w component of the other vector
+     *          the w component of the defaultBet vector
      * @return the dot product
      */
     public double dot(double x, double y, double z, double w) {
@@ -1311,7 +1311,7 @@ public class Vector4d implements Externalizable {
      * @see #angle(Vector4d)
      * 
      * @param v
-     *          the other vector
+     *          the defaultBet vector
      * @return the cosine of the angle
      */
     public double angleCos(Vector4d v) {
@@ -1327,7 +1327,7 @@ public class Vector4d implements Externalizable {
      * @see #angleCos(Vector4d)
      * 
      * @param v
-     *          the other vector
+     *          the defaultBet vector
      * @return the angle, in radians
      */
     public double angle(Vector4d v) {
@@ -1455,7 +1455,7 @@ public class Vector4d implements Externalizable {
      * store the result in <code>dest</code>.
      * 
      * @param v
-     *          the other vector
+     *          the defaultBet vector
      * @param t
      *          the interpolation factor, within <tt>[0..1]</tt>
      * @param dest
@@ -1481,9 +1481,9 @@ public class Vector4d implements Externalizable {
      * @param t0
      *          the tangent of <code>this</code> vector
      * @param v1
-     *          the other vector
+     *          the defaultBet vector
      * @param t1
-     *          the tangent of the other vector
+     *          the tangent of the defaultBet vector
      * @param t
      *          the interpolation factor, within <tt>[0..1]</tt>
      * @param dest
@@ -1501,14 +1501,14 @@ public class Vector4d implements Externalizable {
     }
 
     /**
-     * Linearly interpolate <code>this</code> and <code>other</code> using the given interpolation factor <code>t</code>
+     * Linearly interpolate <code>this</code> and <code>defaultBet</code> using the given interpolation factor <code>t</code>
      * and store the result in <code>this</code>.
      * <p>
      * If <code>t</code> is <tt>0.0</tt> then the result is <code>this</code>. If the interpolation factor is <code>1.0</code>
-     * then the result is <code>other</code>.
+     * then the result is <code>defaultBet</code>.
      * 
      * @param other
-     *          the other vector
+     *          the defaultBet vector
      * @param t
      *          the interpolation factor between 0.0 and 1.0
      * @return this
@@ -1518,14 +1518,14 @@ public class Vector4d implements Externalizable {
     }
 
     /**
-     * Linearly interpolate <code>this</code> and <code>other</code> using the given interpolation factor <code>t</code>
+     * Linearly interpolate <code>this</code> and <code>defaultBet</code> using the given interpolation factor <code>t</code>
      * and store the result in <code>dest</code>.
      * <p>
      * If <code>t</code> is <tt>0.0</tt> then the result is <code>this</code>. If the interpolation factor is <code>1.0</code>
-     * then the result is <code>other</code>.
+     * then the result is <code>defaultBet</code>.
      * 
      * @param other
-     *          the other vector
+     *          the defaultBet vector
      * @param t
      *          the interpolation factor between 0.0 and 1.0
      * @param dest

@@ -332,11 +332,11 @@ public class Intersectionf {
     }
 
     /**
-     * Test whether the one sphere with center <tt>(aX, aY, aZ)</tt> and square radius <code>radiusSquaredA</code> intersects the other
+     * Test whether the one sphere with center <tt>(aX, aY, aZ)</tt> and square radius <code>radiusSquaredA</code> intersects the defaultBet
      * sphere with center <tt>(bX, bY, bZ)</tt> and square radius <code>radiusSquaredB</code>, and store the center of the circle of
      * intersection in the <tt>(x, y, z)</tt> components of the supplied vector and the radius of that circle in the w component.
      * <p>
-     * The normal vector of the circle of intersection can simply be obtained by subtracting the center of either sphere from the other.
+     * The normal vector of the circle of intersection can simply be obtained by subtracting the center of either sphere from the defaultBet.
      * <p>
      * Reference: <a href="http://gamedev.stackexchange.com/questions/75756/sphere-sphere-intersection-and-circle-sphere-intersection">http://gamedev.stackexchange.com</a>
      * 
@@ -379,11 +379,11 @@ public class Intersectionf {
     }
 
     /**
-     * Test whether the one sphere with center <code>centerA</code> and square radius <code>radiusSquaredA</code> intersects the other
+     * Test whether the one sphere with center <code>centerA</code> and square radius <code>radiusSquaredA</code> intersects the defaultBet
      * sphere with center <code>centerB</code> and square radius <code>radiusSquaredB</code>, and store the center of the circle of
      * intersection in the <tt>(x, y, z)</tt> components of the supplied vector and the radius of that circle in the w component.
      * <p>
-     * The normal vector of the circle of intersection can simply be obtained by subtracting the center of either sphere from the other.
+     * The normal vector of the circle of intersection can simply be obtained by subtracting the center of either sphere from the defaultBet.
      * <p>
      * Reference: <a href="http://gamedev.stackexchange.com/questions/75756/sphere-sphere-intersection-and-circle-sphere-intersection">http://gamedev.stackexchange.com</a>
      * 
@@ -404,7 +404,7 @@ public class Intersectionf {
     }
 
     /**
-     * Test whether the one sphere with center <tt>(aX, aY, aZ)</tt> and square radius <code>radiusSquaredA</code> intersects the other
+     * Test whether the one sphere with center <tt>(aX, aY, aZ)</tt> and square radius <code>radiusSquaredA</code> intersects the defaultBet
      * sphere with center <tt>(bX, bY, bZ)</tt> and square radius <code>radiusSquaredB</code>.
      * <p>
      * Reference: <a href="http://gamedev.stackexchange.com/questions/75756/sphere-sphere-intersection-and-circle-sphere-intersection">http://gamedev.stackexchange.com</a>
@@ -438,7 +438,7 @@ public class Intersectionf {
     }
 
     /**
-     * Test whether the one sphere with center <code>centerA</code> and square radius <code>radiusSquaredA</code> intersects the other
+     * Test whether the one sphere with center <code>centerA</code> and square radius <code>radiusSquaredA</code> intersects the defaultBet
      * sphere with center <code>centerB</code> and square radius <code>radiusSquaredB</code>.
      * <p>
      * Reference: <a href="http://gamedev.stackexchange.com/questions/75756/sphere-sphere-intersection-and-circle-sphere-intersection">http://gamedev.stackexchange.com</a>
@@ -2461,7 +2461,7 @@ public class Intersectionf {
      * @return <code>true</code> iff the line intersects the circle; <code>false</code> otherwise
      */
     public static boolean intersectLineCircle(float x0, float y0, float x1, float y1, float centerX, float centerY, float radius, Vector3f intersectionCenterAndHL) {
-        // Build general line equation from two points and use the other method
+        // Build general line equation from two points and use the defaultBet method
         return intersectLineCircle(y0 - y1, x1 - x0, (x0 - x1) * y0 + (y1 - y0) * x0, centerX, centerY, radius, intersectionCenterAndHL);
     }
 
@@ -2606,7 +2606,7 @@ public class Intersectionf {
     }
 
     /**
-     * Test whether the one circle with center <tt>(aX, aY)</tt> and square radius <code>radiusSquaredA</code> intersects the other
+     * Test whether the one circle with center <tt>(aX, aY)</tt> and square radius <code>radiusSquaredA</code> intersects the defaultBet
      * circle with center <tt>(bX, bY)</tt> and square radius <code>radiusSquaredB</code>, and store the center of the line segment of
      * intersection in the <tt>(x, y)</tt> components of the supplied vector and the half-length of that line segment in the z component.
      * <p>
@@ -2643,7 +2643,7 @@ public class Intersectionf {
     }
 
     /**
-     * Test whether the one circle with center <code>centerA</code> and square radius <code>radiusSquaredA</code> intersects the other
+     * Test whether the one circle with center <code>centerA</code> and square radius <code>radiusSquaredA</code> intersects the defaultBet
      * circle with center <code>centerB</code> and square radius <code>radiusSquaredB</code>, and store the center of the line segment of
      * intersection in the <tt>(x, y)</tt> components of the supplied vector and the half-length of that line segment in the z component.
      * <p>
@@ -2666,7 +2666,7 @@ public class Intersectionf {
     }
 
     /**
-     * Test whether the one circle with center <tt>(aX, aY)</tt> and square radius <code>radiusSquaredA</code> intersects the other
+     * Test whether the one circle with center <tt>(aX, aY)</tt> and square radius <code>radiusSquaredA</code> intersects the defaultBet
      * circle with center <tt>(bX, bY)</tt> and square radius <code>radiusSquaredB</code>.
      * <p>
      * Reference: <a href="http://gamedev.stackexchange.com/questions/75756/sphere-sphere-intersection-and-circle-sphere-intersection">http://gamedev.stackexchange.com</a>
@@ -2694,7 +2694,7 @@ public class Intersectionf {
     }
 
     /**
-     * Test whether the one circle with center <code>centerA</code> and square radius <code>radiusSquaredA</code> intersects the other
+     * Test whether the one circle with center <code>centerA</code> and square radius <code>radiusSquaredA</code> intersects the defaultBet
      * circle with center <code>centerB</code> and square radius <code>radiusSquaredB</code>.
      * <p>
      * Reference: <a href="http://gamedev.stackexchange.com/questions/75756/sphere-sphere-intersection-and-circle-sphere-intersection">http://gamedev.stackexchange.com</a>
@@ -3777,7 +3777,7 @@ public class Intersectionf {
     }
 
     /**
-     * Determine whether the two lines, specified via two points lying on each line, intersect each other, and store the point of intersection
+     * Determine whether the two lines, specified via two points lying on each line, intersect each defaultBet, and store the point of intersection
      * into the given vector <code>p</code>.
      * 
      * @param ps1x

@@ -4,14 +4,10 @@ import got.gameStates.ParallelGameState;
 import got.gameStates.StateID;
 import got.model.ChangeAction;
 import got.model.Game;
-import got.model.Track;
 import got.server.serverStates.AuctionState;
 import got.server.serverStates.ChangeTrack;
 import got.server.serverStates.StateMachine;
 import got.server.serverStates.base.ParallelState;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Souverain73 on 03.05.2017.
@@ -27,7 +23,6 @@ public class BattleOfKings {
         @Override
         public void enter(StateMachine stm) {
             super.enter(stm);
-            List<Track> tracks = new ArrayList<>();
             stm.changeState(new AuctionState(new ChangeTrack(Game.instance().getTrack(lastTrack))), ChangeAction.PUSH);
         }
 

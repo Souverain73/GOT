@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static sun.misc.PostVMInitHook.run;
+
 /**
  * Created by Souverain73 on 20.04.2017.
  */
@@ -58,7 +60,7 @@ public class AuctionGameState extends ParallelGameState{
         }.setPos((Constants.SCREEN_WIDTH-100)/2, 300)
                 .setSpace(DrawSpace.SCREEN));
 
-        (new ModalState(cms)).run();
+        (new ModalState(cms, true, true)).run();
     }
 
     @Override
@@ -191,7 +193,7 @@ public class AuctionGameState extends ParallelGameState{
             int x=300;
             int y=400;
 
-            cms.addObject(new TextObject("Select fraction for " + i + "position")
+            cms.addObject(new TextObject("Select fraction for " + i+1 + " position")
                     .setPos(x, y)
                     .setSpace(DrawSpace.SCREEN));
 

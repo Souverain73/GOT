@@ -1479,7 +1479,7 @@ public class Vector3d implements Externalizable {
      * Set this vector to be the cross product of this and v2.
      * 
      * @param v
-     *          the other vector
+     *          the defaultBet vector
      * @return this
      */
     public Vector3d cross(Vector3d v) {
@@ -1493,11 +1493,11 @@ public class Vector3d implements Externalizable {
      * Set this vector to be the cross product of itself and <tt>(x, y, z)</tt>.
      * 
      * @param x
-     *          the x component of the other vector
+     *          the x component of the defaultBet vector
      * @param y
-     *          the y component of the other vector
+     *          the y component of the defaultBet vector
      * @param z
-     *          the z component of the other vector
+     *          the z component of the defaultBet vector
      * @return this
      */
     public Vector3d cross(double x, double y, double z) {
@@ -1510,7 +1510,7 @@ public class Vector3d implements Externalizable {
      * Calculate the cross product of this and v2 and store the result in <code>dest</code>.
      * 
      * @param v
-     *          the other vector
+     *          the defaultBet vector
      * @param dest
      *          will hold the result
      * @return dest
@@ -1526,11 +1526,11 @@ public class Vector3d implements Externalizable {
      * Compute the cross product of this vector and <tt>(x, y, z)</tt> and store the result in <code>dest</code>.
      * 
      * @param x
-     *          the x component of the other vector
+     *          the x component of the defaultBet vector
      * @param y
-     *          the y component of the other vector
+     *          the y component of the defaultBet vector
      * @param z
-     *          the z component of the other vector
+     *          the z component of the defaultBet vector
      * @param dest
      *          will hold the result
      * @return dest
@@ -1545,7 +1545,7 @@ public class Vector3d implements Externalizable {
      * Return the distance between this vector and <code>v</code>.
      * 
      * @param v
-     *          the other vector
+     *          the defaultBet vector
      * @return the distance
      */
     public double distance(Vector3d v) {
@@ -1559,11 +1559,11 @@ public class Vector3d implements Externalizable {
      * Return the distance between <code>this</code> vector and <tt>(x, y, z)</tt>.
      * 
      * @param x
-     *          the x component of the other vector
+     *          the x component of the defaultBet vector
      * @param y
-     *          the y component of the other vector
+     *          the y component of the defaultBet vector
      * @param z
-     *          the z component of the other vector
+     *          the z component of the defaultBet vector
      * @return the euclidean distance
      */
     public double distance(double x, double y, double z) {
@@ -1577,7 +1577,7 @@ public class Vector3d implements Externalizable {
      * Return the square of the distance between this vector and <code>v</code>.
      * 
      * @param v
-     *          the other vector
+     *          the defaultBet vector
      * @return the squared of the distance
      */
     public double distanceSquared(Vector3d v) {
@@ -1591,11 +1591,11 @@ public class Vector3d implements Externalizable {
      * Return the square of the distance between <code>this</code> vector and <tt>(x, y, z)</tt>.
      * 
      * @param x
-     *          the x component of the other vector
+     *          the x component of the defaultBet vector
      * @param y
-     *          the y component of the other vector
+     *          the y component of the defaultBet vector
      * @param z
-     *          the z component of the other vector
+     *          the z component of the defaultBet vector
      * @return the square of the distance
      */
     public double distanceSquared(double x, double y, double z) {
@@ -1609,7 +1609,7 @@ public class Vector3d implements Externalizable {
      * Return the dot product of this vector and the supplied vector.
      * 
      * @param v
-     *          the other vector
+     *          the defaultBet vector
      * @return the dot product
      */
     public double dot(Vector3d v) {
@@ -1620,11 +1620,11 @@ public class Vector3d implements Externalizable {
      * Return the dot product of this vector and the vector <tt>(x, y, z)</tt>.
      * 
      * @param x
-     *          the x component of the other vector
+     *          the x component of the defaultBet vector
      * @param y
-     *          the y component of the other vector
+     *          the y component of the defaultBet vector
      * @param z
-     *          the z component of the other vector
+     *          the z component of the defaultBet vector
      * @return the dot product
      */
     public double dot(double x, double y, double z) {
@@ -1638,7 +1638,7 @@ public class Vector3d implements Externalizable {
      * @see #angle(Vector3d)
      * 
      * @param v
-     *          the other vector
+     *          the defaultBet vector
      * @return the cosine of the angle
      */
     public double angleCos(Vector3d v) {
@@ -1654,7 +1654,7 @@ public class Vector3d implements Externalizable {
      * @see #angleCos(Vector3d)
      * 
      * @param v
-     *          the other vector
+     *          the defaultBet vector
      * @return the angle, in radians
      */
     public double angle(Vector3d v) {
@@ -1842,10 +1842,10 @@ public class Vector3d implements Externalizable {
     }
 
     /**
-     * Compute the half vector between this and the other vector.
+     * Compute the half vector between this and the defaultBet vector.
      * 
      * @param other
-     *          the other vector
+     *          the defaultBet vector
      * @return this
      */
     public Vector3d half(Vector3d other) {
@@ -1856,11 +1856,11 @@ public class Vector3d implements Externalizable {
      * Compute the half vector between this and the vector <tt>(x, y, z)</tt>.
      * 
      * @param x
-     *          the x component of the other vector
+     *          the x component of the defaultBet vector
      * @param y
-     *          the y component of the other vector
+     *          the y component of the defaultBet vector
      * @param z
-     *          the z component of the other vector
+     *          the z component of the defaultBet vector
      * @return this
      */
     public Vector3d half(double x, double y, double z) {
@@ -1868,10 +1868,10 @@ public class Vector3d implements Externalizable {
     }
 
     /**
-     * Compute the half vector between this and the other vector and store the result in <code>dest</code>.
+     * Compute the half vector between this and the defaultBet vector and store the result in <code>dest</code>.
      * 
      * @param other
-     *          the other vector
+     *          the defaultBet vector
      * @param dest
      *          will hold the result
      * @return dest
@@ -1885,11 +1885,11 @@ public class Vector3d implements Externalizable {
      * and store the result in <code>dest</code>.
      * 
      * @param x
-     *          the x component of the other vector
+     *          the x component of the defaultBet vector
      * @param y
-     *          the y component of the other vector
+     *          the y component of the defaultBet vector
      * @param z
-     *          the z component of the other vector
+     *          the z component of the defaultBet vector
      * @param dest
      *          will hold the result
      * @return dest
@@ -1904,7 +1904,7 @@ public class Vector3d implements Externalizable {
      * store the result in <code>dest</code>.
      * 
      * @param v
-     *          the other vector
+     *          the defaultBet vector
      * @param t
      *          the interpolation factor, within <tt>[0..1]</tt>
      * @param dest
@@ -1929,9 +1929,9 @@ public class Vector3d implements Externalizable {
      * @param t0
      *          the tangent of <code>this</code> vector
      * @param v1
-     *          the other vector
+     *          the defaultBet vector
      * @param t1
-     *          the tangent of the other vector
+     *          the tangent of the defaultBet vector
      * @param t
      *          the interpolation factor, within <tt>[0..1]</tt>
      * @param dest
@@ -1948,14 +1948,14 @@ public class Vector3d implements Externalizable {
     }
 
     /**
-     * Linearly interpolate <code>this</code> and <code>other</code> using the given interpolation factor <code>t</code>
+     * Linearly interpolate <code>this</code> and <code>defaultBet</code> using the given interpolation factor <code>t</code>
      * and store the result in <code>this</code>.
      * <p>
      * If <code>t</code> is <tt>0.0</tt> then the result is <code>this</code>. If the interpolation factor is <code>1.0</code>
-     * then the result is <code>other</code>.
+     * then the result is <code>defaultBet</code>.
      * 
      * @param other
-     *          the other vector
+     *          the defaultBet vector
      * @param t
      *          the interpolation factor between 0.0 and 1.0
      * @return this
@@ -1965,14 +1965,14 @@ public class Vector3d implements Externalizable {
     }
 
     /**
-     * Linearly interpolate <code>this</code> and <code>other</code> using the given interpolation factor <code>t</code>
+     * Linearly interpolate <code>this</code> and <code>defaultBet</code> using the given interpolation factor <code>t</code>
      * and store the result in <code>dest</code>.
      * <p>
      * If <code>t</code> is <tt>0.0</tt> then the result is <code>this</code>. If the interpolation factor is <code>1.0</code>
-     * then the result is <code>other</code>.
+     * then the result is <code>defaultBet</code>.
      * 
      * @param other
-     *          the other vector
+     *          the defaultBet vector
      * @param t
      *          the interpolation factor between 0.0 and 1.0
      * @param dest

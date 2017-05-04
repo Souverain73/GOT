@@ -91,6 +91,7 @@ public class Packages {
 		kryo.register(PlayerChangeSuply.class);
 		kryo.register(SetRestrictedActions.class);
 		kryo.register(AuctionResult.class);
+		kryo.register(WildlingsData.class);
 	}
 
 	public static class NetPackage {
@@ -1098,6 +1099,21 @@ public class Packages {
 
 		public AuctionResult(Fraction[] result) {
 			this.result = result;
+		}
+	}
+
+	public static class WildlingsData extends BroadcastPackage {
+		public Fraction minBet;
+		public Fraction maxBet;
+		public boolean victory;
+
+		public WildlingsData() {
+		}
+
+		public WildlingsData(Fraction minBet, Fraction maxBet, boolean victory) {
+			this.minBet = minBet;
+			this.maxBet = maxBet;
+			this.victory = victory;
 		}
 	}
 }

@@ -74,8 +74,8 @@ public class Timers {
     private static class CallbackTimer extends  AbstractTimer{
 
         Runnable callback;
-        public CallbackTimer(int time, int step, Runnable callback) {
-            super(time, step);
+        public CallbackTimer(int time, Runnable callback) {
+            super(time, time);
             this.callback = callback;
         }
 
@@ -130,11 +130,11 @@ public class Timers {
     }
 
     public static Timer getTimer(int time, int step, Runnable callback){
-        return new CallbackTimer(time, step, callback);
+        return new CallbackTimer(time, callback);
     }
 
     public static Timer getTimer(int time, Runnable callback){
-        return new CallbackTimer(time, 1000, callback);
+        return new CallbackTimer(time, callback);
     }
 
     public static Timer getInterval(int interval, Runnable callback){
@@ -158,6 +158,6 @@ public class Timers {
     }
 
     public static void wait(int time){
-        (new CallbackTimer(time, time, ()->{})).start(false);
+        (new CallbackTimer(time, ()->{})).start(false);
     }
 }
