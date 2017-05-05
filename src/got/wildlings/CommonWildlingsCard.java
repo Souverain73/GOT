@@ -22,7 +22,7 @@ public class CommonWildlingsCard implements WildlingsCard {
     }
 
     @Override
-    public void onWin(NetworkSide side) {
+    public void onWin(NetworkSide side){
 
     }
 
