@@ -11,6 +11,7 @@ import got.server.serverStates.base.ServerState;
 import got.utils.Timers;
 import got.utils.UI;
 import got.vesterosCards.VesterosCard;
+import got.wildlings.Wildlings;
 
 import java.util.stream.IntStream;
 
@@ -47,10 +48,17 @@ public class VesterosPhaseState implements ServerState, IPauseable{
 
         for(int i=0; i<3; i++){
             GameServer.getServer().sendToAllTCP(new Packages.OpenCard(i, data.cards[i].getID()));
+
             Timers.wait(1000);
         }
 
-        playNextCard();
+        //TODO: Выделить открытие карт в подсостояние, сделать возможность паузы.
+
+        if(Wildlings.instance().readyToAttack()){
+            Wildlings.instance().attack();
+        }else{
+            playNextCard();
+        }
     }
 
     @Override

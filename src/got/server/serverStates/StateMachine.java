@@ -83,4 +83,18 @@ public class StateMachine implements INetworkListener{
 	public Object getParam(String name){
 		return params.get(name);
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		for (ServerState st : _states){
+			sb.append(st.getName());
+			if (_states.getLast() != st)
+				sb.append(", ");
+		}
+		sb.append("]");
+
+		return sb.toString();
+	}
 }

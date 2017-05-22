@@ -30,21 +30,12 @@ public class CommonVesterosCard implements VesterosCard {
 
     @Override
     public void onOpenClient() {
-        if (wildlings){
-            Wildlings.instance().nextLevel();
-        }
+
     }
 
     @Override
     public void onOpenServer(StateMachine stm, openParams param) {
-        if (wildlings){
-            Wildlings.instance().nextLevel();
-        }
-        if (Wildlings.instance().readyToAttack ()){
-            Wildlings.instance().attack();
-        }else {
-            stm.changeState(null, ChangeAction.REMOVE);
-        }
+        stm.changeState(null, ChangeAction.REMOVE);
     }
 
     public String getInternalName() {

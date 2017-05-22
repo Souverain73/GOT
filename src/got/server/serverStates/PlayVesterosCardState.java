@@ -55,4 +55,9 @@ public class PlayVesterosCardState extends ParallelState{
         UI.systemMessage("Unpause Play vesteros");
         stm.changeState(null, ChangeAction.REMOVE);
     }
+
+    @Override
+    public String toString() {
+        return "PlayVesterosCardState: " + currentCard.getInternalName();
+    }
 }

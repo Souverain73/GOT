@@ -222,8 +222,10 @@ public class GameServer {
 				"Вывод на экран текущего состояния сервера",
 				(a)->{
 			StringBuilder sb = new StringBuilder();
-			sb.append(PlayerManager.instance().toString() + "\n");
-			sb.append("Current State Dump: " + stm.getCurrentState());
+					sb.append(PlayerManager.instance().toString() + "\n");
+					sb.append("Current states list:");
+					sb.append(stm);
+					sb.append("\nCurrent State Dump: " + stm.getCurrentState());
 			return	sb.toString();
 		}));
 
@@ -390,7 +392,8 @@ public class GameServer {
 //	public void registerTask(Runnable task){
 //		taskPool.add(task);
 //	}
-	
+
+
 	public void executeTasks(){
 		while(!taskPool.isEmpty()){
 			Runnable task = taskPool.poll();
