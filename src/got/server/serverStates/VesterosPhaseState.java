@@ -19,10 +19,16 @@ import java.util.stream.IntStream;
  * Created by Souverain73 on 30.03.2017.
  */
 public class VesterosPhaseState implements ServerState, IPauseable{
+    private enum SubState{
+        OPEN,
+        PLAY
+    }
     private StateMachine stm;
+
     class VesterosPhaseData {
         public VesterosCard[] cards = new VesterosCard[3];
         public int currentCard = -1;
+        public SubState state = SubState.OPEN;
     }
 
     VesterosPhaseData data = new VesterosPhaseData();
@@ -46,19 +52,7 @@ public class VesterosPhaseState implements ServerState, IPauseable{
 
         stm.saveParam(stm.VESTEROS_PHASE_DATA, data);
 
-        for(int i=0; i<3; i++){
-            GameServer.getServer().sendToAllTCP(new Packages.OpenCard(i, data.cards[i].getID()));
-
-            Timers.wait(1000);
-        }
-
-        //TODO: Выделить открытие карт в подсостояние, сделать возможность паузы.
-
-        if(Wildlings.instance().readyToAttack()){
-            Wildlings.instance().attack();
-        }else{
-            playNextCard();
-        }
+        openNextCard();
     }
 
     @Override
@@ -79,10 +73,38 @@ public class VesterosPhaseState implements ServerState, IPauseable{
     @Override
     public void resume() {
         UI.systemMessage("Resume vesteros phase");
-        if (data.currentCard < 2) {
+        if (data.state == SubState.OPEN){
+            Timers.getTimer(1000, this::openNextCard).start(false);
+        }else {
+            if (data.currentCard < 2) {
+                playNextCard();
+            } else {
+                stm.changeState(new PlanningPhaseState(), ChangeAction.SET);
+            }
+        }
+    }
+
+    private void openNextCard(){
+        data.currentCard++;
+
+        if (data.currentCard > 2){
+            data.currentCard = -1;
+            data.state = SubState.PLAY;
             playNextCard();
+            return;
+        }
+
+        GameServer.getServer().sendToAllTCP(new Packages.OpenCard(data.currentCard, data.cards[data.currentCard].getID()));
+        Timers.wait(1000);
+
+        if (data.cards[data.currentCard].hasWildlings()) {
+            Wildlings.instance().nextLevel();
+        }
+
+        if (Wildlings.instance().readyToAttack()){
+            Wildlings.instance().attack(stm);
         }else{
-            stm.changeState(new PlanningPhaseState(), ChangeAction.SET);
+            openNextCard();
         }
     }
 

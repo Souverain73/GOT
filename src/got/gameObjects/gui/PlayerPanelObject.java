@@ -7,6 +7,7 @@ import got.gameStates.GameState;
 import got.graphics.DrawSpace;
 import got.model.Game;
 import got.model.Player;
+import got.wildlings.Wildlings;
 import org.joml.Vector2f;
 
 /**
@@ -18,6 +19,7 @@ public class PlayerPanelObject extends AbstractGameObject<PlayerPanelObject> {
     TextObject fraction;
     TextObject money;
     TextObject tTurn;
+    TextObject tWildlings;
     Player player;
     int currentTurn;
 
@@ -38,6 +40,9 @@ public class PlayerPanelObject extends AbstractGameObject<PlayerPanelObject> {
         addChild(tTurn = new TextObject(String.valueOf(currentTurn))
                 .setPos(new Vector2f(100, 10))
         );
+
+        addChild(tWildlings = new TextObject("Одичалые: " + String.valueOf(Wildlings.instance().getLevel()))
+                .setPos(new Vector2f(10, 50)));
     }
 
     @Override
@@ -45,6 +50,7 @@ public class PlayerPanelObject extends AbstractGameObject<PlayerPanelObject> {
         super.update(state);
         fraction.setText(player.getFraction().toString());
         money.setText(String.valueOf(player.getMoney()));
+        tWildlings.setText("Одичалые: " + String.valueOf(Wildlings.instance().getLevel()));
         if (Game.instance().getTurn() != currentTurn){
             tTurn.setText(String.valueOf(Game.instance().getTurn()));
         }

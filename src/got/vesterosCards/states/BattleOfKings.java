@@ -1,4 +1,4 @@
-package got.vesterosCards.States;
+package got.vesterosCards.states;
 
 import got.gameStates.ParallelGameState;
 import got.gameStates.StateID;
@@ -17,7 +17,7 @@ public class BattleOfKings {
         int lastTrack = Game.THRONE_TRACK;
         @Override
         public int getID() {
-            return StateID.BATTLE_OF_KINGS;
+            return StateID.WESTEROS_BATTLE_OF_KINGS;
         }
 
         @Override
@@ -47,7 +47,7 @@ public class BattleOfKings {
     public static class ClientState extends ParallelGameState {
         @Override
         public int getID() {
-            return StateID.BATTLE_OF_KINGS;
+            return StateID.WESTEROS_BATTLE_OF_KINGS;
         }
     }
 }

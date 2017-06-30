@@ -7,7 +7,7 @@ import got.server.GameServer.PlayerConnection;
 /**
  * @author Souverain73
  *	Network listener must handle network packages
- *	All Game States implements this interface for network communication
+ *	All Game states implements this interface for network communication
  */
 public interface INetworkListener {
 	/**This method reacts on network package.

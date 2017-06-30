@@ -8,7 +8,7 @@ import got.network.Packages;
 import got.server.PlayerManager;
 import got.server.serverStates.StateMachine;
 import got.vesterosCards.CommonVesterosCard;
-import got.vesterosCards.States.*;
+import got.vesterosCards.states.*;
 
 /**
  * Created by Souverain73 on 03.05.2017.

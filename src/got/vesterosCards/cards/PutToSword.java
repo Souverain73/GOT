@@ -9,7 +9,7 @@ import got.server.GameServer;
 import got.server.PlayerManager;
 import got.server.serverStates.StateMachine;
 import got.vesterosCards.CommonVesterosCard;
-import got.vesterosCards.States.OptionSelectorState;
+import got.vesterosCards.states.OptionSelectorState;
 
 /**
  * Created by Souverain73 on 12.04.2017.

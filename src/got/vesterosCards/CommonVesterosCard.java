@@ -28,6 +28,11 @@ public class CommonVesterosCard implements VesterosCard {
         this.wildlings = wildlings;
     }
 
+    public CommonVesterosCard wildlings(){
+        wildlings = true;
+        return this;
+    }
+
     @Override
     public void onOpenClient() {
 
@@ -57,5 +62,10 @@ public class CommonVesterosCard implements VesterosCard {
             texture = TextureManager.instance().loadTexture(TEXTURE_BASE + textureName);
         }
         return texture;
+    }
+
+    @Override
+    public boolean hasWildlings() {
+        return wildlings;
     }
 }

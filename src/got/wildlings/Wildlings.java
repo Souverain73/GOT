@@ -1,6 +1,10 @@
 package got.wildlings;
 
+import got.model.ChangeAction;
+import got.server.serverStates.AuctionState;
+import got.server.serverStates.StateMachine;
 import got.utils.Utils;
+import got.wildlings.states.WildlingsAttack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,15 +35,15 @@ public class Wildlings {
     }
 
     private Wildlings(){
-        add(new CommonWildlingsCard("king.png",     tt("wildlings.king"),       "King"));
-        add(new CommonWildlingsCard("robbers.png",  tt("wildlings.robbers"),    "Robbers"));
-        add(new CommonWildlingsCard("silence.png",  tt("wildlings.silence"),    "Silence"));
-        add(new CommonWildlingsCard("killers.png",  tt("wildlings.killers"),    "Killers"));
-        add(new CommonWildlingsCard("riders.png",   tt("wildlings.riders"),     "Riders"));
-        add(new CommonWildlingsCard("squad.png",    tt("wildlings.squad"),      "Squad"));
-        add(new CommonWildlingsCard("horde.png",    tt("wildlings.horde"),      "Horde"));
-        add(new CommonWildlingsCard("scout.png",    tt("wildlings.scout"),      "Scout"));
-        add(new CommonWildlingsCard("gathering.png",tt("wildlings.gathering"),  "Gathering"));
+        add(new CommonWildlingsCard("king.png",      "King",     tt("wildlings.king")        ));
+        add(new CommonWildlingsCard("robbers.png",   "Robbers",  tt("wildlings.robbers")     ));
+        add(new CommonWildlingsCard("silence.png",   "Silence",  tt("wildlings.silence")     ));
+        add(new CommonWildlingsCard("killers.png",   "Killers",  tt("wildlings.killers")     ));
+        add(new CommonWildlingsCard("riders.png",    "Riders",   tt("wildlings.riders")      ));
+        add(new CommonWildlingsCard("squad.png",     "Squad",    tt("wildlings.squad")       ));
+        add(new CommonWildlingsCard("horde.png",     "Horde",    tt("wildlings.horde")       ));
+        add(new CommonWildlingsCard("scout.png",     "Scout",    tt("wildlings.scout")       ));
+        add(new CommonWildlingsCard("gathering.png", "Gathering",tt("wildlings.gathering") ));
 
         deck = Utils.shuffle(deck);
     }
@@ -70,7 +74,17 @@ public class Wildlings {
         return level >= maxLevel;
     }
 
-    public void attack(){
+    public void resetLevel(){
         level = 0;
+    }
+
+    public void attack(StateMachine stm){
+        stm.changeState(new AuctionState(new WildlingsAttack.ServerState(getTopCard(), getLevel())), ChangeAction.PUSH);
+        resetLevel();
+        moveTopCardToEnd();
+    }
+
+    public WildlingsCard getCard(int id){
+        return cards.get(id);
     }
 }

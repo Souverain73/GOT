@@ -1,10 +1,11 @@
 package got.gameStates;
 
 import got.server.serverStates.base.ServerState;
-import got.vesterosCards.States.BattleOfKings;
-import got.vesterosCards.States.CollectInfluence;
-import got.vesterosCards.States.CollectSuply;
-import got.vesterosCards.States.CollectUnits;
+import got.vesterosCards.states.BattleOfKings;
+import got.vesterosCards.states.CollectInfluence;
+import got.vesterosCards.states.CollectSuply;
+import got.vesterosCards.states.CollectUnits;
+import got.wildlings.states.WildlingsAttack;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -24,12 +25,13 @@ public class StateID {
 	public static final int BATTLE_RESULT_PHASE = 9;
 	public static final int SELECT_HOUSE_CARD_PHASE = 10;
 	public static final int PLAY_VESTEROS_STATE = 18;
-	public static final int COLLECT_UNITS = 19;
-	public static final int COLLECT_INFLUENCE = 20;
-	public static final int COLLECT_SUPLY = 21;
+	public static final int VESTEROS_COLLECT_UNITS = 19;
+	public static final int VESTEROS_COLLECT_INFLUENCE = 20;
+	public static final int WESTEROS_COLLECT_SUPLY = 21;
 	public static final int AUCTION_STATE = 22;
-	public static final int BATTLE_OF_KINGS = 23;
+	public static final int WESTEROS_BATTLE_OF_KINGS = 23;
 	public static final int CHANGE_TRACK = 24;
+	public static final int WILDLINGS_ATTACK = 25;
 
     public static GameState getGameStateByID(int id){
 		switch(id){
@@ -45,12 +47,13 @@ public class StateID {
 			case SELECT_HOUSE_CARD_PHASE: return new SelectHouseCardPhase();
 			case GAME_CONFIG_STATE: return new GameConfigState();
 			case PLAY_VESTEROS_STATE: return new PlayVesterosCard();
-			case COLLECT_UNITS: return new CollectUnits.ClientState();
-			case COLLECT_INFLUENCE: return new CollectInfluence.ClientState();
-			case COLLECT_SUPLY: return new CollectSuply.ClientState();
+			case VESTEROS_COLLECT_UNITS: return new CollectUnits.ClientState();
+			case VESTEROS_COLLECT_INFLUENCE: return new CollectInfluence.ClientState();
+			case WESTEROS_COLLECT_SUPLY: return new CollectSuply.ClientState();
 			case AUCTION_STATE: return new AuctionGameState();
-			case BATTLE_OF_KINGS: return new BattleOfKings.ClientState();
+			case WESTEROS_BATTLE_OF_KINGS: return new BattleOfKings.ClientState();
 			case CHANGE_TRACK: return new ChangeTrackState();
+			case WILDLINGS_ATTACK: return new WildlingsAttack.ClientState();
 		}
 		return null;
 	}

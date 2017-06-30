@@ -8,10 +8,9 @@ import got.network.Packages;
 import got.server.PlayerManager;
 import got.server.serverStates.StateMachine;
 import got.vesterosCards.CommonVesterosCard;
-import got.vesterosCards.States.CollectSuply;
-import got.vesterosCards.States.OptionSelectorState;
-import got.vesterosCards.States.CollectInfluence;
-import got.vesterosCards.States.CollectUnits;
+import got.vesterosCards.states.CollectSuply;
+import got.vesterosCards.states.OptionSelectorState;
+import got.vesterosCards.states.CollectUnits;
 
 /**
  * Created by Souverain73 on 12.04.2017.

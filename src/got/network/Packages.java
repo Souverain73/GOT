@@ -1103,17 +1103,17 @@ public class Packages {
 	}
 
 	public static class WildlingsData extends BroadcastPackage {
-		public Fraction minBet;
-		public Fraction maxBet;
+		public Fraction actor;
 		public boolean victory;
+		public int card;
 
 		public WildlingsData() {
 		}
 
-		public WildlingsData(Fraction minBet, Fraction maxBet, boolean victory) {
-			this.minBet = minBet;
-			this.maxBet = maxBet;
+		public WildlingsData(int card, Fraction actor, boolean victory) {
+			this.actor = actor;
 			this.victory = victory;
+			this.card = card;
 		}
 	}
 }

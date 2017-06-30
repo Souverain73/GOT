@@ -3,7 +3,7 @@ package got.vesterosCards.cards;
 import got.model.ChangeAction;
 import got.server.serverStates.StateMachine;
 import got.vesterosCards.CommonVesterosCard;
-import got.vesterosCards.States.CollectSuply;
+import got.vesterosCards.states.CollectSuply;
 
 /**
  * Created by Souverain73 on 12.04.2017.

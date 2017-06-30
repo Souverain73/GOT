@@ -11,6 +11,7 @@ import got.model.Game;
 import got.network.Packages;
 import got.vesterosCards.VesterosCard;
 import got.vesterosCards.VesterosCards;
+import got.wildlings.Wildlings;
 import org.joml.Vector2f;
 
 import java.util.ArrayList;
@@ -44,8 +45,10 @@ public class VesterosPhase extends AbstractGameState {
 			VesterosCard card = VesterosCards.getCard(msg.card);
 			cards[msg.number] = card;
 			GameClient.instance().logMessage("vesteros.cardOpen", msg.number+1, card.getTitle());
-			GameClient.instance().registerTask(()->
-				addObject(cardObjects[msg.number] = new ImageObject(card.getTexture(), 200, 100).setSpace(DrawSpace.SCREEN).setPos( new Vector2f(Constants.SCREEN_WIDTH / 2 - 100, 100 * (msg.number) + 1)))
+			GameClient.instance().registerTask(()->{
+					addObject(cardObjects[msg.number] = new ImageObject(card.getTexture(), 200, 100).setSpace(DrawSpace.SCREEN).setPos( new Vector2f(Constants.SCREEN_WIDTH / 2 - 100, 100 * (msg.number) + 1)));
+					if (card.hasWildlings()) Wildlings.instance().nextLevel();
+				}
 			);
 		}
 	}
@@ -54,7 +57,17 @@ public class VesterosPhase extends AbstractGameState {
 	public void pause() {
 		super.pause();
 		for(AbstractGameObject<?> co : cardObjects){
-			co.setVisible(false);
+			if (co != null) co.setVisible(false);
+		}
+	}
+
+	@Override
+	public void resume() {
+		super.resume();
+		if (cardObjects[2] != null) return;
+
+		for(AbstractGameObject<?> co : cardObjects){
+			if (co != null) co.setVisible(true);
 		}
 	}
 }

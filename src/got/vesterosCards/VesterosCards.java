@@ -18,20 +18,20 @@ public class VesterosCards {
     }
 
     public static void init(){
-        add(new RestrictedActionsCard("AutumnRains.png",   "AutumnRains",    Translator.tt("vesterosCard.AutumnRains"), new Action[]{Action.MOVEPLUS}));
+        add(new RestrictedActionsCard("AutumnRains.png",   "AutumnRains",    Translator.tt("vesterosCard.AutumnRains"), new Action[]{Action.MOVEPLUS}).wildlings());
         add(new BattleOfKingsCard("BattleOfKings.png", "BattleOfKings",  Translator.tt("vesterosCard.BattleOfKings")));
-        add(new BlackWings("BlackWings.png",    "BlackWings",     Translator.tt("vesterosCard.BlackWings")));
+        add(new BlackWings("BlackWings.png",    "BlackWings",     Translator.tt("vesterosCard.BlackWings")).wildlings());
         add(new CollectUnitsCard(  "CollectUnits.png",  "CollectUnits",   Translator.tt("vesterosCard.CollectUnits")));
-        add(new RestrictedActionsCard("FeastForCrows.png", "FeastForCrows",  Translator.tt("vesterosCard.FeastForCrows"), new Action[]{Action.MONEY, Action.MONEYPLUS}));
+        add(new RestrictedActionsCard("FeastForCrows.png", "FeastForCrows",  Translator.tt("vesterosCard.FeastForCrows"), new Action[]{Action.MONEY, Action.MONEYPLUS}).wildlings());
         add(new GameOfThrones("GameOfThrones.png", "GameOfThrones",  Translator.tt("vesterosCard.GameOfThrones")));
         add(new PutToSword("PutToSword.png",    "PutToSword",     Translator.tt("vesterosCard.PutToSword")));
-        add(new RestrictedActionsCard("SeaOfStorms.png",   "SeaOfStorms",    Translator.tt("vesterosCard.SeaOfStorms"), new Action[]{Action.FIRE, Action.FIREPLUS}));
-        add(new RestrictedActionsCard("StormOfSwords.png", "StormOfSwords",  Translator.tt("vesterosCard.StormOfSwords"), new Action[]{Action.DEFEND, Action.DEFENDPLUS}));
-        add(new CommonVesterosCard("SummerTime1.png",   "SummerTime1",    Translator.tt("vesterosCard.SummerTime")));
-        add(new CommonVesterosCard("SummerTime2.png",   "SummerTime2",    Translator.tt("vesterosCard.SummerTime")));
+        add(new RestrictedActionsCard("SeaOfStorms.png",   "SeaOfStorms",    Translator.tt("vesterosCard.SeaOfStorms"), new Action[]{Action.FIRE, Action.FIREPLUS}).wildlings());
+        add(new RestrictedActionsCard("StormOfSwords.png", "StormOfSwords",  Translator.tt("vesterosCard.StormOfSwords"), new Action[]{Action.DEFEND, Action.DEFENDPLUS}).wildlings());
+        add(new CommonVesterosCard("SummerTime1.png",   "SummerTime1",    Translator.tt("vesterosCard.SummerTime")).wildlings());
+        add(new CommonVesterosCard("SummerTime2.png",   "SummerTime2",    Translator.tt("vesterosCard.SummerTime")).wildlings());
         add(new SuplyCard("SuplyCard.png",         "SuplyCard",          Translator.tt("vesterosCard.SuplyCard")));
-        add(new ThroneOfSwords("ThroneOfSwords.png","ThroneOfSwords", Translator.tt("vesterosCard.ThroneOfSwords")));
-        add(new RestrictedActionsCard("WebOfLie.png",      "WebOfLie",       Translator.tt("vesterosCard.WebOfLie"), new Action[]{Action.HELP, Action.HELPPLUS}));
+        add(new ThroneOfSwords("ThroneOfSwords.png","ThroneOfSwords", Translator.tt("vesterosCard.ThroneOfSwords")).wildlings());
+        add(new RestrictedActionsCard("WebOfLie.png",      "WebOfLie",       Translator.tt("vesterosCard.WebOfLie"), new Action[]{Action.HELP, Action.HELPPLUS}).wildlings());
         add(new CommonVesterosCard("Wildlings.png",     "Wildlings",      Translator.tt("vesterosCard.Wildlings")));
         add(new CommonVesterosCard("WinterTime1.png",   "WinterTime1",    Translator.tt("vesterosCard.WinterTime")));
         add(new CommonVesterosCard("WinterTime2.png",   "WinterTime2",    Translator.tt("vesterosCard.WinterTime")));

@@ -1,4 +1,4 @@
-package got.vesterosCards.States;
+package got.vesterosCards.states;
 
 import got.Constants;
 import got.gameObjects.ContainerObject;

@@ -1,4 +1,4 @@
-package got.vesterosCards.States;
+package got.vesterosCards.states;
 
 import com.esotericsoftware.kryonet.Connection;
 import got.GameClient;
@@ -105,7 +105,7 @@ public class CollectSuply {
 
         @Override
         public int getID() {
-            return StateID.COLLECT_SUPLY;
+            return StateID.WESTEROS_COLLECT_SUPLY;
         }
     }
 

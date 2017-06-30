@@ -7,6 +7,8 @@ import got.server.serverStates.StateMachine;
  * Created by Souverain73 on 13.02.2017.
  */
 public interface VesterosCard {
+    boolean hasWildlings();
+
     class openParams{
         public int selection;
     }

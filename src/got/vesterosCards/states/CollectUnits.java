@@ -1,4 +1,4 @@
-package got.vesterosCards.States;
+package got.vesterosCards.states;
 
 import com.esotericsoftware.kryonet.Connection;
 import got.GameClient;
@@ -155,7 +155,7 @@ public class CollectUnits {
     public static class ServerState extends StepByStepState {
         @Override
         public int getID() {
-            return StateID.COLLECT_UNITS;
+            return StateID.VESTEROS_COLLECT_UNITS;
         }
 
         @Override

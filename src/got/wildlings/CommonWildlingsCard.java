@@ -2,7 +2,9 @@ package got.wildlings;
 
 import got.graphics.Texture;
 import got.graphics.TextureManager;
+import got.model.ChangeAction;
 import got.model.NetworkSide;
+import got.server.serverStates.StateMachine;
 
 /**
  * Created by Souverain73 on 20.04.2017.
@@ -22,13 +24,13 @@ public class CommonWildlingsCard implements WildlingsCard {
     }
 
     @Override
-    public void onWin(NetworkSide side){
+    public void onOpenClient() {
 
     }
 
     @Override
-    public void onLoose(NetworkSide side) {
-
+    public void onOpenServer(StateMachine stm) {
+        stm.changeState(null, ChangeAction.REMOVE);
     }
 
     @Override
