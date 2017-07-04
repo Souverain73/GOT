@@ -44,7 +44,7 @@ public class WildlingsAttack {
 
                 Timers.getTimer(1000, ()->{
                     GameClient.instance().registerTask(()->{
-                        card.onOpenClient();
+                        card.onOpenClient(msg);
                         Timers.getTimer(1000, ()->{
                             Animator.animateVector2f(cardImage.getAbsolutePos(), new Vector2f(-100, 50), 1000, cardImage::setPos);
                             Timers.getTimer(1000, ()->GameClient.instance().sendReady(true)).start(true);
@@ -67,6 +67,7 @@ public class WildlingsAttack {
     }
 
     public static class ServerState extends ParallelState{
+        private Packages.WildlingsData data;
         private int[] bets;
         private Fraction[] results;
         private WildlingsCard card;
@@ -91,15 +92,16 @@ public class WildlingsAttack {
             Fraction minBet = results[results.length - 1];
 
             if (Arrays.stream(bets).sum() >= level) {
-                GameServer.getServer().sendToAllTCP(new Packages.WildlingsData(card.getID(), maxBet, true));
+                data = new Packages.WildlingsData(card.getID(), maxBet, true, bets[0]);
             }else{
-                GameServer.getServer().sendToAllTCP(new Packages.WildlingsData(card.getID(), minBet, false));
+                data = new Packages.WildlingsData(card.getID(), minBet, false, bets[0]);
             }
+            GameServer.getServer().sendToAllTCP(data);
         }
 
         @Override
         protected void onReadyToChangeState() {
-            card.onOpenServer(stm);
+            card.onOpenServer(stm, data);
         }
     }
 }

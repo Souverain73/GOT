@@ -1106,14 +1106,16 @@ public class Packages {
 		public Fraction actor;
 		public boolean victory;
 		public int card;
+		public int maxBet;
 
 		public WildlingsData() {
 		}
 
-		public WildlingsData(int card, Fraction actor, boolean victory) {
+		public WildlingsData(int card, Fraction actor, boolean victory, int maxBet) {
 			this.actor = actor;
 			this.victory = victory;
 			this.card = card;
+			this.maxBet = maxBet;
 		}
 	}
 }

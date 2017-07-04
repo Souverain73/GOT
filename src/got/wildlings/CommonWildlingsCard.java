@@ -4,6 +4,8 @@ import got.graphics.Texture;
 import got.graphics.TextureManager;
 import got.model.ChangeAction;
 import got.model.NetworkSide;
+import got.network.Packages;
+import got.server.PlayerManager;
 import got.server.serverStates.StateMachine;
 
 /**
@@ -24,12 +26,27 @@ public class CommonWildlingsCard implements WildlingsCard {
     }
 
     @Override
-    public void onOpenClient() {
-
+    public void onOpenClient(Packages.WildlingsData data) {
+        if (data.victory){
+            if (PlayerManager.getSelf().getFraction() == data.actor)
+                winner(data);
+        }else{
+            if (PlayerManager.getSelf().getFraction() == data.actor){
+                looser(data);
+            }else{
+                other(data);
+            }
+        }
     }
 
+    protected void other(Packages.WildlingsData data){}
+
+    protected void looser(Packages.WildlingsData data){}
+
+    protected void winner(Packages.WildlingsData data){}
+
     @Override
-    public void onOpenServer(StateMachine stm) {
+    public void onOpenServer(StateMachine stm, Packages.WildlingsData data) {
         stm.changeState(null, ChangeAction.REMOVE);
     }
 
