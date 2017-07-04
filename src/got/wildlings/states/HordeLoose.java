@@ -6,6 +6,7 @@ import got.InputManager;
 import got.ModalState;
 import got.gameObjects.MapPartObject;
 import got.gameStates.ParallelGameState;
+import got.gameStates.StateID;
 import got.gameStates.modals.SelectUnitsDialogState;
 import got.interfaces.IClickListener;
 import got.model.ChangeAction;
@@ -106,6 +107,11 @@ public class HordeLoose {
     }
 
     public static class ServerState extends ParallelState{
+        @Override
+        public int getID() {
+            return StateID.WILDLINGS_HORDE_LOOSE;
+        }
+
         @Override
         public void enter(StateMachine stm) {
             super.enter(stm);
