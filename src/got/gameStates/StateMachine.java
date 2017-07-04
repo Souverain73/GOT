@@ -1,5 +1,6 @@
 package got.gameStates;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -10,7 +11,10 @@ import got.model.ChangeAction;
 import got.server.GameServer;
 
 public class StateMachine implements INetworkListener {
+	public static final String WILDLINGS_DATA_PARAM = "wildlings_data";
 	private LinkedList<GameState> _states;
+	private HashMap<String, Object> params;
+
 	
 	public StateMachine(){
 		_states = new LinkedList<>();
@@ -75,7 +79,19 @@ public class StateMachine implements INetworkListener {
 			getCurrentState().tick();
 		}
 	}
-	
+
+	public void saveParam(String name, Object param){
+		params.put(name, param);
+	}
+
+	public void removeParam(String name){
+		params.remove(name);
+	}
+
+	public Object getParam(String name){
+		return params.get(name);
+	}
+
 	public GameState getCurrentState(){
 		return _states.peek();
 	}

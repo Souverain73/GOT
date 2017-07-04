@@ -8,17 +8,13 @@ import got.gameObjects.ImageObject;
 import got.gameStates.ParallelGameState;
 import got.gameStates.StateID;
 import got.graphics.DrawSpace;
-import got.model.ChangeAction;
 import got.model.Fraction;
 import got.network.Packages;
 import got.server.GameServer;
-import got.server.PlayerManager;
 import got.server.serverStates.AuctionState;
 import got.server.serverStates.StateMachine;
 import got.server.serverStates.base.ParallelState;
 import got.utils.Timers;
-import got.vesterosCards.VesterosCard;
-import got.vesterosCards.VesterosCards;
 import got.wildlings.Wildlings;
 import got.wildlings.WildlingsCard;
 import org.joml.Vector2f;
@@ -34,6 +30,7 @@ public class WildlingsAttack {
         @Override
         public void recieve(Connection connection, Object pkg) {
             if (pkg instanceof Packages.WildlingsData) {
+                stm.saveParam(StateMachine.WILDLINGS_DATA_PARAM, pkg);
                 Packages.WildlingsData msg = (Packages.WildlingsData) pkg;
                 WildlingsCard card = Wildlings.instance().getCard(msg.card);
 
@@ -97,6 +94,7 @@ public class WildlingsAttack {
                 data = new Packages.WildlingsData(card.getID(), minBet, false, bets[0]);
             }
             GameServer.getServer().sendToAllTCP(data);
+            stm.saveParam(StateMachine.WILDLINGS_DATA_PARAM, data);
         }
 
         @Override

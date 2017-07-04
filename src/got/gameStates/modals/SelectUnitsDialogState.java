@@ -23,6 +23,8 @@ import java.util.List;
  * Created by Souverain73 on 22.11.2016.
  */
 public class SelectUnitsDialogState extends AbstractGameState implements IClickListener{
+    private final int unitsCount;
+    private final int maxUnits;
     List<ToggleImageButton> buttons = new ArrayList<>(4);
     Unit[] units;
     boolean ok = false;
@@ -33,6 +35,12 @@ public class SelectUnitsDialogState extends AbstractGameState implements IClickL
     }
 
     public SelectUnitsDialogState(Unit[] unitsToSelect, Vector2f pos){
+        this(unitsToSelect, pos, 0, 0);
+    }
+
+    public SelectUnitsDialogState(Unit[] unitsToSelect, Vector2f pos, int minUnits, int maxUnits){
+        this.unitsCount = minUnits;
+        this.maxUnits = maxUnits;
         float x = pos.x;
         float y = pos.y;
         this.units = unitsToSelect;
@@ -63,6 +71,8 @@ public class SelectUnitsDialogState extends AbstractGameState implements IClickL
         //action buttons: OK
         addObject(new ImageButton("buttons/select.png", (int)pos.x, (int)pos.y+60, 110, 55, null).setSpace(DrawSpace.WORLD)
                 .setCallback((sender, param)->{
+                    int selectedCount = getSelectedUnits().length;
+                    if (maxUnits != 0 && selectedCount < minUnits && selectedCount > maxUnits) return;
                     this.ok = true;
                     this.close();
                 }));

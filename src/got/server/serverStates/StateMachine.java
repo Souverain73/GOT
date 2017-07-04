@@ -12,6 +12,7 @@ import got.server.serverStates.base.ServerState;
 
 public class StateMachine implements INetworkListener{
 	public static final String VESTEROS_PHASE_DATA= "vesterosPhaseData";
+	public static final String WILDLINGS_DATA_PARAM = "wildlings_data";
     private HashMap<String, Object> params;
 
 	private LinkedList<ServerState> _states;
