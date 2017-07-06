@@ -4,6 +4,8 @@ import got.model.ChangeAction;
 import got.server.serverStates.AuctionState;
 import got.server.serverStates.StateMachine;
 import got.utils.Utils;
+import got.wildlings.cards.Gathering;
+import got.wildlings.cards.Horde;
 import got.wildlings.cards.Scout;
 import got.wildlings.states.WildlingsAttack;
 
@@ -42,9 +44,9 @@ public class Wildlings {
         add(new CommonWildlingsCard("killers.png",   "Killers",  tt("wildlings.killers")     ));
         add(new CommonWildlingsCard("riders.png",    "Riders",   tt("wildlings.riders")      ));
         add(new CommonWildlingsCard("squad.png",     "Squad",    tt("wildlings.squad")       ));
-        add(new CommonWildlingsCard("horde.png",     "Horde",    tt("wildlings.horde")       ));
+        add(new Horde("horde.png",     "Horde",    tt("wildlings.horde")       ));
         add(new Scout(              "scout.png",     "Scout",    tt("wildlings.scout")       ));
-        add(new CommonWildlingsCard("gathering.png", "Gathering",tt("wildlings.gathering")   ));
+        add(new Gathering("gathering.png", "Gathering",tt("wildlings.gathering")   ));
 
         deck = Utils.shuffle(deck);
     }

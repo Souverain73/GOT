@@ -7,6 +7,7 @@ import got.vesterosCards.states.CollectSuply;
 import got.vesterosCards.states.CollectUnits;
 import got.wildlings.states.HordeLoose;
 import got.wildlings.states.HordeVictory;
+import got.wildlings.states.RidersLoose;
 import got.wildlings.states.WildlingsAttack;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -36,6 +37,7 @@ public class StateID {
 	public static final int WILDLINGS_ATTACK = 25;
 	public static final int WILDLINGS_HORDE_VICTORY = 26;
 	public static final int WILDLINGS_HORDE_LOOSE = 27;
+	public static final int WILDLINGS_RIDERS_LOOSE = 28;
 
     public static GameState getGameStateByID(int id){
 		switch(id){
@@ -60,6 +62,7 @@ public class StateID {
 			case WILDLINGS_ATTACK: return new WildlingsAttack.ClientState();
 			case WILDLINGS_HORDE_LOOSE: return new HordeLoose.ClientState();
 			case WILDLINGS_HORDE_VICTORY: return new HordeVictory.ClientState();
+			case WILDLINGS_RIDERS_LOOSE: return new RidersLoose.ClientState();
 		}
 		return null;
 	}
