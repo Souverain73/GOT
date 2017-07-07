@@ -147,6 +147,7 @@ public class GameClient {
 						System.out.println(PlayerManager.instance().toString());
 						System.out.println("Self: "+PlayerManager.getSelf());
 						System.out.println("Current State Dump: " + getCurrentState());
+						System.out.println("States list: " + stm);
 
 					}else if(command[0].equals("self")){
 						System.out.println("Self: " + PlayerManager.getSelf());

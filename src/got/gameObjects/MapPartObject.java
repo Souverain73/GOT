@@ -494,4 +494,7 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		}
 	}
 
+	public boolean isEnabled(){
+		return state != State.DISABLED;
+	}
 }

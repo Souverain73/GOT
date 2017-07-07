@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -269,15 +270,7 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 	}
 	
 	public List<MapPartObject> getEnabledRegions(){
-		List<MapPartObject> result = new ArrayList<>();
-		
-		map.values().forEach(obj->{
-			if (obj.isActive()){
-				result.add(obj);
-			}
-		});
-		
-		return result;
+		return map.values().stream().filter(MapPartObject::isEnabled).collect(Collectors.toList());
 	}
 
 	public int[] getArmySizesForFraction(Fraction fraction){

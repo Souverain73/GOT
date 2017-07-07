@@ -9,7 +9,7 @@ collectInfluence "Вы получаете %d жетонов влияния"
 playerCollectInfluence "Игрок %s получает %d жетонов влияния"
 setRestrictedActions "Установлены ограничения приказов"
 looseMoney "Вы теряете %d жетонов влияния"
-
+noRegionsForHire "Нет регионов с замками или крепостями. Вы не можете набрать войска"
 waitForPlayer "Ожидание игрока %s"
 
 [planning]
@@ -97,6 +97,8 @@ Darkstar "Darkstar"
 ObaraSand "ObaraSand"
 AreoHotah "AreoHotah"
 TheRedViper "TheRedViper"
+playerDropCard "Игрок %s скидывает карту '%s'"
+playerRewindCard "Игрок %s возвращает себе карту '%s'"
 
 [vesterosCard]
 AutumnRains "Дожди осени"

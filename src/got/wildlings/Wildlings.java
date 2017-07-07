@@ -6,6 +6,7 @@ import got.server.serverStates.StateMachine;
 import got.utils.Utils;
 import got.wildlings.cards.Gathering;
 import got.wildlings.cards.Horde;
+import got.wildlings.cards.Riders;
 import got.wildlings.cards.Scout;
 import got.wildlings.states.WildlingsAttack;
 
@@ -20,7 +21,7 @@ import static got.translation.Translator.tt;
  */
 public class Wildlings {
     int level = 0;
-    static int maxLevel = 12;
+    static int maxLevel = 2;
     private static Wildlings _instance = new Wildlings();
 
     public static Wildlings instance(){
@@ -38,15 +39,15 @@ public class Wildlings {
     }
 
     private Wildlings(){
-        add(new CommonWildlingsCard("king.png",      "King",     tt("wildlings.king")        ));
-        add(new CommonWildlingsCard("robbers.png",   "Robbers",  tt("wildlings.robbers")     ));
-        add(new CommonWildlingsCard("silence.png",   "Silence",  tt("wildlings.silence")     ));
-        add(new CommonWildlingsCard("killers.png",   "Killers",  tt("wildlings.killers")     ));
-        add(new CommonWildlingsCard("riders.png",    "Riders",   tt("wildlings.riders")      ));
-        add(new CommonWildlingsCard("squad.png",     "Squad",    tt("wildlings.squad")       ));
-        add(new Horde("horde.png",     "Horde",    tt("wildlings.horde")       ));
-        add(new Scout(              "scout.png",     "Scout",    tt("wildlings.scout")       ));
-        add(new Gathering("gathering.png", "Gathering",tt("wildlings.gathering")   ));
+//        add(new CommonWildlingsCard("king.png",      "King",     tt("wildlings.king")        ));
+//        add(new CommonWildlingsCard("robbers.png",   "Robbers",  tt("wildlings.robbers")     ));
+//        add(new CommonWildlingsCard("silence.png",   "Silence",  tt("wildlings.silence")     ));
+//        add(new CommonWildlingsCard("killers.png",   "Killers",  tt("wildlings.killers")     ));
+        add(new Riders("riders.png",    "Riders",   tt("wildlings.riders")      ));
+//        add(new CommonWildlingsCard("squad.png",     "Squad",    tt("wildlings.squad")       ));
+//        add(new Horde("horde.png",     "Horde",    tt("wildlings.horde")       ));
+//        add(new Scout(              "scout.png",     "Scout",    tt("wildlings.scout")       ));
+//        add(new Gathering("gathering.png", "Gathering",tt("wildlings.gathering")   ));
 
         deck = Utils.shuffle(deck);
     }

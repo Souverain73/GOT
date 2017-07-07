@@ -21,7 +21,7 @@ public abstract class ParallelState implements ServerState, IPauseable {
 
     @Override
     public String getName() {
-        return null;
+        return getClass().getName();
     }
 
     @Override

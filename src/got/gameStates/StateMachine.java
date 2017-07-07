@@ -8,12 +8,14 @@ import com.esotericsoftware.kryonet.Connection;
 import got.interfaces.INetworkListener;
 import got.interfaces.IPauseable;
 import got.model.ChangeAction;
+import got.model.Game;
 import got.server.GameServer;
+import got.server.serverStates.base.ServerState;
 
 public class StateMachine implements INetworkListener {
 	public static final String WILDLINGS_DATA_PARAM = "wildlings_data";
 	private LinkedList<GameState> _states;
-	private HashMap<String, Object> params;
+	private HashMap<String, Object> params = new HashMap<>();
 
 	
 	public StateMachine(){
@@ -102,4 +104,18 @@ public class StateMachine implements INetworkListener {
 			st.recieve(connection, pkg);
 		}
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		for (GameState st : _states){
+			sb.append(st);
+			if (_states.getLast() != st)
+				sb.append(", ");
+		}
+		sb.append("]");
+		return sb.toString();
+	}
+
 }

@@ -17,7 +17,6 @@ public class Horde extends CommonWildlingsCard {
 
     @Override
     public void onOpenServer(StateMachine stm, Packages.WildlingsData data) {
-        super.onOpenServer(stm, data);
         if (data.victory){
             stm.changeState(new HordeVictory.ServerState(), ChangeAction.SET);
         }else{

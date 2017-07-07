@@ -6,6 +6,7 @@ import got.InputManager;
 import got.ModalState;
 import got.gameObjects.MapPartObject;
 import got.gameStates.AbstractGameState;
+import got.gameStates.ParallelGameState;
 import got.gameStates.StateID;
 import got.gameStates.StateMachine;
 import got.gameStates.modals.HireMenuState;
@@ -15,19 +16,28 @@ import got.model.Player;
 import got.network.Packages;
 import got.server.GameServer;
 import got.server.PlayerManager;
+import got.server.serverStates.base.ParallelState;
 
 /**
  * Created by КизиловМЮ on 04.07.2017.
  */
 public class HordeVictory {
-    public static class ClientState extends AbstractGameState implements IClickListener {
+    public static class ClientState extends ParallelGameState implements IClickListener {
         Packages.WildlingsData data;
 
         @Override
         public void enter(StateMachine stm) {
             super.enter(stm);
             data = (Packages.WildlingsData) stm.getParam(StateMachine.WILDLINGS_DATA_PARAM);
-            enableRegionsToHire();
+            if (data.actor == PlayerManager.getSelf().getFraction()){
+                enableRegionsToHire();
+                if (GameClient.shared.gameMap.getEnabledRegions().isEmpty()){
+                    setReady(true);
+                }
+            }
+
+            else
+                setReady(true);
         }
 
         private void enableRegionsToHire() {
@@ -49,6 +59,8 @@ public class HordeVictory {
                 (new ModalState(hms)).run();
                 if (hms.isHired()){
                     GameClient.instance().send(new Packages.ChangeUnits(region.getID(), region.getUnits()));
+                    GameClient.instance().logMessage("common.noRegionsToHire");
+                    setReady(true);
                 }
                 region.showUnits();
             }
@@ -65,9 +77,7 @@ public class HordeVictory {
         }
     }
 
-    public static class ServerState implements got.server.serverStates.base.ServerState{
-        got.server.serverStates.StateMachine stm;
-
+    public static class ServerState extends ParallelState{
         @Override
         public String getName() {
             return "HordeVicroty state";
@@ -84,8 +94,8 @@ public class HordeVictory {
         }
 
         @Override
-        public void exit() {
-
+        protected void onReadyToChangeState() {
+            stm.changeState(null, ChangeAction.REMOVE);
         }
 
         @Override
@@ -95,7 +105,6 @@ public class HordeVictory {
             if (pkg instanceof Packages.ChangeUnits) {
                 Packages.ChangeUnits msg = (Packages.ChangeUnits) pkg;
                 GameServer.getServer().sendToAllTCP(new Packages.PlayerChangeUnits(player.id, msg.region, msg.units));
-                stm.changeState(null, ChangeAction.REMOVE);
             }
         }
     }

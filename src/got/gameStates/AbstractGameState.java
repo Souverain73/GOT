@@ -31,7 +31,7 @@ public abstract class AbstractGameState implements GameState, IPauseable {
 
 	@Override
 	public String getName() {
-		return "Abstract game state";
+		return this.getClass().getName();
 	}
 
 	@Override

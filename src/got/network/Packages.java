@@ -1117,5 +1117,15 @@ public class Packages {
 			this.card = card;
 			this.maxBet = maxBet;
 		}
+
+		@Override
+		public String toString() {
+			return "WildlingsData{" +
+					"actor=" + actor +
+					", victory=" + victory +
+					", card=" + card +
+					", maxBet=" + maxBet +
+					'}';
+		}
 	}
 }

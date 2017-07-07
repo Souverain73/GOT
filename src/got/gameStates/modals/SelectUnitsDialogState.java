@@ -72,7 +72,7 @@ public class SelectUnitsDialogState extends AbstractGameState implements IClickL
         addObject(new ImageButton("buttons/select.png", (int)pos.x, (int)pos.y+60, 110, 55, null).setSpace(DrawSpace.WORLD)
                 .setCallback((sender, param)->{
                     int selectedCount = getSelectedUnits().length;
-                    if (maxUnits != 0 && selectedCount < minUnits && selectedCount > maxUnits) return;
+                    if (maxUnits != 0 && (selectedCount < minUnits || selectedCount > maxUnits)) return;
                     this.ok = true;
                     this.close();
                 }));

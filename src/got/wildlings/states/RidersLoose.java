@@ -25,6 +25,12 @@ public class RidersLoose {
     public static class ClientState extends ParallelGameState implements IClickListener{
         private int unitsToKill;
         private Packages.WildlingsData data;
+
+        @Override
+        public String getName() {
+            return "RidersLoose";
+        }
+
         @Override
         public void enter(StateMachine stm) {
             super.enter(stm);
@@ -56,7 +62,11 @@ public class RidersLoose {
                     GameClient.instance().send(new Packages.ChangeUnits(region.getID(), region.getUnits()));
 
                     unitsToKill -= units.length;
-                    if (unitsToKill == 0){
+                    if (region.getUnitsCount() == 0){
+                        region.setEnabled(false);
+                    }
+
+                    if (unitsToKill == 0 || GameClient.shared.gameMap.getEnabledRegions().isEmpty()){
                         endTurn();
                     }
                 }
@@ -80,14 +90,14 @@ public class RidersLoose {
 
         @Override
         public int getID() {
-            return StateID.WILDLINGS_HORDE_LOOSE;
+            return StateID.WILDLINGS_RIDERS_LOOSE;
         }
     }
 
     public static class ServerState extends ParallelState{
         @Override
         public int getID() {
-            return StateID.WILDLINGS_HORDE_LOOSE;
+            return StateID.WILDLINGS_RIDERS_LOOSE;
         }
 
         @Override

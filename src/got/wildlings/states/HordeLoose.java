@@ -32,7 +32,7 @@ public class HordeLoose {
         public void enter(got.gameStates.StateMachine stm) {
             super.enter(stm);
             data = (Packages.WildlingsData) stm.getParam(StateMachine.WILDLINGS_DATA_PARAM);
-            looser = PlayerManager.getSelf().getFraction() != data.actor;
+            looser = PlayerManager.getSelf().getFraction() == data.actor;
             enableActiveRegions();
         }
 
@@ -76,7 +76,7 @@ public class HordeLoose {
                         Unit[] unitsToKill = suds.getSelectedUnits();
                         region.removeUnits(unitsToKill);
                         GameClient.instance().send(new Packages.ChangeUnits(region.getID(), region.getUnits()));
-                        setReady(true);
+                        endTurn();
                     }
                 }else{
                     SelectUnitsDialogState suds = new SelectUnitsDialogState(region.getUnits(), new Vector2f(InputManager.instance().getMousePosWorld()), 1, unitsLeft);
@@ -86,12 +86,22 @@ public class HordeLoose {
                         region.removeUnits(unitsToKill);
                         unitsLeft -= unitsToKill.length;
                         GameClient.instance().send(new Packages.ChangeUnits(region.getID(), region.getUnits()));
-                        if (unitsLeft == 0) {
-                            setReady(true);
+                        if (region.getUnitsCount() == 0){
+                            region.setEnabled(false);
                         }
+
+                        if (unitsLeft == 0 || GameClient.shared.gameMap.getEnabledRegions().isEmpty()) {
+                            endTurn();
+                        }
+
                     }
                 }
             }
+        }
+
+        private void endTurn(){
+            GameClient.shared.gameMap.disableAllRegions();
+            setReady(true);
         }
 
         @Override

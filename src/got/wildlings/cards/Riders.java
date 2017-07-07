@@ -11,6 +11,7 @@ import got.network.Packages;
 import got.server.PlayerManager;
 import got.server.serverStates.StateMachine;
 import got.wildlings.CommonWildlingsCard;
+import got.wildlings.states.RidersLoose;
 
 /**
  * Created by КизиловМЮ on 06.07.2017.
@@ -34,7 +35,9 @@ public class Riders extends CommonWildlingsCard {
     @Override
     public void onOpenServer(StateMachine stm, Packages.WildlingsData data) {
         if (!data.victory){
-            stm.changeState(null, ChangeAction.SET);
+            stm.changeState(new RidersLoose.ServerState(), ChangeAction.SET);
+        }else{
+            super.onOpenServer(stm, data);
         }
     }
 }

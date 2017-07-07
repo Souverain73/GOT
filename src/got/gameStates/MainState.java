@@ -114,4 +114,9 @@ public class MainState extends AbstractGameState {
 	public GameState getCurrentState(){
 		return stm.getCurrentState();
 	}
+
+	@Override
+	public String toString() {
+		return "Main state:" + stm;
+	}
 }
