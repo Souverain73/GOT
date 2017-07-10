@@ -47,7 +47,6 @@ public class TyrionLanister extends ActiveHouseCard {
                 Dialogs.Dialog  dlg = Dialogs.createConfirmDialog(new Vector2f(100,100));
                 (new ModalState(dlg)).run();
                 if (dlg.getResult() == Dialogs.DialogResult.OK){
-                    //todo: убрать карту противника и дать ему перевыбрать
                     GameClient.instance().send(new Packages.Confirm());
                 }else{
                     resumeModal();

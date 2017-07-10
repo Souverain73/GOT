@@ -85,6 +85,13 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		unit_x = (Integer)params.get("unit_x");
 		unit_y = (Integer)params.get("unit_y");
 		type = RegionType.valueOf((String)params.get("type"));
+		try{
+			token_x = (Integer)params.get("token_x");
+			token_y = (Integer)params.get("token_y");;
+		}catch(NullPointerException e){
+			token_x = w/2;
+			token_y = h/2;
+		}
 		try {
 			setAction(Action.valueOf((String)params.get("action")));
 		} catch (Exception e) {}
@@ -93,9 +100,6 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 		}catch(Exception e){}
 		placeUnits();
 
-		//todo: Вынести в xml
-		token_x = w/2;
-		token_y = h/2;
 		return false;
 	}
 	public int getID(){

@@ -25,7 +25,6 @@ public class RobStark extends ActiveHouseCard {
     @Override
     public void onWin() {
         super.onWin();
-        //todo: реализовать выбор места для отступления за врага
         (new ModalState(new SelectRegionToRetreatState(), true, true)).run();
     }
 

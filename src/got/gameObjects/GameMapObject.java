@@ -156,6 +156,10 @@ public class GameMapObject extends AbstractGameObject<GameMapObject>{
 						params.put("action_x", Integer.valueOf(attribValue(paramNode,"x")));
 						params.put("action_y", Integer.valueOf(attribValue(paramNode,"y")));
 					}
+					if (paramNode.getNodeName().equals("tokenpos")){
+						params.put("token_x", Integer.valueOf(attribValue(paramNode,"x")));
+						params.put("token_y", Integer.valueOf(attribValue(paramNode,"y")));
+					}
 				}
 
 				try {

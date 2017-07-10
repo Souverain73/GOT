@@ -49,6 +49,7 @@ public class AuctionGameState extends ParallelGameState{
     public void enter(StateMachine stm) {
         super.enter(stm);
         CustomModalState<?> cms = new CustomModalState<>(null, false);
+        GameClient.instance().setTooltipText("auction.selectCount");
         cms.addObject(nso = new NumberSelectorObject(0, PlayerManager.getSelf().getMoney(), 0){
             @Override
             protected void onSelect() {
@@ -61,6 +62,7 @@ public class AuctionGameState extends ParallelGameState{
                 .setSpace(DrawSpace.SCREEN));
 
         (new ModalState(cms, true, true)).run();
+        GameClient.instance().setTooltipText("common.waitForOtherPlayers");
     }
 
     @Override

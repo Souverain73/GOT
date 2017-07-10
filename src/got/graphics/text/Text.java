@@ -28,8 +28,7 @@ import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 
 public class Text {
-	
-	//TODO implement word wrap and bounding box.
+
 	private float[] vertexCoords;
 	private float[] UVCoords;
 	private int glyphs;

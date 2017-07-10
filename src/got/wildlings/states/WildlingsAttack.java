@@ -48,11 +48,13 @@ public class WildlingsAttack {
                 Animator.animateVector2f(cardImage.getAbsolutePos(), new Vector2f(Constants.SCREEN_WIDTH/2-50, 50), 1000, cardImage::setPos);
 
                 Timers.getTimer(1000, ()->{
-                    card.onOpenClient(msg);
-                    Timers.getTimer(1000, ()->{
-                        Animator.animateVector2f(cardImage.getAbsolutePos(), new Vector2f(-100, 50), 1000, cardImage::setPos);
-                        Timers.getTimer(1000, ()->GameClient.instance().sendReady(true)).start(true);
-                    }).start(true);
+                    GameClient.instance().registerTask(()->{
+                        card.onOpenClient(msg);
+                        Timers.getTimer(1000, ()->{
+                            Animator.animateVector2f(cardImage.getAbsolutePos(), new Vector2f(-100, 50), 1000, cardImage::setPos);
+                            Timers.getTimer(1000, ()->GameClient.instance().sendReady(true)).start(true);
+                        }).start(true);
+                    });
                 }).start(true);
             }
 
