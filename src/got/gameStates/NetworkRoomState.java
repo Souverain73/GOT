@@ -89,40 +89,32 @@ public class NetworkRoomState extends AbstractGameState{
 			GameClient.instance().getStateMachine().removeState();
 		}
 		if (pkg instanceof PlayerConnected){
-			PlayerConnected msg = (PlayerConnected)pkg;
+			PlayerConnected msg = (PlayerConnected) pkg;
 			Player player = msg.player;
-			UI.systemMessage(("Player "+player.getNickname()+" connected"));
-			GameClient.instance().registerTask(() -> {
-                PlayerManager.instance().register(player);
-                npp.addPlayer(player);
-            });
+			UI.systemMessage(("Player " + player.getNickname() + " connected"));
+			PlayerManager.instance().register(player);
+			npp.addPlayer(player);
 		}
-		
-		if (pkg instanceof PlayersList){
-			PlayersList list = (PlayersList)pkg;
-			GameClient.instance().registerTask(() -> {
-                PlayerManager.instance().registerAll(list.players);
-                npp.addPlayers(
-                        PlayerManager.instance().getPlayersList()
-                );
-            });
+
+		if (pkg instanceof PlayersList) {
+			PlayersList list = (PlayersList) pkg;
+			PlayerManager.instance().registerAll(list.players);
+			npp.addPlayers(
+					PlayerManager.instance().getPlayersList()
+			);
 		}
-		
-		if (pkg instanceof PlayerDisconnected){
-			PlayerDisconnected msg = ((PlayerDisconnected)pkg);
+
+		if (pkg instanceof PlayerDisconnected) {
+			PlayerDisconnected msg = ((PlayerDisconnected) pkg);
 			Player player = msg.player;
 			PlayerManager.instance().disconnect(player.id);
-			GameClient.instance().registerTask(()->{
-				npp.removePlayer(player.id);
-			});
+			npp.removePlayer(player.id);
 		}
-		
-		if (pkg instanceof PlayerReady){
-			PlayerReady msg = (PlayerReady)pkg;
-			GameClient.instance().registerTask(()->{
-				PlayerManager.instance().getPlayer(msg.playerID).setReady(msg.ready);
-				npp.setPlayerReady(msg.playerID, msg.ready);
-			});
+
+		if (pkg instanceof PlayerReady) {
+			PlayerReady msg = (PlayerReady) pkg;
+			PlayerManager.instance().getPlayer(msg.playerID).setReady(msg.ready);
+			npp.setPlayerReady(msg.playerID, msg.ready);
 		}
 		
 		if (pkg instanceof SetFractions){

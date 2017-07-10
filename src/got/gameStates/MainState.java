@@ -100,7 +100,7 @@ public class MainState extends AbstractGameState {
 	public void recieve(Connection connection, Object pkg) {
 		if (pkg instanceof ChangeState){
 			Packages.ChangeState msg = (ChangeState) pkg;
-			GameClient.instance().registerTask(() -> stm.changeState(msg.state, msg.action));
+			stm.changeState(msg.state, msg.action);
 			return;
 		}
 		stm.recieve(connection, pkg);

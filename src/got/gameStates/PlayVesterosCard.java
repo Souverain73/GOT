@@ -34,21 +34,17 @@ public class PlayVesterosCard extends AbstractGameState {
     @Override
     public void recieve(Connection connection, Object pkg) {
         super.recieve(connection, pkg);
-        if (pkg instanceof Packages.OpenCard){
-            Packages.OpenCard msg = (Packages.OpenCard)pkg;
+        if (pkg instanceof Packages.OpenCard) {
+            Packages.OpenCard msg = (Packages.OpenCard) pkg;
             VesterosCard card = VesterosCards.getCard(msg.card);
-            GameClient.instance().registerTask(()->{
-                addObject(cardImage = new ImageObject(card.getTexture(), 200, 100).setSpace(DrawSpace.SCREEN).setPos(Constants.SCREEN_WIDTH, 50));
-                Animator.animateVector2f(cardImage.getAbsolutePos(), new Vector2f(Constants.SCREEN_WIDTH/2-100, 50), 1000, cardImage::setPos);
-            });
-            Timers.getTimer(1000, ()->{
-                GameClient.instance().registerTask(()->{
-                    card.onOpenClient();
-                    Timers.getTimer(1000, ()->{
-                        Animator.animateVector2f(cardImage.getAbsolutePos(), new Vector2f(-200, 50), 1000, cardImage::setPos);
-                        Timers.getTimer(1000, ()->GameClient.instance().sendReady(true)).start(true);
-                    }).start(true);
-                });
+            addObject(cardImage = new ImageObject(card.getTexture(), 200, 100).setSpace(DrawSpace.SCREEN).setPos(Constants.SCREEN_WIDTH, 50));
+            Animator.animateVector2f(cardImage.getAbsolutePos(), new Vector2f(Constants.SCREEN_WIDTH / 2 - 100, 50), 1000, cardImage::setPos);
+            Timers.getTimer(1000, () -> {
+                card.onOpenClient();
+                Timers.getTimer(1000, () -> {
+                    Animator.animateVector2f(cardImage.getAbsolutePos(), new Vector2f(-200, 50), 1000, cardImage::setPos);
+                    Timers.getTimer(1000, () -> GameClient.instance().sendReady(true)).start(true);
+                }).start(true);
             }).start(true);
 
         }

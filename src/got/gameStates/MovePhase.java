@@ -169,25 +169,24 @@ public class MovePhase extends StepByStepGameState implements IClickListener{
 		super.recieve(c, pkg);
 		if (pkg instanceof Packages.PlayerMove) {
 			Packages.PlayerMove msg = (Packages.PlayerMove) pkg;
-			GameClient.instance().registerTask(()->{
-				Player player = PlayerManager.instance().getPlayer(msg.player);
 
-				MapPartObject regionFrom = GameClient.shared.gameMap.getRegionByID(msg.from);
-				regionFrom.removeUnits(msg.units);
+			Player player = PlayerManager.instance().getPlayer(msg.player);
 
-				if (regionFrom.getUnitsCount() == 0 && !regionFrom.havePowerToket()){
-					regionFrom.setFraction(Fraction.NONE);
-				}
+			MapPartObject regionFrom = GameClient.shared.gameMap.getRegionByID(msg.from);
+			regionFrom.removeUnits(msg.units);
 
-				MapPartObject regionTo = GameClient.shared.gameMap.getRegionByID(msg.to);
-				//Если перешел во вражеский регион, надо убрать жетон власти
-				if (player.getFraction() != regionTo.getFraction()){
-					regionTo.removePowerToken();
-				}
-				logAction("common.playerMoveUnits", player.getNickname(), regionFrom.getName(), regionTo.getName());
-				regionTo.addUnits(msg.units);
-				regionTo.setFraction(player.getFraction());
-			});
+			if (regionFrom.getUnitsCount() == 0 && !regionFrom.havePowerToket()) {
+				regionFrom.setFraction(Fraction.NONE);
+			}
+
+			MapPartObject regionTo = GameClient.shared.gameMap.getRegionByID(msg.to);
+			//Если перешел во вражеский регион, надо убрать жетон власти
+			if (player.getFraction() != regionTo.getFraction()) {
+				regionTo.removePowerToken();
+			}
+			logAction("common.playerMoveUnits", player.getNickname(), regionFrom.getName(), regionTo.getName());
+			regionTo.addUnits(msg.units);
+			regionTo.setFraction(player.getFraction());
 		}
 		if (pkg instanceof Packages.PlayerAct) {
 			GameClient.shared.gameMap.getRegionByID(((Packages.PlayerAct) pkg).from).setAction(null);

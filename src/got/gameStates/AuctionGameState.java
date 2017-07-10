@@ -75,16 +75,13 @@ public class AuctionGameState extends ParallelGameState{
             }
             Arrays.sort(bets, (o1, o2) -> o2.value - o1.value);
 
-            GameClient.instance().registerTask(()->{
-                auctionResultObject = createAuctionResultObject(bets);
-                addObject(auctionResultObject);
-                addObject(createBetsListObject(bets));
-                if (PlayerManager.getSelf().getFraction() == Game.instance().getTrack(Game.THRONE_TRACK).getFirst()){
-                    auctionResultObject.resolvePositions();
-                    GameClient.instance().send(new Packages.AuctionResult(auctionResultObject.getResult()));
-                }
-
-            });
+            auctionResultObject = createAuctionResultObject(bets);
+            addObject(auctionResultObject);
+            addObject(createBetsListObject(bets));
+            if (PlayerManager.getSelf().getFraction() == Game.instance().getTrack(Game.THRONE_TRACK).getFirst()) {
+                auctionResultObject.resolvePositions();
+                GameClient.instance().send(new Packages.AuctionResult(auctionResultObject.getResult()));
+            }
         }
 
         if (pkg instanceof Packages.PlayerResolvePosition) {

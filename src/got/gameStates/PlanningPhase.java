@@ -147,29 +147,25 @@ public class PlanningPhase extends ParallelGameState implements IClickListener {
 		if (pkg instanceof PlayerSetAction){
 			PlayerSetAction msg = ((PlayerSetAction)pkg);
 			MapPartObject region = GameClient.shared.gameMap.getRegionByID(msg.region);
-			GameClient.instance().registerTask(new Runnable() {
-				@Override
-				public void run() {
-					if (msg.action==null){
-						logAction("common.playerRemoveAction", region.getName());
-						//if it's your action. in this case it must be handled before remove action from map.
-						if (region.getFraction() == PlayerManager.getSelf().getFraction())
-							//do some routine to handle your actions set
-							removeAction(region);
-						//remove object from region
-						region.setAction(null); 
-					}else{
-						Action act = msg.action;
-						logAction("common.playerSetAction", region.getName());
-						//add action to region
-						region.setAction(act);
-						//if it's your action
-						if (region.getFraction() == PlayerManager.getSelf().getFraction())
-							//handle your actions set
-							placeAction(region, act);
-					}
-				}
-			});
+
+			if (msg.action == null) {
+				logAction("common.playerRemoveAction", region.getName());
+				//if it's your action. in this case it must be handled before remove action from map.
+				if (region.getFraction() == PlayerManager.getSelf().getFraction())
+					//do some routine to handle your actions set
+					removeAction(region);
+				//remove object from region
+				region.setAction(null);
+			} else {
+				Action act = msg.action;
+				logAction("common.playerSetAction", region.getName());
+				//add action to region
+				region.setAction(act);
+				//if it's your action
+				if (region.getFraction() == PlayerManager.getSelf().getFraction())
+					//handle your actions set
+					placeAction(region, act);
+			}
 		}
 		
 	}

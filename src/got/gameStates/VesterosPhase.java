@@ -45,13 +45,13 @@ public class VesterosPhase extends AbstractGameState {
 			VesterosCard card = VesterosCards.getCard(msg.card);
 			cards[msg.number] = card;
 			GameClient.instance().logMessage("vesteros.cardOpen", msg.number+1, card.getTitle());
-			GameClient.instance().registerTask(()->{
-					addObject(cardObjects[msg.number] = new ImageObject(card.getTexture(), 200, 100).setSpace(DrawSpace.SCREEN).setPos( new Vector2f(Constants.SCREEN_WIDTH / 2 - 100, 100 * (msg.number) + 1)));
-					if (card.hasWildlings()) Wildlings.instance().nextLevel();
-				}
-			);
+
+			addObject(cardObjects[msg.number] = new ImageObject(card.getTexture(), 200, 100).setSpace(DrawSpace.SCREEN).setPos( new Vector2f(Constants.SCREEN_WIDTH / 2 - 100, 100 * (msg.number) + 1)));
+			if (card.hasWildlings()) Wildlings.instance().nextLevel();
 		}
+
 	}
+
 
 	@Override
 	public void pause() {

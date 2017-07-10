@@ -42,31 +42,23 @@ public class BattleResultState extends AbstractGameState{
     @Override
     public void recieve(Connection connection, Object pkg) {
         if (pkg instanceof Packages.BattleResult) {
-            GameClient.instance().registerTask(()->
-                onBattleResult((Packages.BattleResult) pkg)
-            );
+            onBattleResult((Packages.BattleResult) pkg);
         }else if (pkg instanceof Packages.EndBattle) {
             Packages.EndBattle end = (Packages.EndBattle) pkg;
-            GameClient.instance().registerTask(()->
-                    endBattle()
-            );
+            endBattle();
         }else if (pkg instanceof Packages.PlayerChangeUnits) {
             Packages.PlayerChangeUnits changeUnits = (Packages.PlayerChangeUnits) pkg;
             MapPartObject region = GameClient.shared.gameMap.getRegionByID(changeUnits.region);
             Player player = PlayerManager.instance().getPlayer(changeUnits.player);
-            GameClient.instance().registerTask(()-> {
-                        logAction("common.playerChangeUnits", player.getNickname(), region.getName());
-                        region.setUnits(changeUnits.units);
-                    });
+            logAction("common.playerChangeUnits", player.getNickname(), region.getName());
+            region.setUnits(changeUnits.units);
         }else if (pkg instanceof Packages.PlayerMove) {
             Packages.PlayerMove msg = (Packages.PlayerMove) pkg;
-            GameClient.instance().registerTask(()->{
-                moveAllUnits(msg.from, msg.to);
-                logAction("common.playerMoveUnits",
-                        PlayerManager.instance().getPlayer(msg.player),
-                        GameClient.shared.gameMap.getRegionByID(msg.from),
-                        GameClient.shared.gameMap.getRegionByID(msg.to));
-            });
+            moveAllUnits(msg.from, msg.to);
+            logAction("common.playerMoveUnits",
+                    PlayerManager.instance().getPlayer(msg.player),
+                    GameClient.shared.gameMap.getRegionByID(msg.from),
+                    GameClient.shared.gameMap.getRegionByID(msg.to));
         }else if (pkg instanceof Packages.GetBattleResult) {
             if (GameClient.shared.battleDeck.isBattleMember(getSelf().getFraction())) {
                 GameClient.instance().send(new Packages.PlayerDamage(
@@ -79,24 +71,19 @@ public class BattleResultState extends AbstractGameState{
             GameClient.shared.gameMap.getRegionByID(msg.regionID).removeAllUnits();
         }else if (pkg instanceof Packages.MoveAttackerToAttackRegion) {
             if (!GameClient.shared.battleDeck.overrides.noMoveAttacker) {
-                GameClient.instance().registerTask(() -> {
-                            moveAllUnits(GameClient.shared.battleDeck.getAttackerRegion(), GameClient.shared.battleDeck.getDefenderRegion());
-                            logAction("battle.winnerMove", GameClient.shared.battleDeck.getDefenderRegion());
-                        }
-                );
+                moveAllUnits(GameClient.shared.battleDeck.getAttackerRegion(), GameClient.shared.battleDeck.getDefenderRegion());
+                logAction("battle.winnerMove", GameClient.shared.battleDeck.getDefenderRegion());
             }
         }else if (pkg instanceof Packages.PlayerSetAction) {
             Packages.PlayerSetAction msg = (Packages.PlayerSetAction) pkg;
-            GameClient.instance().registerTask(()->{
-                MapPartObject region = GameClient.shared.gameMap.getRegionByID(msg.region);
-                if (msg.action == null) {
-                    logAction("common.playerRemoveAction" + region.getName());
-                    region.setAction(null);
-                }else{
-                    logAction("common.playerSetAction" + region.getName());
-                    region.setAction(msg.action);
-                }
-            });
+            MapPartObject region = GameClient.shared.gameMap.getRegionByID(msg.region);
+            if (msg.action == null) {
+                logAction("common.playerRemoveAction" + region.getName());
+                region.setAction(null);
+            } else {
+                logAction("common.playerSetAction" + region.getName());
+                region.setAction(msg.action);
+            }
         }else if (pkg instanceof Packages.PlayerSetOverrides) {
             Packages.PlayerSetOverrides msg = (Packages.PlayerSetOverrides) pkg;
             Player pl = PlayerManager.instance().getPlayer(msg.player);

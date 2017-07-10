@@ -30,7 +30,7 @@ import java.util.stream.Stream;
 
 import static got.utils.UI.tooltipWait;
 
-class PowerPhase extends StepByStepGameState implements IClickListener{
+class PowerPhase extends StepByStepGameState implements IClickListener {
     private enum SubState {
         SELECT_SOURCE, SELECT_TARGET
     }
@@ -131,19 +131,17 @@ class PowerPhase extends StepByStepGameState implements IClickListener{
 
     @Override
     protected void onSelfTurn() {
-        GameClient.instance().registerTask(()-> {
-            if (!enableRegionsWithCrown()) {
-                //Если не был активирован ни один регион, значит текущий игрок не может совершить ход.
-                //В таком случае необходлимо сообщить об этом серверу пакетом Ready.
-                GameClient.instance().send(new Packages.Ready(false));
-            } else {
-                if (firstTurn) {
-                    firstTurn = false;
-                    firstTurn();
-                    endTurn(true);
-                }
+        if (!enableRegionsWithCrown()) {
+            //Если не был активирован ни один регион, значит текущий игрок не может совершить ход.
+            //В таком случае необходлимо сообщить об этом серверу пакетом Ready.
+            GameClient.instance().send(new Packages.Ready(false));
+        } else {
+            if (firstTurn) {
+                firstTurn = false;
+                firstTurn();
+                endTurn(true);
             }
-        });
+        }
     }
 
     @Override
@@ -164,9 +162,7 @@ class PowerPhase extends StepByStepGameState implements IClickListener{
             if (region.getFraction() == PlayerManager.getSelf().getFraction()) {
                 PlayerManager.getSelf().addMoney(region.getInfluencePoints() + 1);
             }
-            GameClient.instance().registerTask(() ->
-                region.setAction(null)
-            );
+            region.setAction(null);
         }
 
         if (pkg instanceof Packages.PlayerChangeUnits) {
@@ -184,9 +180,7 @@ class PowerPhase extends StepByStepGameState implements IClickListener{
             Packages.PlayerAct msg = ((Packages.PlayerAct) pkg);
             MapPartObject region = GameClient.shared.gameMap.getRegionByID(msg.from);
 
-            GameClient.instance().registerTask(() -> {
-                region.setAction(null);
-            });
+            region.setAction(null);
         }
     }
 
@@ -195,10 +189,10 @@ class PowerPhase extends StepByStepGameState implements IClickListener{
         Fraction selfFraction = PlayerManager.getSelf().getFraction();
 
         return GameClient.shared.gameMap.setEnabledByCondition(region ->
-             region.getFraction() == selfFraction
-             && region.getAction() != null
-             && (region.getAction() == Action.MONEY ||
-             region.getAction() == Action.MONEYPLUS)
+                region.getFraction() == selfFraction
+                        && region.getAction() != null
+                        && (region.getAction() == Action.MONEY ||
+                        region.getAction() == Action.MONEYPLUS)
         ) > 0;
     }
 

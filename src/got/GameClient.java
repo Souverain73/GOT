@@ -226,6 +226,7 @@ public class GameClient {
 
 			@Override
 			public void received(Connection c, Object object) {
+				registerWork(()->{
 				//Небольшой костыль.
 				if (object instanceof ChangeState){
 					Packages.ChangeState msg = (ChangeState) object;
@@ -258,6 +259,7 @@ public class GameClient {
 				stm.recieve(c, object);
 				
 				super.received(c, object);
+				});
 			}
 
 			@Override

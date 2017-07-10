@@ -59,26 +59,25 @@ public class HelpPhase extends StepByStepGameState {
     @Override
     protected void onSelfTurn() {
         if(bdo.getDefenderRegion().canHelp(PlayerManager.getSelf().getFraction())){
-            GameClient.instance().registerTask(()->{
-                int battlePointsToHelp = bdo.getDefenderRegion().getBattlePowerForHelpers(
-                        PlayerManager.getSelf().getFraction()
-                );
 
-                BattleSide side;
-                if (bdo.isBattleMember(PlayerManager.getSelf().getFraction())) {
-                    if (bdo.isAttacker(PlayerManager.getSelf().getFraction())){
-                        side = BattleSide.SIDE_ATTACKER;
-                    }else{
-                        side = BattleSide.SIDE_DEFENDER;
-                    }
-                }else {
-                    //TODO: отображать количество очков в диалоге выбора.
-                    GameClient.instance().setTooltipText("help.selectSide");
-                    side = showSelectSideDialogAndGetResult();
+            int battlePointsToHelp = bdo.getDefenderRegion().getBattlePowerForHelpers(
+                    PlayerManager.getSelf().getFraction()
+            );
+
+            BattleSide side;
+            if (bdo.isBattleMember(PlayerManager.getSelf().getFraction())) {
+                if (bdo.isAttacker(PlayerManager.getSelf().getFraction())) {
+                    side = BattleSide.SIDE_ATTACKER;
+                } else {
+                    side = BattleSide.SIDE_DEFENDER;
                 }
+            } else {
+                //TODO: отображать количество очков в диалоге выбора.
+                GameClient.instance().setTooltipText("help.selectSide");
+                side = showSelectSideDialogAndGetResult();
+            }
 
-                GameClient.instance().send(new Packages.Help(side.getId()));
-            });
+            GameClient.instance().send(new Packages.Help(side.getId()));
         }else {
             endTurn(false);
         }
@@ -91,34 +90,32 @@ public class HelpPhase extends StepByStepGameState {
 
     @Override
     public void recieve(Connection connection, Object pkg) {
-        GameClient.instance().registerTask(()->{
-            super.recieve(connection, pkg);
-            if (pkg instanceof Packages.InitBattle) {
-                Packages.InitBattle msg = (Packages.InitBattle) pkg;
-                logAction("help.initBattleFromTo", msg.from, msg.to);
-                bdo = new BattleDeckObject(
-                        GameClient.shared.gameMap.getRegionByID(msg.from),
-                        GameClient.shared.gameMap.getRegionByID(msg.to)
-                );
-                GameClient.shared.battleDeck = bdo;
-            }
+        super.recieve(connection, pkg);
+        if (pkg instanceof Packages.InitBattle) {
+            Packages.InitBattle msg = (Packages.InitBattle) pkg;
+            logAction("help.initBattleFromTo", msg.from, msg.to);
+            bdo = new BattleDeckObject(
+                    GameClient.shared.gameMap.getRegionByID(msg.from),
+                    GameClient.shared.gameMap.getRegionByID(msg.to)
+            );
+            GameClient.shared.battleDeck = bdo;
+        }
 
-            if (pkg instanceof Packages.PlayerHelp) {
-                Packages.PlayerHelp msg = (Packages.PlayerHelp) pkg;
-                Player player = PlayerManager.instance().getPlayer(msg.player);
-                if (msg.side == Packages.Help.SIDE_NONE){
-                    logAction(String.format("help.playerHelpNobody", player.getNickname()));
-                } else{
-                    if (msg.side == BattleSide.SIDE_ATTACKER.getId()){
-                        logAction(String.format("help.playerHelpAttacker", player.getNickname()));
-                        bdo.addAttackerHelper(player);
-                    }else if (msg.side == BattleSide.SIDE_DEFENDER.getId()){
-                        logAction(String.format("help.playerHelpDefender", player.getNickname()));
-                        bdo.addDefenderHelper(player);
-                    }
+        if (pkg instanceof Packages.PlayerHelp) {
+            Packages.PlayerHelp msg = (Packages.PlayerHelp) pkg;
+            Player player = PlayerManager.instance().getPlayer(msg.player);
+            if (msg.side == Packages.Help.SIDE_NONE) {
+                logAction(String.format("help.playerHelpNobody", player.getNickname()));
+            } else {
+                if (msg.side == BattleSide.SIDE_ATTACKER.getId()) {
+                    logAction(String.format("help.playerHelpAttacker", player.getNickname()));
+                    bdo.addAttackerHelper(player);
+                } else if (msg.side == BattleSide.SIDE_DEFENDER.getId()) {
+                    logAction(String.format("help.playerHelpDefender", player.getNickname()));
+                    bdo.addDefenderHelper(player);
                 }
             }
-        });
+        }
     }
 
     private BattleSide showSelectSideDialogAndGetResult(){

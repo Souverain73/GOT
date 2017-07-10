@@ -44,19 +44,15 @@ public class WildlingsAttack {
                 Packages.WildlingsData msg = (Packages.WildlingsData) pkg;
                 WildlingsCard card = Wildlings.instance().getCard(msg.card);
 
-                GameClient.instance().registerTask(()->{
-                    addObject(cardImage = new ImageObject(card.getTexture(), 100, 200).setSpace(DrawSpace.SCREEN).setPos(Constants.SCREEN_WIDTH, 50));
-                    Animator.animateVector2f(cardImage.getAbsolutePos(), new Vector2f(Constants.SCREEN_WIDTH/2-50, 50), 1000, cardImage::setPos);
-                });
+                addObject(cardImage = new ImageObject(card.getTexture(), 100, 200).setSpace(DrawSpace.SCREEN).setPos(Constants.SCREEN_WIDTH, 50));
+                Animator.animateVector2f(cardImage.getAbsolutePos(), new Vector2f(Constants.SCREEN_WIDTH/2-50, 50), 1000, cardImage::setPos);
 
                 Timers.getTimer(1000, ()->{
-                    GameClient.instance().registerTask(()->{
-                        card.onOpenClient(msg);
-                        Timers.getTimer(1000, ()->{
-                            Animator.animateVector2f(cardImage.getAbsolutePos(), new Vector2f(-100, 50), 1000, cardImage::setPos);
-                            Timers.getTimer(1000, ()->GameClient.instance().sendReady(true)).start(true);
-                        }).start(true);
-                    });
+                    card.onOpenClient(msg);
+                    Timers.getTimer(1000, ()->{
+                        Animator.animateVector2f(cardImage.getAbsolutePos(), new Vector2f(-100, 50), 1000, cardImage::setPos);
+                        Timers.getTimer(1000, ()->GameClient.instance().sendReady(true)).start(true);
+                    }).start(true);
                 }).start(true);
             }
 

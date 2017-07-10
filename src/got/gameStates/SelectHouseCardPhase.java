@@ -50,39 +50,33 @@ public class SelectHouseCardPhase extends AbstractGameState {
     public void recieve(Connection connection, Object pkg) {
         super.recieve(connection, pkg);
         if (pkg instanceof Packages.PlayerSelectHouseCard) {
-            GameClient.instance().registerTask(()-> {
-                Packages.PlayerSelectHouseCard msg = (Packages.PlayerSelectHouseCard) pkg;
-                Player player = PlayerManager.instance().getPlayer(msg.player);
-                HouseCard card = HouseCardsLoader.instance().getCardById(msg.card);
-                player.getDeck().useCard(card);
-                logAction("selectHouseCard.playerSelectCard", player.getNickname(), card.getTitle());
-                GameClient.shared.battleDeck.placeCard(card, player);
-            });
+            Packages.PlayerSelectHouseCard msg = (Packages.PlayerSelectHouseCard) pkg;
+            Player player = PlayerManager.instance().getPlayer(msg.player);
+            HouseCard card = HouseCardsLoader.instance().getCardById(msg.card);
+            player.getDeck().useCard(card);
+            logAction("selectHouseCard.playerSelectCard", player.getNickname(), card.getTitle());
+            GameClient.shared.battleDeck.placeCard(card, player);
         }
         if (pkg instanceof Packages.PlayerKillUnit) {
             Packages.PlayerKillUnit msg = (Packages.PlayerKillUnit) pkg;
             Player player = PlayerManager.instance().getPlayer(msg.player);
             MapPartObject region = GameClient.shared.gameMap.getRegionByID(msg.region);
-            GameClient.instance().registerTask(()->{
-                logAction("common.playerKillUnitInRegion", player.getNickname(), msg.unit, region.getName());
-                region.removeUnit(msg.unit);
-                GameClient.shared.battleDeck.onRegionStateChanged(region);
-            });
+            logAction("common.playerKillUnitInRegion", player.getNickname(), msg.unit, region.getName());
+            region.removeUnit(msg.unit);
+            GameClient.shared.battleDeck.onRegionStateChanged(region);
         }
         if (pkg instanceof Packages.PlayerSetAction) {
             Packages.PlayerSetAction msg = (Packages.PlayerSetAction) pkg;
-            GameClient.instance().registerTask(()->{
-                MapPartObject region = GameClient.shared.gameMap.getRegionByID(msg.region);
-                if (msg.action == null) {
-                    logAction("common.playerRemoveAction", region.getName());
-                    region.setAction(null);
-                    GameClient.shared.battleDeck.onRegionStateChanged(region);
-                }else{
-                    logAction("common.playerSetAction", region.getName());
-                    region.setAction(msg.action);
-                    GameClient.shared.battleDeck.onRegionStateChanged(region);
-                }
-            });
+            MapPartObject region = GameClient.shared.gameMap.getRegionByID(msg.region);
+            if (msg.action == null) {
+                logAction("common.playerRemoveAction", region.getName());
+                region.setAction(null);
+                GameClient.shared.battleDeck.onRegionStateChanged(region);
+            } else {
+                logAction("common.playerSetAction", region.getName());
+                region.setAction(msg.action);
+                GameClient.shared.battleDeck.onRegionStateChanged(region);
+            }
         }
     }
 

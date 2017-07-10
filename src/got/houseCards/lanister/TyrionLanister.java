@@ -63,13 +63,11 @@ public class TyrionLanister extends ActiveHouseCard {
             if (pkg instanceof Packages.PlayerConfirm) {
                 if (getSelf().getFraction() == enemyFraction) {
 
-                    GameClient.instance().registerTask(()->{
-                        CustomModalState<HouseCard> cms = Dialogs.createSelectHouseCardDialog(PlayerManager.getSelf().getDeck());
-                        (new ModalState(cms)).run();
-                        HouseCard selectedCard = cms.getResult();
-                        GameClient.instance().send(new Packages.SelectHouseCard(selectedCard.getID()));
-                        resumeModal();
-                    });
+                    CustomModalState<HouseCard> cms = Dialogs.createSelectHouseCardDialog(PlayerManager.getSelf().getDeck());
+                    (new ModalState(cms)).run();
+                    HouseCard selectedCard = cms.getResult();
+                    GameClient.instance().send(new Packages.SelectHouseCard(selectedCard.getID()));
+                    resumeModal();
                 }
             }
         }
