@@ -440,6 +440,7 @@ public class GameClient {
 			if (st instanceof MainState) {
 				MainState mainState = (MainState) st;
 				shared.gui.setTooltipText(String.format(tt(format), args));
+				System.out.println("Set tooltip:" + String.format(tt(format), args));
 			}
 		});
 	}

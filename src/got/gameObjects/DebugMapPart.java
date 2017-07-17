@@ -1,6 +1,7 @@
 package got.gameObjects;
 
 import got.Constants;
+import got.InputManager;
 import got.gameStates.GameState;
 
 import got.graphics.Effect;
@@ -44,6 +45,8 @@ public class DebugMapPart extends MapPartObject {
     protected void click(GameState st) {
         super.click(st);
         addDebugForNeighbors(1);
+        Vector2f clickPos = InputManager.instance().getMousePosWorld().sub(getPos());
+        System.out.println(String.format("Click position: %1f %1f", clickPos.x, clickPos.y));
     }
 
     @Override

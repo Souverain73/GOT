@@ -441,9 +441,7 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 
 	@Override
 	public String toString() {
-		return "MapPartObject [type=" + type + ", name=" + name + ", resourcesCount=" + resourcesCount
-				+ ", influencePoints=" + influencePoints + ", buildingLevel=" + buildingLevel + ", w=" + w + ", h=" + h
-				+ "]";
+		return name;
 	}
 
 	public boolean havePowerToket() {

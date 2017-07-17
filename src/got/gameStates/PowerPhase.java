@@ -67,6 +67,7 @@ class PowerPhase extends StepByStepGameState implements IClickListener {
                             && hirePointsCache.get(region.getName()) != region.getHirePoints()) {
                         action = 1;
                     } else {
+                        GameClient.instance().setTooltipText("power.selectAction");
                         action = showSelectActionDialog();
                     }
                     if (action == -1) {
@@ -84,6 +85,7 @@ class PowerPhase extends StepByStepGameState implements IClickListener {
                             if (regionsForHire.size() == 1) {
                                 hireUnits(region, region);
                             } else {
+                                GameClient.instance().setTooltipText("hire.selectTarget");
                                 GameClient.shared.gameMap.disableAllRegions();
                                 regionsForHire.forEach(obj -> obj.setEnabled(true));
                                 state = SubState.SELECT_TARGET;
@@ -116,17 +118,19 @@ class PowerPhase extends StepByStepGameState implements IClickListener {
 
             if (hms.getHirePoints() == 0) {
                 //Если потратил все очки найма, надо отправить пакет об использовании действия.
+
                 GameClient.instance().send(new Packages.Act(source.getID(), 0));
-                source.setEnabled(false);
-                if (GameClient.shared.gameMap.getEnabledRegions().isEmpty())
-                    endTurn(false);
+                GameClient.shared.gameMap.disableAllRegions();
+                endTurn(true);
             } else {
                 hirePointsCache.put(source.getName(), hms.getHirePoints());
+                GameClient.shared.gameMap.disableAllRegions();
+                sourceRegion.setEnabled(true);
             }
+        }else {
+            state = SubState.SELECT_SOURCE;
+            sourceRegion = null;
         }
-
-        state = SubState.SELECT_SOURCE;
-        sourceRegion = null;
     }
 
     @Override
@@ -134,13 +138,14 @@ class PowerPhase extends StepByStepGameState implements IClickListener {
         if (!enableRegionsWithCrown()) {
             //Если не был активирован ни один регион, значит текущий игрок не может совершить ход.
             //В таком случае необходлимо сообщить об этом серверу пакетом Ready.
-            GameClient.instance().send(new Packages.Ready(false));
+            endTurn(false);
         } else {
             if (firstTurn) {
                 firstTurn = false;
                 firstTurn();
                 endTurn(true);
             }
+            GameClient.instance().setTooltipText("power.selectRegion");
         }
     }
 

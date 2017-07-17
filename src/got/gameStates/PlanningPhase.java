@@ -124,6 +124,7 @@ public class PlanningPhase extends ParallelGameState implements IClickListener {
 		super.onReady(player);
 		if (player.id == PlayerManager.getSelf().id){
 			GameClient.shared.gameMap.disableAllRegions();
+			GameClient.instance().setTooltipText("common.waitingForOtherPlayers");
 		}
 	}
 

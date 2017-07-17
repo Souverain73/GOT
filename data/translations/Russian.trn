@@ -24,6 +24,8 @@ selectRegion "Выберите регион, откуда вы хотите со
 selectUnits "Выберите юнитов которыми вы хотите походить"
 selectTarget "Выберите куда вы хотите совершить ход"
 selectSource "Выберите регион, откуда вы хотите совршить ход"
+placePowerToken "Оставить жетон влияния в покидаемом регионе?"
+playerPlacePowerTokenInRegion "Игрок %s оставляет жетон влияния в регионе %s"
 
 [fire]
 playerPlayActionFromTo "Игрок играет приказ с %s на %s"
@@ -48,6 +50,17 @@ playerSetOverrides "Игрок %s устанавливает особые усл
 playerRemoveHouseCard "Игрок %s убирает из колоды игрока %s карту %s"
 selectRegionToRetreat "Выберите регион для отступления"
 noRegionsToRetreat "Некуда отступать, все юниты умирают"
+
+[power]
+selectRegion "Выберите регион"
+selectAction "Выберите действие"
+playerHireUnits "Игрок %s нанимает войска"
+playerCollectInfluence "Buhjr %s получает %d жетонов власти с региона %s"
+
+[hire]
+selectSource "Выберите регион в котором вы хотите нанять войска"
+selectTarget "Выберите регион в котором вы хотите разместить войска"
+hireUnits "Наберите войска"
 
 [collectUnits]
 needKill "Превышен предел снабжения. Необходимо распустить лишние войска"

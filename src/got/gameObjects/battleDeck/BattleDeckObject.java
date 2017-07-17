@@ -5,6 +5,7 @@ import got.gameObjects.*;
 import got.graphics.DrawSpace;
 import got.houseCards.HouseCard;
 import got.model.*;
+import got.server.PlayerManager;
 import got.utils.UI;
 import org.joml.Vector2f;
 
@@ -92,8 +93,8 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
         addChild(attackerHouseCardObject);
         addChild(defenderHouseCardObject);
 
-        attackersPowerText = new TextObject("").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(140, 20));
-        defendersPowerText = new TextObject("").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(1120, 20));
+        attackersPowerText = new TextObject("").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(590, 20));
+        defendersPowerText = new TextObject("").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(690, 20));
 
         addChild(attackersPowerText);
         addChild(defendersPowerText);
@@ -177,7 +178,8 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
                 attackerCard = card;
                 attackersCardUsed = false;
             }
-            attackerHouseCardObject.setTexture(card.getTexture());
+            if (player.getFraction() == PlayerManager.getSelf().getFraction())
+                attackerHouseCardObject.setTexture(card.getTexture());
         }
         if (isDefender(player.getFraction())){
             if (defenderCard == null) {
@@ -187,7 +189,8 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
                 defenderCard = card;
                 defendersCardUsed = false;
             }
-            defenderHouseCardObject.setTexture(card.getTexture());
+            if (player.getFraction() == PlayerManager.getSelf().getFraction())
+                defenderHouseCardObject.setTexture(card.getTexture());
         }
         if (attackerCard != null && defenderCard != null){
             resetCardEffects();
@@ -199,6 +202,8 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
                 attackerCard.onPlace(attackerPlayer.getFraction());
                 attackersCardUsed = true;
             }
+            attackerHouseCardObject.setTexture(attackerCard.getTexture());
+            defenderHouseCardObject.setTexture(defenderCard.getTexture());
             updateState(false);
             GameClient.instance().sendReady(true);
         }

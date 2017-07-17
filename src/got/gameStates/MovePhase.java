@@ -114,6 +114,7 @@ public class MovePhase extends StepByStepGameState implements IClickListener{
                 && !region.havePowerToket()
                 && PlayerManager.getSelf().getMoney() > 0){
             //оставить ли жетон?
+			GameClient.instance().setTooltipText("move.placePowerToken");
             Dialogs.Dialog confirmDialog = Dialogs.createConfirmDialog(InputManager.instance().getMousePosWorld());
 
             (new ModalState(confirmDialog)).run();
@@ -184,7 +185,7 @@ public class MovePhase extends StepByStepGameState implements IClickListener{
 			if (player.getFraction() != regionTo.getFraction()) {
 				regionTo.removePowerToken();
 			}
-			logAction("common.playerMoveUnits", player.getNickname(), regionFrom.getName(), regionTo.getName());
+			GameClient.instance().logMessage("common.playerMoveUnits", player.getNickname(), regionFrom.getName(), regionTo.getName());
 			regionTo.addUnits(msg.units);
 			regionTo.setFraction(player.getFraction());
 		}
@@ -194,7 +195,8 @@ public class MovePhase extends StepByStepGameState implements IClickListener{
 		if (pkg instanceof Packages.PlayerPlacePowerToken) {
 			Packages.PlayerPlacePowerToken msg = (Packages.PlayerPlacePowerToken) pkg;
 			MapPartObject region = GameClient.shared.gameMap.getRegionByID(msg.regionId);
-			logAction("common.setToken" + region.getName());
+			Player player = PlayerManager.instance().getPlayer(msg.playerId);
+			GameClient.instance().logMessage("move.playerPlacePowerTokenInRegion", player.getNickname(), region.getName());
 			PlayerManager.instance().getPlayer(msg.playerId).placePowerTokenAtRegion(region);
 		}
 	}

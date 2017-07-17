@@ -3,6 +3,7 @@ package got.gameStates.modals;
 import java.util.List;
 
 import got.InputManager;
+import got.gameStates.StateMachine;
 import org.joml.Vector2f;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -29,7 +30,12 @@ public class HireMenuState extends  AbstractGameState implements IClickListener{
 	private Vector2f pos;
 	private boolean sea;
 	private boolean hired = false;
-	
+
+	@Override
+	public void enter(StateMachine stm) {
+		GameClient.instance().setTooltipText("hire.hireUnits");
+	}
+
 	public HireMenuState(List<UnitObject> units, Vector2f pos, int hirePoints, boolean sea) {
 		this.pos = pos;
 		this.sea = sea;
