@@ -43,10 +43,10 @@ public class CerseiLanister extends ActiveHouseCard {
         public void enter(StateMachine stm) {
             super.enter(stm);
             if (placerFraction == getSelf().getFraction()) {
-                GameClient.instance().setTooltipText("Выберите, какой приказ убрать");
+                GameClient.instance().setTooltipText("houseCards.CerseiSelect");
                 enableRegionsWithActions(enemyFraction);
             } else {
-                GameClient.instance().setTooltipText("Серцея выбирает какой приказ убрать");
+                GameClient.instance().setTooltipText("houseCards.CerseiWait");
                 GameClient.shared.gameMap.disableAllRegions();
             }
         }

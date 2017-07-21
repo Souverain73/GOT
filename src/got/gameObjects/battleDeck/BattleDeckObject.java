@@ -195,18 +195,18 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
         if (attackerCard != null && defenderCard != null){
             resetCardEffects();
             if (!defendersCardUsed) {
-                defenderCard.onPlace(defenderPlayer.getFraction());
                 defendersCardUsed = true;
+                defenderCard.onPlace(defenderPlayer.getFraction());
             }
             if (!attackersCardUsed) {
-                attackerCard.onPlace(attackerPlayer.getFraction());
                 attackersCardUsed = true;
+                attackerCard.onPlace(attackerPlayer.getFraction());
             }
             attackerHouseCardObject.setTexture(attackerCard.getTexture());
             defenderHouseCardObject.setTexture(defenderCard.getTexture());
-            updateState(false);
             GameClient.instance().sendReady(true);
         }
+        updateState(false);
     }
 
     private void resetCardEffects() {

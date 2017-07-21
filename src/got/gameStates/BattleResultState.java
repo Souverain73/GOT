@@ -8,6 +8,7 @@ import got.gameObjects.MapPartObject;
 import got.gameObjects.battleDeck.BattleDeckObject;
 import got.gameObjects.battleDeck.BattleOverrides;
 import got.gameStates.modals.SelectRegionModal;
+import got.gameStates.modals.SelectUnitDialogState;
 import got.gameStates.modals.SelectUnitsDialogState;
 import got.houseCards.HouseCard;
 import got.houseCards.HouseCardsLoader;
@@ -153,6 +154,8 @@ public class BattleResultState extends AbstractGameState{
             if (killUnitsCount>0) {
                 Unit[] unitsToKill = null;
                 while(unitsToKill == null) {
+                    SelectUnitsDialogState suds = new SelectUnitsDialogState(playerRegion.getUnits(),
+                            InputManager.instance().getMousePosWorld(), killUnitsCount, killUnitsCount);
                     unitsToKill = showKillUnitsDialog(playerRegion.getUnits(), killUnitsCount);
                 }
                 playerRegion.removeUnits(unitsToKill);
@@ -260,7 +263,7 @@ public class BattleResultState extends AbstractGameState{
     }
 
     private Unit[] showKillUnitsDialog(Unit[] units, int countToKill){
-        SelectUnitsDialogState suds = new SelectUnitsDialogState(units, InputManager.instance().getMousePosWorld());
+        SelectUnitsDialogState suds = new SelectUnitsDialogState(units, InputManager.instance().getMousePosWorld(), countToKill, countToKill);
         (new ModalState(suds)).run();
 
         if (suds.isOk()) {

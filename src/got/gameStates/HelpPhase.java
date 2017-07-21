@@ -105,13 +105,13 @@ public class HelpPhase extends StepByStepGameState {
             Packages.PlayerHelp msg = (Packages.PlayerHelp) pkg;
             Player player = PlayerManager.instance().getPlayer(msg.player);
             if (msg.side == Packages.Help.SIDE_NONE) {
-                logAction(String.format("help.playerHelpNobody", player.getNickname()));
+                GameClient.instance().logMessage("help.playerHelpNobody", player.getNickname());
             } else {
                 if (msg.side == BattleSide.SIDE_ATTACKER.getId()) {
-                    logAction(String.format("help.playerHelpAttacker", player.getNickname()));
+                    GameClient.instance().logMessage("help.playerHelpAttacker", player.getNickname());
                     bdo.addAttackerHelper(player);
                 } else if (msg.side == BattleSide.SIDE_DEFENDER.getId()) {
-                    logAction(String.format("help.playerHelpDefender", player.getNickname()));
+                    GameClient.instance().logMessage("help.playerHelpDefender", player.getNickname());
                     bdo.addDefenderHelper(player);
                 }
             }

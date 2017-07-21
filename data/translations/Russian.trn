@@ -116,6 +116,10 @@ AreoHotah "AreoHotah"
 TheRedViper "TheRedViper"
 playerDropCard "Игрок %s скидывает карту '%s'"
 playerRewindCard "Игрок %s возвращает себе карту '%s'"
+playerRewindAll "Игрок %s возвращает себе все карты"
+CerseiSelect "Выберите какой приказ убрать"
+CerseiWait "Серцея решает какой приказ убрать"
+CerseiRemove "Серцея убирает приказ с региона %s"
 
 [vesterosCard]
 AutumnRains "Дожди осени"

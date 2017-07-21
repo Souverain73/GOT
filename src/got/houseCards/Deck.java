@@ -38,8 +38,8 @@ public class Deck {
         if (!usedCards.contains(card)){
             throw new IllegalStateException("You can't rewind not used card");
         }
-        usedCards.add(card);
-        activeCards.remove(card);
+        usedCards.remove(card);
+        activeCards.add(card);
     }
 
     public void rewindAll(){

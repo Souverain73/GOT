@@ -14,7 +14,6 @@ import got.network.Packages;
 import got.server.PlayerManager;
 import org.joml.Vector2f;
 
-import static got.gameStates.modals.Dialogs.createConfirmDialog;
 import static got.server.PlayerManager.getSelf;
 
 /**
@@ -26,8 +25,6 @@ public class TyrionLanister extends ActiveHouseCard {
         super.onPlace(fraction);
 
         (new ModalState(new ConfirmUseDialog(placerFraction, enemyFraction), true, true)).run();
-        //todo: убрать карту игрока и дать ему перевыбрать карту
-        //Если у него не осталось карты, он остается без карты
 
     }
 
