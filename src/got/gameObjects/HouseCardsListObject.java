@@ -14,6 +14,7 @@ import java.util.List;
  * Created by Souverain73 on 17.04.2017.
  */
 public class HouseCardsListObject extends AbstractGameObject<HouseCardsListObject> {
+    private final float ZOOM_SCALE = 2.5f;
     Deck deck;
     ImageButton[] cardButtons;
     int currentScaled = -1;
@@ -25,10 +26,9 @@ public class HouseCardsListObject extends AbstractGameObject<HouseCardsListObjec
         return this;
     }
 
-    public HouseCardsListObject(Deck deck){
+    public HouseCardsListObject(List<HouseCard> cards){
         super();
-        this.deck = deck;
-        cards = deck.getActiveCards();
+        this.cards = cards;
         cardButtons = new ImageButton[cards.size()];
         int i=0;
         for(HouseCard card : cards){
@@ -39,6 +39,10 @@ public class HouseCardsListObject extends AbstractGameObject<HouseCardsListObjec
         }
         this.w = i*100;
         this.h = 160;
+    }
+
+    public HouseCardsListObject(Deck deck){
+        this(deck.getActiveCards());
     }
 
     private void clickCallback(GameObject sender, Object param) {
@@ -80,7 +84,7 @@ public class HouseCardsListObject extends AbstractGameObject<HouseCardsListObjec
             removeChild(card);
             addChild(card);
         });
-        newScale = 2.0f;
+        newScale = ZOOM_SCALE;
         ao.scale(newScale, 1000);
         ao.move(new Vector2f((this.w - 100*newScale) / 2, this.h/2 - 100), 1000);
     }

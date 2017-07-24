@@ -12,6 +12,7 @@ import got.interfaces.IClickListener;
 import got.model.*;
 import got.network.Packages;
 import got.server.PlayerManager;
+import got.translation.Translator;
 
 import static got.utils.UI.logAction;
 import static got.utils.UI.tooltipWait;
@@ -114,12 +115,10 @@ public class MovePhase extends StepByStepGameState implements IClickListener{
                 && !region.havePowerToket()
                 && PlayerManager.getSelf().getMoney() > 0){
             //оставить ли жетон?
-			GameClient.instance().setTooltipText("move.placePowerToken");
-            Dialogs.Dialog confirmDialog = Dialogs.createConfirmDialog(InputManager.instance().getMousePosWorld());
+			GameClient.instance().setTooltipText("common.decide");
+			Dialogs.DialogResult res = Dialogs.showConfirmDialog(Translator.tt("move.placePowerToken"));
 
-            (new ModalState(confirmDialog)).run();
-
-            if (confirmDialog.getResult() == Dialogs.DialogResult.OK){
+			if (res == Dialogs.DialogResult.OK){
                 GameClient.instance().send(new Packages.PlacePowerToken(region.getID()));
             }
         }

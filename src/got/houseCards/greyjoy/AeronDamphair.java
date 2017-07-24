@@ -10,6 +10,7 @@ import got.houseCards.ActiveHouseCard;
 import got.houseCards.HouseCard;
 import got.network.Packages;
 import got.server.PlayerManager;
+import got.translation.Translator;
 
 /**
  * Created by Souverain73 on 25.01.2017.
@@ -23,9 +24,8 @@ public class AeronDamphair extends ActiveHouseCard {
             super.enter(stm);
             if (PlayerManager.getSelf().getFraction() != placerFraction) return;
 
-            Dialogs.Dialog cd = Dialogs.createConfirmDialog();
-            (new ModalState(cd)).run();
-            if (cd.getResult() == Dialogs.DialogResult.OK){
+            Dialogs.DialogResult res = Dialogs.showConfirmDialog(Translator.tt("AeronСhangeCard"));
+            if (res == Dialogs.DialogResult.OK){
                 CustomModalState<HouseCard> shcd = Dialogs.createSelectHouseCardDialog(PlayerManager.getSelf().getDeck());
                 (new ModalState(shcd)).run();
                 HouseCard selectedCard = shcd.getResult();

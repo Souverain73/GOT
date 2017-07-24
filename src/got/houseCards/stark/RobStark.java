@@ -38,6 +38,7 @@ public class RobStark extends ActiveHouseCard {
                 if (regionsToRetreat.size() == 0){
                     logAction("Противнику некуда отступать, все его войска будут убиты");
                     resumeModal();
+                    return;
                 }
 
                 MapPartObject region = SelectRegionModal.selectFrom(regionsToRetreat);
@@ -52,7 +53,7 @@ public class RobStark extends ActiveHouseCard {
             MapPartObject regionFrom = GameClient.shared.battleDeck.getPlayerRegion(enemyFraction);
 
             //todo: пофиксить баг с кораблями.
-            List<MapPartObject> regionsToMove = battleRegion.getRegionsToMove();
+            List<MapPartObject> regionsToMove = battleRegion.getRegionsToMove(enemyFraction);
             List<MapPartObject> regionsToRetreat =
                     regionsToMove.stream().filter(r->{
                         //нельзя отступить в чужой регион

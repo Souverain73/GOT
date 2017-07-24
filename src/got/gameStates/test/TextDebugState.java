@@ -9,6 +9,7 @@ import got.gameStates.StateMachine;
 import got.graphics.DrawSpace;
 import got.graphics.text.FontBitmap;
 import got.graphics.TextureManager;
+import got.graphics.text.FontTrueType;
 import got.interfaces.IClickListener;
 import org.joml.Vector2f;
 
@@ -22,21 +23,17 @@ public class TextDebugState extends AbstractGameState implements IClickListener{
         TextObject to;
         addObject(new ImageObject(TextureManager.instance().loadTexture("backgroundMain.png"),
                Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT).setSpace(DrawSpace.SCREEN));
+        addObject(new TextObject(new FontTrueType("trajan", 16), "True type small text test. Тест шрифтов для маленьких символов.").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 30)));
+        addObject(new TextObject(new FontTrueType("trajan", 10), "True type small text test. Тест шрифтов для маленьких символов.").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 50)));
+        addObject(new TextObject(new FontTrueType("trajan", 4), "True type small text test. Тест шрифтов для маленьких символов.").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 60)));
 
-        addObject(new TextObject(new FontBitmap("bolyar",  64), "bolyar  64: Hello world!! Привет Мир!!!").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 100)));
-        addObject(new TextObject(new FontBitmap("trojan",  64), "trojan  64: Hello world!! Привет Мир!!!").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 170)));
-        addObject(new TextObject(new FontBitmap("antiqua", 64), "antiqua 64: Hello world!! Привет Мир!!!").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 240)));
-        addObject(new TextObject(new FontBitmap("test",    64), "test    64: Hello world!! Привет Мир!!!").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 310)));
+        addObject(new TextObject(new FontTrueType("calibri", 16), "True type small text test. Тест шрифтов для маленьких символов.").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 100)));
+        addObject(new TextObject(new FontTrueType("calibri", 10), "True type small text test. Тест шрифтов для маленьких символов.").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 120)));
+        addObject(new TextObject(new FontTrueType("calibri", 4), "True type small text test. Тест шрифтов для маленьких символов.").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 130)));
 
-        addObject(new TextObject(new FontBitmap("bolyar",  32), "bolyar  32: Hello world!! Привет Мир!!!").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 380)));
-        addObject(new TextObject(new FontBitmap("trojan",  32), "trojan  32: Hello world!! Привет Мир!!!").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 420)));
-        addObject(new TextObject(new FontBitmap("antiqua", 32), "antiqua 32: Hello world!! Привет Мир!!!").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 460)));
-        addObject(new TextObject(new FontBitmap("test",    32), "test    32: Hello world!! Привет Мир!!!").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 500)));
-
-        addObject(new TextObject(new FontBitmap("bolyar",  16), "bolyar  16: Hello world!! Привет Мир!!!").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 540)));
-        addObject(new TextObject(new FontBitmap("trojan",  16), "trojan  16: Hello world!! Привет Мир!!!").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 560)));
-        addObject(new TextObject(new FontBitmap("antiqua", 16), "antiqua 16: Hello world!! Привет Мир!!!").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 580)));
-        addObject(new TextObject(new FontBitmap("test",    16), "test    16: Hello world!! Привет Мир!!!").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 600)));
+        addObject(new TextObject(new FontTrueType("BKANT", 16), "True type small text test. Тест шрифтов для маленьких символов.").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 200)));
+        addObject(new TextObject(new FontTrueType("BKANT", 10), "True type small text test. Тест шрифтов для маленьких символов.").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 220)));
+        addObject(new TextObject(new FontTrueType("BKANT", 4), "True type small text test. Тест шрифтов для маленьких символов.").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 230)));
 
     }
 

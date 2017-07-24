@@ -35,7 +35,7 @@ public class Patchface extends ActiveHouseCard {
             super.enter(stm);
             if (placerFraction == getSelf().getFraction()){
                 GameClient.instance().setTooltipText("Выберите какую карту противника убрать");
-                CustomModalState<HouseCard> shcd = Dialogs.createSelectHouseCardDialog(enemyPlayer.getDeck().getActiveCards());
+                CustomModalState<HouseCard> shcd = Dialogs.createSelectHouseCardDialog(enemyPlayer.getDeck());
                 (new ModalState(shcd)).run();
                 HouseCard selectedCard = shcd.getResult();
                 GameClient.instance().send(new Packages.RemoveHouseCard(enemyPlayer.id, selectedCard.getID()));

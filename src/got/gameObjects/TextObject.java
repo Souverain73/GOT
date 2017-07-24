@@ -26,7 +26,7 @@ public class TextObject extends AbstractGameObject<TextObject>{
 	}
 
 	public TextObject(String message){
-		this(new FontTrueType("BKANT", 20), message);
+		this(new FontTrueType("BKANT", 16), message);
 	}
 	
 	@Override

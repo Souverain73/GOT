@@ -10,6 +10,8 @@
 @call button.bat 180x80 "Не готов" notReady
 @call button.bat 180x80 Войска units
 @call button.bat 180x80 Выбрать select
+@call button.bat 180x80 Да yes
+@call button.bat 180x80 Нет no
 @call button.bat 180x80 "Помочь\nнападающим" helpAttacker
 @call button.bat 180x80 "Помочь\nзащитникам" helpDefender
 @call button.bat 180x80 "Не помогать\nникому" helpNone

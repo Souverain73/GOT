@@ -192,6 +192,7 @@ public class BattleResultState extends AbstractGameState{
             int unitsToKillCount = playerRegion.getUnitsCount() - i;
             Unit[] unitsToKill = null;
             while (unitsToKill == null) {
+                GameClient.instance().logMessage("retreat.suplyKill", unitsToKill);
                 unitsToKill = showKillUnitsDialog(playerRegion.getUnits(), unitsToKillCount);
             }
             playerRegion.removeUnits(unitsToKill);
@@ -233,7 +234,7 @@ public class BattleResultState extends AbstractGameState{
                 }).collect(Collectors.toList());
 
         if (regionsToRetreat.size() > 0){
-            GameClient.instance().setTooltipText("battle.selectRegionToRetreat");
+            GameClient.instance().setTooltipText("retreat.selectRegion");
             regionToRetreat = SelectRegionModal.selectFrom(regionsToRetreat);
             retreatTo(regionToRetreat);
             return;
@@ -249,14 +250,14 @@ public class BattleResultState extends AbstractGameState{
                 }).collect(Collectors.toList());
 
         if (regionsToRetreat.size() > 0){
-            GameClient.instance().setTooltipText("battle.selectRegionToRetreat");
+            GameClient.instance().setTooltipText("retreat.selectRegion");
             regionToRetreat = SelectRegionModal.selectFrom(regionsToRetreat);
             retreatTo(regionToRetreat);
             return;
         }
 
         //Если нет регионов куда вообще можно пойти, убиваем всех юнитов.
-        GameClient.instance().logMessage("battle.noRegionsToRetreat");
+        GameClient.instance().logMessage("retreat.noRegions");
         GameClient.instance().send(new Packages.KillAllUnitsAtRegion(regionFrom.getID()));
         //Сообщаем, что проигравций закончил отступление.
         GameClient.instance().send(new Packages.LooserReady());

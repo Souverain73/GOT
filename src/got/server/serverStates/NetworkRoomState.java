@@ -77,29 +77,29 @@ public class NetworkRoomState implements ServerState {
 							GameServer.getServer().sendToAllTCP(new Packages.SetFractions(PlayerManager.instance().getFractions()));
 
 							Game.instance().initVesterosDeck(0, new Deck(){{
-//								addCard(VesterosCards.getCardByName("CollectUnits"));
-//								addCard(VesterosCards.getCardByName("CollectUnits"));
-//								addCard(VesterosCards.getCardByName("CollectUnits"));
-//								addCard(VesterosCards.getCardByName("SummerTime1"));
-//								addCard(VesterosCards.getCardByName("WinterTime1"));
+								addCard(VesterosCards.getCardByName("CollectUnits"));
+								addCard(VesterosCards.getCardByName("CollectUnits"));
+								addCard(VesterosCards.getCardByName("CollectUnits"));
+								addCard(VesterosCards.getCardByName("SummerTime1"));
+								addCard(VesterosCards.getCardByName("WinterTime1"));
 								addCard(VesterosCards.getCardByName("ThroneOfSwords"));
 								addCard(VesterosCards.getCardByName("ThroneOfSwords"));
-//								addCard(VesterosCards.getCardByName("SuplyCard"));
-//								addCard(VesterosCards.getCardByName("SuplyCard"));
-//								addCard(VesterosCards.getCardByName("SuplyCard"));
+								addCard(VesterosCards.getCardByName("SuplyCard"));
+								addCard(VesterosCards.getCardByName("SuplyCard"));
+								addCard(VesterosCards.getCardByName("SuplyCard"));
 							}});
 
 							Game.instance().initVesterosDeck(1, new Deck(){{
-//								addCard(VesterosCards.getCardByName("WinterTime2"));
-//								addCard(VesterosCards.getCardByName("SummerTime2"));
+								addCard(VesterosCards.getCardByName("WinterTime2"));
+								addCard(VesterosCards.getCardByName("SummerTime2"));
 								addCard(VesterosCards.getCardByName("BlackWings"));
 								addCard(VesterosCards.getCardByName("BlackWings"));
-//								addCard(VesterosCards.getCardByName("BattleOfKings"));
-//								addCard(VesterosCards.getCardByName("BattleOfKings"));
-//								addCard(VesterosCards.getCardByName("BattleOfKings"));
-//								addCard(VesterosCards.getCardByName("GameOfThrones"));
-//								addCard(VesterosCards.getCardByName("GameOfThrones"));
-//								addCard(VesterosCards.getCardByName("GameOfThrones"));
+								addCard(VesterosCards.getCardByName("BattleOfKings"));
+								addCard(VesterosCards.getCardByName("BattleOfKings"));
+								addCard(VesterosCards.getCardByName("BattleOfKings"));
+								addCard(VesterosCards.getCardByName("GameOfThrones"));
+								addCard(VesterosCards.getCardByName("GameOfThrones"));
+								addCard(VesterosCards.getCardByName("GameOfThrones"));
 							}});
 
 							Game.instance().initVesterosDeck(2, new Deck(){{

@@ -54,7 +54,7 @@ public class CerseiLanister extends ActiveHouseCard {
             if (GameClient.shared.gameMap.setEnabledByCondition(reg->
                 reg.getFraction() == fraction && reg.getAction() != null
             ) == 0){
-                logAction("Нет приказов, которые можно убрать");
+                GameClient.instance().logMessage("houseCards.CerseiNothingToRemove");
                 resumeModal();
             }
         }

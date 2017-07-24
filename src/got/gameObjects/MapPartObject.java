@@ -173,7 +173,11 @@ public class MapPartObject extends AbstractButtonObject<MapPartObject> {
 	}
 
 	public List<MapPartObject> getRegionsToMove(){
-		PathFinder pf = new PathFinder(this.getFraction());
+		return getRegionsToMove(this.getFraction());
+	}
+
+	public List<MapPartObject> getRegionsToMove(Fraction fraction){
+		PathFinder pf = new PathFinder(fraction);
 		List<MapPartObject> result = pf.getRegionsToMoveFrom(this);
 		if (type == RegionType.GROUND){
 			return result

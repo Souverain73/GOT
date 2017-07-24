@@ -12,6 +12,7 @@ import got.houseCards.HouseCard;
 import got.model.Fraction;
 import got.network.Packages;
 import got.server.PlayerManager;
+import got.translation.Translator;
 import org.joml.Vector2f;
 
 import static got.server.PlayerManager.getSelf;
@@ -40,16 +41,15 @@ public class TyrionLanister extends ActiveHouseCard {
         @Override
         public void enter(StateMachine stm) {
             if (getSelf().getFraction() == placerFraction){
-                GameClient.instance().setTooltipText("Убрать карту противника?");
-                Dialogs.Dialog  dlg = Dialogs.createConfirmDialog(new Vector2f(100,100));
-                (new ModalState(dlg)).run();
-                if (dlg.getResult() == Dialogs.DialogResult.OK){
+                GameClient.instance().setTooltipText("common.Decide");
+                Dialogs.DialogResult res = Dialogs.showConfirmDialog(Translator.tt("houseCards.TyrionRemoveCard"));
+                if (res == Dialogs.DialogResult.OK){
                     GameClient.instance().send(new Packages.Confirm());
                 }else{
                     resumeModal();
                 }
             }else{
-                GameClient.instance().setTooltipText("Тирион решает что делать");
+                GameClient.instance().setTooltipText(Translator.tt("houseCards.TyrionWait"));
             }
         }
 

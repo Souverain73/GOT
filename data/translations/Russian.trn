@@ -12,6 +12,7 @@ looseMoney "Вы теряете %d жетонов влияния"
 noRegionsForHire "Нет регионов с замками или крепостями. Вы не можете набрать войска"
 waitForPlayer "Ожидание игрока %s"
 waitForOtherPlayers "Ожидание других игроков"
+decide "Примите решение"
 
 [planning]
 enter "Фаза планирования"
@@ -48,8 +49,11 @@ battleEnd "Битва закончена. Игрок %s победил, игро
 winnerMove "Победивший игрок занимает регион %s"
 playerSetOverrides "Игрок %s устанавливает особые условия боя"
 playerRemoveHouseCard "Игрок %s убирает из колоды игрока %s карту %s"
-selectRegionToRetreat "Выберите регион для отступления"
-noRegionsToRetreat "Некуда отступать, все юниты умирают"
+
+[retreat]
+suplyKill "Не хватает снабжения, выберите %d юнитов для убийства"
+selectRegion "Выберите регион для отступления"
+noRegions "Некуда отступать, все юниты умирают"
 
 [power]
 selectRegion "Выберите регион"
@@ -120,6 +124,11 @@ playerRewindAll "Игрок %s возвращает себе все карты"
 CerseiSelect "Выберите какой приказ убрать"
 CerseiWait "Серцея решает какой приказ убрать"
 CerseiRemove "Серцея убирает приказ с региона %s"
+CerseiNothingToRemove "У противника не осталось приказов"
+TywinGetPower "Игрок %s получает 2 жетона влияния"
+TyryonRemoveCard "Убрать карту противника?"
+TyryonWait "Тирион решает, убрать ли карту игрока"
+AeronChangeCard "Поменять карту?"
 
 [vesterosCard]
 AutumnRains "Дожди осени"

@@ -1,5 +1,6 @@
 package got.houseCards.lanister;
 
+import got.GameClient;
 import got.houseCards.ActiveHouseCard;
 
 import static got.utils.UI.logAction;
@@ -12,6 +13,6 @@ public class TywinLanister extends ActiveHouseCard {
     public void onWin() {
         super.onWin();
         owner().addMoney(2);
-        logAction("Player " + owner().getNickname() + "get 2 power tokens");
+        GameClient.instance().logMessage("houseCards.TywinGetPower", owner().getNickname());
     }
 }
