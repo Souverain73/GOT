@@ -11,7 +11,7 @@ import got.graphics.text.Text;
 public class TextObject extends AbstractGameObject<TextObject>{
 	Font font;
 	Text text;
-	String currentText;
+	String currentText = "";
 	
 	@Override
 	protected TextObject getThis() {
@@ -21,8 +21,8 @@ public class TextObject extends AbstractGameObject<TextObject>{
 	
 	public TextObject(Font font, String message) {
 		this.font = font;
-		text = Text.newInstance(message, font);
-		currentText = message;
+		text = Text.newInstance(currentText, font);
+		setText(message);
 	}
 
 	public TextObject(String message){
@@ -45,5 +45,7 @@ public class TextObject extends AbstractGameObject<TextObject>{
 	public void setText(String newText){
 		if (!currentText.equals(newText))
 			text.changeText(newText);
+		this.w = font.getStringWidth(newText);
+		this.h = font.getSize();
 	}
 }

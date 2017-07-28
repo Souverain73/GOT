@@ -70,7 +70,7 @@ public class HordeLoose {
             if (event.getTarget() instanceof MapPartObject) {
                 MapPartObject region = (MapPartObject) event.getTarget();
                 if (looser && inCastle){
-                    SelectUnitsDialogState suds = new SelectUnitsDialogState(region.getUnits(), new Vector2f(InputManager.instance().getMousePosWorld()), 2, 2);
+                    SelectUnitsDialogState suds = new SelectUnitsDialogState(region.getUnits(), 2, 2);
                     (new ModalState(suds)).run();
                     if (suds.isOk()) {
                         Unit[] unitsToKill = suds.getSelectedUnits();
@@ -79,7 +79,7 @@ public class HordeLoose {
                         endTurn();
                     }
                 }else{
-                    SelectUnitsDialogState suds = new SelectUnitsDialogState(region.getUnits(), new Vector2f(InputManager.instance().getMousePosWorld()), 1, unitsLeft);
+                    SelectUnitsDialogState suds = new SelectUnitsDialogState(region.getUnits(), 1, unitsLeft);
                     (new ModalState(suds)).run();
                     if (suds.isOk()) {
                         Unit[] unitsToKill = suds.getSelectedUnits();

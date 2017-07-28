@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VesterosPhase extends AbstractGameState {
+	public static final String CURRENT_CARD_SHARED_OBJECT = "currentCardObject";
 	private static final String name = "VesterosPhase";
 	VesterosCard[] cards = new VesterosCard[3];
 	AbstractGameObject<?>[] cardObjects = new AbstractGameObject[3];
@@ -46,7 +47,7 @@ public class VesterosPhase extends AbstractGameState {
 			cards[msg.number] = card;
 			GameClient.instance().logMessage("vesteros.cardOpen", msg.number+1, card.getTitle());
 
-			addObject(cardObjects[msg.number] = new ImageObject(card.getTexture(), 200, 100).setSpace(DrawSpace.SCREEN).setPos( new Vector2f(Constants.SCREEN_WIDTH / 2 - 100, 100 * (msg.number) + 1)));
+			addObject(cardObjects[msg.number] = new ImageObject(card.getTexture(), 285, 181).setSpace(DrawSpace.SCREEN).setPos( new Vector2f(330 + 305 * msg.number, 55)));
 			if (card.hasWildlings()) Wildlings.instance().nextLevel();
 		}
 
@@ -64,6 +65,8 @@ public class VesterosPhase extends AbstractGameState {
 	@Override
 	public void resume() {
 		super.resume();
+
+		GameClient.shared.gui.removeSharedObject(CURRENT_CARD_SHARED_OBJECT);
 		if (cardObjects[2] != null) return;
 
 		for(AbstractGameObject<?> co : cardObjects){

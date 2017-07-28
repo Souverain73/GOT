@@ -28,7 +28,7 @@ public class GameLogObject extends AbstractGameObject<GameLogObject> {
     public GameLogObject(int width, int height, int fontSize) {
         this.w = width;
         this.h = height;
-        this.font =  new FontTrueType("Trajan", 16);
+        this.font =  new FontTrueType("Trajan", 10);
 
         addChild(new ImageObject("PlayerPanel.png", width, height).setSpace(space));
 

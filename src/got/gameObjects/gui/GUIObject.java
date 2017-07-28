@@ -8,6 +8,9 @@ import got.model.Game;
 import got.server.PlayerManager;
 import org.joml.Vector2f;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Souverain73 on 24.03.2017.
  */
@@ -19,9 +22,13 @@ public class GUIObject extends AbstractGameObject<GUIObject> {
     private ThronesPanel tp;
     private SuplyTrackObject sto;
     private ContainerObject upperRight;
+    private ContainerObject sharedLayer;
+    private Map<String, AbstractGameObject> sharedObjectsMap = new HashMap<>();
 
     public GUIObject(){
         upperRight = new ContainerObject().setPos(new Vector2f(Constants.SCREEN_WIDTH, 0));
+        sharedLayer = new ContainerObject().setSpace(DrawSpace.SCREEN);
+        addChild(sharedLayer);
 
         addChild(new PlayerPanelObject(PlayerManager.getSelf()));
 
@@ -49,4 +56,24 @@ public class GUIObject extends AbstractGameObject<GUIObject> {
     public void logMessage(String message){
         glo.addMessage(message);
     }
+
+    public AbstractGameObject getSharedObject(String key){
+        return sharedObjectsMap.get(key);
+    }
+
+    public void addSharedObject(String key, AbstractGameObject object){
+        if (sharedObjectsMap.containsKey(key))
+            removeSharedObject(key);
+        sharedObjectsMap.put(key, object);
+        sharedLayer.addChild(object);
+    }
+
+    public void removeSharedObject(String key){
+        AbstractGameObject go = getSharedObject( key);
+        if (go!=null){
+            sharedObjectsMap.remove(go);
+            sharedLayer.removeChild(go);
+        }
+    }
+
 }

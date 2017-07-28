@@ -88,10 +88,10 @@ public class Dialogs {
         }.setSpace(DrawSpace.SCREEN);
 
         hclo.setPos(
-                new Vector2f((Constants.SCREEN_WIDTH - hclo.getW())/2, 240)
+                new Vector2f((Constants.SCREEN_WIDTH - hclo.getW())/2, 250)
         );
 
-        selectButton.setPos(new Vector2f((hclo.getW()-200) / 2, 160*2.5f+10))
+        selectButton.setPos(new Vector2f((hclo.getW()-200) / 2, 155*2.5f))
                 .setCallback((sender, param)->cms.setResultAndClose(hclo.getSelectedCard()));
 
         cms.addObject(hclo);

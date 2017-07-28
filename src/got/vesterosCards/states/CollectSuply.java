@@ -68,7 +68,7 @@ public class CollectSuply {
         public void click(InputManager.ClickEvent event) {
             if (event.getTarget() instanceof MapPartObject) {
                 MapPartObject region = (MapPartObject) event.getTarget();
-                SelectUnitsDialogState suds = new SelectUnitsDialogState(region.getUnits(), new Vector2f(InputManager.instance().getMousePosWorld()));
+                SelectUnitsDialogState suds = new SelectUnitsDialogState(region.getUnits());
                 (new ModalState(suds)).run();
                 Unit[] unitsToKill = suds.getSelectedUnits();
                 if (unitsToKill.length > 0) {

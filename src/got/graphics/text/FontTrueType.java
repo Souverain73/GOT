@@ -190,11 +190,15 @@ public class FontTrueType implements Font{
             if (str.charAt(pos) == spaceCode) {
                 lastSpace = pos;
             }
+            if (str.charAt(pos) == '\n'){
+                lastSpace = pos;
+                break;
+            }
             stbtt_GetPackedQuad(chardata, BITMAP_W, BITMAP_H, encoder.encode(str.charAt(pos)), xb, yb, q, false);
             if (xb.get(0) > width) break;
         }
 
-        return pos == str.length()-1 || lastSpace == 0 ? -1 : lastSpace;
+        return (pos == str.length()-1 || lastSpace == 0) ? -1 : lastSpace;
     }
 
 

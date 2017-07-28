@@ -26,7 +26,7 @@ public class PlayerPanelObject extends AbstractGameObject<PlayerPanelObject> {
     public PlayerPanelObject(Player player ){
         this.player = player;
         this.currentTurn = Game.instance().getTurn();
-        ImageObject bg = new ImageObject("Player Panel/bg.png", 350, 200);
+        ImageObject bg = new ImageObject("Player Panel/bg.png", 304, 170);
         addChild(bg);
 
         fraction = new TextObject(player.getFraction().toString())

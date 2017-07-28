@@ -18,7 +18,7 @@ import java.util.Arrays;
 /**
  * Created by Souverain73 on 31.03.2017.
  */
-public class PlayVesterosCard extends AbstractGameState {
+public class PlayVesterosCard extends ParallelGameState{
     ImageObject cardImage;
     @Override
     public String getName() {
@@ -37,20 +37,19 @@ public class PlayVesterosCard extends AbstractGameState {
         if (pkg instanceof Packages.OpenCard) {
             Packages.OpenCard msg = (Packages.OpenCard) pkg;
             VesterosCard card = VesterosCards.getCard(msg.card);
-            addObject(cardImage = new ImageObject(card.getTexture(), 200, 100).setSpace(DrawSpace.SCREEN).setPos(Constants.SCREEN_WIDTH, 50));
-            Animator.animateVector2f(cardImage.getAbsolutePos(), new Vector2f(Constants.SCREEN_WIDTH / 2 - 100, 50), 1000, cardImage::setPos);
-            Timers.getTimer(1000, () -> {
+            GameClient.shared.gui.addSharedObject(VesterosPhase.CURRENT_CARD_SHARED_OBJECT, cardImage = new ImageObject(card.getTexture(), 285, 181).setSpace(DrawSpace.SCREEN).setPos(Constants.SCREEN_WIDTH / 2 - 125, -165));
+            Animator.animateVector2f(cardImage.getAbsolutePos(), new Vector2f(Constants.SCREEN_WIDTH / 2 - 142, 55), 1000, cardImage::setPos);
+            Timers.getTimer(1000, () ->
                 GameClient.instance().registerTask(()->{
                     card.onOpenClient();
-                    Timers.getTimer(1000, () -> {
-                        Animator.animateVector2f(cardImage.getAbsolutePos(), new Vector2f(-200, 50), 1000, cardImage::setPos);
-                        Timers.getTimer(1000, () -> GameClient.instance().sendReady(true)).start(true);
-                    }).start(true);
-                });
-            }).start(true);
-
+                    GameClient.instance().sendReady(true);
+                })
+            ).start(true);
         }
-
+        if (pkg instanceof Packages.PlayerSelectItem) {
+            Packages.PlayerSelectItem msg = (Packages.PlayerSelectItem) pkg;
+            GameClient.instance().logMessage("vesteros.playerSelectItem", msg.select);
+        }
         if (pkg instanceof Packages.SetRestrictedActions) {
             Packages.SetRestrictedActions msg = (Packages.SetRestrictedActions) pkg;
             GameClient.shared.restrictedActions = Arrays.asList(msg.actions);

@@ -77,16 +77,16 @@ public class NetworkRoomState implements ServerState {
 							GameServer.getServer().sendToAllTCP(new Packages.SetFractions(PlayerManager.instance().getFractions()));
 
 							Game.instance().initVesterosDeck(0, new Deck(){{
-								addCard(VesterosCards.getCardByName("CollectUnits"));
-								addCard(VesterosCards.getCardByName("CollectUnits"));
-								addCard(VesterosCards.getCardByName("CollectUnits"));
-								addCard(VesterosCards.getCardByName("SummerTime1"));
-								addCard(VesterosCards.getCardByName("WinterTime1"));
+//								addCard(VesterosCards.getCardByName("CollectUnits"));
+//								addCard(VesterosCards.getCardByName("CollectUnits"));
+//								addCard(VesterosCards.getCardByName("CollectUnits"));
+//								addCard(VesterosCards.getCardByName("SummerTime1"));
+//								addCard(VesterosCards.getCardByName("WinterTime1"));
 								addCard(VesterosCards.getCardByName("ThroneOfSwords"));
 								addCard(VesterosCards.getCardByName("ThroneOfSwords"));
-								addCard(VesterosCards.getCardByName("SuplyCard"));
-								addCard(VesterosCards.getCardByName("SuplyCard"));
-								addCard(VesterosCards.getCardByName("SuplyCard"));
+//								addCard(VesterosCards.getCardByName("SuplyCard"));
+//								addCard(VesterosCards.getCardByName("SuplyCard"));
+//								addCard(VesterosCards.getCardByName("SuplyCard"));
 							}});
 
 							Game.instance().initVesterosDeck(1, new Deck(){{
@@ -94,25 +94,25 @@ public class NetworkRoomState implements ServerState {
 								addCard(VesterosCards.getCardByName("SummerTime2"));
 								addCard(VesterosCards.getCardByName("BlackWings"));
 								addCard(VesterosCards.getCardByName("BlackWings"));
-								addCard(VesterosCards.getCardByName("BattleOfKings"));
-								addCard(VesterosCards.getCardByName("BattleOfKings"));
-								addCard(VesterosCards.getCardByName("BattleOfKings"));
-								addCard(VesterosCards.getCardByName("GameOfThrones"));
-								addCard(VesterosCards.getCardByName("GameOfThrones"));
-								addCard(VesterosCards.getCardByName("GameOfThrones"));
+//								addCard(VesterosCards.getCardByName("BattleOfKings"));
+//								addCard(VesterosCards.getCardByName("BattleOfKings"));
+//								addCard(VesterosCards.getCardByName("BattleOfKings"));
+//								addCard(VesterosCards.getCardByName("GameOfThrones"));
+//								addCard(VesterosCards.getCardByName("GameOfThrones"));
+//								addCard(VesterosCards.getCardByName("GameOfThrones"));
 							}});
 
 							Game.instance().initVesterosDeck(2, new Deck(){{
-								addCard(VesterosCards.getCardByName("Wildlings"));
-								addCard(VesterosCards.getCardByName("Wildlings"));
-								addCard(VesterosCards.getCardByName("Wildlings"));
-								addCard(VesterosCards.getCardByName("AutumnRains"));
-								addCard(VesterosCards.getCardByName("FeastForCrows"));
-								addCard(VesterosCards.getCardByName("WebOfLie"));
-								addCard(VesterosCards.getCardByName("SeaOfStorms"));
+//								addCard(VesterosCards.getCardByName("Wildlings"));
+//								addCard(VesterosCards.getCardByName("Wildlings"));
+//								addCard(VesterosCards.getCardByName("Wildlings"));
+//								addCard(VesterosCards.getCardByName("AutumnRains"));
+//								addCard(VesterosCards.getCardByName("FeastForCrows"));
+//								addCard(VesterosCards.getCardByName("WebOfLie"));
+//								addCard(VesterosCards.getCardByName("SeaOfStorms"));
 								addCard(VesterosCards.getCardByName("PutToSword"));
 								addCard(VesterosCards.getCardByName("PutToSword"));
-								addCard(VesterosCards.getCardByName("StormOfSwords"));
+//								addCard(VesterosCards.getCardByName("StormOfSwords"));
 							}});
 
 							GameServer.getServer().sendToAllTCP(new Packages.SetTrack(Game.THRONE_TRACK, Game.instance().getTrack(Game.THRONE_TRACK).getData()));

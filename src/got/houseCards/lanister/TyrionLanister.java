@@ -42,14 +42,14 @@ public class TyrionLanister extends ActiveHouseCard {
         public void enter(StateMachine stm) {
             if (getSelf().getFraction() == placerFraction){
                 GameClient.instance().setTooltipText("common.Decide");
-                Dialogs.DialogResult res = Dialogs.showConfirmDialog(Translator.tt("houseCards.TyrionRemoveCard"));
+                Dialogs.DialogResult res = Dialogs.showConfirmDialog("houseCards.TyrionRemoveCard");
                 if (res == Dialogs.DialogResult.OK){
                     GameClient.instance().send(new Packages.Confirm());
                 }else{
                     resumeModal();
                 }
             }else{
-                GameClient.instance().setTooltipText(Translator.tt("houseCards.TyrionWait"));
+                GameClient.instance().setTooltipText("houseCards.TyrionWait");
             }
         }
 

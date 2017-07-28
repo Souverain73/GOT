@@ -1,8 +1,10 @@
 package got.gameObjects.battleDeck;
 
+import got.Constants;
 import got.GameClient;
 import got.gameObjects.*;
 import got.graphics.DrawSpace;
+import got.graphics.text.FontTrueType;
 import got.houseCards.HouseCard;
 import got.model.*;
 import got.server.PlayerManager;
@@ -21,6 +23,8 @@ import static sun.audio.AudioPlayer.player;
 
 public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
     @Override protected BattleDeckObject getThis() {return this;}
+
+    private final FontTrueType powerFont = new FontTrueType("GOTKG", 72);
 
     private final ContainerObject attackerContainer;
     private final ContainerObject defenderContainer;
@@ -61,12 +65,13 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
         this.overrides = new BattleOverrides();
 
         ImageObject background = new ImageObject("BattleDeckBG.png",
-                1000, 200).setPos(140, 50)
+                500, 100).setPos((Constants.SCREEN_WIDTH-500)/2, 80
+        )
                 .setSpace(DrawSpace.SCREEN);
 
         attackerContainer = new ContainerObject()
                 .setPos(new Vector2f(0, 0))
-                .setDim(new Vector2f(500, 200))
+                .setDim(new Vector2f(250, 100))
                 .setSpace(DrawSpace.SCREEN);
 
         BattleCardObject attackerCard = new BattleCardObject(attackerRegion.getFraction(), attackerRegion)
@@ -75,8 +80,8 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
         attackerContainer.addChild(attackerCard);
 
         defenderContainer = new ContainerObject()
-                .setPos(new Vector2f(500, 0))
-                .setDim(new Vector2f(500, 200))
+                .setPos(new Vector2f(250, 0))
+                .setDim(new Vector2f(250, 100))
                 .setSpace(DrawSpace.SCREEN);
 
         BattleCardObject defenderCard = new BattleCardObject(defenderRegion.getFraction(), defenderRegion)
@@ -86,15 +91,15 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
 
         //House cards
         attackerHouseCardObject = new ImageObject(attackerPlayer.getFraction().getCoverTexture(),
-                 100, 200).setPos(20,50).setSpace(DrawSpace.SCREEN);
+                 230, 357).setPos(300,250).setSpace(DrawSpace.SCREEN);
         defenderHouseCardObject = new ImageObject(defenderPlayer.getFraction().getCoverTexture(),
-                 100, 200).setPos(1160, 50).setSpace(DrawSpace.SCREEN);
+                 230, 357).setPos(750, 250).setSpace(DrawSpace.SCREEN);
 
         addChild(attackerHouseCardObject);
         addChild(defenderHouseCardObject);
 
-        attackersPowerText = new TextObject("").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(590, 20));
-        defendersPowerText = new TextObject("").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(690, 20));
+        attackersPowerText = new TextObject(powerFont, "").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(440, 175));
+        defendersPowerText = new TextObject(powerFont, "").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(740, 175));
 
         addChild(attackersPowerText);
         addChild(defendersPowerText);
@@ -127,7 +132,7 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
 
     private void updateState(boolean fullUpdate) {
         if (fullUpdate) {
-            int xa = 400;
+            int xa = 200;
             int xd = 000;
             for (int i = 0; i < 4; i++) {
                 if (i < attackers.size()) {
@@ -140,8 +145,8 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
                     defender.setPos(new Vector2f(xd, 0));
                 }
 
-                xa -= 100;
-                xd += 100;
+                xa -= 50;
+                xd += 50;
             }
         }
         attackersPower = getAttackPower(attackers);
@@ -193,6 +198,8 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
                 defenderHouseCardObject.setTexture(card.getTexture());
         }
         if (attackerCard != null && defenderCard != null){
+            attackerHouseCardObject.setTexture(attackerCard.getTexture());
+            defenderHouseCardObject.setTexture(defenderCard.getTexture());
             resetCardEffects();
             if (!defendersCardUsed) {
                 defendersCardUsed = true;
@@ -202,8 +209,6 @@ public class BattleDeckObject extends AbstractGameObject<BattleDeckObject> {
                 attackersCardUsed = true;
                 attackerCard.onPlace(attackerPlayer.getFraction());
             }
-            attackerHouseCardObject.setTexture(attackerCard.getTexture());
-            defenderHouseCardObject.setTexture(defenderCard.getTexture());
             GameClient.instance().sendReady(true);
         }
         updateState(false);

@@ -52,7 +52,6 @@ public class RidersLoose {
             if (event.getTarget() instanceof MapPartObject) {
                 MapPartObject region = (MapPartObject) event.getTarget();
                 SelectUnitsDialogState suds = new SelectUnitsDialogState(region.getUnits(),
-                        InputManager.instance().getMousePosWorld(),
                         0, Math.max(unitsToKill, region.getUnitsCount()));
                 (new ModalState(suds)).run();
                 if (suds.isOk()){

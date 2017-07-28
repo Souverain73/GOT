@@ -1,20 +1,28 @@
 package got.gameStates;
 
 import com.esotericsoftware.kryonet.Connection;
+import got.Constants;
 import got.GameClient;
 import got.InputManager;
 import got.ModalState;
 import got.gameObjects.MapPartObject;
+import got.gameObjects.TextObject;
 import got.gameObjects.battleDeck.BattleDeckObject;
 import got.gameObjects.battleDeck.BattleOverrides;
 import got.gameStates.modals.SelectRegionModal;
 import got.gameStates.modals.SelectUnitDialogState;
 import got.gameStates.modals.SelectUnitsDialogState;
+import got.graphics.DrawSpace;
+import got.graphics.text.FontTrueType;
 import got.houseCards.HouseCard;
 import got.houseCards.HouseCardsLoader;
 import got.model.*;
 import got.network.Packages;
 import got.server.PlayerManager;
+import got.translation.Translator;
+import got.utils.Timers;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -125,47 +133,58 @@ public class BattleResultState extends AbstractGameState{
         Player winner = PlayerManager.instance().getPlayer(battleResult.winnerID);
         Player looser = PlayerManager.instance().getPlayer(battleResult.looserID);
         GameClient.instance().logMessage("battle.battleEnd", winner.getNickname(), looser.getNickname());
-        //Убираем приказы
-        BDO.getAttackerRegion().setAction(null);
+        showWinnerBanner(winner);
+        Timers.getTimer(2000, ()->GameClient.instance().registerTask(()->{
+            BDO.setVisible(false);
+            //Убираем приказы
+            BDO.getAttackerRegion().setAction(null);
 
-        int killUnitsCount = 0;
-        if (BDO.isAttacker(PlayerManager.instance().getPlayer(battleResult.winnerID).getFraction())){
-            //победил атакующий
-            BDO.getDefenderRegion().setAction(null);
-            BDO.getAttackerCard().onWin();
-            BDO.getDefenderCard().onLoose();
-            killUnitsCount = BDO.getAttackerCard().getSwords() - BDO.getDefenderCard().getTowers();
-        }else{
-            //победил защищавшийся
-            BDO.getDefenderCard().onWin();
-            BDO.getAttackerCard().onLoose();
-            killUnitsCount = BDO.getDefenderCard().getSwords() - BDO.getAttackerCard().getTowers();
-        }
-
-        BattleOverrides overrides = BDO.overrides;
-        if (overrides.customKillCount){
-            killUnitsCount = overrides.unitsToKill;
-        }
-
-        GameClient.shared.gameMap.getRegionByID(battleResult.looserRegionID).killUnits();
-        if (battleResult.looserID == getSelf().id){
-            //Если ты проигравший
-            MapPartObject playerRegion = BDO.getPlayerRegion(getSelf());
-            if (killUnitsCount>0) {
-                Unit[] unitsToKill = null;
-                while(unitsToKill == null) {
-                    SelectUnitsDialogState suds = new SelectUnitsDialogState(playerRegion.getUnits(),
-                            InputManager.instance().getMousePosWorld(), killUnitsCount, killUnitsCount);
-                    unitsToKill = showKillUnitsDialog(playerRegion.getUnits(), killUnitsCount);
-                }
-                playerRegion.removeUnits(unitsToKill);
-                GameClient.instance().send(new Packages.ChangeUnits(playerRegion.getID(), playerRegion.getUnits()));
+            int killUnitsCount = 0;
+            if (BDO.isAttacker(PlayerManager.instance().getPlayer(battleResult.winnerID).getFraction())){
+                //победил атакующий
+                BDO.getDefenderRegion().setAction(null);
+                BDO.getAttackerCard().onWin();
+                BDO.getDefenderCard().onLoose();
+                killUnitsCount = BDO.getAttackerCard().getSwords() - BDO.getDefenderCard().getTowers();
+            }else{
+                //победил защищавшийся
+                BDO.getDefenderCard().onWin();
+                BDO.getAttackerCard().onLoose();
+                killUnitsCount = BDO.getDefenderCard().getSwords() - BDO.getAttackerCard().getTowers();
             }
 
-            //Если ты оборонялся, ты можешь выбрать куда отступить
-            RetreatOrKillUnits();
-        }else{
-        }
+            BattleOverrides overrides = BDO.overrides;
+            if (overrides.customKillCount){
+                killUnitsCount = overrides.unitsToKill;
+            }
+
+            GameClient.shared.gameMap.getRegionByID(battleResult.looserRegionID).killUnits();
+            if (battleResult.looserID == getSelf().id){
+                //Если ты проигравший
+                MapPartObject playerRegion = BDO.getPlayerRegion(getSelf());
+                killUnitsCount = Math.min(killUnitsCount, playerRegion.getUnitsCount());
+                if (killUnitsCount>0) {
+                    GameClient.instance().setTooltipText("retreat.killUnits", killUnitsCount);
+                    Unit[] unitsToKill = null;
+                    while(unitsToKill == null) {
+                        unitsToKill = showKillUnitsDialog(playerRegion.getUnits(), killUnitsCount);
+                    }
+                    playerRegion.removeUnits(unitsToKill);
+                    GameClient.instance().send(new Packages.ChangeUnits(playerRegion.getID(), playerRegion.getUnits()));
+                }
+
+                //Если ты оборонялся, ты можешь выбрать куда отступить
+                RetreatOrKillUnits();
+            }else{
+            }
+        })).start(true);
+    }
+
+    private void showWinnerBanner(Player winner) {
+        TextObject to;
+        addObject(to = new TextObject(new FontTrueType("GOTKG", 32, new Vector3f(0.8f, 0.2f, 0.2f)),
+                String.format(Translator.tt("battle.winnerBanner"), winner.getFraction())).setSpace(DrawSpace.SCREEN));
+        to.setPos(new Vector2f((Constants.SCREEN_WIDTH - to.getW())/2, 100));
     }
 
     private void endBattle() {
@@ -192,7 +211,8 @@ public class BattleResultState extends AbstractGameState{
             int unitsToKillCount = playerRegion.getUnitsCount() - i;
             Unit[] unitsToKill = null;
             while (unitsToKill == null) {
-                GameClient.instance().logMessage("retreat.suplyKill", unitsToKill);
+                GameClient.instance().setTooltipText("retreat.killUnits", unitsToKillCount);
+                GameClient.instance().logMessage("retreat.suplyKill", unitsToKillCount);
                 unitsToKill = showKillUnitsDialog(playerRegion.getUnits(), unitsToKillCount);
             }
             playerRegion.removeUnits(unitsToKill);
@@ -207,6 +227,7 @@ public class BattleResultState extends AbstractGameState{
     }
 
     private void RetreatOrKillUnits() {
+        GameClient.instance().logMessage("retreat.wait");
         if (BDO.isAttacker(getSelf().getFraction()) && !BDO.overrides.customRetreat){
             //Если ты атаковал по стандартным правилам ты не можешь выбирать регион для отступления и остаешься на месте
             GameClient.instance().send(new Packages.LooserReady());
@@ -264,7 +285,7 @@ public class BattleResultState extends AbstractGameState{
     }
 
     private Unit[] showKillUnitsDialog(Unit[] units, int countToKill){
-        SelectUnitsDialogState suds = new SelectUnitsDialogState(units, InputManager.instance().getMousePosWorld(), countToKill, countToKill);
+        SelectUnitsDialogState suds = new SelectUnitsDialogState(units, countToKill, countToKill);
         (new ModalState(suds)).run();
 
         if (suds.isOk()) {

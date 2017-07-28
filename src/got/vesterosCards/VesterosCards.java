@@ -29,7 +29,7 @@ public class VesterosCards {
         add(new RestrictedActionsCard("StormOfSwords.png", "StormOfSwords",  Translator.tt("vesterosCard.StormOfSwords"), new Action[]{Action.DEFEND, Action.DEFENDPLUS}).wildlings());
         add(new CommonVesterosCard("SummerTime1.png",   "SummerTime1",    Translator.tt("vesterosCard.SummerTime")).wildlings());
         add(new CommonVesterosCard("SummerTime2.png",   "SummerTime2",    Translator.tt("vesterosCard.SummerTime")).wildlings());
-        add(new SuplyCard("SuplyCard.png",         "SuplyCard",          Translator.tt("vesterosCard.SuplyCard")));
+        add(new SuplyCard("Suply.png",         "Suply",          Translator.tt("vesterosCard.Suply")));
         add(new ThroneOfSwords("ThroneOfSwords.png","ThroneOfSwords", Translator.tt("vesterosCard.ThroneOfSwords")).wildlings());
         add(new RestrictedActionsCard("WebOfLie.png",      "WebOfLie",       Translator.tt("vesterosCard.WebOfLie"), new Action[]{Action.HELP, Action.HELPPLUS}).wildlings());
         add(new CommonVesterosCard("Wildlings.png",     "Wildlings",      Translator.tt("vesterosCard.Wildlings")));

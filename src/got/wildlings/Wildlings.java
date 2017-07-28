@@ -21,7 +21,7 @@ import static got.translation.Translator.tt;
  */
 public class Wildlings {
     int level = 0;
-    static int maxLevel = 12;
+    static int maxLevel = 2;
     private static Wildlings _instance = new Wildlings();
 
     public static Wildlings instance(){

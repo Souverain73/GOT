@@ -22,12 +22,13 @@ public class ThroneOfSwords extends CommonVesterosCard {
 
     @Override
     public void onOpenClient() {
-        OptionSelectorState oss;
-        (new ModalState(oss = new OptionSelectorState(3,
-                PlayerManager.getSelf().getFraction() == Game.instance().getTrack(Game.THRONE_TRACK).getFirst()
-        ), true, true)).run();
-        if (PlayerManager.getSelf().getFraction() == Game.instance().getTrack(Game.THRONE_TRACK).getFirst())
+        if (PlayerManager.getSelf().getFraction() == Game.instance().getTrack(Game.THRONE_TRACK).getFirst()) {
+            OptionSelectorState oss;
+            (new ModalState(oss = new OptionSelectorState(3), true, true)).run();
             GameClient.instance().send(new Packages.SelectItem(oss.getResult()));
+        }else{
+            super.onOpenClient();
+        }
     }
 
     @Override

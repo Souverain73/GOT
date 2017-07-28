@@ -10,18 +10,23 @@ import org.joml.Vector2f;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 /**
  * Created by Souverain73 on 25.11.2016.
  */
 public class BattleCardObject extends AbstractGameObject<BattleCardObject>{
+
     @Override protected BattleCardObject getThis() {return this;}
 
-    private static final int BASE_UNITS_X = 10;
-    private static final int BASE_UNITS_Y = 110;
-    public static final int  UNITS_SIZE = 30;
-    public static final int UNITS_SPACING = 10;
+    private final int WIDTH = 50;
+    private final int HEIGHT = 100;
+
+    private static final int BASE_UNITS_X = 5;
+    private static final int BASE_UNITS_Y = 55;
+    public static final int  UNITS_SIZE = 15;
+    public static final int UNITS_SPACING = 5;
 
     private final Fraction playerFraction;
 
@@ -45,13 +50,13 @@ public class BattleCardObject extends AbstractGameObject<BattleCardObject>{
     private ContainerObject createView() {
         ContainerObject result = new ContainerObject();
         ///BG
-        result.addChild(new ImageObject("PlayerCardBG.png", 100, 200)
+        result.addChild(new ImageObject("PlayerCardBG.png", WIDTH, HEIGHT)
                 .setSpace(DrawSpace.SCREEN));
         //Fraction icon
-        result.addChild(new ImageObject(playerFraction.getBackTexture(), 80, 80).setPos(10, 10)
+        result.addChild(new ImageObject(playerFraction.getBackTexture(), 40, 40).setPos(5, 5)
                 .setSpace(DrawSpace.SCREEN));
         if (regionAction!=null) {
-            result.addChild(new ImageObject(regionAction.getTexture(), 40, 40).setPos(50,50)
+            result.addChild(new ImageObject(regionAction.getTexture(), 20, 20).setPos(25,25)
                     .setSpace(DrawSpace.SCREEN));
         }
 
@@ -75,8 +80,8 @@ public class BattleCardObject extends AbstractGameObject<BattleCardObject>{
         for (int i=0; i<units.length; i++){
             unitObjects[i].setPos(new Vector2f( x, y));
             x += UNITS_SIZE + UNITS_SPACING * 2;
-            if (x > 100 /*ширина панельки*/){
-                x-=100;
+            if (x > WIDTH /*ширина панельки*/){
+                x-=WIDTH;
                 y+= UNITS_SIZE + UNITS_SPACING*2;
             }
         }
@@ -134,7 +139,7 @@ public class BattleCardObject extends AbstractGameObject<BattleCardObject>{
             effects = new ArrayList<>();
         }
         effects.add(effect);
-        effects.sort((a, b)->a.getPriority() - b.getPriority());
+        effects.sort(Comparator.comparingInt(UnitEffect::getPriority));
     }
 
     public void resetEffect() {

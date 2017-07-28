@@ -3,6 +3,7 @@ package got.gameStates.test;
 import got.Constants;
 import got.InputManager;
 import got.gameObjects.ImageObject;
+import got.gameObjects.TextBoxObject;
 import got.gameObjects.TextObject;
 import got.gameStates.AbstractGameState;
 import got.gameStates.StateMachine;
@@ -27,13 +28,10 @@ public class TextDebugState extends AbstractGameState implements IClickListener{
         addObject(new TextObject(new FontTrueType("trajan", 10), "True type small text test. Тест шрифтов для маленьких символов.").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 50)));
         addObject(new TextObject(new FontTrueType("trajan", 4), "True type small text test. Тест шрифтов для маленьких символов.").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 60)));
 
-        addObject(new TextObject(new FontTrueType("calibri", 16), "True type small text test. Тест шрифтов для маленьких символов.").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 100)));
-        addObject(new TextObject(new FontTrueType("calibri", 10), "True type small text test. Тест шрифтов для маленьких символов.").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 120)));
-        addObject(new TextObject(new FontTrueType("calibri", 4), "True type small text test. Тест шрифтов для маленьких символов.").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 130)));
+        TextBoxObject tbo = new TextBoxObject(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+        tbo.setText("Hello world!!\nNew line;\nAlign center valign center").setAlign(TextBoxObject.Align.RIGHT).setVerticalAlign(TextBoxObject.VerticalAlign.TOP);
+        addObject(tbo);
 
-        addObject(new TextObject(new FontTrueType("BKANT", 16), "True type small text test. Тест шрифтов для маленьких символов.").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 200)));
-        addObject(new TextObject(new FontTrueType("BKANT", 10), "True type small text test. Тест шрифтов для маленьких символов.").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 220)));
-        addObject(new TextObject(new FontTrueType("BKANT", 4), "True type small text test. Тест шрифтов для маленьких символов.").setSpace(DrawSpace.SCREEN).setPos(new Vector2f(100, 230)));
 
     }
 

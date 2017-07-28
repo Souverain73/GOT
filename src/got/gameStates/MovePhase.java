@@ -50,7 +50,7 @@ public class MovePhase extends StepByStepGameState implements IClickListener{
 			MapPartObject region = (MapPartObject) sender;
 
 			if (state == SubState.SELECT_SOURCE){
-				SelectUnitsDialogState suds = new SelectUnitsDialogState(region.getUnits(), InputManager.instance().getMousePosWorld());
+				SelectUnitsDialogState suds = new SelectUnitsDialogState(region.getUnits());
 				GameClient.instance().setTooltipText("move.selectUnits");
 				(new ModalState(suds)).run();
 				GameClient.instance().setTooltipText("move.selectSource");

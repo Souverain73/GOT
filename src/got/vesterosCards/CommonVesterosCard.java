@@ -1,5 +1,13 @@
 package got.vesterosCards;
 
+import got.Constants;
+import got.GameClient;
+import got.InputManager;
+import got.ModalState;
+import got.gameObjects.interfaceControls.ImageButton;
+import got.gameStates.modals.CustomModalState;
+import got.gameStates.modals.Dialogs;
+import got.graphics.DrawSpace;
 import got.graphics.Texture;
 import got.graphics.TextureManager;
 import got.model.ChangeAction;
@@ -35,7 +43,15 @@ public class CommonVesterosCard implements VesterosCard {
 
     @Override
     public void onOpenClient() {
-
+        (new ModalState(new CustomModalState<Dialogs.DialogResult>(Dialogs.DialogResult.CANCEL, false){
+            @Override
+            public void enter(got.gameStates.StateMachine stm) {
+                addObject(new ImageButton("buttons/ready.png", Constants.SCREEN_WIDTH / 2 - 100, 250, 150, 75, null)
+                        .setSpace(DrawSpace.SCREEN)
+                        .setCallback((gameObject, o) -> close())
+                );
+            }
+        })).run();
     }
 
     @Override
