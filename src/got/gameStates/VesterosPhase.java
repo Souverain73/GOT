@@ -6,6 +6,7 @@ import got.Constants;
 import got.GameClient;
 import got.gameObjects.AbstractGameObject;
 import got.gameObjects.ImageObject;
+import got.gameObjects.gui.GUIObject;
 import got.graphics.DrawSpace;
 import got.model.Game;
 import got.network.Packages;
@@ -18,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VesterosPhase extends AbstractGameState {
-	public static final String CURRENT_CARD_SHARED_OBJECT = "currentCardObject";
 	private static final String name = "VesterosPhase";
 	VesterosCard[] cards = new VesterosCard[3];
 	AbstractGameObject<?>[] cardObjects = new AbstractGameObject[3];
@@ -66,7 +66,7 @@ public class VesterosPhase extends AbstractGameState {
 	public void resume() {
 		super.resume();
 
-		GameClient.shared.gui.removeSharedObject(CURRENT_CARD_SHARED_OBJECT);
+		GameClient.shared.gui.removeSharedObject(GUIObject.CURRENT_CARD_SHARED_OBJECT);
 		if (cardObjects[2] != null) return;
 
 		for(AbstractGameObject<?> co : cardObjects){

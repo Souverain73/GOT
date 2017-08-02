@@ -15,6 +15,7 @@ import java.util.Map;
  * Created by Souverain73 on 24.03.2017.
  */
 public class GUIObject extends AbstractGameObject<GUIObject> {
+    public static final String CURRENT_CARD_SHARED_OBJECT = "soCurrentCard";
     @Override protected GUIObject getThis() {return this;}
 
     private TextObject tooltipText;

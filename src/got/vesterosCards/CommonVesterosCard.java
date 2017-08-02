@@ -43,15 +43,6 @@ public class CommonVesterosCard implements VesterosCard {
 
     @Override
     public void onOpenClient() {
-        (new ModalState(new CustomModalState<Dialogs.DialogResult>(Dialogs.DialogResult.CANCEL, false){
-            @Override
-            public void enter(got.gameStates.StateMachine stm) {
-                addObject(new ImageButton("buttons/ready.png", Constants.SCREEN_WIDTH / 2 - 100, 250, 150, 75, null)
-                        .setSpace(DrawSpace.SCREEN)
-                        .setCallback((gameObject, o) -> close())
-                );
-            }
-        })).run();
     }
 
     @Override

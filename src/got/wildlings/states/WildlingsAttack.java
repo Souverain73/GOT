@@ -3,11 +3,16 @@ package got.wildlings.states;
 import com.esotericsoftware.kryonet.Connection;
 import got.Constants;
 import got.GameClient;
+import got.ModalState;
 import got.animations.Animator;
+import got.gameObjects.AnimatedObject;
 import got.gameObjects.ImageObject;
+import got.gameObjects.gui.GUIObject;
+import got.gameObjects.interfaceControls.ImageButton;
 import got.gameStates.ParallelGameState;
 import got.gameStates.StateID;
-import got.gameStates.VesterosPhase;
+import got.gameStates.modals.CustomModalState;
+import got.gameStates.modals.Dialogs;
 import got.graphics.DrawSpace;
 import got.houseCards.HouseCard;
 import got.houseCards.HouseCardsLoader;
@@ -45,16 +50,22 @@ public class WildlingsAttack {
                 Packages.WildlingsData msg = (Packages.WildlingsData) pkg;
                 WildlingsCard card = Wildlings.instance().getCard(msg.card);
 
-                GameClient.shared.gui.addSharedObject(VesterosPhase.CURRENT_CARD_SHARED_OBJECT, cardImage = new ImageObject(card.getTexture(), 161, 250).setSpace(DrawSpace.SCREEN).setPos(Constants.SCREEN_WIDTH, 50));
+                GameClient.shared.gui.addSharedObject(GUIObject.CURRENT_CARD_SHARED_OBJECT, cardImage = new ImageObject(card.getTexture(), 225, 350).setSpace(DrawSpace.SCREEN).setPos(590, -350));
 
-                Animator.animateVector2f(cardImage.getAbsolutePos(), new Vector2f(Constants.SCREEN_WIDTH/2-50, 50), 1000, cardImage::setPos);
+                Animator.animateVector2f(cardImage.getAbsolutePos(), new Vector2f(590, 50), 1000, cardImage::setPos);
 
                 Timers.getTimer(1000, ()->{
                     GameClient.instance().registerTask(()->{
-                        card.onOpenClient(msg);
-                        Timers.getTimer(1000, ()->{
-                            Timers.getTimer(1000, ()->GameClient.instance().sendReady(true)).start(true);
-                        }).start(true);
+                        showReadyModal();
+
+                        AnimatedObject aoCard = new AnimatedObject(cardImage);
+                        aoCard.move(new Vector2f(310, 50), 1000);
+                        aoCard.resize(new Vector2f(165, 255), 1000);
+
+                        Timers.getTimer(1000, ()->GameClient.instance().registerTask(()->{
+                            card.onOpenClient(msg);
+                            GameClient.instance().sendReady(true);
+                        })).start(true);
                     });
                 }).start(true);
             }
@@ -85,6 +96,18 @@ public class WildlingsAttack {
         public void exit() {
             Wildlings.instance().resetLevel();
             super.exit();
+        }
+
+        private void showReadyModal(){
+            (new ModalState(new CustomModalState<Dialogs.DialogResult>(Dialogs.DialogResult.CANCEL, false){
+                @Override
+                public void enter(got.gameStates.StateMachine stm) {
+                    addObject(new ImageButton("buttons/ready.png", Constants.SCREEN_WIDTH / 2 - 100, 250, 150, 75, null)
+                            .setSpace(DrawSpace.SCREEN)
+                            .setCallback((gameObject, o) -> close())
+                    );
+                }
+            })).run();
         }
     }
 

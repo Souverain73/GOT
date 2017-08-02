@@ -24,6 +24,10 @@ public class AnimatedObject extends AbstractGameObject<AnimatedObject>{
         return Animator.animateFloat(object.getScale(), scale, time, object::setScale);
     }
 
+    public Animation<?> resize(Vector2f dim, long time){
+        return Animator.animateVector2f(object.getDim(), dim, time, object::setDim);
+    }
+
     public AbstractGameObject<?> getObject() {
         return object;
     }
